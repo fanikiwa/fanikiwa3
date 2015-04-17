@@ -1,0 +1,336 @@
+﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Fanikiwa - Peer-to-Peer Lending</title>
+    <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
+<link rel="stylesheet" href="/Content/Site.css" type="text/css" />
+<script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
+<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+     
+
+</head>
+
+
+<body>
+
+    <header>
+        <div class="content-wrapper">
+
+            <div class="float-left">
+                <p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
+                    Fanikiwa - Peer - To - Peer Lending
+                </p>
+            </div>
+
+
+            <div class="float-right">
+                <section id="login">
+                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+					style="cursor: pointer;" href="#" onclick="ManageProfile()"
+					title="Manage Profile"></a> <a id="lnklogoff"
+					style="cursor: pointer;" href="#" onclick="LogOff()"
+					title="Log Off">Log off</a> </text>   
+                </section>
+            </div>
+ 
+
+
+            <div id="nav">
+                <ul id="menu">
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitIndexForm" style="cursor: pointer;" href="/Views/Home/Index.html" >Home</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+                    <li>
+
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitListLendOffersForm" style="cursor: pointer;" href="/Views/Offers/ListLendOffers.html" >Get A loan</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;" href="/Views/Offers/ListBorrowOffers.html" >Make An Investment</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListMyOffersForm"  href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My Offers</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+
+                     
+                        
+                        <li id="subMenuMyProfile">
+
+                            <div class="floatleft">
+                               
+                                    <div>
+                                        <a id="btnSubmitEditProfileSubForm"  href="/Views/Account/EditProfile.html" style="cursor: pointer;">My Profile</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+
+                        <li id="subMenuMyAccounts">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyAccountsForm"  href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My Accounts</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                         
+                     <li>
+
+                        <div class="floatleft">
+                             
+                                <div>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Offers/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                        <li id="subMenuMyLoans">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyLoansForm"  href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My Loans</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        <li id="subMenuOfferGroups">
+
+                            <div class="floatleft">
+                                 
+                                    <div>
+                                        <a id="btnSubmitGetMyMailingGroupsForm"  href="/Views/MailingGroups/MailingGroups.html" style="cursor: pointer;">My Offer Groups</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                         
+                        <li id="subMenuScores">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitOfferScoresForm"  href="/Views/Account/ManageProfile.html" style="cursor: pointer;">My Offer Scores</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                         
+                        <li id="subMenuChangePassword">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitChangePasswordForm"  href="/Views/Account/_ChangePasswordPartial.html" style="cursor: pointer;">Change Password</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        <li id="subMenuDeRegister">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitDeRegisterForm"  href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        
+
+                    
+
+                    <li>
+
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitHelpForm"  href="/Views/Home/Help.html" style="cursor: pointer;">Help</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactUsForm"  href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact Us</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"  style="cursor: pointer;">Contacts</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitAboutForm"  href="/Views/Home/About.html" style="cursor: pointer;">About</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+
+    <div id="body">
+
+ 
+        <section class="content-wrapper main-content clear-fix">
+
+            <div id="error-display-div" class="displaynone">
+            </div>
+
+             
+
+        </section>
+
+
+    </div>
+
+
+
+
+    <footer>
+
+        <hr />
+ 
+        <div class="content-wrapper clearboth">
+            <div class="float-left">
+                <p style="font-size: 15px">Copyright &copy;   Software Providers Limited. All Rights Reserved.</p>
+            </div>
+        </div>
+
+
+        <div class="content-wrapper clearboth">
+            <div>
+ 
+            </div>
+        </div>
+
+
+    </footer>
+
+
+
+
+
+	<script type="text/javascript">
+
+	        if (localStorage.getItem("loggedinuser") === null) {
+		     window.location.href = "/Views/Account/Login.html";
+			 }
+			 
+			 // Get loggedin user from the local storage
+			 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
+
+	            function LogOff() { 
+		         	localStorage.removeItem("loggedinuser");
+		            window.location.href = "/Views/Account/Login.html";  
+	         	}
+	         	
+	         	function ManageProfile() { 
+	         		window.location.href = "/Views/Account/EditProfile.html";  
+	            }
+	         	
+             
+    </script>
+
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
+
+
+
+
+
+     
+
+</body>
+
+
+</html>
