@@ -23,16 +23,16 @@ From the base formula, A = P(1 + rt) derived from A = P + I and I = Prt so A = P
     public double ComputeSimpleInterest(String period, double amount, int term, double rate) 
     {
         if (period.toUpperCase().equals("D"))
-            return amount * term * 30 * (rate / 100);
+            return amount * term * 30.0 * (rate / 100.0);
 
         if(period.toUpperCase().equals("D360"))
-            return amount * (term * 30 / 360) * (rate / 100);
+            return amount * (term * 30.0 / 360.0) * (rate / 100.0);
 
         if (period.toUpperCase().equals("D365"))
-            return amount * (term * 30 / 365) * (rate / 100);
+            return amount * (term * 30.0 / 365.0) * (rate / 100.0);
 
         if(period.toUpperCase().equals("M"))
-            return amount * term * (rate / 100);
+            return amount * term * (rate / 100.0);
             
         //Yearly == defaulut
         double t = (float)term / 12;
@@ -42,5 +42,11 @@ From the base formula, A = P(1 + rt) derived from A = P + I and I = Prt so A = P
     }
 
 
+    //Compound Interest
+    //Always term is in years
+    public double ComputeCompoundInterest(double amount, int term, double rate)
+    {
+    	return  amount * Math.pow((1 + rate/100),term); 
+    }
 }
 

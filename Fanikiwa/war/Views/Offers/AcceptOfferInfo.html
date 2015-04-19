@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -35,7 +35,7 @@
 					style="cursor: pointer;" href="#" onclick="ManageProfile()"
 					title="Manage Profile"></a> <a id="lnklogoff"
 					style="cursor: pointer;" href="#" onclick="LogOff()"
-					title="Log Off">Log off</a> </text>     
+					title="Log Off">Log off</a> </text>
                 </section>
             </div>
  
@@ -126,7 +126,7 @@
                         <div class="floatleft">
                              
                                 <div>
-                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Offers/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
                                 </div>    
                             
                         </div>
@@ -145,29 +145,18 @@
 
                         </li>
                         
-                        <li id="subMenuOfferGroups">
+                        <li id="subMenuLendingGroups">
 
                             <div class="floatleft">
                                  
                                     <div>
-                                        <a id="btnSubmitGetMyMailingGroupsForm"  href="/Views/MailingGroups/MailingGroups.html" style="cursor: pointer;">My Offer Groups</a>
+                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
                                     </div>    
                                 
                             </div>
 
                         </li>
-                         
-                        <li id="subMenuScores">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitOfferScoresForm"  href="/Views/Account/ManageProfile.html" style="cursor: pointer;">My Offer Scores</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
+                
                          
                         <li id="subMenuChangePassword">
 
@@ -296,36 +285,6 @@
 
 
     </footer>
-
-
-
-
-
-	<script type="text/javascript">
-
-	        if (localStorage.getItem("loggedinuser") === null) {
-		     window.location.href = "/Views/Account/Login.html";
-			 }
-			 
-			 // Get loggedin user from the local storage
-			 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-
-	            function LogOff() { 
-		         	localStorage.removeItem("loggedinuser");
-		            window.location.href = "/Views/Account/Login.html";  
-	         	}
-	         	
-	         	function ManageProfile() { 
-	         		window.location.href = "/Views/Account/EditProfile.html";  
-	            }
-	         	
-             
-    </script>
-
-	<script src="https://apis.google.com/js/client.js?onload=init"></script>
-
-
-
 
 
      

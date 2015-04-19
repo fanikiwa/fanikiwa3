@@ -72,7 +72,19 @@ public class TransactionEndpoint {
 			return listTransactionByQuery(query, cursorString, count);
 
 	}
-	
+	public CollectionResponse<Transaction> SelectByAccountDateRange(
+			@Named("sdate") Date sdate,
+			Account account,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+			Query<Transaction> query = ofy().load().type(Transaction.class)
+					.order("postDate")
+					.filter("postDate >",sdate)
+					.filter("account",account);
+			return listTransactionByQuery(query, cursorString, count);
+
+	}
 	public CollectionResponse<Transaction> GetMiniStatement(
 			Account account,
 			@Nullable @Named("cursor") String cursorString,

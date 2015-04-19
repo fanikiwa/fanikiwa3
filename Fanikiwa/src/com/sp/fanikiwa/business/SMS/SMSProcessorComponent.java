@@ -110,6 +110,10 @@ public class SMSProcessorComponent {
 				new FCommand("Borrow Offers",
 						"Get your Borrow Offers\nSyntax = BO*Pwd\nWhere Pwd = your password"));
 		Commands.put(
+				"FA",
+				new FCommand("Accounts List",
+						"Get your Fanikiwa Account \nSyntax = FA*Pwd\nWhere Pwd = your password"));
+		Commands.put(
 				"C",
 				new FCommand(
 						"Change Password",
@@ -176,6 +180,8 @@ public class SMSProcessorComponent {
 				return ProcessListLendOffersMessage((LendOffersMessage) message);
 			if (message instanceof BorrowOffersMessage)
 				return ProcessListBorrowOffersMessage((BorrowOffersMessage) message);
+			if (message instanceof AccountsListMessage)
+				return ProcessListAccountsListMessage((AccountsListMessage) message);
 			if (message instanceof ChangePinMessage)
 				return ProcessChangePinMessage((ChangePinMessage) message);
 			if (message instanceof WithdrawMessage)
@@ -403,8 +409,8 @@ public class SMSProcessorComponent {
 	private String GetMiniStatement(Long AccId, int count) // for statement
 	{
 		AccountEndpoint aep = new AccountEndpoint();
-		Collection<StatementModel> txns = aep.GetMiniStatement(
-				aep.getAccount(AccId), null, count).getItems();
+		Collection<StatementModel> txns = aep.GetMiniStatement(AccId, null,
+				count).getItems();
 		return ConvertStatementToString(txns);
 	}
 
@@ -412,8 +418,8 @@ public class SMSProcessorComponent {
 																		// statement
 	{
 		AccountEndpoint aep = new AccountEndpoint();
-		Collection<StatementModel> txns = aep.GetStatement(sdate, enddate,
-				aep.getAccount(AccId), null, null).getItems();
+		Collection<StatementModel> txns = aep.GetStatement(AccId, sdate,
+				enddate, null, null).getItems();
 		return ConvertStatementToString(txns);
 	}
 
@@ -720,6 +726,36 @@ public class SMSProcessorComponent {
 	}
 
 	private String ProcessListBorrowOffersMessage(BorrowOffersMessage message) {
+		if (!this.AuthenticateAndAuthorize(message.SenderTelno, message.Pwd))
+			return "Not authenticated";
+
+		RegistrationComponent rc = new RegistrationComponent();
+		OfferEndpoint oep = new OfferEndpoint();
+
+		Member member = rc.SelectMemberByPhone(message.SenderTelno);
+		if (member == null) {
+			throw new NullPointerException(MessageFormat.format(
+					"Sender Telno [{0}] is not registered. ",
+					message.SenderTelno));
+		}
+
+		Collection<Offer> offers = oep.ListBorrowOffers(member.getMemberId(),
+				null, 5).getItems();
+
+		if (offers.size() > 0) {
+			String msg = "";
+			for (Offer c : offers) {
+				msg += c.getId().toString() + " Amt=" + c.getAmount()
+						+ " Term=" + c.getTerm() + " Interest="
+						+ c.getInterest();
+			}
+			return msg;
+		} else
+			return "No offers found";
+
+	}
+	
+	private String ProcessListAccountsListMessage(AccountsListMessage message) {
 		if (!this.AuthenticateAndAuthorize(message.SenderTelno, message.Pwd))
 			return "Not authenticated";
 

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -29,15 +29,16 @@
             </div>
 
 
-			<div class="float-right">
-				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+            <div class="float-right">
+                <section id="login">
+                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
 					style="cursor: pointer;" href="#" onclick="ManageProfile()"
 					title="Manage Profile"></a> <a id="lnklogoff"
 					style="cursor: pointer;" href="#" onclick="LogOff()"
 					title="Log Off">Log off</a> </text>
-				</section>
-			 </div>
+                </section>
+            </div>
+ 
 
 
             <div id="nav">
@@ -125,7 +126,7 @@
                         <div class="floatleft">
                              
                                 <div>
-                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Offers/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
                                 </div>    
                             
                         </div>
@@ -144,29 +145,18 @@
 
                         </li>
                         
-                        <li id="subMenuOfferGroups">
+                        <li id="subMenuLendingGroups">
 
                             <div class="floatleft">
                                  
                                     <div>
-                                        <a id="btnSubmitGetMyMailingGroupsForm"  href="/Views/MailingGroups/MailingGroups.html" style="cursor: pointer;">My Offer Groups</a>
+                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
                                     </div>    
                                 
                             </div>
 
                         </li>
-                         
-                        <li id="subMenuScores">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitOfferScoresForm"  href="/Views/Account/ManageProfile.html" style="cursor: pointer;">My Offer Scores</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
+                
                          
                         <li id="subMenuChangePassword">
 
@@ -271,7 +261,7 @@
 
 			 
 
-			<div id="listMyAccountsResult"> 
+			<div id="listAccountsResult"> 
 			</div>
 
 
@@ -309,146 +299,74 @@
      
 
 	<script type="text/javascript">
+ 
 
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-
-	 // Get loggedin user from the local storage
-	 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-	  
-	 //$("#yeardate").text(new Date());
-	 var date = new Date();
-	 document.getElementById('yeardate').innerHTML = date;
-
-		var offerTable = '' ;
-		var errormsg='';
-		errormsg +=   '<ul id="errorList">' ;
+		var accountsTable = '' ; 
       // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
       var ROOT ='http://localhost:8888/_ah/api';   
-      function init() {
-	     
-      try {
-	         	
-       // Parameters are APIName,APIVersion,CallBack function,API Root
-       gapi.client.load('transactionmodelendpoint', 'v1', null, ROOT);
-                  
-       populateMyAccountsMock();
-       
-       populateMyAccounts();
-       
-	         	} catch(exception) {  
-	                console.log("Error : " + exception);
-	                errormsg += '<li>' + exception   + '</li>';
-	                DisplayException(errormsg); 
-	         }    	
-      }
       
-	      function populateMyAccountsMock()
-          {
-         	 var myAccountsarray = [ {PostDate: "PostDate1", amount: "6700", Debit: "5", Credit: "7", Balance: "5000", ContraReference: "754645114"},
-         	          			 {PostDate: "PostDate2", amount: "8900", Debit: "6", Credit: "6", Balance: "7000", ContraReference: "1234645547"},
-         	          			 {PostDate: "PostDate3", amount: "5400", Debit: "4", Credit: "5", Balance: "6000", ContraReference: "9678457354"}  ];
-         	  
-         	myAccountsTable +=   '<table id="listMyAccountsTable">';
-            myAccountsTable +=   "<thead>";
-            myAccountsTable +=   "<tr>"; 
-            myAccountsTable +=   "<th>PostDate</th>"; 
-            myAccountsTable +=   "<th>Narrative</th>"; 
-            myAccountsTable +=   "<th>Debit</th>"; 
-            myAccountsTable +=   "<th>Credit</th>"; 
-            myAccountsTable +=   "<th>Balance</th>"; 
-            myAccountsTable +=   "<th>ContraReference</th>"; 
-            myAccountsTable +=   "<th></th>"; 
-            myAccountsTable +=   "<th></th>"; 
-            myAccountsTable +=   "</tr>";
-            myAccountsTable +=   "</thead>";
-            myAccountsTable +=   "<tbody>";
-     
-      for (var i=0;i<myAccountsarray.length;i++) {
-    	  myAccountsTable += '<tr>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].PostDate + '</td>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].Narrative + '</td>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].Debit + '</td>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].Credit + '</td>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].Balance + '</td>'; 
-          myAccountsTable += '<td>' + myAccountsarray[i].ContraReference + '</td>'; 
-          myAccountsTable += '<td>' + <a id="btnMiniStatement" href="#" onclick="MiniStatement(' + myAccountsarray[i].id + ')">Mini Statement</a>  + '</td>'; 
-          myAccountsTable += '<td>' + <a id="btnStatement" href="#" onclick="Statement(' + myAccountsarray[i].id + ')">Statement</a>  + '</td>';    
-          myAccountsTable += "</tr>"; 
-      }
-      
-      offerTable +=  "</tbody>" ;
-      offerTable +=  "</table>" ;
-       
-      document.getElementById('listMyAccountsResult').innerHTML = offerTable;
-      
-      }
-       	
-       	function populateMyAccounts()
-          {            
-            	try {
-            
-            		gapi.client.transactionmodelendpoint.listAccount().execute(function(resp) {
-                		if (!resp.code) {
-                			resp.items = resp.items || [];
-                			var result = "";
-                			  
-        var myAccountsTable = '' ;
-        myAccountsTable +=   '<table id="listMyAccountsTable">';
-        myAccountsTable +=   "<thead>";
-        myAccountsTable +=   "<tr>"; 
-        myAccountsTable +=   "<th>PostDate</th>"; 
-        myAccountsTable +=   "<th>Narrative</th>"; 
-        myAccountsTable +=   "<th>Debit</th>"; 
-        myAccountsTable +=   "<th>Credit</th>"; 
-        myAccountsTable +=   "<th>Balance</th>"; 
-        myAccountsTable +=   "<th>ContraReference</th>"; 
-        myAccountsTable +=   "<th></th>"; 
-        myAccountsTable +=   "<th></th>"; 
-        myAccountsTable +=   "</tr>";
-        myAccountsTable +=   "</thead>";
-        myAccountsTable +=   "<tbody>";
+      function LoadAccounts() {
+      	
+    	  var request = gapi.client.accountendpoint.listAccount()
+    	  .then(function(response) {
+            	console.log(response);
+    		  buildTable(response);
+            }, function(reason) {
+              console.log('Error: ' + reason.result.error.message);
+            }); 
+    }
 
-        for (var i=0;i<resp.items.length;i++) {
-            myAccountsTable += '<tr>'; 
-            myAccountsTable += '<td>resp.items[i].PostDate</td>'; 
-            myAccountsTable += '<td>resp.items[i].Narrative</td>'; 
-            myAccountsTable += '<td>resp.items[i].Debit</td>'; 
-            myAccountsTable += '<td>resp.items[i].Credit</td>'; 
-            myAccountsTable += '<td>resp.items[i].Balance</td>'; 
-            myAccountsTable += '<td>resp.items[i].ContraReference</td>'; 
-            myAccountsTable += '<td><a id="btnMiniStatement" href="#" onclick="MiniStatement(' + resp.items[i].id + ')">Mini Statement</a> </td>'; 
-            myAccountsTable += '<td><a id="btnStatement" href="#" onclick="Statement(' + resp.items[i].id + ')">Statement</a> </td>';    
-            myAccountsTable += "</tr>";
-        }
-        myAccountsTable +=  "</tbody>" ;
-        myAccountsTable +=  "</table>" ;
+    function init() {  
+    	gapi.client.load('accountendpoint', 'v1', LoadAccounts, ROOT);
+     }
+   
+  function buildTable(response) {
+	   
+	    accountsTable = '' ; 
+                 
+ 		populateAccounts(response); 
          
-          
-        	document.getElementById('listMyAccountsResult').innerHTML = myAccountsTable;
-     	 
-             	  } 
-             	}); 
-            	} catch(exception) {  
-                 console.log("Error : " + exception);
-                 errormsg += '<li>' + exception   + '</li>';
-                 DisplayException(errormsg);
-           } 
-         }
-       	
-       	function DisplayException(errormsg) {       	   
-       		 errormsg += "</ul>";       		 
- 	    	 $("#error-display-div").html(errormsg); 
- 	         $("#error-display-div").removeClass('displaynone');
- 	         $("#error-display-div").addClass('displayblock');
- 	         $("#error-display-div").show();  
-         }
+       $("#listAccountsResult").html(accountsTable); 
+ }
+  
+  function populateAccounts(resp)   
+  { 
 
-     	  	function ClearException() {
-     	  		$('#errorList').remove();
-     	  		$('#error-display-div').empty();
-     	  	} 
+    if (!resp.code) {
+      resp.items = resp.items || [];  
+  	  
+      accountsTable +=   '<table id="listAccountsTable">';
+      accountsTable +=   "<thead>";
+      accountsTable +=   "<tr>"; 
+      accountsTable +=   "<th>Account ID</th>"; 
+      accountsTable +=   "<th>Account Name</th>"; 
+      accountsTable +=   "<th>Book Balance</th>"; 
+      accountsTable +=   "<th>Cleared Balance</th>"; 
+      accountsTable +=   "<th>limit</th>";  
+      accountsTable +=   "<th></th>"; 
+      accountsTable +=   "<th></th>"; 
+      accountsTable +=   "</tr>";
+      accountsTable +=   "</thead>";
+      accountsTable +=   "<tbody>";
+      
+  for (var i=0;i<resp.result.items.length;i++) {
+	  accountsTable += '<tr>'; 
+	  accountsTable += '<td>' + resp.result.items[i].accountID + '</td>'; 
+	  accountsTable += '<td>' + resp.result.items[i].accountName + '</td>'; 
+	  accountsTable += '<td>' + resp.result.items[i].bookBalance + '</td>'; 
+	  accountsTable += '<td>' + resp.result.items[i].clearedBalance + '</td>';
+	  accountsTable += '<td>' + resp.result.items[i].limit + '</td>'; 
+	  accountsTable += '<td><a href="#" onclick="Statement(' + resp.result.items[i].accountID + ')">Statement</a> </td>';
+	  accountsTable += '<td><a href="#" onclick="MiniStatement(' + resp.result.items[i].accountID + ')">Mini Statement</a> </td>'; 
+	  accountsTable += "</tr>";
+        }
+  
+  accountsTable +=  "</tbody>" ;
+  accountsTable +=  "</table>" ;  
+  
+    } 
+}
+       	  
           	
     	    function LogOff() { 
 	         	localStorage.removeItem("loggedinuser");
@@ -458,16 +376,14 @@
           	function ManageProfile() { 
           		window.location.href = "/Views/Account/EditProfile.html";  
              }
-
- 		    $('#listMyAccountsTable').on('click', 'tr', function (event) { 
- 		    	$(this).toggleClass('selectedrow');
- 		    });
-  
+ 
           	function MiniStatement(id) { 
+          		localStorage.ministatementaccountid = id;
  	            window.location.href = "/Views/Account/MiniStatement.html"; 
              }
           	
           	function Statement(id) { 
+          		localStorage.statementaccountid = id;
  	            window.location.href = "/Views/Account/Statement.html"; 
              }
           	

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -29,16 +29,16 @@
             </div>
 
 
-			<div class="float-right">
-				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+            <div class="float-right">
+                <section id="login">
+                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
 					style="cursor: pointer;" href="#" onclick="ManageProfile()"
 					title="Manage Profile"></a> <a id="lnklogoff"
 					style="cursor: pointer;" href="#" onclick="LogOff()"
 					title="Log Off">Log off</a> </text>
-				</section>
-			</div>
-
+                </section>
+            </div>
+ 
 
 
             <div id="nav">
@@ -126,7 +126,7 @@
                         <div class="floatleft">
                              
                                 <div>
-                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Offers/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
                                 </div>    
                             
                         </div>
@@ -145,29 +145,18 @@
 
                         </li>
                         
-                        <li id="subMenuOfferGroups">
+                        <li id="subMenuLendingGroups">
 
                             <div class="floatleft">
                                  
                                     <div>
-                                        <a id="btnSubmitGetMyMailingGroupsForm"  href="/Views/MailingGroups/MailingGroups.html" style="cursor: pointer;">My Offer Groups</a>
+                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
                                     </div>    
                                 
                             </div>
 
                         </li>
-                         
-                        <li id="subMenuScores">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitOfferScoresForm"  href="/Views/Account/ManageProfile.html" style="cursor: pointer;">My Offer Scores</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
+                
                          
                         <li id="subMenuChangePassword">
 
@@ -267,7 +256,54 @@
             <div id="error-display-div" class="displaynone">
             </div>
 
+            <hgroup class="title">
+				<h2 class="page-title">Contacts</h2>
+		    </hgroup>
+
              
+            <section class="contact">
+            <header>
+                <h3>Phone</h3>
+            </header>
+            <p>
+                <span class="label">Main:</span>
+                <span>+254717769329</span>
+            </p>
+            <p>
+                <span class="label">After Hours:</span>
+                <span>+254717769329</span>
+            </p>
+        </section>
+
+        <section class="contact">
+            <header>
+                <h3>Email</h3>
+            </header>
+            <p>
+                <span class="label">Support:</span>
+                <span>kevinmk30@gmail.com</span>
+            </p>
+            <p>
+                <span class="label">Marketing:</span>
+                <span>kevinmk30@gmail.com</span>
+            </p>
+            <p>
+                <span class="label">General:</span>
+                <span>kevinmk30@gmail.com</span>
+            </p>
+        </section>
+
+        <section class="contact">
+            <header>
+                <h3>Address</h3>
+            </header>
+            <p>
+                Mutall Building 4th floor<br />
+                po box 47200 Kiserian, <br />
+                
+            </p>
+        </section>
+        
 
         </section>
 
@@ -301,15 +337,13 @@
 
 
 	<script type="text/javascript">
-
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-
-		 // Get loggedin user from the local storage
-		 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-              	
+       	
          	function LogOff() { 
+         	localStorage.removeItem("loggedinuser");
+            window.location.href = "/Views/Account/Login.html";  
+         	}
+         	
+         	function LogIn() { 
          	localStorage.removeItem("loggedinuser");
             window.location.href = "/Views/Account/Login.html";  
          	}
@@ -320,9 +354,7 @@
         
     </script>
 
-	<script src="https://apis.google.com/js/client.js?onload=init"></script>
-
-
+	 
 
 
 </body>

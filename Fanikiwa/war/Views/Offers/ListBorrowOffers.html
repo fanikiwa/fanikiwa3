@@ -4,283 +4,246 @@
 
 <head>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Fanikiwa - Peer-to-Peer Lending</title>
-<link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Fanikiwa - Peer-to-Peer Lending</title>
+    <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
 <script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-
+     
 
 </head>
 
 
 <body>
 
-	<header>
-		<div class="content-wrapper">
+    <header>
+        <div class="content-wrapper">
 
-			<div class="float-left">
-				<p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
-					Fanikiwa - Peer - To - Peer Lending</p>
-			</div>
+            <div class="float-left">
+                <p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
+                    Fanikiwa - Peer - To - Peer Lending
+                </p>
+            </div>
 
 
-			<div class="float-right">
-				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+            <div class="float-right">
+                <section id="login">
+                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
 					style="cursor: pointer;" href="#" onclick="ManageProfile()"
 					title="Manage Profile"></a> <a id="lnklogoff"
 					style="cursor: pointer;" href="#" onclick="LogOff()"
 					title="Log Off">Log off</a> </text>
-				</section>
-			</div>
+                </section>
+            </div>
+ 
 
 
+            <div id="nav">
+                <ul id="menu">
 
-			<div id="nav">
-				<ul id="menu">
+                    <li>
 
-					<li>
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitIndexForm" style="cursor: pointer;" href="/Views/Home/Index.html" >Home</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
 
-						<div class="floatleft">
 
-							<div>
-								<a id="btnSubmitIndexForm" style="cursor: pointer;"
-									href="/Views/Home/Index.html">Home</a>
-							</div>
+                    <li>
+
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitListLendOffersForm" style="cursor: pointer;" href="/Views/Offers/ListLendOffers.html" >Get A loan</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;" href="/Views/Offers/ListBorrowOffers.html" >Make An Investment</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListMyOffersForm"  href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My Offers</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+
+                     
+                        
+                        <li id="subMenuMyProfile">
+
+                            <div class="floatleft">
+                               
+                                    <div>
+                                        <a id="btnSubmitEditProfileSubForm"  href="/Views/Account/EditProfile.html" style="cursor: pointer;">My Profile</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+
+                        <li id="subMenuMyAccounts">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyAccountsForm"  href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My Accounts</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                         
+                     <li>
+
+                        <div class="floatleft">
+                             
+                                <div>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                        <li id="subMenuMyLoans">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyLoansForm"  href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My Loans</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        <li id="subMenuLendingGroups">
 
-						</div>
+                            <div class="floatleft">
+                                 
+                                    <div>
+                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
+                                    </div>    
+                                
+                            </div>
 
-					</li>
+                        </li>
+                
+                         
+                        <li id="subMenuChangePassword">
 
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitChangePasswordForm"  href="/Views/Account/_ChangePasswordPartial.html" style="cursor: pointer;">Change Password</a>
+                                    </div>    
+                                
+                            </div>
 
-					<li>
+                        </li>
+                        
+                        <li id="subMenuDeRegister">
 
-						<div class="floatleft">
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitDeRegisterForm"  href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
+                                    </div>    
+                                
+                            </div>
 
-							<div>
-								<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListLendOffers.html">Get A loan</a>
-							</div>
+                        </li>
+                        
+                        
 
-						</div>
+                    
 
-					</li>
+                    <li>
 
-					<li>
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitHelpForm"  href="/Views/Home/Help.html" style="cursor: pointer;">Help</a>
+                                </div>    
+                            
+                        </div>
 
-						<div class="floatleft">
+                    </li>
 
-							<div>
-								<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListBorrowOffers.html">Make An
-									Investment</a>
-							</div>
+                    <li>
 
-						</div>
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactUsForm"  href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact Us</a>
+                                </div>    
+                            
+                        </div>
 
-					</li>
+                    </li>
 
-					<li>
+                    <li>
 
-						<div class="floatleft">
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"  style="cursor: pointer;">Contacts</a>
+                                </div>    
+                            
+                        </div>
 
-							<div>
-								<a id="btnSubmitListMyOffersForm"
-									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My
-									Offers</a>
-							</div>
+                    </li>
 
-						</div>
+                    <li>
 
-					</li>
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitAboutForm"  href="/Views/Home/About.html" style="cursor: pointer;">About</a>
+                                </div>    
+                            
+                        </div>
 
+                    </li>
 
 
 
+                </ul>
+            </div>
 
-					<li id="subMenuMyProfile">
 
-						<div class="floatleft">
+        </div>
 
-							<div>
-								<a id="btnSubmitEditProfileSubForm"
-									href="/Views/Account/EditProfile.html" style="cursor: pointer;">My
-									Profile</a>
-							</div>
 
-						</div>
-
-					</li>
-
-					<li id="subMenuMyAccounts">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyAccountsForm"
-									href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My
-									Accounts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyInvestMentsForm"
-									href="/Views/Offers/ListMyInvestments.html"
-									style="cursor: pointer;">My InvestMents</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuMyLoans">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyLoansForm"
-									href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-									Loans</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuOfferGroups">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitGetMyMailingGroupsForm"
-									href="/Views/MailingGroups/MailingGroups.html"
-									style="cursor: pointer;">My Offer Groups</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuScores">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitOfferScoresForm"
-									href="/Views/Account/ManageProfile.html"
-									style="cursor: pointer;">My Offer Scores</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuChangePassword">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitChangePasswordForm"
-									href="/Views/Account/_ChangePasswordPartial.html"
-									style="cursor: pointer;">Change Password</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuDeRegister">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitDeRegisterForm"
-									href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-									style="cursor: pointer;">Help</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactUsForm"
-									href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-									Us</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"
-									style="cursor: pointer;">Contacts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-									style="cursor: pointer;">About</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-				</ul>
-			</div>
-
-
-		</div>
-
-
-	</header>
-
+    </header>
 
 
 
@@ -299,10 +262,9 @@
 			<div style="float: left; clear: both">
 				<a href="/Views/Offers/CreateLendOffer.html" >I want to Lend Some Money</a>
 			</div>
+ 
 
-
-
-			<div id="listOffersResult"></div>
+			<div id="listOffersResult" style="clear:both"></div>
 
 
 		</section>
@@ -339,126 +301,78 @@
 
 
 	<script type="text/javascript">
-
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-
-	 var offersarray = [ {id: "1", description: "offer1", amount: "6700", term: "5", interest: "7"},
-   	          			 {id: "2", description: "offer2", amount: "8900", term: "6", interest: "6"},
-   	          			 {id: "3", description: "offer3", amount: "5400", term: "4", interest: "5"}  ];
-   	  
-	var offerTable = '' ;
-	var errormsg='';
-	errormsg +=   '<ul id="errorList">' ;
+	 
+	var offerTable = '' ; 
       // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';   
-      function init() {
+      var ROOT ='http://localhost:8888/_ah/api';  
+ 
+        function LoadOffers() {
+        	
+        	  var request = gapi.client.offerendpoint.listOffer()
+        	  .then(function(response) {
+                	console.log(response);
+        		  buildTable(response);
+                }, function(reason) {
+                  console.log('Error: ' + reason.result.error.message);
+                }); 
+        }
 
-         	try {
-         	
-       // Parameters are APIName,APIVersion,CallBack function,API Root
-        gapi.client.load('offerendpoint', 'v1', null, ROOT);
-
-        BuildTable();
-         
-         	} catch(exception) {  
-                console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-         } 
-       }
-      
-      function BuildTable() {
+        function init() {  
+        	gapi.client.load('offerendpoint', 'v1', LoadOffers, ROOT);
+         }
+       
+      function buildTable(response) {
     	   
-     		ClearTable();
-             
-     		BuildTableHeader();
-                    
-     		populateOffersMock();
-             
-     		populateOffers(); 
-             
-           CloseTableBody(); 
+     		ClearTable(); 
+                     
+     		populateOffers(response); 
              
            $("#listOffersResult").html(offerTable); 
      }
-     	
-     	function BuildTableHeader()
-        { 
-     		offerTable +=   '<table id="listOffersTable">';
-            offerTable +=   "<thead>";
-            offerTable +=   "<tr>"; 
-            offerTable +=   "<th>Description</th>"; 
-            offerTable +=   "<th>Amount</th>"; 
-            offerTable +=   "<th>Term</th>";  
-            offerTable +=   "<th>Interest</th>";  
-            offerTable +=   "<th></th>"; 
-            offerTable +=   "<th></th>";
-            offerTable +=   "</tr>";
-            offerTable +=   "</thead>";
-            offerTable +=   "<tbody>";  
-        }
      	 
-   		function CloseTableBody()
-        { 
-   			offerTable +=  "</tbody>" ;
-   			offerTable +=  "</table>" ;       
-        }
-
       	 function ClearTable() {
       		offerTable = '' ; 
     	  }
       	 
-      	function populateOffersMock()
-        {
-      
-    for (var i=0;i<offersarray.length;i++) {
-    	offerTable += '<tr>'; 
-    	offerTable += '<td>' + offersarray[i].description + '</td>'; 
-    	offerTable += '<td>' + offersarray[i].amount + '</td>'; 
-    	offerTable += '<td>' + offersarray[i].term + '</td>';  
-    	offerTable += '<td>' + offersarray[i].interest + '</td>';   
-    	offerTable += '<td><a href="#" onclick="Accept(' + offersarray[i].id + ')">Accept</a> </td>';
-    	offerTable += '<td><a href="#" onclick="PartialAccept(' + offersarray[i].id + ')">Accept Partial</a> </td>';
-    	offerTable += "</tr>";
-    }
-     
-    }
-     	
-     	function populateOffers()
-        {            
-          	try {
-          
-          		gapi.client.offerendpoint.listOffer().execute(function(resp) {
-            		if (!resp.code) {
-            			resp.items = resp.items || [];
-            			var result = "";
-            			   
-    for (var i=0;i<resp.items.length;i++) {
-    	offerTable += '<tr>'; 
-    	offerTable += '<td>resp.items[i].description</td>'; 
-    	offerTable += '<td>resp.items[i].amount</td>'; 
-    	offerTable += '<td>resp.items[i].term</td>'; 
-    	offerTable += '<td>resp.items[i].interest</td>';  
-    	offerTable += '<td><a href="#" onclick="Accept(' + resp.items[i].id + ')">Accept</a> </td>';
-    	offerTable += '<td><a href="#" onclick="PartialAccept(' + resp.items[i].id + ')">Accept Partial</a> </td>'; 
-    	offerTable += "</tr>";
-          }
-        }
-      });
-          	
-          	} catch(exception) {  
-               console.log("Error : " + exception);
-               errormsg += '<li>' + exception   + '</li>';
-               DisplayException(errormsg);
-         } 
+         	
+         	function populateOffers(resp)   
+            { 
+
+              if (!resp.code) {
+                resp.items = resp.items || [];  
+            	  
+                offerTable +=   '<table id="listOffersTable">';
+                offerTable +=   "<thead>";
+                offerTable +=   "<tr>"; 
+                offerTable +=   "<th>Description</th>"; 
+                offerTable +=   "<th>Amount</th>"; 
+                offerTable +=   "<th>Term</th>";  
+                offerTable +=   "<th>Interest</th>";  
+                offerTable +=   "<th></th>"; 
+                offerTable +=   "<th></th>";
+                offerTable +=   "</tr>";
+                offerTable +=   "</thead>";
+                offerTable +=   "<tbody>";
+                
+	        for (var i=0;i<resp.result.items.length;i++) {
+	        	offerTable += '<tr>'; 
+	        	offerTable += '<td>' + resp.result.items[i].description + '</td>'; 
+	        	offerTable += '<td>' + resp.result.items[i].amount + '</td>'; 
+	        	offerTable += '<td>' + resp.result.items[i].term + '</td>'; 
+	        	offerTable += '<td>' + resp.result.items[i].interest + '</td>';  
+	        	offerTable += '<td><a href="#" onclick="Accept(' + resp.result.items[i].id + ')">Accept</a> </td>';
+	        	offerTable += '<td><a href="#" onclick="PartialAccept(' + resp.result.items[i].id + ')">PartialAccept</a> </td>'; 
+		    	offerTable += "</tr>";
+	              }
+	        
+	        offerTable +=  "</tbody>" ;
+   			offerTable +=  "</table>" ;  
+   			
+              } 
     }
      	 
     	function Accept(id) {
-
-     		try {
-     			 
+ 
      			gapi.client.offerendpoint.acceptOffer(id).execute(function(resp) {
  	         		if (!resp.code) {  
  	         			Window.Locaton.href="/Views/Offers/ListMyOffers.html";
@@ -470,22 +384,12 @@
  	      			DisplayException(errormsg);
  	      		}
  	         	});      
- 	         		        	
-	         	} catch(exception) {  
-	              console.log("Error : " + exception);
-	              errormsg += '<li>' + exception   + '</li>';
-	              ClearException();
-      		  DisplayException(errormsg);
-	        }
-	         	ClearTable();
-	         	BuildTable();
+ 	         	 
          }
      	
  	 
      	function PartialAccept(id) {
- 
-     		try {
-     			 
+  
      			gapi.client.offerendpoint.acceptOffer(id).execute(function(resp) {
  	         		if (!resp.code) {  
  	         			Window.Locaton.href="/Views/Offers/ListMyOffers.html";
@@ -498,14 +402,7 @@
  	      		}
  	         	});      
  	         		        	
-	         	} catch(exception) {  
-	              console.log("Error : " + exception);
-	              errormsg += '<li>' + exception   + '</li>';
-	              ClearException();
-      		  DisplayException(errormsg);
-	        }
-	         	ClearTable();
-	         	BuildTable();
+	         	 
 	     }
 
          	function LogOff() { 
@@ -516,23 +413,7 @@
          	function ManageProfile() { 
          	window.location.href = "/Views/Account/EditProfile.html";  
             }
-             
-         	function DisplayException(errormsg) {
-         	   
-         		 errormsg += "</ul>";
-         		 
-       	    	 $("#error-display-div").html(errormsg); 
-       	         $("#error-display-div").removeClass('displaynone');
-       	         $("#error-display-div").addClass('displayblock');
-       	         $("#error-display-div").show();  
-         	   }
-
-       	  	function ClearException() {
-       	  		$('#errorList').remove();
-       	  		$('#error-display-div').empty();
-       	  	}
-       	  	
-       	  	
+     
     </script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

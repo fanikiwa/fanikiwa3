@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -296,36 +296,6 @@
 
 
     </footer>
-
-
-
-
-
-	<script type="text/javascript">
-
-	        if (localStorage.getItem("loggedinuser") === null) {
-		     window.location.href = "/Views/Account/Login.html";
-			 }
-			 
-			 // Get loggedin user from the local storage
-			 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-
-	            function LogOff() { 
-		         	localStorage.removeItem("loggedinuser");
-		            window.location.href = "/Views/Account/Login.html";  
-	         	}
-	         	
-	         	function ManageProfile() { 
-	         		window.location.href = "/Views/Account/EditProfile.html";  
-	            }
-	         	
-             
-    </script>
-
-	<script src="https://apis.google.com/js/client.js?onload=init"></script>
-
-
-
 
 
      

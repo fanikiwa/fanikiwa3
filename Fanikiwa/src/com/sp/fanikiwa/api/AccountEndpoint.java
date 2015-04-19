@@ -9,6 +9,7 @@ import com.sp.fanikiwa.entity.BatchSimulateStatus;
 import com.sp.fanikiwa.entity.DoubleEntry;
 import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.SimulatePostStatus;
 import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
@@ -55,6 +56,12 @@ public class AccountEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Account> query = ofy().load().type(Account.class);
+		return listAccountByQuery(query,cursorString,count);
+	}
+	private CollectionResponse<Account> listAccountByQuery(
+			Query<Account> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -211,7 +218,18 @@ public class AccountEndpoint {
 		acc.setPassFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
-
+	@ApiMethod(name = "NextIntAccrualAccountsByDate")
+	public CollectionResponse<Account> NextIntAccrualAccountsByDate(@Named("date") Date date) {
+		Query<Account> query = ofy().load().type(Account.class)
+				.filter("nextIntAccrualDate", date);
+		return listAccountByQuery(query,null, null);
+	}
+	@ApiMethod(name = "NextIntAppAccountsByDate")
+	public CollectionResponse<Account> NextIntAppAccountsByDate(@Named("date") Date date) {
+		Query<Account> query = ofy().load().type(Account.class)
+				.filter("nextIntAppDate", date);
+		return listAccountByQuery(query,null, null);
+	}
 	@ApiMethod(name = "UnBlockFunds")
 	public void UnBlockFunds(Account account, @Named("amount") double amount)
 			throws NotFoundException {
@@ -271,14 +289,18 @@ public class AccountEndpoint {
 			}
 		});
 	}
-
-	public CollectionResponse<StatementModel> GetMiniStatement(Account account,
+	
+	@ApiMethod(name = "miniStatement")
+	public CollectionResponse<StatementModel> GetMiniStatement(@Named("accountID") Long accountID,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
+		
 		TransactionEndpoint tep = new TransactionEndpoint();
-		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(account,
-				cursorString, count);
 		List<StatementModel> records = new ArrayList<StatementModel>();
+		
+		Account account = findRecord(accountID);
+		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(account,
+				cursorString, count); 
 
 		// go through the transactins and compute running balance
 
@@ -310,16 +332,20 @@ public class AccountEndpoint {
 		return CollectionResponse.<StatementModel> builder().setItems(records)
 				.setNextPageToken(txnCB.getNextPageToken()).build();
 	}
-
-	public CollectionResponse<StatementModel> GetStatement(
-			@Named("sdate") Date sdate, @Named("edate") Date edate,
-			Account account, @Nullable @Named("cursor") String cursorString,
+	@ApiMethod(name = "statement")
+	public CollectionResponse<StatementModel> GetStatement(@Named("accountID") Long accountID,
+			@Named("sdate") Date sdate, 
+			@Named("edate") Date edate,
+		    @Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
+		
 		TransactionEndpoint tep = new TransactionEndpoint();
+		List<StatementModel> records = new ArrayList<StatementModel>();
+		
+		Account account = findRecord(accountID);
 		CollectionResponse<Transaction> txnCB = tep.GetStatement(sdate, edate,
 				account, cursorString, count);
-
-		List<StatementModel> records = new ArrayList<StatementModel>();
+ 
 		StatementModel first = new StatementModel();
 		first.setPostDate(new Date());
 		first.setTransactionID(-1L);

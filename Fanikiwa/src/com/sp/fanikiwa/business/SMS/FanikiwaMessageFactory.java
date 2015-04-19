@@ -121,6 +121,12 @@ public class FanikiwaMessageFactory {
 							MessageDate, Body, msgParams);
 
 				}
+				// Message starts with = AL ; AL<Password>
+				else if ("FA".equals(msgParams.get(0).toUpperCase())) {
+					fmessage = ParseAccountsListMessage(OriginatingAddress,
+							MessageDate, Body, msgParams);
+
+				}
 				// Message starts with = C|CP ;
 				// CP<OldPassword><NewPassword><ConfirmPassword>
 				else if ("C".equals(msgParams.get(0).toUpperCase())
@@ -657,6 +663,32 @@ public class FanikiwaMessageFactory {
 		bo.Pwd = pwd;
 
 		return bo;
+	}
+	
+	private static AccountsListMessage ParseAccountsListMessage(
+			String OriginatingAddress, Date MessageDate, String Body,
+			List<String> msgParams) {
+		AccountsListMessage acc = new AccountsListMessage();
+
+		// populate generic from abstract
+		acc.SenderTelno = OriginatingAddress;
+		acc.MessageDate = MessageDate;
+		acc.FanikiwaMessageType = FanikiwaMessageType.AccountsListMessage;
+		acc.Body = Body;
+		acc.Status = "NEW";
+
+		// parse pwd: Not optional
+		if (msgParams.size() < 2) {
+			throw new NullPointerException("Password required");
+		}
+		String pwd = msgParams.get(1);
+		if (StringExtension.isNullOrEmpty(pwd)) {
+			throw new NullPointerException(
+					"Password cannot be null in accounts list message. ");
+		}
+		acc.Pwd = pwd;
+
+		return acc;
 	}
 
 	private static ChangePinMessage ParseChangePinMessage(

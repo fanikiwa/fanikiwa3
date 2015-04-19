@@ -1441,14 +1441,7 @@ font-size: 20px;
 font: bold;
 font-weight: 900;
 }
-
-#progress
-{
-}
-#progress > p
-{
-    
-}
+ 
 .searchbutton
 {
 font-weight: bold;
@@ -1467,16 +1460,8 @@ padding-right: 1px;
 padding-bottom: 1px;
 padding-top: 1px;
 }
-.searchbutton:hover 
-{
-}
-#DashBoardAmountrange
-{
-background-color:cornflowerblue;
-border-radius:5px;
-    
-
-}
+ 
+ 
 #error-display-div
 { 
 color:red; 
@@ -1525,34 +1510,9 @@ p input[type="submit"]
 float:left;
 clear:both;
 }
-#tree a .btn 
+ 
+.selectedrow 
 {
-display: block;
-position: relative; 
-background-color: cornflowerblue;
-color:black;
-border: 1px solid black;
-border-radius: 1px; /* give a curvy edge */
-border-color: cornflowerblue;
-cursor: pointer;
-font-size: 15px;
-font-weight: 600;
-padding: 1px 1px 1px 1px;
-margin: 1px 1px 1px 1px; 
+background-color:LawnGreen;
 }
-
-#tree a:hover .btn, #tree a:link .btn, #tree a:visited .btn, #tree a:active .btn
-{ 
-background-color: none;
-color:white;
-border: 1px solid black;
-border-radius: 5px; /* give a curvy edge */
-cursor: pointer;
-font-size: 15px;
-font-weight: 600;
-padding: 1px 1px 1px 1px;
-margin: 1px 1px 1px 1px; 
-}
-
-
 

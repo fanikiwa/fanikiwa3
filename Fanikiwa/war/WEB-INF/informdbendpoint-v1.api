@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "informdbendpoint.insertInformdb" : {
+      "path" : "informdb",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "informdbendpoint.getInformdb" : {
       "path" : "informdb/{id}",
       "httpMethod" : "GET",
@@ -43,22 +59,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "informdbendpoint.insertInformdb" : {
-      "path" : "informdb",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -178,15 +178,15 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
-        "response" : {
-          "$ref" : "Informdb"
-        }
-      },
       "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
         "request" : {
           "$ref" : "Informdb"
         },
+        "response" : {
+          "$ref" : "Informdb"
+        }
+      },
+      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
         "response" : {
           "$ref" : "Informdb"
         }

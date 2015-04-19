@@ -24,7 +24,8 @@ public enum FanikiwaMessageType
     HelpMessage ( 15),
     ErrorMessage ( 16),
     MiniStatementEnquiryMessage ( 17),
-    MailingGroupMessage ( 18);
+    MailingGroupMessage ( 18), 
+    AccountsListMessage( 19);
     
     private int value;
     private FanikiwaMessageType(int value)

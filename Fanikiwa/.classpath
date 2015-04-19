@@ -8,7 +8,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Tools/objectify-5.1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Tools/objectify-5.1.5.jar" sourcepath="C:/Users/Administrator/.m2/repository/com/googlecode/objectify/objectify/5.1.5/objectify-5.1.5-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Tools/commons-codec-1.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Tools/twilio-java-sdk-3.3.10-jar-with-dependencies.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Tools/junit-4.10.jar"/>

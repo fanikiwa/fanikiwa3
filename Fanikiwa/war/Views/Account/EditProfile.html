@@ -1,286 +1,249 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Fanikiwa - Peer-to-Peer Lending</title>
-<link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Fanikiwa - Peer-to-Peer Lending</title>
+    <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
 <script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-
+     
 
 </head>
 
 
 <body>
 
-	<header>
-		<div class="content-wrapper">
+    <header>
+        <div class="content-wrapper">
 
-			<div class="float-left">
-				<p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
-					Fanikiwa - Peer - To - Peer Lending</p>
-			</div>
+            <div class="float-left">
+                <p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
+                    Fanikiwa - Peer - To - Peer Lending
+                </p>
+            </div>
 
+
+            <div class="float-right">
+                <section id="login">
+                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+					style="cursor: pointer;" href="#" onclick="ManageProfile()"
+					title="Manage Profile"></a> <a id="lnklogoff"
+					style="cursor: pointer;" href="#" onclick="LogOff()"
+					title="Log Off">Log off</a> </text>
+                </section>
+            </div>
+ 
 
-			<div class="float-right">
-				<section id="login">
-					<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
-						style="cursor: pointer;" href="#" onclick="ManageProfile()"
-						title="Manage Profile"></a> <a id="lnklogoff"
-						style="cursor: pointer;" href="#" onclick="LogOff()"
-						title="Log Off">Log off</a> </text>
-				</section>
-			</div>
+
+            <div id="nav">
+                <ul id="menu">
 
-
-
-			<div id="nav">
-				<ul id="menu">
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitIndexForm" style="cursor: pointer;"
-									href="/Views/Home/Index.html">Home</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListLendOffers.html">Get A loan</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListBorrowOffers.html">Make An
-									Investment</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListMyOffersForm"
-									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My
-									Offers</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-
-
-					<li id="subMenuMyProfile">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitEditProfileSubForm"
-									href="/Views/Account/EditProfile.html" style="cursor: pointer;">My
-									Profile</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuMyAccounts">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyAccountsForm"
-									href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My
-									Accounts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyInvestMentsForm"
-									href="/Views/Offers/ListMyInvestments.html"
-									style="cursor: pointer;">My InvestMents</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuMyLoans">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyLoansForm"
-									href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-									Loans</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuOfferGroups">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitGetMyMailingGroupsForm"
-									href="/Views/MailingGroups/MailingGroups.html"
-									style="cursor: pointer;">My Offer Groups</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuScores">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitOfferScoresForm"
-									href="/Views/Account/ManageProfile.html"
-									style="cursor: pointer;">My Offer Scores</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuChangePassword">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitChangePasswordForm"
-									href="/Views/Account/_ChangePasswordPartial.html"
-									style="cursor: pointer;">Change Password</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuDeRegister">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitDeRegisterForm"
-									href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-									style="cursor: pointer;">Help</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactUsForm"
-									href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-									Us</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"
-									style="cursor: pointer;">Contacts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-									style="cursor: pointer;">About</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-				</ul>
-			</div>
-
-
-		</div>
-
-
-	</header>
-
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitIndexForm" style="cursor: pointer;" href="/Views/Home/Index.html" >Home</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+                    <li>
+
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitListLendOffersForm" style="cursor: pointer;" href="/Views/Offers/ListLendOffers.html" >Get A loan</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;" href="/Views/Offers/ListBorrowOffers.html" >Make An Investment</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitListMyOffersForm"  href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My Offers</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+
+                     
+                        
+                        <li id="subMenuMyProfile">
+
+                            <div class="floatleft">
+                               
+                                    <div>
+                                        <a id="btnSubmitEditProfileSubForm"  href="/Views/Account/EditProfile.html" style="cursor: pointer;">My Profile</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+
+                        <li id="subMenuMyAccounts">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyAccountsForm"  href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My Accounts</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                         
+                     <li>
+
+                        <div class="floatleft">
+                             
+                                <div>
+                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                        <li id="subMenuMyLoans">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitMyLoansForm"  href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My Loans</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        <li id="subMenuLendingGroups">
+
+                            <div class="floatleft">
+                                 
+                                    <div>
+                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                
+                         
+                        <li id="subMenuChangePassword">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitChangePasswordForm"  href="/Views/Account/_ChangePasswordPartial.html" style="cursor: pointer;">Change Password</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        <li id="subMenuDeRegister">
+
+                            <div class="floatleft">
+                                
+                                    <div>
+                                        <a id="btnSubmitDeRegisterForm"  href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
+                                    </div>    
+                                
+                            </div>
+
+                        </li>
+                        
+                        
+
+                    
+
+                    <li>
+
+                        <div class="floatleft">
+                           
+                                <div>
+                                    <a id="btnSubmitHelpForm"  href="/Views/Home/Help.html" style="cursor: pointer;">Help</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactUsForm"  href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact Us</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"  style="cursor: pointer;">Contacts</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+                    <li>
+
+                        <div class="floatleft">
+                            
+                                <div>
+                                    <a id="btnSubmitAboutForm"  href="/Views/Home/About.html" style="cursor: pointer;">About</a>
+                                </div>    
+                            
+                        </div>
+
+                    </li>
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+
+
+    </header>
 
 
 
@@ -375,7 +338,7 @@
 
 					<div style="float: left; clear: both">
 					<input type="submit" value="Update" id="btnUpdate"
-						style="float: left; clear: both" /> <input type="submit"
+						style="float: left; clear: both"  onclick="UpdateProfile()"/> <input type="submit"
 						value="Clear" id="btnClear" onclick="Clear()" />
 				</div>
 
@@ -418,66 +381,54 @@
 
 
 
+	<script type="text/javascript">
+ 
+	// var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
+    var ROOT ='http://localhost:8888/_ah/api';   
+    
+      function InitializeControls() {
+    	  
+    	  var email = localStorage.getItem('loggedinuser');
+    	  if(email == 'undefined')
+    		  return;
+    	  
+    	  var request =  gapi.client.memberendpoint.getMemberByEmail(email)
+    	  .then(function(response) {
+            	console.log(response);
+            	Populate(response);
+            }, function(reason) {
+              console.log('Error: ' + reason.result.error.message);
+            }); 
+    }
+
+    function init() {  
+    	gapi.client.load('memberendpoint', 'v1', InitializeControls, ROOT);
+     }
+    
+    function Populate(member) {  
+    	
+     document.getElementById('txtEmail').value = member.email;
+   	 document.getElementById('txtSurname').value = member.surname;
+   	 document.getElementById('txtOtherNames').value = member.otherNames;
+   	 document.getElementById('txtTelephone').value = member.telephone;
+   	 document.getElementById('txtNationalID').value = member.nationalID;
+   	 document.getElementById('dtpDateOfBirth').value = member.dateOfBirth; 
+   	 document.getElementById('txtRefferedBy').value = member.refferedBy;
+   	 document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;
+     document.getElementById('cboGender').value = member.gender;
+   	 document.getElementById('cboInformBy').value = member.informBy;
+   	
+     }
+    
+    </script>
 
 	<script type="text/javascript">
-
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-	 
-		 // Get loggedin user from the local storage
+  
 		 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
 
-		 	var errormsg='';
-		 	errormsg +=   '<ul id="errorList">' ;
-		       // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-		       var ROOT ='http://localhost:8888/_ah/api';   
-		       function init() {
-		        
-		        	try {
-		        	  
-		    // Parameters are APIName,APIVersion,CallBack function,API Root
-		    gapi.client.load('memberendpoint', 'v1', null, ROOT);
-	         
-		    // wire the submit button
-		    document.getElementById('btnUpdate').onclick = function() {
-		    UpdateProfile();
-            }
-            
-            InitializeControls();
-            
-	        	} catch(exception) {  
-	                console.log("Error : " + exception);
-	                errormsg += '<li>' + exception   + '</li>';
-	                DisplayException(errormsg); 
-	         }
-          }
-         
-         // function that will execute the getMemberByEmail call
-         function  getMemberByEmail(email)
-         {
-     
-        	try {
-			     // make the api call
-			     gapi.client.memberendpoint.getMemberByEmail(email).execute(function(resp) {
-			     if (!resp.code) {       			 
-	       		    return resp;       		
-	       		}       		  
-	       		else {
-	       			console.log(resp.code + " : " + resp.message); 
-	    			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-	    			DisplayException(errormsg);
-	       		}
-		       	});
-	       	
-	       	} catch(exception) { 
-	       		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-	      }
-		}	
-		
-        // function that will execute the UpdateProfile call
+	 	var errormsg='';
+	 	errormsg +=   '<ul id="errorList">' ;    
+		           
         function UpdateProfile() {
 
            	try {
@@ -565,40 +516,7 @@
                 DisplayException(errormsg); 
 	      }
         }
-        
-        // function that will execute the InitializeControls call
-        function InitializeControls() {
-
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free=true;
-            
-        	// retrieve email from local storage
-        	var email = localStorage.getItem('loggedinuser')  
-        	// make the api call
-            var member = getMemberByEmail({'email': email});
-        
-             // populate controls
-             document.getElementById('txtEmail').value = member.email;
-        	 document.getElementById('txtSurname').value = member.surname;
-        	 document.getElementById('txtOtherNames').value = member.otherNames;
-        	 document.getElementById('txtTelephone').value = member.telephone;
-        	 document.getElementById('txtNationalID').value = member.nationalID;
-        	 document.getElementById('dtpDateOfBirth').value = member.dateOfBirth; 
-        	 document.getElementById('txtRefferedBy').value = member.refferedBy;
-        	 document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;
-             document.getElementById('cboGender').value = member.gender;
-        	 document.getElementById('cboInformBy').value = member.informBy;
-        	
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-	      }
-        }
+         
         
         function Clear(){
  	       $("#txtEmail").val("");
