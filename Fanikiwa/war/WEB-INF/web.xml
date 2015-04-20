@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<display-name>Fanikiwa</display-name>
 
@@ -18,6 +22,11 @@
 	</servlet>
 
 	<servlet-mapping>
+		<servlet-name>MpesaIPNServlet</servlet-name>
+		<url-pattern>/Mpesa</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
 		<servlet-name>APITestServlet</servlet-name>
 		<url-pattern>/APITestServlet</url-pattern>
 	</servlet-mapping>
@@ -27,10 +36,6 @@
 		<servlet-class>com.sp.fanikiwa.APITestServlet</servlet-class>
 	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>MpesaIPNServlet</servlet-name>
-		<url-pattern>/MpesaIPNServlet</url-pattern>
-	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>Fanikiwa</servlet-name>

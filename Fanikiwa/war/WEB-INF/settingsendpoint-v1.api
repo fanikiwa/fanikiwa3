@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "settingsendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -43,23 +43,19 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "settingsendpoint.listSettings" : {
-      "path" : "settings",
+    "settingsendpoint.getSettingsByKey" : {
+      "path" : "settings/{Key}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.listSettings",
+      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey",
       "request" : {
         "parameters" : {
-          "cursor" : {
+          "Key" : {
             "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
+            "required" : true
           }
         },
         "body" : "empty"
@@ -89,19 +85,23 @@
         "body" : "empty"
       }
     },
-    "settingsendpoint.getSettingsByKey" : {
-      "path" : "settings/{Key}",
+    "settingsendpoint.listSettings" : {
+      "path" : "settings",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey",
+      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.listSettings",
       "request" : {
         "parameters" : {
-          "Key" : {
+          "cursor" : {
             "type" : "string",
-            "required" : true
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -173,16 +173,16 @@
           "$ref" : "Settings"
         }
       },
-      "com.sp.fanikiwa.api.SettingsEndpoint.listSettings" : {
+      "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey" : {
         "response" : {
-          "$ref" : "CollectionResponse_Settings"
+          "$ref" : "Settings"
         }
       },
       "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings" : {
       },
-      "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey" : {
+      "com.sp.fanikiwa.api.SettingsEndpoint.listSettings" : {
         "response" : {
-          "$ref" : "Settings"
+          "$ref" : "CollectionResponse_Settings"
         }
       },
       "com.sp.fanikiwa.api.SettingsEndpoint.insertSettings" : {

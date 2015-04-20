@@ -25,8 +25,9 @@ import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint;
 import com.sp.fanikiwa.api.STOEndpoint;
 import com.sp.fanikiwa.api.TransactionTypeEndpoint;
-import com.sp.fanikiwa.business.Jobs.JobAccrueInterest;
-import com.sp.fanikiwa.business.Jobs.JobApplyInterest;
+import com.sp.fanikiwa.business.Jobs.JobAccrueAccountInterest;
+import com.sp.fanikiwa.business.Jobs.JobAccrueLoanInterest;
+import com.sp.fanikiwa.business.Jobs.JobApplyLoanInterest;
 import com.sp.fanikiwa.business.Jobs.JobClearValueDatedItems;
 import com.sp.fanikiwa.business.Jobs.JobProcessSTO;
 import com.sp.fanikiwa.business.Jobs.IJobItem;
@@ -43,8 +44,9 @@ public class DiaryComponent {
 	static{
 		DiaryComponent.register("STO", new JobProcessSTO());
 		DiaryComponent.register("VALUEDATED", new  JobClearValueDatedItems());
-		DiaryComponent.register("INTACCR", new JobAccrueInterest());
-		DiaryComponent.register("INTAPP", new  JobApplyInterest());
+//		DiaryComponent.register("INTACCR", new JobAccrueAccountInterest()); //for future
+		DiaryComponent.register("INTAPP", new  JobAccrueLoanInterest());
+		DiaryComponent.register("INTAPP", new  JobApplyLoanInterest());
 	}
 	
 	boolean EnableLog = true;

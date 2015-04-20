@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -287,7 +287,112 @@
     </footer>
 
 
+
+
+
+	<script type="text/javascript">
+	  
+      function init() {
+      
+        // Parameters are APIName,APIVersion,CallBack function,API Root
+        gapi.client.load('userprofileendpoint', 'v1', null, ROOT);
+        		
+        document.getElementById('btnChangePassword').onclick = function() {
+          ChangePassword();
+          }
+        
+        LoadEmail();
+        
+        }
      
+      function LoadEmail() {
+
+      	try {
+			
+        // Get loggedin user from the local storage
+   		var _Email = localStorage.getItem('loggedinuser');
+   	    $('#txtEmail').text(localStorage.getItem('loggedinuser'));
+      	 
+      	} catch(exception) { 
+              localStorage.errormessage = exception;
+              console.log("Error : " + exception);
+              window.location.href = "/Views/Shared/Error.html"; 
+         }
+     }
+      
+        // Login function that will execute the Login call
+        function ChangePassword() {
+
+        	try {
+			
+        	// Validate the entries
+        	var _Email = document.getElementById('txtEmail').value;
+        	var _Password = document.getElementById('txtPassword').value;  
+        	
+        	if(_Email.length == 0)
+          	 {        		 
+          		 alert("Email cannot be null");
+          		 return;
+          	 }
+          	 if(_Password.length == 0)
+          	 {        		 
+          		 alert("Password cannot be null");
+          		 return;
+          	 } 
+          	 
+        	// Build the Request Object
+        	var requestData = {};
+        	requestData.userId = _Email;
+        	requestData.pwd = _Password;
+ 
+        	gapi.client.userprofileendpoint.login(requestData).execute(function(resp) {
+        		if (!resp.code) {
+        			console.log(resp.userId );
+			 if (resp.userId == 'undefined') {
+				 document.getElementById('txtEmail').value = '';
+				 document.getElementById('txtPassword').value = ''; 
+				 alert("Authentication failed check your Email and Password...");
+		    	 return;
+			 }
+        			 
+        		// Save resp (userprofile globally)
+        		// Store it in the local storage
+                localStorage.loggedinuser = resp.userId;
+ 
+        		 window.location.href = "/Views/Offers/ListMyOffers.html";
+        		
+        		} 
+        		else { 
+        		localStorage.clear();
+        		console.log(resp.code + " : " + resp.message);
+        		alert("Error : " + resp.code + ":" + resp.message);
+        		}         		
+        	}); 
+        	
+        	} catch(exception) { 
+                localStorage.errormessage = exception;
+                console.log("Error : " + exception);
+                window.location.href = "/Views/Shared/Error.html"; 
+           }
+       }
+
+        function LogOff() { 
+         	localStorage.removeItem("loggedinuser");
+            window.location.href = "/Views/Account/Login.html";  
+     	}
+     	
+     	function ManageProfile() { 
+     		window.location.href = "/Views/Account/EditProfile.html";  
+        }
+     	
+    </script>
+
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
+
+
+
+
+
 
 </body>
 

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -368,66 +368,37 @@
 
 
 	<script type="text/javascript">
-      
-		 // Get loggedin user from the local storage
-		 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
 
-		 	var errormsg='';
-		 	errormsg +=   '<ul id="errorList">' ;
-		       // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-		       var ROOT ='http://localhost:8888/_ah/api';   
-		       function init() {
-		        
-		        	try {
-		        	  
+	if (localStorage.getItem("loggedinuser") === null) {
+		window.location.href = "/Views/Account/Login.html";
+	}
+	   
+	document.getElementById('btnCreate').onclick = function() {
+		saveOffer();
+ 	  }
+	
+	 	var errormsg='';
+	 	errormsg +=   '<ul id="errorList">' ;
+		     
+		   function init() {
+		         
        	  // Parameters are APIName,APIVersion,CallBack function,API Root
-	       gapi.client.load('offerendpoint', 'v1', null, ROOT);
-	       gapi.client.load('memberendpoint', 'v1', null, ROOT);
-          
-          // wire the submit button
-	       document.getElementById('btnCreate').onclick = function() {
-		   MakeOffer();
-        	  }
-	       
-        	} catch(exception) {  
-                console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
+	       gapi.client.load('offerendpoint', 'v1',  function() { enableButton(); }, ROOT); 
          }
-   }
-        
-     // function that will execute the getMemberByEmail call
-     function  getMemberByEmail(email)
-     {     
-       	try {
-     // make the api call
-     gapi.client.memberendpoint.getMemberByEmail(email).execute(function(resp) {
-       		if (!resp.code) {       			 
-       		return resp;       		
-       		}       		  
-       		else {
-       			console.log(resp.code + " : " + resp.message); 
-    			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-    			DisplayException(errormsg);
-       		}
-       	});       	
-       	} catch(exception) { 
-       		console.log("Error : " + exception);
-            errormsg += '<li>' + exception   + '</li>';
-            DisplayException(errormsg); 
-      }
-     }
-        // function that will execute the MakeOffer call
-        function MakeOffer() {
 
-           	try {
-           	
+       function enableButton() {        
+     	  $("input[type=submit]").removeAttr("disabled"); 
+       }
+ 
+      
+        function saveOffer() {
+ 
             errormsg='';
             ClearException(); 
             errormsg +=   '<ul id="errorList">' ;
             var error_free=true;
             
-        	// retrieve the entries
+        	// Validate the entries
         	var _Description = document.getElementById('txtDescription').value;
         	var _Amount = document.getElementById('txtAmount').value;
         	var _Interest = document.getElementById('txtInterest').value;
@@ -470,75 +441,67 @@
 	        ClearException(); 
          }
       	 
-        	// retrieve email from local storage
-        	var email = localStorage.getItem('loggedinuser')  
-        	 
+    	// retrieve email from local storage
+    	var email = localStorage.getItem('loggedinuser'); 
+    	 
         	    
-        	// Build the Request Object
-        	var OfferDTO = {};
-        	OfferDTO.description = _Description;
-        	OfferDTO.amount = _Amount;
-        	OfferDTO.interest = _Interest;
-        	OfferDTO.term = _Term;
-        	OfferDTO.publicOffer = _PublicOffer;
-        	OfferDTO.offerType = _OfferType;
-        	OfferDTO.partialPay = _PartialPay;
-        	OfferDTO.status = "Open";
-        	OfferDTO.email = email;  
-        	OfferDTO.offerees = _offerees;  	 
-        	 
-        	gapi.client.offerendpoint.saveOffer(OfferDTO).execute(function(resp) {
-        		if (!resp.code) {
-        			 
-        		window.location.href = "/Views/Shared/Successful.html";
-        		
-        		} 
-        		else {
-        			console.log(resp.code + " : " + resp.message); 
-        			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-        			DisplayException(errormsg);
-        		}    
-        	});        	
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-        }
-     }        	
-        
+    	// Build the Request Object
+    	var OfferDTO = {};
+    	OfferDTO.description = _Description;
+    	OfferDTO.amount = _Amount;
+    	OfferDTO.interest = _Interest;
+    	OfferDTO.term = _Term;
+    	OfferDTO.publicOffer = _PublicOffer;
+    	OfferDTO.offerType = _OfferType;
+    	OfferDTO.partialPay = _PartialPay;
+    	OfferDTO.status = "Open";
+    	OfferDTO.email = email;  
+    	OfferDTO.offerees = _offerees;        	 
+        	  
+		saveOfferNow(OfferDTO);  
+    }
+                
+    function saveOfferNow(OfferDTO) {
+      	
+    	  var request = gapi.client.offerendpoint.saveOffer(OfferDTO)
+    	  .then(function(response) {
+            	console.log(response);
+            	var successmessage = "Offer Id: " + response.result.id;
+               localStorage.successmessage = successmessage; 
+               window.location.href = "/Views/Shared/Successful.html";
+            }, function(reason) {
+              console.log('Error: ' + reason.result.error.message);
+              errormsg += '<li>' + reason + '</li>';
+              DisplayException(errormsg);  
+	    	 return;
+            }); 
+       }
+                     	
+         
         function Clear(){
  	       $("#txtDescription").val("");
  	       $("#txtAmount").val("");
  	       $("#txtInterest").val("");
  	       $("#txtTerm").val("");
- 	       $("#cboOfferType").val("L");
+	       $("#cboOfferType").val("L");
 	       $("#chkPublicOffer").attr('checked', false);
 	       $("#chkPartialPay").attr('checked', false); 
         }
-        
-         	function LogOff() { 
-         	localStorage.removeItem("loggedinuser");
-            window.location.href = "/Views/Account/Login.html";  
-         	}
-         	
-         	function ManageProfile() { 
-         	window.location.href = "/Views/Account/EditProfile.html";  
-            }
-         
-	        function DisplayException(errormsg) {
-	       	 
-		      	errormsg += "</ul>";
-		      		 
-		       	 $("#error-display-div").html(errormsg); 
-		         $("#error-display-div").removeClass('displaynone');
-		         $("#error-display-div").addClass('displayblock');
-		         $("#error-display-div").show();  
-	      	  }
+          
+        function DisplayException(errormsg) {
+       	 
+	      	errormsg += "</ul>";
+	      		 
+	       	 $("#error-display-div").html(errormsg); 
+	         $("#error-display-div").removeClass('displaynone');
+	         $("#error-display-div").addClass('displayblock');
+	         $("#error-display-div").show();  
+      	  }
 
-	   	   	function ClearException() {
-	   	   		$('#errorList').remove();
-	   	   		$('#error-display-div').empty();
-	   	   	}
+	   	function ClearException() {
+	   		$('#errorList').remove();
+	   		$('#error-display-div').empty();
+	   	}
        	   	
     </script>
 

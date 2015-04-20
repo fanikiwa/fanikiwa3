@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -301,15 +301,19 @@
 
 
 	<script type="text/javascript">
+	
+	if (localStorage.getItem("loggedinuser") === null) {
+		window.location.href = "/Views/Account/Login.html";
+	}
 	 
 	var offerTable = '' ; 
-      // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';  
- 
+     
         function LoadOffers() {
         	
-        	  var request = gapi.client.offerendpoint.listOffer()
-        	  .then(function(response) {
+        	  var email = localStorage.getItem('loggedinuser');
+        	  var request = gapi.client.offerendpoint.retrieveBorrowOffers({ 
+      		    'email': email
+      		}).then(function(response) {
                 	console.log(response);
         		  buildTable(response);
                 }, function(reason) {
@@ -323,24 +327,19 @@
        
       function buildTable(response) {
     	   
-     		ClearTable(); 
-                     
-     		populateOffers(response); 
-             
+    	    offerTable = '' ; 
+              
+     		populateOffers(response);
+              
            $("#listOffersResult").html(offerTable); 
      }
-     	 
-      	 function ClearTable() {
-      		offerTable = '' ; 
-    	  }
-      	 
-         	
+     
          	function populateOffers(resp)   
             { 
 
               if (!resp.code) {
                 resp.items = resp.items || [];  
-            	  
+            	 
                 offerTable +=   '<table id="listOffersTable">';
                 offerTable +=   "<thead>";
                 offerTable +=   "<tr>"; 
@@ -368,52 +367,59 @@
 	        offerTable +=  "</tbody>" ;
    			offerTable +=  "</table>" ;  
    			
-              } 
-    }
+   			
+            }   	
+          }
      	 
-    	function Accept(id) {
- 
-     			gapi.client.offerendpoint.acceptOffer(id).execute(function(resp) {
+         	function Accept(id) {
+
+     			var email = localStorage.getItem('loggedinuser');
+     			gapi.client.offerendpoint.acceptOffer({ 
+          		    'id': id,
+          		    'email': email
+          		}).execute(function(resp) {
  	         		if (!resp.code) {  
  	         			Window.Locaton.href="/Views/Offers/ListMyOffers.html";
- 	         		}       		  
- 	         		else {
-     	         	console.log(resp.code + " : " + resp.message); 
- 	      			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
- 	      			ClearException();
- 	      			DisplayException(errormsg);
- 	      		}
- 	         	});      
- 	         	 
+ 	         		}  
+ 	         	}); var request = gapi.client.offerendpoint.acceptOffer({'id':'id', 'email':'email'})
+ 	     	  .then(function(response) {
+ 	            	console.log(response);
+ 	            	var successmessage = "Offer Id: " + response.result.id;
+ 	               localStorage.successmessage = successmessage; 
+ 	               window.location.href = "/Views/Shared/Successful.html";
+ 	            }, function(reason) {
+ 	              console.log('Error: ' + reason.result.error.message);
+ 	              errormsg += '<li>' + reason + '</li>';
+ 	              DisplayException(errormsg);  
+ 		    	 return;
+ 	            }); 
          }
      	
  	 
      	function PartialAccept(id) {
-  
-     			gapi.client.offerendpoint.acceptOffer(id).execute(function(resp) {
- 	         		if (!resp.code) {  
- 	         			Window.Locaton.href="/Views/Offers/ListMyOffers.html";
- 	         		}       		  
- 	         		else {
-     	         	console.log(resp.code + " : " + resp.message); 
- 	      			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
- 	      			ClearException();
- 	      			DisplayException(errormsg);
- 	      		}
- 	         	});      
- 	         		        	
-	         	 
+     		
+     		var email = localStorage.getItem('loggedinuser');
+ 			gapi.client.offerendpoint.acceptOffer({ 
+      		    'id': id,
+      		    'email': email
+      		}).execute(function(resp) {
+	         		if (!resp.code) {  
+	         			Window.Locaton.href="/Views/Offers/ListMyOffers.html";
+	         		}  
+	         	}); var request = gapi.client.offerendpoint.acceptOffer({'id':'id', 'email':'email'})
+	     	  .then(function(response) {
+	            	console.log(response);
+	            	var successmessage = "Offer Id: " + response.result.id;
+	               localStorage.successmessage = successmessage; 
+	               window.location.href = "/Views/Shared/Successful.html";
+	            }, function(reason) {
+	              console.log('Error: ' + reason.result.error.message);
+	              errormsg += '<li>' + reason + '</li>';
+	              DisplayException(errormsg);  
+		    	 return;
+	            });    
 	     }
-
-         	function LogOff() { 
-         	localStorage.removeItem("loggedinuser");
-            window.location.href = "/Views/Account/Login.html";  
-         	}
-         	
-         	function ManageProfile() { 
-         	window.location.href = "/Views/Account/EditProfile.html";  
-            }
-     
+ 
     </script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

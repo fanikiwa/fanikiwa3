@@ -1,249 +1,49 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
+<!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Fanikiwa - Peer-to-Peer Lending</title>
-    <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Fanikiwa - Peer-to-Peer Lending</title>
+<link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
 <script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-     
+
 
 </head>
 
 
 <body>
 
-    <header>
-        <div class="content-wrapper">
+	<header>
+		<div class="content-wrapper">
 
-            <div class="float-left">
-                <p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
-                    Fanikiwa - Peer - To - Peer Lending
-                </p>
-            </div>
-
-
-            <div class="float-right">
-                <section id="login">
-                <text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
-					style="cursor: pointer;" href="#" onclick="ManageProfile()"
-					title="Manage Profile"></a> <a id="lnklogoff"
-					style="cursor: pointer;" href="#" onclick="LogOff()"
-					title="Log Off">Log off</a> </text>
-                </section>
-            </div>
- 
+			<div class="float-left">
+				<p class="site-title" title="Fanikiwa - Peer - To - Peer Lending">
+					Fanikiwa - Peer - To - Peer Lending</p>
+			</div>
 
 
-            <div id="nav">
-                <ul id="menu">
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitIndexForm" style="cursor: pointer;" href="/Views/Home/Index.html" >Home</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-
-                    <li>
-
-                        <div class="floatleft">
-                           
-                                <div>
-                                    <a id="btnSubmitListLendOffersForm" style="cursor: pointer;" href="/Views/Offers/ListLendOffers.html" >Get A loan</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;" href="/Views/Offers/ListBorrowOffers.html" >Make An Investment</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitListMyOffersForm"  href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My Offers</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
+			<div class="float-right">
+				<section id="login">
+					<text> Welcome To Fanikiwa</text>
+				</section>
+			</div>
 
 
 
-                     
-                        
-                        <li id="subMenuMyProfile">
-
-                            <div class="floatleft">
-                               
-                                    <div>
-                                        <a id="btnSubmitEditProfileSubForm"  href="/Views/Account/EditProfile.html" style="cursor: pointer;">My Profile</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-
-                        <li id="subMenuMyAccounts">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitMyAccountsForm"  href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My Accounts</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-                         
-                     <li>
-
-                        <div class="floatleft">
-                             
-                                <div>
-                                    <a id="btnSubmitMyInvestMentsForm"  href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My InvestMents</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                        <li id="subMenuMyLoans">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitMyLoansForm"  href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My Loans</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-                        
-                        <li id="subMenuLendingGroups">
-
-                            <div class="floatleft">
-                                 
-                                    <div>
-                                        <a id="btnSubmitGetMyLendingGroupsForm"  href="/Views/LendingGroups/List.html" style="cursor: pointer;">My Lending Groups</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-                
-                         
-                        <li id="subMenuChangePassword">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitChangePasswordForm"  href="/Views/Account/_ChangePasswordPartial.html" style="cursor: pointer;">Change Password</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-                        
-                        <li id="subMenuDeRegister">
-
-                            <div class="floatleft">
-                                
-                                    <div>
-                                        <a id="btnSubmitDeRegisterForm"  href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
-                                    </div>    
-                                
-                            </div>
-
-                        </li>
-                        
-                        
-
-                    
-
-                    <li>
-
-                        <div class="floatleft">
-                           
-                                <div>
-                                    <a id="btnSubmitHelpForm"  href="/Views/Home/Help.html" style="cursor: pointer;">Help</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitContactUsForm"  href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact Us</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"  style="cursor: pointer;">Contacts</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <div class="floatleft">
-                            
-                                <div>
-                                    <a id="btnSubmitAboutForm"  href="/Views/Home/About.html" style="cursor: pointer;">About</a>
-                                </div>    
-                            
-                        </div>
-
-                    </li>
 
 
 
-                </ul>
-            </div>
+		</div>
 
 
-        </div>
-
-
-    </header>
+	</header>
 
 
 
@@ -270,22 +70,24 @@
 
 							<div>
 								<label for="txtEmail">Email</label> <input id="txtEmail"
-									autocomplete="autocomplete"	placeholder="Email" autofocus="autofocus" type="text"></input>
+									autocomplete placeholder="Email" autofocus type="text"></input>
 							</div>
 
 							<div>
 								<label for="txtPassword">Password</label> <input
-								autocomplete="autocomplete"	id="txtPassword" placeholder="Password" type="password"></input>
+									id="txtPassword" autocomplete placeholder="Password"
+									type="password"></input>
 							</div>
 
 							<div>
 								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									autocomplete="autocomplete"	placeholder="Surname" type="text"></input>
+									autocomplete placeholder="Surname" type="text"></input>
 							</div>
 
 							<div>
 								<label for="txtTelephone">Telephone</label> <input
-								autocomplete="autocomplete"	id="txtTelephone" placeholder="Telephone" type="tel"></input>
+									id="txtTelephone" autocomplete placeholder="Telephone"
+									type="tel"></input>
 							</div>
 
 
@@ -294,10 +96,10 @@
 
 
 					<div style="float: left; clear: both">
-				      <input type="submit" value="Register" id="btnRegister" />
-					   Already Registered Click 
-					   <a id="btnLogin" href="/Views/Account/Login.html" style="cursor: pointer;">Here </a>
-					  To Login
+						<input type="submit" value="Register" id="btnRegister" disabled />
+						Already Registered Click <a id="btnLogin"
+							href="/Views/Account/Login.html" style="cursor: pointer;">Here
+						</a> To Login
 					</div>
 
 
@@ -327,18 +129,14 @@
 
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy;  
-					Software Providers Limited. All Rights Reserved.</p>
+				<p style="font-size: 15px">Copyright &copy; Software Providers
+					Limited. All Rights Reserved.</p>
 			</div>
 		</div>
 
 
 		<div class="content-wrapper clearboth">
-			<div>
-
-				 
-
-			</div>
+			<div></div>
 		</div>
 
 
@@ -348,122 +146,107 @@
 
 
 	<script type="text/javascript">
+	
+		document.getElementById('btnRegister').onclick = function() {
+			register();
+		}
 
-	var errormsg='';
-	errormsg +=   '<ul id="errorList">' ;
-      // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';   
-      function init() {
-       
-       	try {
-       	  
-        // Parameters are APIName,APIVersion,CallBack function,API Root
-        gapi.client.load('memberendpoint', 'v1', null, ROOT);
-          
-        document.getElementById('btnRegister').onclick = function() {
-	    Register();
-        	  } 
-        } catch(exception) {  
-            console.log("Error : " + exception);
-            errormsg += '<li>' + exception   + '</li>';
-            DisplayException(errormsg); 
-     }
-  }
-         
+		var errormsg = '';
+		errormsg += '<ul id="errorList">';
 
-        // function that will execute the Register call
-        function Register() {
+		function init() {
+			
+		  // Parameters are APIName,APIVersion,CallBack function,API Root
+	      gapi.client.load('memberendpoint', 'v1', function() { enableButton(); }, ROOT);
+	  
+		}
 
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free = true;
-            
-        	// Validate the entries
-        	var _Email = document.getElementById('txtEmail').value;
-        	var _Pwd = document.getElementById('txtPassword').value;
-        	var _Surname = document.getElementById('txtSurname').value; 
-        	var _Telephone = document.getElementById('txtTelephone').value;
-        	
-        	 if(_Email.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Email cannot be null "   + '</li>'; 
-            	 error_free = false; 
-        	 }
-        	 if(_Pwd.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Password cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 if(_Surname.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Surname cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 if(_Telephone.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Telephone cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 
-        	 if (!error_free){
-    	         errormsg += "</ul>";
-    	    	 $("#error-display-div").html(errormsg); 
-    	         $("#error-display-div").removeClass('displaynone');
-    	         $("#error-display-div").addClass('displayblock');
-    	         $("#error-display-div").show();  
-    	         return;
-             }
-            else{
-    	        ClearException(); 
-             }
-        	 
-        	// Build the Request Object
-        	var memberDTO = {};
-        	memberDTO.email = _Email;
-        	memberDTO.pwd = _Pwd;
-        	memberDTO.surname = _Surname; 
-        	memberDTO.telephone = _Telephone; 
-        	
-        	gapi.client.memberendpoint.register(memberDTO).execute(function(resp) {
-        		 console.log(resp);
-        		if (!resp.code) {
-        			
-	        		alert("Registration Successfull MemberId : " + resp.memberId );
-	        		window.location.href = "/Views/Account/Login.html";
-        		
-        		}        		  
-        		else {
-        			console.log(resp.code + " : " + resp.message); 
-        			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-        			DisplayException(errormsg);
-        		} 
-        	}); 
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-        		errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg);
-           }
-        }
-        
-        function DisplayException(errormsg) {
-        	 
-   		 errormsg += "</ul>";
-   		 
-    	 $("#error-display-div").html(errormsg); 
-         $("#error-display-div").removeClass('displaynone');
-         $("#error-display-div").addClass('displayblock');
-         $("#error-display-div").show();  
-   	    }
+		function enableButton() {
+			$("input[type=submit]").removeAttr("disabled");
+		}
 
-	   	function ClearException() {
-	   		$('#errorList').remove();
-	   		$('#error-display-div').empty();
-	   	}
-   	
-    </script>
+		function register() {
+
+			errormsg = '';
+			ClearException();
+			errormsg += '<ul id="errorList">';
+			var error_free = true;
+
+			// Validate the entries
+			var _Email = document.getElementById('txtEmail').value;
+			var _Pwd = document.getElementById('txtPassword').value;
+			var _Surname = document.getElementById('txtSurname').value;
+			var _Telephone = document.getElementById('txtTelephone').value;
+
+			if (_Email.length == 0) {
+				errormsg += '<li>' + " Email cannot be null " + '</li>';
+				error_free = false;
+			}
+			if (_Pwd.length == 0) {
+				errormsg += '<li>' + " Password cannot be null " + '</li>';
+				error_free = false;
+			}
+			if (_Surname.length == 0) {
+				errormsg += '<li>' + " Surname cannot be null " + '</li>';
+				error_free = false;
+			}
+			if (_Telephone.length == 0) {
+				errormsg += '<li>' + " Telephone cannot be null " + '</li>';
+				error_free = false;
+			}
+
+			if (!error_free) {
+				errormsg += "</ul>";
+				$("#error-display-div").html(errormsg);
+				$("#error-display-div").removeClass('displaynone');
+				$("#error-display-div").addClass('displayblock');
+				$("#error-display-div").show();
+				return;
+			} else {
+				ClearException();
+			}
+
+			// Build the Request Object
+			var memberDTO = {};
+			memberDTO.email = _Email;
+			memberDTO.pwd = _Pwd;
+			memberDTO.surname = _Surname;
+			memberDTO.telephone = _Telephone;
+
+			registerNow(memberDTO);
+		}
+
+		function registerNow(memberDTO) {
+
+			var request = gapi.client.memberendpoint.register(memberDTO).then(
+					function(response) {
+						console.log(response);
+						localStorage.memberId = response.result.memberId;
+						window.location.href = "/Views/Account/Login.html";
+					}, function(reason) {
+						console.log('Error: ' + reason.result.error.message);
+						errormsg += '<li>' + reason + '</li>';
+						DisplayException(errormsg);
+						return;
+					});
+		}
+
+		function DisplayException(errormsg) {
+
+			errormsg += "</ul>";
+
+			$("#error-display-div").html(errormsg);
+			$("#error-display-div").removeClass('displaynone');
+			$("#error-display-div").addClass('displayblock');
+			$("#error-display-div").show();
+		}
+
+		function ClearException() {
+			$('#errorList').remove();
+			$('#error-display-div').empty();
+		}
+		
+	</script>
 
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

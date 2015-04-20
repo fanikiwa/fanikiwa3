@@ -71,8 +71,18 @@ public class OfferEndpoint {
 		return GetOffersFromQuery(query, cursorString, count);
 	}
 
-	@ApiMethod(name = "selectOffersByMember")
-	public CollectionResponse<Offer> selectOffersByMember(
+	@ApiMethod(name = "retrieveMyOffers")
+	public CollectionResponse<Offer> retrieveMyOffers(
+			@Named("memberid") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = SearchMemberByEmail(email); 
+		return ListMyOffers(member.getMemberId(), cursorString, count);
+	}
+	
+	@ApiMethod(name = "selectMyOffers")
+	public CollectionResponse<Offer> ListMyOffers(
 			@Named("memberid") long MemberId,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
@@ -81,6 +91,16 @@ public class OfferEndpoint {
 		Query<Offer> query = ofy().load().type(Offer.class)
 				.filter("member", member);
 		return GetOffersFromQuery(query, cursorString, count);
+	}
+	
+	@ApiMethod(name = "retrieveMyLendOffers")
+	public CollectionResponse<Offer> retrieveMyLendOffers(
+			@Named("memberid") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = SearchMemberByEmail(email); 
+		return ListMyLendOffers(member.getMemberId(), cursorString, count);
 	}
 
 	@ApiMethod(name = "ListMyLendOffers")
@@ -93,6 +113,16 @@ public class OfferEndpoint {
 		Query<Offer> query = ofy().load().type(Offer.class)
 				.filter("offerType", "L").filter("member", member);
 		return GetOffersFromQuery(query, cursorString, count);
+	}
+	
+	@ApiMethod(name = "retrieveBorrowOffers")
+	public CollectionResponse<Offer> retrieveBorrowOffers(
+			@Named("memberid") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = SearchMemberByEmail(email); 
+		return ListBorrowOffers(member.getMemberId(), cursorString, count);
 	}
 
 	@ApiMethod(name = "ListBorrowOffers")
@@ -327,6 +357,12 @@ public class OfferEndpoint {
 		Member member = mep.getMemberByID(MemberId);
 		return member;
 	}
+	
+	private Member SearchMemberByEmail(String email) {
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+		return member;
+	}
 
 	private List<Member> GetRecipient(String s) throws Exception {
 		List<Member> members = new ArrayList<Member>();
@@ -388,7 +424,7 @@ public class OfferEndpoint {
 		// checking simple syntaz
 		// Scanner sc = new Scanner(s);
 		// Email
-		if (MailUtil.isValidEmailAddress(s))
+		if (MailUtil.isValidEmailRegex(s))
 			return new OffereeToken(OffereeIdType.Email, s);
 
 		// Test telephone - startswith(T(Number)| 0 | +254 )

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -258,9 +258,10 @@
 			<hgroup class="title">
 				<h2 class="page-title">My Loans</h2>
 			</hgroup>
-
-			 
+  
+        
 			<div id="listLoansResult" style="clear:both"></div>
+
 
 
 		</section>
@@ -274,10 +275,10 @@
 	<footer>
 
 		<hr />
- 
+
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy; 
+				<p style="font-size: 15px">Copyright &copy;  
 					Software Providers Limited. All Rights Reserved.</p>
 			</div>
 		</div>
@@ -285,7 +286,8 @@
 
 		<div class="content-wrapper clearboth">
 			<div>
- 
+
+				 
 
 			</div>
 		</div>
@@ -297,15 +299,19 @@
 
 
 	<script type="text/javascript">
-	 
-	var offerTable = '' ; 
-      // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';  
- 
-        function LoadOffers() {
+
+	if (localStorage.getItem("loggedinuser") === null) {
+		window.location.href = "/Views/Account/Login.html";
+	}
+	  
+	 var loanTable = '' ; 
+     
+        function LoadLoans() {
         	
-        	  var request = gapi.client.offerendpoint.listOffer()
-        	  .then(function(response) {
+        	  var email = localStorage.getItem('loggedinuser');
+        	  var request = gapi.client.loanendpoint.selectMyLoans({ 
+        		    'email': email
+        		}).then(function(response) {
                 	console.log(response);
         		  buildTable(response);
                 }, function(reason) {
@@ -314,66 +320,63 @@
         }
 
         function init() {  
-        	gapi.client.load('offerendpoint', 'v1', LoadOffers, ROOT);
+        	gapi.client.load('loanendpoint', 'v1', LoadLoans, ROOT);
          }
        
       function buildTable(response) {
     	   
-     		ClearTable(); 
-                     
-     		populateLoans(response); 
-             
-           $("#listLoansResult").html(offerTable); 
+    	    loanTable = '' ; 
+              
+     		populateLoans(response);
+              
+           $("#listLoansResult").html(loanTable); 
      }
-     	 
-      	 function ClearTable() {
-      		offerTable = '' ; 
-    	  }
-      	 
-         	
+     
          	function populateLoans(resp)   
             { 
 
               if (!resp.code) {
                 resp.items = resp.items || [];  
-            	  
-                offerTable +=   '<table id="listLoansTable">';
-                offerTable +=   "<thead>";
-                offerTable +=   "<tr>"; 
-                offerTable +=   "<th>Description</th>"; 
-                offerTable +=   "<th>Amount</th>"; 
-                offerTable +=   "<th>Term</th>";  
-                offerTable +=   "<th>Interest</th>";  
-                offerTable +=   "<th></th>"; 
-                offerTable +=   "<th></th>";
-                offerTable +=   "</tr>";
-                offerTable +=   "</thead>";
-                offerTable +=   "<tbody>";
+            	 
+                loanTable +=   '<table id="listLoansTable">';
+                loanTable +=   "<thead>";
+                loanTable +=   "<tr>"; 
+                loanTable +=   "<th>Amount</th>"; 
+                loanTable +=   "<th>Term</th>"; 
+                loanTable +=   "<th>Interest Rate</th>";  
+                loanTable +=   "<th>Accrued Interest</th>";  
+                loanTable +=   "<th>Maturity Date</th>";  
+                loanTable +=   "<th></th>";  
+                loanTable +=   "</tr>";
+                loanTable +=   "</thead>";
+                loanTable +=   "<tbody>";
                 
 	        for (var i=0;i<resp.result.items.length;i++) {
-	        	offerTable += '<tr>'; 
-	        	offerTable += '<td>' + resp.result.items[i].description + '</td>'; 
-	        	offerTable += '<td>' + resp.result.items[i].amount + '</td>'; 
-	        	offerTable += '<td>' + resp.result.items[i].term + '</td>'; 
-	        	offerTable += '<td>' + resp.result.items[i].interest + '</td>';
-                offerTable += "</tr>";
+	        	loanTable += '<tr>'; 
+	        	loanTable += '<td>' + resp.result.items[i].amount + '</td>'; 
+	        	loanTable += '<td>' + resp.result.items[i].term + '</td>'; 
+	        	loanTable += '<td>' + resp.result.items[i].interestRate + '</td>'; 
+	        	loanTable += '<td>' + resp.result.items[i].AccruedInterest + '</td>'; 
+	        	loanTable += '<td>' + resp.result.items[i].maturityDate + '</td>'; 
+	        	loanTable += '<td><a href="#" onclick="LoanDetails(' + resp.result.items[i].id + ')">Details</a> </td>'; 
+		    	loanTable += "</tr>";
 	              }
 	        
-	        offerTable +=  "</tbody>" ;
-   			offerTable +=  "</table>" ;  
+	        loanTable +=  "</tbody>" ;
+   			loanTable +=  "</table>" ;  
    			
-              } 
-    }
-     	   
-         	function LogOff() { 
-         	localStorage.removeItem("loggedinuser");
-            window.location.href = "/Views/Account/Login.html";  
-         	}
-         	
-         	function ManageProfile() { 
-         	window.location.href = "/Views/Account/EditProfile.html";  
-            }
-     
+   			
+            }   	
+          }
+         	 
+    	function LoanDetails(id) {
+     		 
+		localStorage.loandetailsid = id;
+		console.log(localStorage.getItem('loandetailsid'));
+		window.location.href = "/Views/Loans/Details.html";
+     			 
+        }
+          
        	  	
     </script>
 

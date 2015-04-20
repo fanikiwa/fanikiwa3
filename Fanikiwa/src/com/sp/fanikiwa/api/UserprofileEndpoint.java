@@ -143,6 +143,15 @@ public class UserprofileEndpoint {
 		ofy().save().entities(userprofile).now();
 		return userprofile;
 	}
+	
+	@ApiMethod(name = "changePassword")
+	public Userprofile changePassword(@Named("userId") String userId,
+			@Named("pwd") String pwd) throws NotFoundException {
+		Userprofile user = null;
+		user = findRecord(userId);
+		user.setPwd(pwd);
+		return updateUserprofile(user);
+	}
 
 	@ApiMethod(name = "login")
 	public Userprofile Login(@Named("userId") String userId,

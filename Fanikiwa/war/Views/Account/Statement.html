@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -299,20 +299,19 @@
      
 
 	<script type="text/javascript">
- 
 
-		var accountsTable = '' ; 
-      // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';   
-      
+	if (localStorage.getItem("loggedinuser") === null) {
+		window.location.href = "/Views/Account/Login.html";
+	}
+	 
+
+	  var accountsTable = '' ;  
       function LoadStatement() {
       	
-    	  var accountID = localStorage.getItem('statementaccountid');
-    	  if(accountID == 'undefined')
-    		  return;
-    	  
-    	  var request = gapi.client.accountendpoint.statement(accountID)
-    	  .then(function(response) {
+    	  var accountID = localStorage.getItem('statementaccountid'); 
+    	  var request = gapi.client.accountendpoint.statement({ 
+  		    'accountID': accountID
+  		}).then(function(response) {
             	console.log(response);
     		  buildTable(response);
             }, function(reason) {
@@ -366,18 +365,7 @@
   
     } 
 }
-       	  
-          	
-    	    function LogOff() { 
-	         	localStorage.removeItem("loggedinuser");
-	            window.location.href = "/Views/Account/Login.html";  
-          	 }
-          	
-          	function ManageProfile() { 
-          		window.location.href = "/Views/Account/EditProfile.html";  
-             }
- 
-          	
+       	  	
     </script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

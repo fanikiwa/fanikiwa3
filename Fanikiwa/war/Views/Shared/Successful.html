@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
 <!DOCTYPE html>
 
 <html lang="en">
@@ -294,6 +294,9 @@
 				<h1 class="sucess">Success.</h1>
 				<h2 class="message-success">Action successful.</h2>
 			</hgroup>
+			
+			
+			<div id="message-display-div" class="displaynone"></div>
 
  
 		</section>
@@ -310,8 +313,7 @@
 
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy; @DateTime.Now.Year -
-					Software Providers Limited. All Rights Reserved.</p>
+				<p style="font-size: 15px">Copyright &copy; Software Providers Limited. All Rights Reserved.</p>
 			</div>
 		</div>
 
@@ -329,28 +331,17 @@
 
 
 	<script type="text/javascript">
-
-	        if (localStorage.getItem("loggedinuser") === null) {
-		     window.location.href = "/Views/Account/Login.html";
-			 }
-			 
-			 // Get loggedin user from the local storage
-			 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-
-	            function LogOff() { 
-		         	localStorage.removeItem("loggedinuser");
-		            window.location.href = "/Views/Account/Login.html";  
-	         	}
-	         	
-	         	function ManageProfile() { 
-	         		window.location.href = "/Views/Account/EditProfile.html";  
-	            }
-	         	
+ 
+	var successmessage = localStorage.getItem('successmessage');
+	
+	$("#message-display-div").html(successmessage); 
+    $("#message-display-div").removeClass('displaynone');
+    $("#message-display-div").addClass('displayblock');
+    $("#message-display-div").show();    	
              
     </script>
 
-	<script src="https://apis.google.com/js/client.js?onload=init"></script>
-
+	 
 
 
 

@@ -11,30 +11,69 @@ public class Loan {
 
 	@Id
 	Long id;
- 
+
 	private double amount;
- 
+
 	private Date createdDate;
- 
-	private double interest;
- 
+
 	private Date maturityDate;
- 
+
 	private Long memberId;
- 
+
 	private Long offerId;
- 
+
 	private boolean partialPay;
- 
+
 	private int term;
 
 	private double AccruedInterest;
+	private double interestRate;
+
+	// penalty interest rates
+	private double interestRateSusp;
+
+	private double accruedIntInSusp;
+	// Interest Accrual
+	@Index
+	private String interestAccrualInterval; // Permissible values are - D, M, Y
+											// or 1 time. This field will
+											// determine how interest is accrued
+											// in the account.
+	@Index
+	private Date lastIntAccrualDate;
+	@Index
+	private Date nextIntAccrualDate;
+	private boolean accrueInSusp;
+	// Interest Computation
+	@Index
+	private String interestComputationMethod; // Used in interest computation
+												// formular. Permissible values
+												// are -S simple; C compound
+	@Index
+	private String interestComputationTerm; // Used in int computation formula.
+											// Permissible values are - D1,
+											// D360, D365, M1, M30, Y
+
+	// Interest Application
+	// This means when is the interest earned/paid for investments or
+	// expensed/paid for loans?.
+	@Index
+	private String interestApplicationMethod;// Permissible values are - M
+												// monthly. Inst- when
+												// installment goes thro. All-
+												// when loan is finally paid
+	@Index
+	private Date lastIntAppDate;
+	@Index
+	private Date nextIntAppDate;
+	private Long intPayingAccount;
+	private Long intPaidAccount;
 
 	public Loan() {
 	}
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -42,7 +81,7 @@ public class Loan {
 	}
 
 	public double getAmount() {
-		return this.amount;
+		return amount;
 	}
 
 	public void setAmount(double amount) {
@@ -50,23 +89,15 @@ public class Loan {
 	}
 
 	public Date getCreatedDate() {
-		return this.createdDate;
+		return createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public double getInterest() {
-		return this.interest;
-	}
-
-	public void setInterest(double interest) {
-		this.interest = interest;
-	}
-
 	public Date getMaturityDate() {
-		return this.maturityDate;
+		return maturityDate;
 	}
 
 	public void setMaturityDate(Date maturityDate) {
@@ -74,7 +105,7 @@ public class Loan {
 	}
 
 	public Long getMemberId() {
-		return this.memberId;
+		return memberId;
 	}
 
 	public void setMemberId(Long memberId) {
@@ -82,15 +113,15 @@ public class Loan {
 	}
 
 	public Long getOfferId() {
-		return this.offerId;
+		return offerId;
 	}
 
 	public void setOfferId(Long offerId) {
 		this.offerId = offerId;
 	}
 
-	public boolean getPartialPay() {
-		return this.partialPay;
+	public boolean isPartialPay() {
+		return partialPay;
 	}
 
 	public void setPartialPay(boolean partialPay) {
@@ -98,7 +129,7 @@ public class Loan {
 	}
 
 	public int getTerm() {
-		return this.term;
+		return term;
 	}
 
 	public void setTerm(int term) {
@@ -111,6 +142,118 @@ public class Loan {
 
 	public void setAccruedInterest(double accruedInterest) {
 		AccruedInterest = accruedInterest;
+	}
+
+	public double getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(double interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	public double getInterestRateSusp() {
+		return interestRateSusp;
+	}
+
+	public void setInterestRateSusp(double interestRateSusp) {
+		this.interestRateSusp = interestRateSusp;
+	}
+
+	public double getAccruedIntInSusp() {
+		return accruedIntInSusp;
+	}
+
+	public void setAccruedIntInSusp(double accruedIntInSusp) {
+		this.accruedIntInSusp = accruedIntInSusp;
+	}
+
+	public String getInterestAccrualInterval() {
+		return interestAccrualInterval;
+	}
+
+	public void setInterestAccrualInterval(String interestAccrualInterval) {
+		this.interestAccrualInterval = interestAccrualInterval;
+	}
+
+	public Date getLastIntAccrualDate() {
+		return lastIntAccrualDate;
+	}
+
+	public void setLastIntAccrualDate(Date lastIntAccrualDate) {
+		this.lastIntAccrualDate = lastIntAccrualDate;
+	}
+
+	public Date getNextIntAccrualDate() {
+		return nextIntAccrualDate;
+	}
+
+	public void setNextIntAccrualDate(Date nextIntAccrualDate) {
+		this.nextIntAccrualDate = nextIntAccrualDate;
+	}
+
+	public boolean isAccrueInSusp() {
+		return accrueInSusp;
+	}
+
+	public void setAccrueInSusp(boolean accrueInSusp) {
+		this.accrueInSusp = accrueInSusp;
+	}
+
+	public String getInterestComputationMethod() {
+		return interestComputationMethod;
+	}
+
+	public void setInterestComputationMethod(String interestComputationMethod) {
+		this.interestComputationMethod = interestComputationMethod;
+	}
+
+	public String getInterestComputationTerm() {
+		return interestComputationTerm;
+	}
+
+	public void setInterestComputationTerm(String interestComputationTerm) {
+		this.interestComputationTerm = interestComputationTerm;
+	}
+
+	public String getInterestApplicationMethod() {
+		return interestApplicationMethod;
+	}
+
+	public void setInterestApplicationMethod(String interestApplicationMethod) {
+		this.interestApplicationMethod = interestApplicationMethod;
+	}
+
+	public Date getLastIntAppDate() {
+		return lastIntAppDate;
+	}
+
+	public void setLastIntAppDate(Date lastIntAppDate) {
+		this.lastIntAppDate = lastIntAppDate;
+	}
+
+	public Date getNextIntAppDate() {
+		return nextIntAppDate;
+	}
+
+	public void setNextIntAppDate(Date nextIntAppDate) {
+		this.nextIntAppDate = nextIntAppDate;
+	}
+
+	public Long getIntPayingAccount() {
+		return intPayingAccount;
+	}
+
+	public void setIntPayingAccount(Long intPayingAccount) {
+		this.intPayingAccount = intPayingAccount;
+	}
+
+	public Long getIntPaidAccount() {
+		return intPaidAccount;
+	}
+
+	public void setIntPaidAccount(Long intPaidAccount) {
+		this.intPaidAccount = intPaidAccount;
 	}
 
 }

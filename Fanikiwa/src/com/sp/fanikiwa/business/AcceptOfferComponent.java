@@ -34,6 +34,7 @@ import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
+import com.sp.utils.LoanUtil;
 
 public class AcceptOfferComponent {
 	public AcceptOfferComponent() {
@@ -247,13 +248,28 @@ public class AcceptOfferComponent {
 				offer.getTerm(), (double) offer.getInterest());
 		loan.setTerm(offer.getTerm());
 		loan.setAmount(offer.getAmount());
-		loan.setInterest(offer.getInterest());
+		//loan.setInterest(offer.getInterest());
 		loan.setMaturityDate(offer.getExpiryDate());
 		loan.setCreatedDate(new Date());
 		loan.setMemberId(borrower.getMemberId());
 		loan.setOfferId(offer.getId());
 		loan.setPartialPay(offer.getPartialPay());
 		loan.setAccruedInterest(intr);// compute accrued interest
+
+		loan.setInterestAccrualInterval(Config.GetString("DEFAULT_INT_ACCRUAL_INTERVAL"));
+		loan.setInterestApplicationMethod(Config.GetString("DEFAULT_INT_APPLICATION_METHOD"));
+		loan.setInterestComputationMethod(Config.GetString("DEFAULT_INT_COMPUTATION_METHOD"));
+		loan.setInterestComputationTerm(Config.GetString("DEFAULT_INT_COMPUTATION_TERM"));
+		loan.setInterestRate(offer.getInterest());
+		loan.setIntPayingAccount(borrower.getCurrentAccount().getAccountID());
+		loan.setIntPaidAccount(lender.getCurrentAccount().getAccountID());
+		//loan.setLastIntAppDate(new Date());		
+		loan.setNextIntAppDate(LoanUtil.GetNextIntApplicationDate(loan, new Date()));
+		
+		//loan.setLastIntAccrualDate(lastIntAccrualDate);
+		loan.setNextIntAccrualDate( LoanUtil.GetNextIntAccrualDate(loan, new Date()));
+		
+
 
 		// Now create the loan in the loan book
 		return loanepC.insertLoan(loan);
@@ -315,7 +331,7 @@ public class AcceptOfferComponent {
 		lr.setFeesFlag(Config.GetInt("LOANREPAYMENTFEESFLAG"));
 		lr.setChargeWho((short) Config.GetInt("CHARGEWHOFLAG"));
 		lr.setLimitFlag(0);
-		lr.setPartialPay(loan.getPartialPay());
+		lr.setPartialPay(loan.isPartialPay());
 
 		STOEndpoint stPost = new STOEndpoint();
 		stPost.insertSTO(lr);

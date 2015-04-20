@@ -10,32 +10,70 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.QueryResultIterator; 
-import com.googlecode.objectify.cmd.Query; 
-import com.sp.fanikiwa.entity.Loan; 
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.entity.Loan;
+import com.sp.fanikiwa.entity.Member;
+import com.sp.fanikiwa.entity.Offer;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
 
-@Api(name = "loanendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath="fanikiwa.entity"))
+@Api(name = "loanendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class LoanEndpoint {
 
-  /**
-   * This method lists all the entities inserted in datastore.
-   * It uses HTTP GET method and paging support.
-   *
-   * @return A CollectionResponse class containing the list of all entities
-   * persisted and a cursor to the next page.
-   */
-  @SuppressWarnings({"unchecked", "unused"})
-  @ApiMethod(name = "listLoan")
-  public CollectionResponse<Loan> listLoan(
+	/**
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
+	 *
+	 * @return A CollectionResponse class containing the list of all entities
+	 *         persisted and a cursor to the next page.
+	 */
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "listLoan")
+	public CollectionResponse<Loan> listLoan(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
 		Query<Loan> query = ofy().load().type(Loan.class);
+		return listLoanByQuery(query, cursorString, count);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectMyLoans")
+	public CollectionResponse<Loan> selectMyLoans(@Named("email") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("memberId", member.getMemberId());
+		return listLoanByQuery(query, cursorString, count);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectMyInvestments")
+	public CollectionResponse<Loan> selectMyInvestments(
+			@Named("email") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("memberId", member.getMemberId());
+		return listLoanByQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<Loan> listLoanByQuery(Query<Loan> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -98,6 +136,14 @@ public class LoanEndpoint {
 		return Loan;
 	}
 
+	@ApiMethod(name = "zerolizeAccruedIntLoan")
+	public Loan zerolizeAccruedIntLoan(Loan loan) throws NotFoundException {
+
+		loan.setAccruedInterest(0);
+		Loan updatedloan = updateLoan(loan);
+		return updatedloan;
+	}
+
 	/**
 	 * This method removes the entity with primary key id. It uses HTTP DELETE
 	 * method.
@@ -139,6 +185,22 @@ public class LoanEndpoint {
 		}
 		ofy().save().entities(loan).now();
 		return loan;
+	}
+
+	@ApiMethod(name = "NextIntAccrualLoanByDate")
+	public CollectionResponse<Loan> NextIntAccrualLoanByDate(
+			@Named("date") Date date) {
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("nextIntAccrualDate", date);
+		return listLoanByQuery(query, null, null);
+	}
+
+	@ApiMethod(name = "NextIntAppLoanByDate")
+	public CollectionResponse<Loan> NextIntAppLoanByDate(
+			@Named("date") Date date) {
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("nextIntAppDate", date);
+		return listLoanByQuery(query, null, null);
 	}
 
 }

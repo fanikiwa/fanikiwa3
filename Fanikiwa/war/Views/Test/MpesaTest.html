@@ -1,5 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -29,14 +28,12 @@
 
 
 			<div class="float-right">
-				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
-						style="cursor: pointer;" href="#" onclick="ManageProfile()"
-						title="Manage Profile"></a> <a id="lnklogoff"
-						style="cursor: pointer;" href="#" onclick="LogOff()"
-						title="Log Off">Log off</a> </text>
-				 </section>
-			</div>
+			<section id="login">
+				<text> Welcome To Fanikiwa, 
+					<a id="lnklogin" style="cursor: pointer;" href="#" onclick="LogIn()" title="Log In">Log In</a> 
+				</text>
+			</section>
+        </div>
 
 
 		</div>
@@ -57,6 +54,9 @@
 			<hgroup class="title">
 				<h2 class="page-title">MPESA Test</h2>
 			</hgroup>
+			
+			<article class="col1">
+			<div class="pad">
 
 			<form action="javascript:void(0);">
 
@@ -98,10 +98,11 @@
 
 						</div>
 					</article>
-
+					
+					 
 
 					<div style="float: left; clear: both">
-						<input type="submit" value="Deposit" onclick="sendAjax()"
+						<input type="submit" value="Deposit" onclick="sendDepositAjax()"
 							id="btnDeposit" style="float: left; clear: both" />
 					</div>
 
@@ -109,13 +110,34 @@
 
 
 			</form>
+			
+			</div>
+			</article>
 
+			
+		<article class="col2">
+		<div class="pad">
 
-			<div id="target" style="float: left; clear: both"></div>
+				<div>
+					<label for="txtMpesaIPNMessage">IPN Message</label> <input
+						id="txtMpesaIPNMessage" placeholder="IPN Message" type="text"></input>
+				</div>
 
+				<div style="float: left; clear: both">
+					<input type="submit" value="Submit Mpesa IPN Message" onclick="sendMpesaIPNMessageAjax()"
+						id="btnMpesaIPNMessage" style="float: left; clear: both" />
+				</div>
+	
+			</div>
+		</article>
+		
+		 
+		<div id="apiResults" style="float: left; clear: both"></div>
+
+			
+			
 		</section>
-
-
+ 
 	</div>
 
 
@@ -147,9 +169,18 @@
 
 
 	<script type="text/javascript">
- 
-    function sendAjax() {
 
+	var errormsg='';
+ 	errormsg +=   '<ul id="errorList">' ;
+ 	
+    function sendDepositAjax() {
+
+    	errormsg='';
+        ClearException(); 
+        errormsg += '<ul id="errorList">' ;
+        var error_free=true;
+        
+        // Validate the entries
     	var customerTelno = $('#txtCustomerTelno').val();
     	var amount = $('#txtAmount').val();
     	var mpesaref = $('#txtMpesaref').val();
@@ -159,27 +190,27 @@
     	
     	 if(customerTelno.length == 0)
     	 {
-    	 alert("Customer Telno cannot be null");
-    	 return;
+    		errormsg += '<li>' + " Customer Telno cannot be null "   + '</li>'; 
+         	error_free = false;  
     	 }
     	 if(amount.length == 0)
     	 {
-    	 alert("Amount cannot be null");
-    	 return;
+    		errormsg += '<li>' + " Amount cannot be null "   + '</li>'; 
+         	error_free = false;  
     	 }
     	 if(mpesaref.length == 0)
     	 {
-    	 alert("Mpesa Reference cannot be null");
-    	 return;
+    		errormsg += '<li>' + " Mpesa Reference cannot be null "   + '</li>'; 
+         	error_free = false;  
     	 }
     	 if(accountId.length == 0)
     	 {
-    	 alert("Account cannot be null");
-    	 return;
+    		errormsg += '<li>' + " Account cannot be null "   + '</li>'; 
+         	error_free = false;  
     	 } 
     	  
     	
-        // get inputs
+    	// Build the Request Object
         var sms = new Object();
         sms.CustomerTelno = customerTelno;
         sms.Amount = amount;
@@ -188,36 +219,94 @@
         sms.SentDate = sentDate;
         sms.Bal = bal;
      
-        $('#target').html('sending...');
+        $('#apiResults').html('sending...'); 
         
-        $.ajax({
-             url: "http://localhost:8888/FanikiwaMpesaDeposit",
-        	// url: "https://1-dot-fanikiwaweb.appspot.com/FanikiwaMpesaDeposit",
-            type: 'POST',
-            dataType: 'text',
-            data: JSON.stringify(sms),
-            contentType: 'application/json',
-            mimeType: 'application/json', 
-            success: function (data) {
-            	 $('#target').html(data);
-            },
-            error:function(xhr,status,error) {
-            	$('#target').html("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
-            	alert("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error)
-            }
-        });
-
+        sendDepositAjaxNow(sms);
     }
     
-            function LogOff() { 
-	         	localStorage.removeItem("loggedinuser");
-	            window.location.href = "/Views/Account/Login.html";  
-         	}
-         	
-         	function ManageProfile() { 
-         		window.location.href = "/Views/Account/EditProfile.html";  
-            }
-         	
+    function sendDepositAjaxNow(sms) {
+    	
+    	var url ='http://localhost:8888/Mpesa';
+    	
+    	$.ajax({
+            url: url, 
+           type: 'POST',
+           dataType: 'text',
+           data: JSON.stringify(sms),
+           contentType: 'application/json',
+           mimeType: 'application/json', 
+           success: function (data) {
+           	 $('#apiResults').html(data);
+           },
+           error:function(xhr,status,error) {
+           	$('#apiResults').html("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
+           	alert("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error)
+           }
+       });
+     } 
+    
+    function sendMpesaIPNMessageAjax() {
+
+    	errormsg='';
+        ClearException(); 
+        errormsg += '<ul id="errorList">' ;
+        var error_free=true;
+        
+        // Validate the entries
+    	var _MpesaIPNMessage = $('#txtMpesaIPNMessage').val(); 
+    	
+    	 if(_MpesaIPNMessage.length == 0)
+    	 {
+    		errormsg += '<li>' + " Mpesa IPN Message cannot be null "   + '</li>'; 
+         	error_free = false;  
+    	 }   
+    	  
+    	// Build the Request Object
+         var sms = new Object(); 
+         sms = _MpesaIPNMessage;
+         
+        $('#apiResults').html('sending...'); 
+        
+        sendMpesaIPNMessageAjaxNow(sms);
+    }
+    
+    function sendMpesaIPNMessageAjaxNow(sms) {
+
+    	var url ='http://localhost:8888/Mpesa';
+    	
+    	$.ajax({
+           url: url, 
+           type: 'POST',
+           dataType: 'text',
+           data: JSON.stringify(sms),
+           contentType: 'application/json',
+           mimeType: 'application/json', 
+           success: function (data) {
+           	 $('#apiResults').html("Success");
+           	 $('#apiResults').append(data);
+           },
+           error:function(xhr,status,error) {
+           	$('#apiResults').html("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
+           	alert("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error)
+           }
+       });
+     } 
+    
+    function DisplayException(errormsg) {
+   	 
+      	errormsg += "</ul>";
+      		 
+       	 $("#error-display-div").html(errormsg); 
+         $("#error-display-div").removeClass('displaynone');
+         $("#error-display-div").addClass('displayblock');
+         $("#error-display-div").show();  
+  	  }
+
+   	function ClearException() {
+   		$('#errorList').remove();
+   		$('#error-display-div').empty();
+   	}
+   	    	
    </script>
 
 

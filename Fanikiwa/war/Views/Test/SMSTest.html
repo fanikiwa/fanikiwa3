@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -29,13 +29,11 @@
 
 			<div class="float-right">
 				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
-					style="cursor: pointer;" href="#" onclick="ManageProfile()"
-					title="Manage Profile"></a> <a id="lnklogoff"
-					style="cursor: pointer;" href="#" onclick="LogOff()"
-					title="Log Off">Log off</a> </text>
+					<text> Welcome To Fanikiwa, 
+						<a id="lnklogin" style="cursor: pointer;" href="#" onclick="LogIn()" title="Log In">Log In</a> 
+					</text>
 				</section>
-			</div>
+	        </div>
  
  
 		</div>
@@ -67,12 +65,12 @@
 
 							<div>
 								<label for="txtTelno">Telephone Number</label> <input id="txtTelno"
-									placeholder="telno"  type="text"></input>
+									autofocus	placeholder="telno"  type="text"></input>
 							</div>
 
 							<div>
 								<label for="txtBody">Body</label> 
-								<input id="txtBody" autofocus="autofocus" placeholder="body" type="text"></input>
+								<input id="txtBody"  placeholder="body" type="text"></input>
 							</div>
 
 
@@ -92,8 +90,7 @@
 			</form>
 
 
-	    <div id="target" style="float: left; clear: both">			 
-		</div>
+	    <div id="apiResults" style="float: left; clear: both"></div>
 		
 		</section>
 
@@ -127,59 +124,92 @@
 
 
 	<script type="text/javascript">
- 
+	
+	var errormsg='';
+ 	errormsg +=   '<ul id="errorList">' ;
+ 	
     function sendAjax() {
 
+    	errormsg='';
+        ClearException(); 
+        errormsg +=   '<ul id="errorList">' ;
+        var error_free=true;
+        
+        // Validate the entries
     	var telno = $('#txtTelno').val();
     	var body = $('#txtBody').val();
     	
     	 if(telno.length == 0)
-    	 {
-    	 alert("Telno cannot be null");
-    	 return;
+    	 { 
+    	    errormsg += '<li>' + " Telno cannot be null "   + '</li>'; 
+        	error_free = false; 
     	 }
     	 if(body.length == 0)
     	 {
-    	 alert("Body cannot be null");
-    	 return;
+    		errormsg += '<li>' + " Body cannot be null "   + '</li>'; 
+         	error_free = false;
     	 }
+    	 
+    	 if (!error_free){
+	         errormsg += "</ul>";
+	    	 $("#error-display-div").html(errormsg); 
+	         $("#error-display-div").removeClass('displaynone');
+	         $("#error-display-div").addClass('displayblock');
+	         $("#error-display-div").show();  
+	         return;
+         }
+        else{
+	        ClearException(); 
+         }
+      	 
     	
-        // get inputs
+    	// Build the Request Object
         var sms = new Object();
         sms.addressFrom = $('#txtTelno').val();
         sms.body = $('#txtBody').val();
      
-        $('#target').html('sending...');
+        $('#apiResults').html('sending...');
         
-        $.ajax({
-             url: "http://localhost:8888/FanikiwaSMS",
-        	//url: "https://1-dot-fanikiwaweb.appspot.com/FanikiwaSMS",
+        sendAjaxNow(sms); 
+    }
+    
+    function sendAjaxNow(sms) {
+
+    	var url ='http://localhost:8888/FanikiwaSMS';
+    	
+    	$.ajax({
+            url: url, 
             type: 'POST',
             dataType: 'text',
             data: JSON.stringify(sms),
             contentType: 'application/json',
             mimeType: 'application/json', 
             success: function (data) {
-            	 $('#target').html(data);
+            	 $('#apiResults').html(data);
             },
             error:function(xhr,status,error) {
-            	$('#target').html("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
-            	alert("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error)
+            	$('#apiResults').html("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
+            	alert("xhr ="+ xhr + "\nStatus=" +status+ "\nError="+error);
             }
         });
+     } 
+    
+    function DisplayException(errormsg) {
+   	 
+      	errormsg += "</ul>";
+      		 
+       	 $("#error-display-div").html(errormsg); 
+         $("#error-display-div").removeClass('displaynone');
+         $("#error-display-div").addClass('displayblock');
+         $("#error-display-div").show();  
+  	  }
 
-    }
-
-    function LogOff() { 
-     	localStorage.removeItem("loggedinuser");
-        window.location.href = "/Views/Account/Login.html";  
- 	}
- 	
- 	function ManageProfile() { 
- 		window.location.href = "/Views/Account/EditProfile.html";  
-    }
- 	
-   </script>
+   	function ClearException() {
+   		$('#errorList').remove();
+   		$('#error-display-div').empty();
+   	}
+   	 
+   	</script>
 
 	 
 

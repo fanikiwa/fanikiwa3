@@ -9,6 +9,7 @@ import com.sp.fanikiwa.entity.BatchSimulateStatus;
 import com.sp.fanikiwa.entity.DoubleEntry;
 import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.SimulatePostStatus;
 import com.sp.fanikiwa.entity.StatementModel;
@@ -41,7 +42,8 @@ import javax.inject.Named;
 @Api(name = "accountendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class AccountEndpoint {
 
-	final int GAE_TRANSACTION_LIMIT=5; 
+	final int GAE_TRANSACTION_LIMIT = 5;
+
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP
 	 * GET method and paging support.
@@ -56,8 +58,9 @@ public class AccountEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Account> query = ofy().load().type(Account.class);
-		return listAccountByQuery(query,cursorString,count);
+		return listAccountByQuery(query, cursorString, count);
 	}
+
 	private CollectionResponse<Account> listAccountByQuery(
 			Query<Account> query,
 			@Nullable @Named("cursor") String cursorString,
@@ -218,18 +221,23 @@ public class AccountEndpoint {
 		acc.setPassFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
+
 	@ApiMethod(name = "NextIntAccrualAccountsByDate")
-	public CollectionResponse<Account> NextIntAccrualAccountsByDate(@Named("date") Date date) {
+	public CollectionResponse<Account> NextIntAccrualAccountsByDate(
+			@Named("date") Date date) {
 		Query<Account> query = ofy().load().type(Account.class)
 				.filter("nextIntAccrualDate", date);
-		return listAccountByQuery(query,null, null);
+		return listAccountByQuery(query, null, null);
 	}
+
 	@ApiMethod(name = "NextIntAppAccountsByDate")
-	public CollectionResponse<Account> NextIntAppAccountsByDate(@Named("date") Date date) {
+	public CollectionResponse<Account> NextIntAppAccountsByDate(
+			@Named("date") Date date) {
 		Query<Account> query = ofy().load().type(Account.class)
 				.filter("nextIntAppDate", date);
-		return listAccountByQuery(query,null, null);
+		return listAccountByQuery(query, null, null);
 	}
+
 	@ApiMethod(name = "UnBlockFunds")
 	public void UnBlockFunds(Account account, @Named("amount") double amount)
 			throws NotFoundException {
@@ -238,7 +246,8 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "SimulatePost")
-	public void SimulatePost(final MultiEntry multiEntry,@Named("flags") final PostingCheckFlag flags) {
+	public void SimulatePost(final MultiEntry multiEntry,
+			@Named("flags") final PostingCheckFlag flags) {
 		ofy().transact(new VoidWork() {
 			public void vrun() {
 				Simulate(multiEntry, flags);
@@ -247,60 +256,89 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "BatchPost")
-	public void BatchPost(final MultiEntry multiEntry, @Named("flags")final PostingCheckFlag flags) {
-		List<List<Transaction>> choppedtxns = Utils.chopped(multiEntry.getTransactions(), GAE_TRANSACTION_LIMIT);
-		
-		for(final List<Transaction> txns : choppedtxns)
-		{
-		ofy().transact(new VoidWork() {
-			public void vrun() {
-				for (Transaction transaction : txns) {
-					Post(transaction,flags);
+	public RequestResult BatchPost(final MultiEntry multiEntry,
+			@Named("flags") final PostingCheckFlag flags) {
+		List<List<Transaction>> choppedtxns = Utils.chopped(
+				multiEntry.getTransactions(), GAE_TRANSACTION_LIMIT);
+
+		RequestResult res2 = new RequestResult();
+		for (final List<Transaction> txns : choppedtxns) {
+			
+			res2 = ofy().transact(new Work<RequestResult>() {
+				public RequestResult run() {
+					RequestResult res = new RequestResult();
+					res.setResultMessage("Successful");
+					for (Transaction transaction : txns) {
+						res = Post(transaction, flags);
+						if(!res.isResult()) return res; //get out if you ever get a false situation
+					}
+
+					return res;
 				}
-
-			}
-		});
+			});
+			if(!res2.isResult()) return res2; //get out if you ever get a false situation
 		}
-		}
-	
-	
-
+		
+		return res2;
+	}
 
 	@ApiMethod(name = "DoubleEntryPost")
-	public void DoubleEntryPost(final DoubleEntry doubleEntry, @Named("flags")final PostingCheckFlag flags) {
-		ofy().transact(new VoidWork() {
-			public void vrun() {
-				Post(doubleEntry.getDr(),flags);
-				Post(doubleEntry.getCr(),flags);
+	public RequestResult DoubleEntryPost(final DoubleEntry doubleEntry,
+			@Named("flags") final PostingCheckFlag flags) {
+		RequestResult res2 = new RequestResult();
+		 res2 = ofy().transact(new Work<RequestResult>() {
+			public RequestResult run() {
+
+				RequestResult res = new RequestResult();
+				res.setResultMessage("Successful");
+				res.setResult(true);
+				
+				res = Post(doubleEntry.getDr(), flags);
+				if(!res.isResult()) return res;
+				res = Post(doubleEntry.getCr(), flags);
+				if(!res.isResult()) return res;
+				
+				return res;
 			}
 		});
+		return res2;
 	}
 
 	@ApiMethod(name = "Post")
-	public void Post(final Transaction transaction,@Named("flags") final PostingCheckFlag flags) {
-		ofy().transact(new VoidWork() {
-			public void vrun() {
+	public RequestResult Post(final Transaction transaction,
+			@Named("flags") final PostingCheckFlag flags) {
+		RequestResult res = ofy().transact(new Work<RequestResult>() {
+			public RequestResult run() {
+				RequestResult res = new RequestResult();
+				res.setResultMessage("Successful");
 				try {
-					postAtomic(transaction,flags);
+					postAtomic(transaction, flags);
+					res.setResult(true);
+					return res;
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					res.setResultMessage(e.getStackTrace().toString());
+					res.setResult(false);
+					return res;
 				}
 			}
 		});
+
+		return res;
 	}
-	
+
 	@ApiMethod(name = "miniStatement")
-	public CollectionResponse<StatementModel> GetMiniStatement(@Named("accountID") Long accountID,
+	public CollectionResponse<StatementModel> GetMiniStatement(
+			@Named("accountID") Long accountID,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
-		
+
 		TransactionEndpoint tep = new TransactionEndpoint();
 		List<StatementModel> records = new ArrayList<StatementModel>();
-		
+
 		Account account = findRecord(accountID);
 		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(account,
-				cursorString, count); 
+				cursorString, count);
 
 		// go through the transactins and compute running balance
 
@@ -332,20 +370,21 @@ public class AccountEndpoint {
 		return CollectionResponse.<StatementModel> builder().setItems(records)
 				.setNextPageToken(txnCB.getNextPageToken()).build();
 	}
+
 	@ApiMethod(name = "statement")
-	public CollectionResponse<StatementModel> GetStatement(@Named("accountID") Long accountID,
-			@Named("sdate") Date sdate, 
+	public CollectionResponse<StatementModel> GetStatement(
+			@Named("accountID") Long accountID, @Named("sdate") Date sdate,
 			@Named("edate") Date edate,
-		    @Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
-		
+
 		TransactionEndpoint tep = new TransactionEndpoint();
 		List<StatementModel> records = new ArrayList<StatementModel>();
-		
+
 		Account account = findRecord(accountID);
 		CollectionResponse<Transaction> txnCB = tep.GetStatement(sdate, edate,
 				account, cursorString, count);
- 
+
 		StatementModel first = new StatementModel();
 		first.setPostDate(new Date());
 		first.setTransactionID(-1L);
@@ -404,7 +443,8 @@ public class AccountEndpoint {
 		return total;
 	}
 
-	public BatchSimulateStatus Simulate(final MultiEntry multiEntry, @Named("flags") PostingCheckFlag flags) {
+	public BatchSimulateStatus Simulate(final MultiEntry multiEntry,
+			@Named("flags") PostingCheckFlag flags) {
 		List<SimulatePostStatus> SimulateStatus = new ArrayList<SimulatePostStatus>();
 		for (Transaction tx : multiEntry.getTransactions()) {
 			SimulateStatus.add(ValidatePost(tx.getAccount(), tx, flags));
@@ -415,13 +455,16 @@ public class AccountEndpoint {
 	}
 
 	private void postAtomic(Transaction transaction) throws Exception {
-		postAtomic( transaction, PostingCheckFlag.CheckLimitAndPassFlag);
+		postAtomic(transaction, PostingCheckFlag.CheckLimitAndPassFlag);
 	}
-	private void postAtomic(Transaction transaction, PostingCheckFlag checkflags) throws Exception {
+
+	private void postAtomic(Transaction transaction, PostingCheckFlag checkflags)
+			throws Exception {
 
 		Account account = transaction.getAccount();
 		// Step 1: Validate
-		SimulatePostStatus status = ValidatePost(account, transaction, checkflags);
+		SimulatePostStatus status = ValidatePost(account, transaction,
+				checkflags);
 		if (!status.isCanPost()) {
 			String msg = "";
 			for (Exception e : status.Errors) {
@@ -429,7 +472,6 @@ public class AccountEndpoint {
 			}
 			throw new Exception("Simulation Error \n" + msg);
 		}
-		;
 
 		// Step 2 - Insert new transaction.
 		// /TODO Confirm this is legal/best practice
@@ -478,7 +520,6 @@ public class AccountEndpoint {
 		updateAccount(account);
 
 	}
-
 
 	private SimulatePostStatus ValidatePost(Account account,
 			Transaction transaction, PostingCheckFlag limitCheck) {
@@ -531,39 +572,42 @@ public class AccountEndpoint {
 			if (!CheckPassFlag(lockstatus, account, _TransactionType)) {
 				result.Errors
 						.add(new IllegalArgumentException(
-								MessageFormat.format(
-										"Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-										account.getAccountID(),
-										_TransactionType.getTransactionTypeID(),
-										lockstatus.toString())));
+								MessageFormat
+										.format("Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
+												account.getAccountID(),
+												_TransactionType
+														.getTransactionTypeID(),
+												lockstatus.toString())));
 			}
 			return result;
-			
+
 		case CheckLimitFlagOnly:// Checks account limit status and not PassFlag
 			if (!CheckLimitFlag(limistatus, AmountAvailableAfterTxn,
 					AmountAvailableOnUncleared)) {
 
 				result.Errors
 						.add(new IllegalArgumentException(
-								MessageFormat.format(
-										"Account [{0}] overdraw prohibited, limit status =[{2}]",
-										account.getAccountID(),
-										_TransactionType.getTransactionTypeID(),
-										limistatus.toString()// Enum.GetName(typeof(AccountStatus),
-																// limistatus))
-								)));
+								MessageFormat
+										.format("Account [{0}] overdraw prohibited, limit status =[{2}]",
+												account.getAccountID(),
+												_TransactionType
+														.getTransactionTypeID(),
+												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
+																		// limistatus))
+										)));
 			}
 			return result;
-			
+
 		case CheckLimitAndPassFlag:// Checks account limit status and PassFlag
 			if (!CheckPassFlag(lockstatus, account, _TransactionType)) {
 				result.Errors
 						.add(new IllegalArgumentException(
-								MessageFormat.format(
-										"Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-										account.getAccountID(),
-										_TransactionType.getTransactionTypeID(),
-										lockstatus.toString())));
+								MessageFormat
+										.format("Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
+												account.getAccountID(),
+												_TransactionType
+														.getTransactionTypeID(),
+												lockstatus.toString())));
 			}
 
 			if (!CheckLimitFlag(limistatus, AmountAvailableAfterTxn,
@@ -571,13 +615,14 @@ public class AccountEndpoint {
 
 				result.Errors
 						.add(new IllegalArgumentException(
-								MessageFormat.format(
-										"Account [{0}] overdraw prohibited, limit status =[{2}]",
-										account.getAccountID(),
-										_TransactionType.getTransactionTypeID(),
-										limistatus.toString()// Enum.GetName(typeof(AccountStatus),
-																// limistatus))
-								)));
+								MessageFormat
+										.format("Account [{0}] overdraw prohibited, limit status =[{2}]",
+												account.getAccountID(),
+												_TransactionType
+														.getTransactionTypeID(),
+												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
+																		// limistatus))
+										)));
 			}
 		}
 		return result;
@@ -623,26 +668,26 @@ public class AccountEndpoint {
 		// check 1 - Lock status
 		if ((lockstatus == PassFlag.Locked))
 			throw new NotFoundException(
-					MessageFormat.format(
-							"Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
-							account.getAccountID(), lockstatus));
+					MessageFormat
+							.format("Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
+									account.getAccountID(), lockstatus));
 
 		// check 2 - Limit status
 		if ((limistatus == AccountLimitStatus.AllLimitsProhibited)
 				|| (limistatus == AccountLimitStatus.LimitForBlockingProhibited && limit > 0)
 				|| (limistatus == AccountLimitStatus.LimitForAdvanceProhibited && limit < 0))
 			throw new NotFoundException(
-					MessageFormat.format(
-							"Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
-							account.getAccountID(), limistatus));
+					MessageFormat
+							.format("Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
+									account.getAccountID(), limistatus));
 
 		if (limistatus == AccountLimitStatus.LimitsAllowed
 				&& AvailableBalanceAfterApplyingLimit < 0)
 			throw new NotFoundException(
-					MessageFormat.format(
-							"Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
-							amount, account.getAccountID(),
-							AvailableBalanceAfterApplyingLimit));
+					MessageFormat
+							.format("Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
+									amount, account.getAccountID(),
+									AvailableBalanceAfterApplyingLimit));
 
 	}
 

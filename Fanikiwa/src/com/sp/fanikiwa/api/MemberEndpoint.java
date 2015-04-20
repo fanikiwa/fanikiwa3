@@ -46,6 +46,13 @@ public class MemberEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Member> query = ofy().load().type(Member.class);
+		return listMemberByQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<Member> listMemberByQuery(
+			Query<Member> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -73,7 +80,7 @@ public class MemberEndpoint {
 		}
 		return CollectionResponse.<Member> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
-	}
+	} 
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
@@ -250,7 +257,7 @@ public class MemberEndpoint {
 						.getValue());
 
 		Account interestincomeaccount = new Account();
-		interestincomeaccount.setAccountName(customerReturned.getName() + " Interest Exp A/c");
+		interestincomeaccount.setAccountName(customerReturned.getName() + " Interest Inc A/c");
 		interestincomeaccount.setCustomer(customerReturned);
 		interestincomeaccount.setCoadet(new Coadet(Config.GetLong("INTEREST_INC_ACC_COA_ID")));
 		interestincomeaccount.setAccounttype(new AccountType(Config
@@ -314,5 +321,41 @@ public class MemberEndpoint {
 				.filter("nationalID", nationalId).first()
 				.now();
 	}
+	 
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectMemberAccounts")
+	public CollectionResponse<Account> listMemberAccountMobile(
+			Member member,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+ 
+		return listAccountByQuery(member, cursorString, count);
+	}
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "retrieveMemberAccounts")
+	public CollectionResponse<Account> listMemberAccountWeb(
+			@Named("email") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = GetMemberByEmail(email);
+		return listAccountByQuery(member, cursorString, count);
+	}
+	private CollectionResponse<Account> listAccountByQuery(
+			Member member,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		   
+		List<Account> memberAccounts = new ArrayList<Account>();
+		memberAccounts.add(member.getCurrentAccount());
+		memberAccounts.add(member.getinterestExpAccount());
+		memberAccounts.add(member.getinterestIncAccount());
+		memberAccounts.add(member.getInvestmentAccount());
+		memberAccounts.add(member.getLoanAccount());
+ 
+		return CollectionResponse.<Account> builder().setItems(memberAccounts)
+				.setNextPageToken(cursorString).build();
+	}
+	
 
 }

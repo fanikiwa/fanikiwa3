@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "diaryprogramcontrolendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -27,6 +27,31 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "diaryprogramcontrolendpoint.listDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "diaryprogramcontrolendpoint.insertDiaryprogramcontrol" : {
       "path" : "diaryprogramcontrol",
       "httpMethod" : "POST",
@@ -35,6 +60,22 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertDiaryprogramcontrol",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "diaryprogramcontrolendpoint.updateDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -63,51 +104,25 @@
       "response" : {
         "body" : "empty"
       }
-    },
-    "diaryprogramcontrolendpoint.updateDiaryprogramcontrol" : {
-      "path" : "diaryprogramcontrol",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "diaryprogramcontrolendpoint.listDiaryprogramcontrol" : {
-      "path" : "diaryprogramcontrol",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_Diaryprogramcontrol" : {
+        "id" : "CollectionResponse_Diaryprogramcontrol",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Diaryprogramcontrol"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "Diaryprogramcontrol" : {
         "id" : "Diaryprogramcontrol",
         "type" : "object",
@@ -125,24 +140,14 @@
             "format" : "date-time"
           }
         }
-      },
-      "CollectionResponse_Diaryprogramcontrol" : {
-        "id" : "CollectionResponse_Diaryprogramcontrol",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Diaryprogramcontrol"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Diaryprogramcontrol"
+        }
+      },
       "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertDiaryprogramcontrol" : {
         "request" : {
           "$ref" : "Diaryprogramcontrol"
@@ -150,8 +155,6 @@
         "response" : {
           "$ref" : "Diaryprogramcontrol"
         }
-      },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
       },
       "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol" : {
         "request" : {
@@ -161,10 +164,7 @@
           "$ref" : "Diaryprogramcontrol"
         }
       },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Diaryprogramcontrol"
-        }
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
       }
     }
   }

@@ -42,33 +42,7 @@ public class MpesaIPNMessageEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<MpesaIPNMessage> query = ofy().load().type(MpesaIPNMessage.class);
-		if (count != null)
-			query.limit(count);
-		if (cursorString != null && cursorString != "") {
-			query = query.startAt(Cursor.fromWebSafeString(cursorString));
-		}
-
-		List<MpesaIPNMessage> records = new ArrayList<MpesaIPNMessage>();
-		QueryResultIterator<MpesaIPNMessage> iterator = query.iterator();
-		int num = 0;
-		while (iterator.hasNext()) {
-			records.add(iterator.next());
-			if (count != null) {
-				num++;
-				if (num == count)
-					break;
-			}
-		}
-
-		// Find the next cursor
-		if (cursorString != null && cursorString != "") {
-			Cursor cursor = iterator.getCursor();
-			if (cursor != null) {
-				cursorString = cursor.toWebSafeString();
-			}
-		}
-		return CollectionResponse.<MpesaIPNMessage> builder().setItems(records)
-				.setNextPageToken(cursorString).build();
+		return GetMpesaIPNMessagesFromQuery(query,cursorString,count);
 	}
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET method.

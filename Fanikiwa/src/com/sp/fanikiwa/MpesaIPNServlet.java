@@ -33,12 +33,15 @@ import com.sp.utils.HttpUtil;
 
 public class MpesaIPNServlet extends HttpServlet {
 
-	// final String SAFARICOM_SERVER_NAME = "172.29.229.171";
-	// final Integer SAFARICOM_SERVER_PORT = 8080;
-	final String SAFARICOM_SERVER_NAME = "localhost";
-	final Integer SAFARICOM_SERVER_PORT = 8888;
-	final String KUFANIKIWA_USER_NAME = "123";
-	final String KUFANIKIWA_PWD = "123";
+	final String SAFARICOM_SERVER_NAME = "172.29.229.171";
+	final Integer SAFARICOM_SERVER_PORT = 8080;
+	final String KUFANIKIWA_USER_NAME = "user";
+	final String KUFANIKIWA_PWD = "pwd";
+
+	// final String SAFARICOM_SERVER_NAME = "localhost";
+	// final Integer SAFARICOM_SERVER_PORT = 8888;
+	// final String KUFANIKIWA_USER_NAME = "123";
+	// final String KUFANIKIWA_PWD = "123";
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,10 +90,10 @@ public class MpesaIPNServlet extends HttpServlet {
 				// make sure the message is not processed twice
 				// get all messages where status = 'New'
 				Collection<MpesaIPNMessage> mpesaMsgs = mep
-						.listMpesaIPNMessage(null, null).getItems();
+						.ListNewMpesaIPNMessages(null, null).getItems();
 
 				for (MpesaIPNMessage mpesaMsg : mpesaMsgs) {
-					
+
 					MpesaComponent mcomp = new MpesaComponent();
 					mcomp.ProcessMessage(mpesaMsg);
 

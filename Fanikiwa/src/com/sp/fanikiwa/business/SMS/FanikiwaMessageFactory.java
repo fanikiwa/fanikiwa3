@@ -665,10 +665,10 @@ public class FanikiwaMessageFactory {
 		return bo;
 	}
 	
-	private static AccountsListMessage ParseAccountsListMessage(
+	private static FanikiwaAccountsMessage ParseAccountsListMessage(
 			String OriginatingAddress, Date MessageDate, String Body,
 			List<String> msgParams) {
-		AccountsListMessage acc = new AccountsListMessage();
+		FanikiwaAccountsMessage acc = new FanikiwaAccountsMessage();
 
 		// populate generic from abstract
 		acc.SenderTelno = OriginatingAddress;

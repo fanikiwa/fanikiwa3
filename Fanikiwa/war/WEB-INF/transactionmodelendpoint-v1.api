@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "transactionmodelendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -27,22 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "transactionmodelendpoint.updateTransactionModel" : {
-      "path" : "statementmodel",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TransactionModelEndpoint.updateTransactionModel",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "transactionmodelendpoint.listTransactionModel" : {
       "path" : "statementmodel",
       "httpMethod" : "GET",
@@ -68,22 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "transactionmodelendpoint.insertTransactionModel" : {
-      "path" : "statementmodel",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TransactionModelEndpoint.insertTransactionModel",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "transactionmodelendpoint.getTransactionModel" : {
       "path" : "statementmodel/{id}",
       "httpMethod" : "GET",
@@ -100,6 +68,38 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "transactionmodelendpoint.insertTransactionModel" : {
+      "path" : "statementmodel",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionModelEndpoint.insertTransactionModel",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "transactionmodelendpoint.updateTransactionModel" : {
+      "path" : "statementmodel",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionModelEndpoint.updateTransactionModel",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -129,38 +129,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "StatementModel" : {
-        "id" : "StatementModel",
-        "type" : "object",
-        "properties" : {
-          "transactionID" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "debit" : {
-            "type" : "number"
-          },
-          "balance" : {
-            "type" : "number"
-          },
-          "narrative" : {
-            "type" : "string"
-          },
-          "credit" : {
-            "type" : "number"
-          },
-          "amount" : {
-            "type" : "number"
-          },
-          "postDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "contraReference" : {
-            "type" : "string"
-          }
-        }
-      },
       "CollectionResponse_StatementModel" : {
         "id" : "CollectionResponse_StatementModel",
         "type" : "object",
@@ -175,20 +143,49 @@
             "type" : "string"
           }
         }
+      },
+      "StatementModel" : {
+        "id" : "StatementModel",
+        "type" : "object",
+        "properties" : {
+          "contraReference" : {
+            "type" : "string"
+          },
+          "transactionID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "amount" : {
+            "type" : "number"
+          },
+          "postDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "narrative" : {
+            "type" : "string"
+          },
+          "credit" : {
+            "type" : "number"
+          },
+          "debit" : {
+            "type" : "number"
+          },
+          "balance" : {
+            "type" : "number"
+          }
+        }
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.TransactionModelEndpoint.updateTransactionModel" : {
-        "request" : {
-          "$ref" : "StatementModel"
-        },
-        "response" : {
-          "$ref" : "StatementModel"
-        }
-      },
       "com.sp.fanikiwa.api.TransactionModelEndpoint.listTransactionModel" : {
         "response" : {
           "$ref" : "CollectionResponse_StatementModel"
+        }
+      },
+      "com.sp.fanikiwa.api.TransactionModelEndpoint.getTransactionModel" : {
+        "response" : {
+          "$ref" : "StatementModel"
         }
       },
       "com.sp.fanikiwa.api.TransactionModelEndpoint.insertTransactionModel" : {
@@ -199,7 +196,10 @@
           "$ref" : "StatementModel"
         }
       },
-      "com.sp.fanikiwa.api.TransactionModelEndpoint.getTransactionModel" : {
+      "com.sp.fanikiwa.api.TransactionModelEndpoint.updateTransactionModel" : {
+        "request" : {
+          "$ref" : "StatementModel"
+        },
         "response" : {
           "$ref" : "StatementModel"
         }

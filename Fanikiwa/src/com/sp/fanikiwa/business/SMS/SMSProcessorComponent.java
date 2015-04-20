@@ -111,8 +111,8 @@ public class SMSProcessorComponent {
 						"Get your Borrow Offers\nSyntax = BO*Pwd\nWhere Pwd = your password"));
 		Commands.put(
 				"FA",
-				new FCommand("Accounts List",
-						"Get your Fanikiwa Account \nSyntax = FA*Pwd\nWhere Pwd = your password"));
+				new FCommand("Fanikiwa Accounts",
+						"Get your Fanikiwa Accounts \nSyntax = FA*Pwd\nWhere Pwd = your password"));
 		Commands.put(
 				"C",
 				new FCommand(
@@ -180,8 +180,8 @@ public class SMSProcessorComponent {
 				return ProcessListLendOffersMessage((LendOffersMessage) message);
 			if (message instanceof BorrowOffersMessage)
 				return ProcessListBorrowOffersMessage((BorrowOffersMessage) message);
-			if (message instanceof AccountsListMessage)
-				return ProcessListAccountsListMessage((AccountsListMessage) message);
+			if (message instanceof FanikiwaAccountsMessage)
+				return ProcessFanikiwaAccountsMessage((FanikiwaAccountsMessage) message);
 			if (message instanceof ChangePinMessage)
 				return ProcessChangePinMessage((ChangePinMessage) message);
 			if (message instanceof WithdrawMessage)
@@ -333,6 +333,9 @@ public class SMSProcessorComponent {
 			break;
 		case "BO":
 			hlp = GetHelpMessage("BO");
+			break;
+		case "FA":
+			hlp = GetHelpMessage("FA");
 			break;
 		case "C":
 		case "CP":
@@ -529,13 +532,13 @@ public class SMSProcessorComponent {
 			Member regmember = rc.Register(SMSToMember(message));
 			if (regmember != null) {
 				return MessageFormat
-						.format("Successfully Registered. Details\nMember Id {0}, Current Account Id {1}, Loan Account Id {2}, Investment Account Id {3}",
-								regmember.getMemberId().toString(), regmember
-										.getCurrentAccount().getAccountID()
-										.toString(), regmember.getLoanAccount()
-										.getAccountID().toString(), regmember
-										.getInvestmentAccount().getAccountID()
-										.toString());
+						.format("Successfully Registered. Details\nMember Id {0}, Current Account Id {1}, Loan Account Id {2}, Investment Account Id {3}, Interest Income Account Id {4}, Interest Expense Account Id {5}",
+								regmember.getMemberId().toString(), 
+								regmember.getCurrentAccount().getAccountID().toString(), 
+								regmember.getLoanAccount().getAccountID().toString(), 
+								regmember.getInvestmentAccount().getAccountID().toString(),
+								regmember.getinterestIncAccount().getAccountID().toString(), 
+								regmember.getinterestExpAccount().getAccountID().toString());
 			} else
 				return "Member registration was not successful";
 		} else {
@@ -755,12 +758,12 @@ public class SMSProcessorComponent {
 
 	}
 	
-	private String ProcessListAccountsListMessage(AccountsListMessage message) {
+	private String ProcessFanikiwaAccountsMessage(FanikiwaAccountsMessage message) {
 		if (!this.AuthenticateAndAuthorize(message.SenderTelno, message.Pwd))
 			return "Not authenticated";
 
 		RegistrationComponent rc = new RegistrationComponent();
-		OfferEndpoint oep = new OfferEndpoint();
+		MemberEndpoint mep = new MemberEndpoint();
 
 		Member member = rc.SelectMemberByPhone(message.SenderTelno);
 		if (member == null) {
@@ -769,19 +772,18 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 
-		Collection<Offer> offers = oep.ListBorrowOffers(member.getMemberId(),
-				null, 5).getItems();
+		Collection<Account> accounts = mep.listMemberAccountMobile(member, null, 5).getItems();
 
-		if (offers.size() > 0) {
+		if (accounts.size() > 0) {
 			String msg = "";
-			for (Offer c : offers) {
-				msg += c.getId().toString() + " Amt=" + c.getAmount()
-						+ " Term=" + c.getTerm() + " Interest="
-						+ c.getInterest();
+			for (Account c : accounts) {
+				msg += c.getAccountName() + " Id=" + c.getAccountID().toString() + " BookBalance=" + c.getBookBalance()
+						+ " ClearedBalance=" + c.getClearedBalance() + " Limit="
+						+ c.getLimit();
 			}
 			return msg;
 		} else
-			return "No offers found";
+			return "No Accounts found";
 
 	}
 
