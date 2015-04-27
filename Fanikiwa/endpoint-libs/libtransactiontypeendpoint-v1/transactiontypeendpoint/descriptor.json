@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/transactiontypeendpoint/v1/20150413065302/java/1.18.0-rc/sp.com-transactiontypeendpoint-v1-20150413065302-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-transactiontypeendpoint-v1-20150413065302-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/transactiontypeendpoint/v1/20150426125720/java/1.18.0-rc/sp.com-transactiontypeendpoint-v1-20150426125720-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-transactiontypeendpoint-v1-20150426125720-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-04-13 06:53"
+      "timestamp": "2015-04-26 12:57"
     }, 
     {
-      "path": "sp.com-transactiontypeendpoint-v1-20150413065302-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-transactiontypeendpoint-v1-20150426125720-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "transactiontypeendpoint:v1", 
-  "revision": 20150413065302
+  "revision": 20150426125720
 }

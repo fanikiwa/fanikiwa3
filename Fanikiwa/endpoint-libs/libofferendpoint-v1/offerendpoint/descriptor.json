@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/offerendpoint/v1/20150413070304/java/1.18.0-rc/sp.com-offerendpoint-v1-20150413070304-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-offerendpoint-v1-20150413070304-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/offerendpoint/v1/20150426130528/java/1.18.0-rc/sp.com-offerendpoint-v1-20150426130528-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-offerendpoint-v1-20150426130528-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-04-13 07:03"
+      "timestamp": "2015-04-26 13:05"
     }, 
     {
-      "path": "sp.com-offerendpoint-v1-20150413070304-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-offerendpoint-v1-20150426130528-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "offerendpoint:v1", 
-  "revision": 20150413070304
+  "revision": 20150426130528
 }

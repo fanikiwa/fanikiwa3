@@ -47,7 +47,6 @@ border-color: cornflowerblue;
 color: white;
 background-color: black;
 }
- 
 
 header, footer, hgroup, section
 {
@@ -142,7 +141,7 @@ text-decoration: none;
 .content-wrapper 
 {
 margin: 0 auto;
-max-width: 1000px;  
+max-width: 1000px; 
 }
  
 #body 
@@ -175,9 +174,8 @@ footer
 {
 clear: both;
 background-color: #e2e2e2;
-font-size: .9em;  
-margin: 0;
-padding: 0;
+font-size: .9em; 
+height: 100%;
 background: url("../Images/bg_top2.gif") repeat;
 }
 
@@ -201,8 +199,32 @@ padding-right: 5px;
 text-decoration: underline overline;
 background-color: black;  
 text-align: center; 
-} 
+}  
 
+/* site logo
+----------------------------------------------------------*/
+.site-logo
+{
+max-width:330px;
+max-height:300px;
+overflow-x:auto; 
+overflow-y:auto;    
+clear:both;
+position:relative; 
+white-space: nowrap;  
+display:flexbox;
+flex-direction:column;
+}
+
+.site-logo img
+{  
+float:left; 
+position:relative;
+clear:none;
+display:flexbox;
+flex-direction:column;
+} 
+ 
 /* login
 ----------------------------------------------------------*/
 #login
@@ -442,7 +464,6 @@ width: 55%;
 { 
 border-right: solid 2px #c8c8c8;
 float: left;
-/*width: 30%;*/
 width: 55%;
 }
 
@@ -571,7 +592,7 @@ display: inline;
 cursor: pointer;
 }
 
-input, textarea, select, input[type="number"] , input[type="date"] 
+input, textarea, select 
 {
 border: 1px solid black; 
 border-radius: 5px; /* give a curvy edge */
@@ -825,7 +846,6 @@ tr.pager td
 {
 padding: 0 0.25em 0 0;
 } 
-
 
 /********************
 *   Mobile Styles   *
@@ -1209,12 +1229,9 @@ text-overflow: inherit;
 ----------------------------------------------------------*/
 #nav
 {
-max-width: 1000px;
 position: relative;
 display: block;
-overflow-x:auto;
-overflow-y:visible;
-word-wrap: break-word; 
+white-space: nowrap;
 padding-bottom: 10px;
 padding-top: 10px;
 padding-left: 0px;
@@ -1313,8 +1330,62 @@ position: relative;
 }
 #menu .submenu li a
 {
-font-size: 20px;
+/* font-size: 20px; */
 }
+
+
+
+
+#menu .submenu  >  li > .submenu
+{    
+display: none;
+position:absolute;
+list-style: none;
+padding-top: 0px;
+padding-left: 0px;
+width: 100%; /* makes the width of the sub menu align the same as the parent menu */
+} 
+#menu .submenu > li >  .submenu  >  li
+{
+float: none; /*arrange sub menu items vertically*/
+display: block; /*positions dropdown relative to parent menu*/
+clear: left;
+width:100%;
+}
+#menu .submenu  > .submenu > li:first-child
+{ 
+border-top:3px  hidden white;
+margin-top:3px;  /*place a space between the first submenu item and the parent menu*/
+margin-bottom:0px;
+} 
+#menu li:hover > .submenu > li:hover  > .submenu 
+{ 
+display: inline-block;
+} 
+#menu .submenu > li >  .submenu > li a:hover
+{
+background-color: black;
+opacity: 1;
+color: white;    
+}
+#menu .submenu > li >  .submenu > li
+{
+padding-left: 1px;
+padding-right: 1px;
+padding-bottom: 1px;
+padding-top: 1px;
+margin-top: 0px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 0px;
+clear: both;
+display: block;
+float: none;
+position: relative;
+}
+ 
+
+
 /* Main Menu
 ----------------------------------------------------------*/
 
@@ -1328,9 +1399,7 @@ font-size: 20px;
 {
 position: relative;
 display: block;
-overflow-x:auto;
-overflow-y:visible;
-word-wrap: break-word; 
+white-space: nowrap;
 padding-bottom: 0px;
 padding-top: 0px;
 padding-left: 0px;
@@ -1441,7 +1510,7 @@ font-size: 20px;
 font: bold;
 font-weight: 900;
 }
- 
+
 .searchbutton
 {
 font-weight: bold;
@@ -1460,8 +1529,16 @@ padding-right: 1px;
 padding-bottom: 1px;
 padding-top: 1px;
 }
- 
- 
+.searchbutton:hover 
+{
+}
+#DashBoardAmountrange
+{
+background-color:cornflowerblue;
+border-radius:5px;
+    
+
+}
 #error-display-div
 { 
 color:red; 
@@ -1487,7 +1564,7 @@ background-color:inherit;
 border: 0px solid;
 }
 
-.col1,.col2
+.col1,.col2,.col3,.col4
 {
 float:left; 
 }
@@ -1495,7 +1572,7 @@ float:left;
 {
 float:left;
 overflow-x:auto;
-width: 350px;
+width: 320px;
 white-space: nowrap;
 }
 .col2 
@@ -1505,14 +1582,83 @@ overflow-x:auto;
 width:600px;
 white-space: nowrap;  
 }  
-p input[type="submit"]
+.col3 
 {
 float:left;
-clear:both;
-}
- 
-.selectedrow 
+overflow-x:auto;
+width:600px;
+white-space: nowrap;  
+}  
+.col4 
 {
-background-color:LawnGreen;
+float:left;
+overflow-x:auto;
+width:600px;
+white-space: nowrap;  
+
+}
+#column-div .col1 
+{
+float:left;
+overflow-x:auto;
+width: 250px;
+white-space: nowrap;
+}
+#column-div .col2
+{
+float:left;
+overflow-x:auto;
+width: 250px;
+white-space: nowrap;
+}
+#column-div .col3
+{
+float:left;
+overflow-x:auto;
+width: 250px;
+white-space: nowrap;
+}  
+#column-div .col4
+{
+float:left;
+overflow-x:auto;
+width: 250px;
+white-space: nowrap;
+}
+#column-div
+{
+float:left;
+overflow-x:auto;
+width: auto;
+white-space: nowrap;
+}
+#column-div input, textarea, select 
+{
+border: 1px solid black; 
+border-radius: 3px; /* give a curvy edge */
+background: white;
+color: black;
+font-size: 1.2em;
+margin: 1px 1px 1px 1px;
+padding: 1px;
+width: 230px;
+height: 30px;
+}
+#column-div input:focus, textarea:focus, select:focus 
+{
+border: 2px solid cornflowerblue;
+}
+#column-div h5
+{
+font-size: 15px; 
+border: 0px solid black; 
+border-radius: 0px; /* give a curvy edge */ 
+color: black; 
+margin: 1px 1px 1px 1px;
+padding: 1px; 
 }
 
+img
+{
+padding: 10px 10px 10px 10px; 
+}

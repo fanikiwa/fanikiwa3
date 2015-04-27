@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5j38R39rX68_kT7b5DGU348iP1M\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/a4LrUMYB4TnYtMisV3jBwK4-5EY\"",
  "discoveryVersion": "v1",
  "id": "accounttypeendpoint:v1",
  "name": "accounttypeendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/accounttypeendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/accounttypeendpoint/v1/",
  "basePath": "/_ah/api/accounttypeendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "accounttypeendpoint/v1/",
  "batchPath": "batch",
  "parameters": {

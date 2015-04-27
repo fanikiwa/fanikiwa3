@@ -1,5 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -12,8 +11,7 @@
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
-<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-
+ 
 
 </head>
 
@@ -157,7 +155,7 @@
 		function init() {
 			
 		  // Parameters are APIName,APIVersion,CallBack function,API Root
-	      gapi.client.load('memberendpoint', 'v1', function() { enableButton(); }, ROOT);
+	      gapi.client.load('memberendpoint', 'v1', enableButton, ROOT);
 	  
 		}
 

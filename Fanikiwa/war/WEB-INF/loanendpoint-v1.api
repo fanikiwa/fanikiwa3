@@ -27,6 +27,35 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "loanendpoint.selectMyInvestments" : {
+      "path" : "selectMyInvestments/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "loanendpoint.zerolizeAccruedIntLoan" : {
       "path" : "zerolizeAccruedIntLoan",
       "httpMethod" : "POST",
@@ -85,20 +114,32 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loanendpoint.selectMyInvestments" : {
-      "path" : "selectMyInvestments/{email}",
-      "httpMethod" : "POST",
+    "loanendpoint.updateLoan" : {
+      "path" : "loan",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments",
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.updateLoan",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.listLoan" : {
+      "path" : "loan",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.listLoan",
       "request" : {
         "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          },
           "cursor" : {
             "type" : "string",
             "required" : false
@@ -109,6 +150,22 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.insertLoan" : {
+      "path" : "loan",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.insertLoan",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -128,31 +185,6 @@
             "type" : "string",
             "required" : true
           },
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.listLoan" : {
-      "path" : "loan",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.listLoan",
-      "request" : {
-        "parameters" : {
           "cursor" : {
             "type" : "string",
             "required" : false
@@ -189,22 +221,6 @@
         "body" : "empty"
       }
     },
-    "loanendpoint.insertLoan" : {
-      "path" : "loan",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.insertLoan",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "loanendpoint.getLoanByID" : {
       "path" : "loan/{id}",
       "httpMethod" : "GET",
@@ -225,26 +241,25 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "loanendpoint.updateLoan" : {
-      "path" : "loan",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.updateLoan",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_Loan" : {
+        "id" : "CollectionResponse_Loan",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Loan"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "Loan" : {
         "id" : "Loan",
         "type" : "object",
@@ -330,24 +345,14 @@
             "type" : "number"
           }
         }
-      },
-      "CollectionResponse_Loan" : {
-        "id" : "CollectionResponse_Loan",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Loan"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Loan"
+        }
+      },
       "com.sp.fanikiwa.api.LoanEndpoint.zerolizeAccruedIntLoan" : {
         "request" : {
           "$ref" : "Loan"
@@ -366,22 +371,18 @@
           "$ref" : "CollectionResponse_Loan"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments" : {
+      "com.sp.fanikiwa.api.LoanEndpoint.updateLoan" : {
+        "request" : {
+          "$ref" : "Loan"
+        },
         "response" : {
-          "$ref" : "CollectionResponse_Loan"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.selectMyLoans" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Loan"
+          "$ref" : "Loan"
         }
       },
       "com.sp.fanikiwa.api.LoanEndpoint.listLoan" : {
         "response" : {
           "$ref" : "CollectionResponse_Loan"
         }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.removeLoan" : {
       },
       "com.sp.fanikiwa.api.LoanEndpoint.insertLoan" : {
         "request" : {
@@ -391,15 +392,14 @@
           "$ref" : "Loan"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.getLoanByID" : {
+      "com.sp.fanikiwa.api.LoanEndpoint.selectMyLoans" : {
         "response" : {
-          "$ref" : "Loan"
+          "$ref" : "CollectionResponse_Loan"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.updateLoan" : {
-        "request" : {
-          "$ref" : "Loan"
-        },
+      "com.sp.fanikiwa.api.LoanEndpoint.removeLoan" : {
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.getLoanByID" : {
         "response" : {
           "$ref" : "Loan"
         }

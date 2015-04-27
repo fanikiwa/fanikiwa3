@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wrAZKTxhI_2PAc15CJlEACcxaUg\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/uK8mxXlFopQ7Y1QjFxEsEmn9ZGg\"",
  "discoveryVersion": "v1",
  "id": "tiereddetendpoint:v1",
  "name": "tiereddetendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/tiereddetendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/tiereddetendpoint/v1/",
  "basePath": "/_ah/api/tiereddetendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "tiereddetendpoint/v1/",
  "batchPath": "batch",
  "parameters": {

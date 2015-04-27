@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/MiFCF_Kh8aegYMFMmeyklFGbHfc\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/jhP55XG-5Zr-YSFTcJqM-k0Fhaw\"",
  "discoveryVersion": "v1",
  "id": "loanendpoint:v1",
  "name": "loanendpoint",
@@ -14,8 +14,8 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rpc",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
- "rpcUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/rpc",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
+ "rpcUrl": "https://fanikiwaweb.appspot.com/_ah/api/rpc",
  "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
@@ -91,6 +91,13 @@
    "id": "Loan",
    "type": "object",
    "properties": {
+    "accrueInSusp": {
+     "type": "boolean"
+    },
+    "accruedIntInSusp": {
+     "type": "number",
+     "format": "double"
+    },
     "accruedInterest": {
      "type": "number",
      "format": "double"
@@ -107,9 +114,41 @@
      "type": "string",
      "format": "int64"
     },
-    "interest": {
+    "intPaidAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "intPayingAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestAccrualInterval": {
+     "type": "string"
+    },
+    "interestApplicationMethod": {
+     "type": "string"
+    },
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
+    },
+    "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "maturityDate": {
      "type": "string",
@@ -118,6 +157,14 @@
     "memberId": {
      "type": "string",
      "format": "int64"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "offerId": {
      "type": "string",
@@ -190,6 +237,44 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "loanendpoint.nextIntAccrualLoanByDate": {
+   "id": "loanendpoint.nextIntAccrualLoanByDate",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "loanendpoint.nextIntAppLoanByDate": {
+   "id": "loanendpoint.nextIntAppLoanByDate",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "loanendpoint.removeLoan": {
    "id": "loanendpoint.removeLoan",
    "parameters": {
@@ -206,8 +291,75 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "loanendpoint.selectMyInvestments": {
+   "id": "loanendpoint.selectMyInvestments",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "loanendpoint.selectMyLoans": {
+   "id": "loanendpoint.selectMyLoans",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "loanendpoint.updateLoan": {
    "id": "loanendpoint.updateLoan",
+   "parameters": {
+    "resource": {
+     "$ref": "Loan"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "loanendpoint.zerolizeAccruedIntLoan": {
+   "id": "loanendpoint.zerolizeAccruedIntLoan",
    "parameters": {
     "resource": {
      "$ref": "Loan"

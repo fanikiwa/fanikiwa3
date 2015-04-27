@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/r7TinwE9eOGfy7mScOksOOiz0OE\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/bM-NnMQYZSQnzqJV739klSCKip8\"",
  "discoveryVersion": "v1",
  "id": "informdbendpoint:v1",
  "name": "informdbendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/informdbendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/informdbendpoint/v1/",
  "basePath": "/_ah/api/informdbendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "informdbendpoint/v1/",
  "batchPath": "batch",
  "parameters": {

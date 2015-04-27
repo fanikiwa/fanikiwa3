@@ -73,27 +73,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "tiereddetendpoint.removeTieredDet" : {
-      "path" : "tiereddet/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "tiereddetendpoint.updateTieredDet" : {
       "path" : "tiereddet",
       "httpMethod" : "PUT",
@@ -124,6 +103,27 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tiereddetendpoint.removeTieredDet" : {
+      "path" : "tiereddet/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     }
   },
@@ -194,8 +194,6 @@
           "$ref" : "TieredDetCollection"
         }
       },
-      "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet" : {
-      },
       "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet" : {
         "request" : {
           "$ref" : "TieredDet"
@@ -211,6 +209,8 @@
         "response" : {
           "$ref" : "TieredDet"
         }
+      },
+      "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet" : {
       }
     }
   }

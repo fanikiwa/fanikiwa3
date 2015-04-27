@@ -151,6 +151,15 @@
           "contraReference" : {
             "type" : "string"
           },
+          "credit" : {
+            "type" : "number"
+          },
+          "debit" : {
+            "type" : "number"
+          },
+          "balance" : {
+            "type" : "number"
+          },
           "transactionID" : {
             "type" : "string",
             "format" : "int64"
@@ -164,15 +173,6 @@
           },
           "narrative" : {
             "type" : "string"
-          },
-          "credit" : {
-            "type" : "number"
-          },
-          "debit" : {
-            "type" : "number"
-          },
-          "balance" : {
-            "type" : "number"
           }
         }
       }

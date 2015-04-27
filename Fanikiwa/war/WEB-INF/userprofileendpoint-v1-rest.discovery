@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9K-lJvvoP6puOGE1Jg_SX1aQG7o\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9cDeKuatVQVyHIF1Mv2a8jREyys\"",
  "discoveryVersion": "v1",
  "id": "userprofileendpoint:v1",
  "name": "userprofileendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/userprofileendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/userprofileendpoint/v1/",
  "basePath": "/_ah/api/userprofileendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "userprofileendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -110,6 +110,33 @@
   }
  },
  "methods": {
+  "changePassword": {
+   "id": "userprofileendpoint.changePassword",
+   "path": "changePassword/{userId}/{pwd}",
+   "httpMethod": "POST",
+   "parameters": {
+    "pwd": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    },
+    "userId": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "userId",
+    "pwd"
+   ],
+   "response": {
+    "$ref": "Userprofile"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "getUserprofileByUserID": {
    "id": "userprofileendpoint.getUserprofileByUserID",
    "path": "userprofile/{id}",

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/t6M9OQLKgymQ6ktlos0WsjEdc5I\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/RawTcG5gQyc0OPaEUeBEkALSWm8\"",
  "discoveryVersion": "v1",
  "id": "accountendpoint:v1",
  "name": "accountendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/accountendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/accountendpoint/v1/",
  "basePath": "/_ah/api/accountendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "accountendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -91,23 +91,14 @@
     "accounttype": {
      "$ref": "AccountType"
     },
+    "accrueInSusp": {
+     "type": "boolean"
+    },
     "accruedInt": {
      "type": "number",
      "format": "double"
     },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
+    "accruedIntInSusp": {
      "type": "number",
      "format": "double"
     },
@@ -131,25 +122,33 @@
     "customer": {
      "$ref": "Customer"
     },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
+    "interestAccrualInterval": {
+     "type": "string"
     },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
+    "interestApplicationMethod": {
+     "type": "string"
     },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationMethod": {
+     "type": "string"
     },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationTerm": {
+     "type": "string"
     },
     "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "limit": {
      "type": "number",
@@ -162,6 +161,18 @@
     "limitFlag": {
      "type": "integer",
      "format": "int32"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "passFlag": {
      "type": "integer",
@@ -433,6 +444,22 @@
     "",
     ""
    ]
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
   },
   "SimulatePostStatus": {
    "id": "SimulatePostStatus",
@@ -783,6 +810,9 @@
     "$ref": "MultiEntry",
     "parameterName": "resource"
    },
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -875,6 +905,9 @@
     "$ref": "DoubleEntry",
     "parameterName": "resource"
    },
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -938,6 +971,81 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "miniStatement": {
+   "id": "accountendpoint.miniStatement",
+   "path": "GetMiniStatement/{accountID}",
+   "httpMethod": "POST",
+   "parameters": {
+    "accountID": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    },
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "accountID"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_StatementModel"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "nextIntAccrualAccountsByDate": {
+   "id": "accountendpoint.nextIntAccrualAccountsByDate",
+   "path": "NextIntAccrualAccountsByDate/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "nextIntAppAccountsByDate": {
+   "id": "accountendpoint.nextIntAppAccountsByDate",
+   "path": "NextIntAppAccountsByDate/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "post": {
    "id": "accountendpoint.post",
    "path": "Post/{flags}",
@@ -967,6 +1075,9 @@
    "request": {
     "$ref": "Transaction",
     "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -1107,6 +1218,51 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "statement": {
+   "id": "accountendpoint.statement",
+   "path": "GetStatement/{accountID}/{sdate}/{edate}",
+   "httpMethod": "POST",
+   "parameters": {
+    "accountID": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    },
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "edate": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    },
+    "sdate": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "accountID",
+    "sdate",
+    "edate"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_StatementModel"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "unBlockFunds": {
    "id": "accountendpoint.unBlockFunds",
    "path": "UnBlockFunds/{amount}",
@@ -1164,74 +1320,6 @@
      "parameterOrder": [
       "date"
      ],
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "getMiniStatement": {
-     "id": "accountendpoint.accountEndpoint.getMiniStatement",
-     "path": "GetMiniStatement",
-     "httpMethod": "POST",
-     "parameters": {
-      "count": {
-       "type": "integer",
-       "format": "int32",
-       "location": "query"
-      },
-      "cursor": {
-       "type": "string",
-       "location": "query"
-      }
-     },
-     "request": {
-      "$ref": "Account",
-      "parameterName": "resource"
-     },
-     "response": {
-      "$ref": "CollectionResponse_StatementModel"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "getStatement": {
-     "id": "accountendpoint.accountEndpoint.getStatement",
-     "path": "GetStatement/{sdate}/{edate}",
-     "httpMethod": "POST",
-     "parameters": {
-      "count": {
-       "type": "integer",
-       "format": "int32",
-       "location": "query"
-      },
-      "cursor": {
-       "type": "string",
-       "location": "query"
-      },
-      "edate": {
-       "type": "string",
-       "required": true,
-       "format": "date-time",
-       "location": "path"
-      },
-      "sdate": {
-       "type": "string",
-       "required": true,
-       "format": "date-time",
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "sdate",
-      "edate"
-     ],
-     "request": {
-      "$ref": "Account",
-      "parameterName": "resource"
-     },
-     "response": {
-      "$ref": "CollectionResponse_StatementModel"
-     },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
      ]

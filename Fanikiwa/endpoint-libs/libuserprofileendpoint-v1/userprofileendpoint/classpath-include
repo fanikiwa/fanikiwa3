@@ -1,4 +1,4 @@
-  <classpathentry kind="lib" path="libs/google-api-services-userprofileendpoint-v1-rev20150413065439-1.18.0-rc.jar" sourcepath="libs-sources/google-api-services-userprofileendpoint-v1-rev20150413065439-1.18.0-rc-sources.jar"/>
+  <classpathentry kind="lib" path="libs/google-api-services-userprofileendpoint-v1-rev20150426125901-1.18.0-rc.jar" sourcepath="libs-sources/google-api-services-userprofileendpoint-v1-rev20150426125901-1.18.0-rc-sources.jar"/>
   <classpathentry kind="lib" path="libs/google-api-client-1.18.0-rc.jar" sourcepath="libs-sources/google-api-client-1.18.0-rc-sources.jar"/>
   <classpathentry kind="lib" path="libs/google-api-client-android-1.18.0-rc.jar" sourcepath="libs-sources/google-api-client-android-1.18.0-rc-sources.jar"/>
   <classpathentry kind="lib" path="libs/google-api-client-appengine-1.18.0-rc.jar" sourcepath="libs-sources/google-api-client-appengine-1.18.0-rc-sources.jar"/>

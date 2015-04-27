@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/userprofileendpoint/v1/20150413065439/java/1.18.0-rc/sp.com-userprofileendpoint-v1-20150413065439-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-userprofileendpoint-v1-20150413065439-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/userprofileendpoint/v1/20150426125901/java/1.18.0-rc/sp.com-userprofileendpoint-v1-20150426125901-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-userprofileendpoint-v1-20150426125901-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-04-13 06:54"
+      "timestamp": "2015-04-26 12:59"
     }, 
     {
-      "path": "sp.com-userprofileendpoint-v1-20150413065439-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-userprofileendpoint-v1-20150426125901-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "userprofileendpoint:v1", 
-  "revision": 20150413065439
+  "revision": 20150426125901
 }

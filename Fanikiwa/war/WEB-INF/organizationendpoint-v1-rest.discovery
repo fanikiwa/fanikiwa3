@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5CIlSL8WwfwPvNtQoQzINTOMXnQ\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/HgN-9ySTuqgh2nFNdSkbvBpfqPo\"",
  "discoveryVersion": "v1",
  "id": "organizationendpoint:v1",
  "name": "organizationendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/organizationendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/organizationendpoint/v1/",
  "basePath": "/_ah/api/organizationendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "organizationendpoint/v1/",
  "batchPath": "batch",
  "parameters": {

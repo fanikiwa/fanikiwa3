@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Y7R8rk24WOMGSuEw-B8rbKh1pLg\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/EC6K53tn7sxndOyt1vj5m-ZT40o\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -14,9 +14,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/offerendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/offerendpoint/v1/",
  "basePath": "/_ah/api/offerendpoint/v1/",
- "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
  "servicePath": "offerendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
@@ -91,23 +91,14 @@
     "accounttype": {
      "$ref": "AccountType"
     },
+    "accrueInSusp": {
+     "type": "boolean"
+    },
     "accruedInt": {
      "type": "number",
      "format": "double"
     },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
+    "accruedIntInSusp": {
      "type": "number",
      "format": "double"
     },
@@ -131,25 +122,33 @@
     "customer": {
      "$ref": "Customer"
     },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
+    "interestAccrualInterval": {
+     "type": "string"
     },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
+    "interestApplicationMethod": {
+     "type": "string"
     },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationMethod": {
+     "type": "string"
     },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationTerm": {
+     "type": "string"
     },
     "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "limit": {
      "type": "number",
@@ -162,6 +161,18 @@
     "limitFlag": {
      "type": "integer",
      "format": "int32"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "passFlag": {
      "type": "integer",
@@ -417,22 +428,50 @@
     }
    }
   },
-  "OfferModel": {
-   "id": "OfferModel",
+  "OfferDTO": {
+   "id": "OfferDTO",
    "type": "object",
    "properties": {
-    "id": {
-     "type": "string",
-     "format": "int64"
+    "amount": {
+     "type": "number",
+     "format": "double"
     },
-    "offer": {
-     "$ref": "Offer"
+    "createdDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "description": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "expiryDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "interest": {
+     "type": "number",
+     "format": "double"
+    },
+    "offerType": {
+     "type": "string"
     },
     "offerees": {
-     "type": "array",
-     "items": {
-      "$ref": "Member"
-     }
+     "type": "string"
+    },
+    "partialPay": {
+     "type": "boolean"
+    },
+    "publicOffer": {
+     "type": "boolean"
+    },
+    "status": {
+     "type": "string"
+    },
+    "term": {
+     "type": "integer",
+     "format": "int32"
     }
    }
   },
@@ -457,6 +496,46 @@
   }
  },
  "methods": {
+  "acceptOffer": {
+   "id": "offerendpoint.acceptOffer",
+   "path": "AcceptOffer/{id}/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    },
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id",
+    "email"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "createLendOffer": {
+   "id": "offerendpoint.createLendOffer",
+   "path": "CreateLendOffer",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "OfferDTO",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "getOfferByID": {
    "id": "offerendpoint.getOfferByID",
    "path": "offer/{id}",
@@ -472,6 +551,21 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "insertOffer": {
+   "id": "offerendpoint.insertOffer",
+   "path": "offer",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "Offer",
+    "parameterName": "resource"
+   },
    "response": {
     "$ref": "Offer"
    },
@@ -582,6 +676,96 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "retrieveBorrowOffers": {
+   "id": "offerendpoint.retrieveBorrowOffers",
+   "path": "retrieveBorrowOffers/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveMyLendOffers": {
+   "id": "offerendpoint.retrieveMyLendOffers",
+   "path": "retrieveMyLendOffers/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveMyOffers": {
+   "id": "offerendpoint.retrieveMyOffers",
+   "path": "retrieveMyOffers/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "retrievePublicOffers": {
    "id": "offerendpoint.retrievePublicOffers",
    "path": "retrievePublicOffers",
@@ -609,7 +793,7 @@
    "path": "saveOffer",
    "httpMethod": "POST",
    "request": {
-    "$ref": "OfferModel",
+    "$ref": "OfferDTO",
     "parameterName": "resource"
    },
    "response": {
@@ -619,9 +803,9 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "selectOffersByMember": {
-   "id": "offerendpoint.selectOffersByMember",
-   "path": "selectOffersByMember/{memberid}",
+  "selectMyOffers": {
+   "id": "offerendpoint.selectMyOffers",
+   "path": "ListMyOffers/{memberid}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -664,27 +848,6 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
-  }
- },
- "resources": {
-  "offerEndpoint": {
-   "methods": {
-    "insertOffer": {
-     "id": "offerendpoint.offerEndpoint.insertOffer",
-     "path": "offer",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "Offer",
-      "parameterName": "resource"
-     },
-     "response": {
-      "$ref": "Offer"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    }
-   }
   }
  }
 }

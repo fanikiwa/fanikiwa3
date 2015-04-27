@@ -33,10 +33,16 @@ import com.sp.utils.HttpUtil;
 
 public class MpesaIPNServlet extends HttpServlet {
 
-	final String SAFARICOM_SERVER_NAME = "172.29.229.171";
-	final Integer SAFARICOM_SERVER_PORT = 8080;
-	final String KUFANIKIWA_USER_NAME = "user";
-	final String KUFANIKIWA_PWD = "pwd";
+	// final String SAFARICOM_SERVER_NAME = "172.29.229.171";
+	// final Integer SAFARICOM_SERVER_PORT = 8080;
+	// final String KUFANIKIWA_USER_NAME = "user";
+	// final String KUFANIKIWA_PWD = "pwd";
+
+	final String SAFARICOM_SERVER_NAME = "http://www."
+			+ "kufanikiwa.co.ke/Mpesa";
+	final Integer SAFARICOM_SERVER_PORT = 8888;
+	final String KUFANIKIWA_USER_NAME = "123";
+	final String KUFANIKIWA_PWD = "123";
 
 	// final String SAFARICOM_SERVER_NAME = "localhost";
 	// final Integer SAFARICOM_SERVER_PORT = 8888;
@@ -71,7 +77,8 @@ public class MpesaIPNServlet extends HttpServlet {
 		try {
 
 			// 1. Verify message is actually from MPESA
-			if (isMessageFromSafaricom(request)) {
+			// if (isMessageFromSafaricom(request)) {
+			if (isMessageFromSafaricomMock(request)) {
 
 				// 2. Get message
 				MpesaIPNMessage msg = GetMpeasaIPNMessageFromRequest(request);
@@ -130,6 +137,22 @@ public class MpesaIPNServlet extends HttpServlet {
 			isMessageFromSafaricom = true;
 
 		return isMessageFromSafaricom;
+	}
+
+	private boolean isMessageFromSafaricomMock(HttpServletRequest request) {
+
+		// boolean isMessageFromSafaricom = false;
+		// String server = request.getServerName();
+		// Integer port = request.getServerPort();
+		// String user = request.getParameter("user");
+		// String pass = request.getParameter("pass");
+		//
+		// // compare all the above to what is known and return true if all
+		// match
+		// if (server.equals(SAFARICOM_SERVER_NAME))
+		// isMessageFromSafaricom = true;
+
+		return true;
 	}
 
 	private MpesaIPNMessage GetMpeasaIPNMessageFromRequest(
