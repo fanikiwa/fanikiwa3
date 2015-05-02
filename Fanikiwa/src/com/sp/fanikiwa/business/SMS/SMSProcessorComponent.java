@@ -713,7 +713,7 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 
-		Collection<Offer> offers = oep.ListMyLendOffers(member.getMemberId(),
+		Collection<Offer> offers = oep.ListLendOffers(member.getMemberId(),
 				null, 5).getItems();
 
 		if (offers.size() > 0) {

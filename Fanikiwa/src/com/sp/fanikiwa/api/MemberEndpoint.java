@@ -19,9 +19,12 @@ import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.MemberDTO;
+import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.Organization;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Userprofile;
 import com.sp.utils.Config;
+import com.sp.utils.MailUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,8 +52,7 @@ public class MemberEndpoint {
 		return listMemberByQuery(query, cursorString, count);
 	}
 
-	private CollectionResponse<Member> listMemberByQuery(
-			Query<Member> query,
+	private CollectionResponse<Member> listMemberByQuery(Query<Member> query,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 		if (count != null)
@@ -80,7 +82,7 @@ public class MemberEndpoint {
 		}
 		return CollectionResponse.<Member> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
-	} 
+	}
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
@@ -161,15 +163,14 @@ public class MemberEndpoint {
 	// Non CRUD
 	@ApiMethod(name = "GetMemberByEmail")
 	public Member GetMemberByEmail(@Named("email") String email) {
-		return ofy().load().type(Member.class)
-				.filter("email", email).first()
+		return ofy().load().type(Member.class).filter("email", email).first()
 				.now();
 	}
+
 	@ApiMethod(name = "txnlessGetMemberByEmail")
 	public Member txnlessGetMemberByEmail(@Named("email") String email) {
 		return ofy().transactionless().load().type(Member.class)
-				.filter("email", email).first()
-				.now();
+				.filter("email", email).first().now();
 	}
 
 	@ApiMethod(name = "Register")
@@ -185,7 +186,7 @@ public class MemberEndpoint {
 
 		UserprofileEndpoint upep = new UserprofileEndpoint();
 		upep.insertUserprofile(user);
-  
+
 		Customer customer = new Customer();
 		// at this point, fill the customer with the details from the UI
 		customer.setName(memberDTO.getSurname());
@@ -205,7 +206,7 @@ public class MemberEndpoint {
 		currentAccount.setCoadet(new Coadet(Config
 				.GetLong("CURRENT_ACC_COA_ID")));
 		currentAccount.setAccounttype(new AccountType(Config
-				.GetLong("CURRENT_ACC_TYPE_ID"))); 
+				.GetLong("CURRENT_ACC_TYPE_ID")));
 		currentAccount.setBookBalance(0.00);
 		currentAccount.setClearedBalance(0.00);
 		currentAccount.setLimit(0.00);
@@ -220,19 +221,21 @@ public class MemberEndpoint {
 		loanaccount.setCustomer(customerReturned);
 		loanaccount.setCoadet(new Coadet(Config.GetLong("LOAN_ACC_COA_ID")));
 		loanaccount.setAccounttype(new AccountType(Config
-				.GetLong("LOAN_ACC_COA_ID"))); 
+				.GetLong("LOAN_ACC_COA_ID")));
 		loanaccount.setBookBalance(0.00);
 		loanaccount.setClearedBalance(0.00);
 		loanaccount.setLimit(0.00);
 		loanaccount.setInterestRate(0.00);
 		loanaccount.setAccruedInt(0.00);
-		
+
 		Account interestexpenseaccount = new Account();
-		interestexpenseaccount.setAccountName(customerReturned.getName() + " Interest Exp A/c");
+		interestexpenseaccount.setAccountName(customerReturned.getName()
+				+ " Interest Exp A/c");
 		interestexpenseaccount.setCustomer(customerReturned);
-		interestexpenseaccount.setCoadet(new Coadet(Config.GetLong("INTEREST_EXP_ACC_COA_ID")));
+		interestexpenseaccount.setCoadet(new Coadet(Config
+				.GetLong("INTEREST_EXP_ACC_COA_ID")));
 		interestexpenseaccount.setAccounttype(new AccountType(Config
-				.GetLong("INTEREST_EXP_ACC_TYPE_ID"))); 
+				.GetLong("INTEREST_EXP_ACC_TYPE_ID")));
 		interestexpenseaccount.setBookBalance(0.00);
 		interestexpenseaccount.setClearedBalance(0.00);
 		interestexpenseaccount.setLimit(0.00);
@@ -257,25 +260,29 @@ public class MemberEndpoint {
 						.getValue());
 
 		Account interestincomeaccount = new Account();
-		interestincomeaccount.setAccountName(customerReturned.getName() + " Interest Inc A/c");
+		interestincomeaccount.setAccountName(customerReturned.getName()
+				+ " Interest Inc A/c");
 		interestincomeaccount.setCustomer(customerReturned);
-		interestincomeaccount.setCoadet(new Coadet(Config.GetLong("INTEREST_INC_ACC_COA_ID")));
+		interestincomeaccount.setCoadet(new Coadet(Config
+				.GetLong("INTEREST_INC_ACC_COA_ID")));
 		interestincomeaccount.setAccounttype(new AccountType(Config
-				.GetLong("INTEREST_INC_ACC_TYPE_ID"))); 
+				.GetLong("INTEREST_INC_ACC_TYPE_ID")));
 		interestincomeaccount.setBookBalance(0.00);
 		interestincomeaccount.setClearedBalance(0.00);
 		interestincomeaccount.setLimit(0.00);
 		interestincomeaccount.setInterestRate(0.00);
 		interestincomeaccount.setAccruedInt(0.00);
-		
+
 		AccountEndpoint aep = new AccountEndpoint();
 		Account currentAccountReturned = aep.insertAccount(currentAccount);
 		Account loanAccountReturned = aep.insertAccount(loanaccount);
 		Account investmentAccountReturned = aep.insertAccount(invesmentaccount);
 
-		Account intexpAccountReturned = aep.insertAccount(interestexpenseaccount);
-		Account intincAccountReturned = aep.insertAccount(interestincomeaccount);
-		
+		Account intexpAccountReturned = aep
+				.insertAccount(interestexpenseaccount);
+		Account intincAccountReturned = aep
+				.insertAccount(interestincomeaccount);
+
 		// Step 4. Update the member account created in step1 with the three
 		// accounts
 		Member member = new Member();
@@ -310,29 +317,27 @@ public class MemberEndpoint {
 
 	@ApiMethod(name = "getMemberByTelephone")
 	public Member GetMemberByTelephone(@Named("telephone") String telephone) {
-		return ofy().load().type(Member.class)
-				.filter("telephone", telephone).first()
-				.now();
+		return ofy().load().type(Member.class).filter("telephone", telephone)
+				.first().now();
 	}
 
-	@ApiMethod(name = "getMemberByNationalID", path="member/nationalid")
+	@ApiMethod(name = "getMemberByNationalID", path = "member/nationalid")
 	public Member getMemberByNationalID(@Named("nationalId") String nationalId) {
-		return ofy().load().type(Member.class)
-				.filter("nationalID", nationalId).first()
-				.now();
+		return ofy().load().type(Member.class).filter("nationalID", nationalId)
+				.first().now();
 	}
-	 
+
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "selectMemberAccounts")
-	public CollectionResponse<Account> listMemberAccountMobile(
-			Member member,
+	public CollectionResponse<Account> listMemberAccountMobile(Member member,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
- 
+
 		return listAccountByQuery(member, cursorString, count);
 	}
+
 	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "retrieveMemberAccounts")
+	@ApiMethod(name = "listMemberAccountWeb")
 	public CollectionResponse<Account> listMemberAccountWeb(
 			@Named("email") String email,
 			@Nullable @Named("cursor") String cursorString,
@@ -341,21 +346,41 @@ public class MemberEndpoint {
 		Member member = GetMemberByEmail(email);
 		return listAccountByQuery(member, cursorString, count);
 	}
-	private CollectionResponse<Account> listAccountByQuery(
-			Member member,
+
+	private CollectionResponse<Account> listAccountByQuery(Member member,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
-		   
+
 		List<Account> memberAccounts = new ArrayList<Account>();
 		memberAccounts.add(member.getCurrentAccount());
 		memberAccounts.add(member.getinterestExpAccount());
 		memberAccounts.add(member.getinterestIncAccount());
 		memberAccounts.add(member.getInvestmentAccount());
 		memberAccounts.add(member.getLoanAccount());
- 
+
 		return CollectionResponse.<Account> builder().setItems(memberAccounts)
 				.setNextPageToken(cursorString).build();
 	}
-	
+
+	@ApiMethod(name = "isEmailValid")
+	public RequestResult isEmailValid(@Named("email") String email) {
+
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+
+			String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+			Boolean isemailvalid = email.matches(EMAIL_REGEX);
+			re.setResult(isemailvalid);
+			re.setResultMessage(email);
+
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 
 }

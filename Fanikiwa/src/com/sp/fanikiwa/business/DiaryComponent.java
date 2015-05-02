@@ -40,8 +40,10 @@ import com.sp.utils.GLUtil;
 import com.sp.utils.Utils;
 
 public class DiaryComponent {
-	
+	private static final HashMap<String, IJobItem>items = new HashMap<String, IJobItem>();
+
 	static{
+
 		DiaryComponent.register("STO", new JobProcessSTO());
 		DiaryComponent.register("VALUEDATED", new  JobClearValueDatedItems());
 //		DiaryComponent.register("INTACCR", new JobAccrueAccountInterest()); //for future
@@ -52,7 +54,6 @@ public class DiaryComponent {
 	boolean EnableLog = true;
 
 	private static final Logger log = Logger.getLogger(DiaryComponent.class.getName());
-	private static Map<String, IJobItem> items = new HashMap<String, IJobItem>();
 
     public void RunDiary(Date date)
     {

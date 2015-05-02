@@ -11,6 +11,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.sp.fanikiwa.Enums.OfferStatus;
 import com.sp.fanikiwa.Enums.PostingCheckFlag;
 import com.sp.fanikiwa.Enums.RepaymentInterval;
+import com.sp.fanikiwa.Enums.STOCommissionChargeWho;
 import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.LoanEndpoint;
 import com.sp.fanikiwa.api.MemberEndpoint;
@@ -52,24 +53,32 @@ public class AcceptOfferComponent {
 	String userID = "SYS";
 	String Authorizer = "Auth";
 
-	public void AcceptBorrowOffer(Member lender, Offer aBorrowOffer)
+	public Loan AcceptBorrowOffer(Member lender, Offer aBorrowOffer)
 			throws Exception {
 		// /TODO realize accept offer usecase
-		// /
+		Loan loan;
+
 		ValidateOffer(aBorrowOffer, lender);
 		SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
 
 		// get the borrower from the offer
 		MemberEndpoint mDAC = new MemberEndpoint();
 		Member borrower = aBorrowOffer.getMember();
-		if (borrower.getMemberId() == lender.getMemberId())
+		if (borrower.getMemberId() == lender.getMemberId()) {
+			// Before throwing the error, revert status to open
+			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw new ForbiddenException("Cannot accept self offers");
+		}
 
 		// Check ability to pay
 		List<Transaction> txns = LoanTransactions(lender, borrower,
 				aBorrowOffer);
-		if (txns.size() < 4)
+		if (txns.size() < 4) {
+			// Before throwing the error, revert status to open
+			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw new ForbiddenException("Loan Transactions not well formed");
+		}
+
 		BatchSimulateStatus bss = TransactionPost.SimulatePost(txns,
 				PostingCheckFlag.CheckLimitAndPassFlag);
 		if (!bss.CanPost()) {
@@ -79,12 +88,16 @@ public class AcceptOfferComponent {
 					msg += e.getMessage() + "\n";
 				}
 			}
+			// Before throwing the error, revert status to open
+			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw new Exception("Simulation Error \n" + msg);
 		}
 
 		// create loan
-		CreateLoan(borrower, lender, aBorrowOffer);
+		loan = CreateLoan(borrower, lender, aBorrowOffer);
 		SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
+
+		return loan;
 	}
 
 	// <summary>
@@ -92,9 +105,10 @@ public class AcceptOfferComponent {
 	// </summary>
 	// <param name="loan">A loan value.</param>
 
-	public void AcceptLendOffer(Member borrower, Offer aLendOffer)
+	public Loan AcceptLendOffer(Member borrower, Offer aLendOffer)
 			throws Exception {
 		// /TODO realize accept offer usecase
+		Loan loan;
 
 		ValidateOffer(aLendOffer, borrower);
 		SetOfferStatus(aLendOffer, OfferStatus.Processing);
@@ -102,19 +116,26 @@ public class AcceptOfferComponent {
 		// get the lender from the offer
 		MemberEndpoint mDAC = new MemberEndpoint();
 		Member lender = aLendOffer.getMember(); // mDAC.getMemberByID(aLendOffer.getMemberId());
-		if (borrower.getMemberId() == lender.getMemberId())
+		if (borrower.getMemberId() == lender.getMemberId()) {
+			// Before throwing the error, revert status to open
+			SetOfferStatus(aLendOffer, OfferStatus.Open);
 			throw new ForbiddenException("Cannot accept self offers");
+		}
 
 		AccountEndpoint aep = new AccountEndpoint();
 		Account lenderCurr = lender.getCurrentAccount();
 		if (GLUtil.CheckLimit(lenderCurr, aLendOffer.getAmount())) {
 			aep.UnBlockFunds(lenderCurr, aLendOffer.getAmount());
-			CreateLoan(borrower, lender, aLendOffer);
+			loan = CreateLoan(borrower, lender, aLendOffer);
 		} else {
+			// Before throwing the error, revert status to open
+			SetOfferStatus(aLendOffer, OfferStatus.Open);
 			throw new Exception("Insufficient Limit");
 		}
 
 		SetOfferStatus(aLendOffer, OfferStatus.Closed);
+
+		return loan;
 	}
 
 	private void ValidateOffer(Offer offer, Member acceptee)
@@ -139,20 +160,9 @@ public class AcceptOfferComponent {
 			throw new ForbiddenException(MessageFormat.format(
 					"Offer [{0}] is expired. ", offer.getId()));
 		}
-		if (!offer.getPublicOffer() && !PrivateOfferred(offer, acceptee)) { // the
-																			// offer
-																			// is
-																			// a
-																			// private
-																			// offer
-																			// and
-																			// you
-																			// dont
-																			// exist
-																			// in
-																			// the
-																			// offerees
-																			// list
+		if (!offer.getPublicOffer() && !PrivateOfferred(offer, acceptee)) {
+			// the offer is a private offer and you dont exist in the offerees
+			// list
 			throw new ForbiddenException(MessageFormat.format(
 					"Offer [{0}] is not offerred to you. ", offer.getId()));
 		}
@@ -166,7 +176,7 @@ public class AcceptOfferComponent {
 		return (oep.isOfferAvaiable(or) == null);
 	}
 
-	private void CreateLoan(Member borrower, Member lender, Offer offer)
+	private Loan CreateLoan(Member borrower, Member lender, Offer offer)
 			throws NotFoundException, ConflictException {
 		/*
 		 * 1. The system blocks the ‘lend offer’ so that other potential
@@ -189,6 +199,7 @@ public class AcceptOfferComponent {
 		// SETP 3 Post loan transation
 		TransactionPost.Post(LoanTransactions(lender, borrower, offer));
 
+		return loan;
 	}
 
 	// <summary>
@@ -196,9 +207,10 @@ public class AcceptOfferComponent {
 	// </summary>
 	// <param name="loan">A loan value.</param>
 	// <param name="offer">A offer value.</param>
-	public void AcceptPartialBorrowOffer(Member lender, Offer partialoffer)
+	public Loan AcceptPartialBorrowOffer(Member lender, Offer partialoffer)
 			throws ForbiddenException, NotFoundException, ConflictException {
 		// /TODO realize accept offer usecase
+		Loan loan;
 
 		// Get offer
 		OfferEndpoint oep = new OfferEndpoint();
@@ -209,11 +221,10 @@ public class AcceptOfferComponent {
 					"Accepted Amount is greater than Offer Amount!");
 		}
 
-		// /
 		// get the borrower from the offer
 		Member borrower = partialoffer.getMember();
 
-		CreateLoan(borrower, lender, partialoffer);
+		loan = CreateLoan(borrower, lender, partialoffer);
 
 		// decrease offer amount. Use the OfferDAC
 		_offer.setAmount(_offer.getAmount() - partialoffer.getAmount());
@@ -224,9 +235,9 @@ public class AcceptOfferComponent {
 			SetOfferStatus(_offer, OfferStatus.Closed);
 		} else {
 			// unlock the offer. Change the offer status to Open.
-
+			SetOfferStatus(_offer, OfferStatus.Open);
 		}
-
+		return loan;
 	}
 
 	public void SetOfferStatus(Offer offer, OfferStatus status)
@@ -248,28 +259,33 @@ public class AcceptOfferComponent {
 				offer.getTerm(), (double) offer.getInterest());
 		loan.setTerm(offer.getTerm());
 		loan.setAmount(offer.getAmount());
-		//loan.setInterest(offer.getInterest());
+		// loan.setInterest(offer.getInterest());
 		loan.setMaturityDate(offer.getExpiryDate());
 		loan.setCreatedDate(new Date());
-		loan.setMemberId(borrower.getMemberId());
+		loan.setBorrowerId(borrower.getMemberId());
+		loan.setLenderId(lender.getMemberId());
 		loan.setOfferId(offer.getId());
 		loan.setPartialPay(offer.getPartialPay());
 		loan.setAccruedInterest(intr);// compute accrued interest
 
-		loan.setInterestAccrualInterval(Config.GetString("DEFAULT_INT_ACCRUAL_INTERVAL"));
-		loan.setInterestApplicationMethod(Config.GetString("DEFAULT_INT_APPLICATION_METHOD"));
-		loan.setInterestComputationMethod(Config.GetString("DEFAULT_INT_COMPUTATION_METHOD"));
-		loan.setInterestComputationTerm(Config.GetString("DEFAULT_INT_COMPUTATION_TERM"));
+		loan.setInterestAccrualInterval(Config
+				.GetString("DEFAULT_INT_ACCRUAL_INTERVAL"));
+		loan.setInterestApplicationMethod(Config
+				.GetString("DEFAULT_INT_APPLICATION_METHOD"));
+		loan.setInterestComputationMethod(Config
+				.GetString("DEFAULT_INT_COMPUTATION_METHOD"));
+		loan.setInterestComputationTerm(Config
+				.GetString("DEFAULT_INT_COMPUTATION_TERM"));
 		loan.setInterestRate(offer.getInterest());
 		loan.setIntPayingAccount(borrower.getCurrentAccount().getAccountID());
 		loan.setIntPaidAccount(lender.getCurrentAccount().getAccountID());
-		//loan.setLastIntAppDate(new Date());		
-		loan.setNextIntAppDate(LoanUtil.GetNextIntApplicationDate(loan, new Date()));
-		
-		//loan.setLastIntAccrualDate(lastIntAccrualDate);
-		loan.setNextIntAccrualDate( LoanUtil.GetNextIntAccrualDate(loan, new Date()));
-		
+		// loan.setLastIntAppDate(new Date());
+		loan.setNextIntAppDate(LoanUtil.GetNextIntApplicationDate(loan,
+				new Date()));
 
+		// loan.setLastIntAccrualDate(lastIntAccrualDate);
+		loan.setNextIntAccrualDate(LoanUtil.GetNextIntAccrualDate(loan,
+				new Date()));
 
 		// Now create the loan in the loan book
 		return loanepC.insertLoan(loan);
@@ -281,62 +297,71 @@ public class AcceptOfferComponent {
 		 * We create 2 STOs STO 1 - for Repoaying Dr Borrower.CurrentID with
 		 * PayAmount Cr Investor.CurrentAcc with PayAmount
 		 */
-		
-		if (loan.getTerm() != 0)
-		{
 
-		STO lr = new STO();
+		if (loan.getTerm() != 0) {
 
-		// fill up the repayment schedule
+			STO lr = new STO();
 
-		lr.setInterval(RepaymentInterval.M.toString()); // Create enum called
-														// RapaymentInterval
-		lr.setNoOfPayments(loan.getTerm()); // no of payments is loan terms
-		lr.setCreateDate(new Date());
-		lr.setStartDate(new Date()); // when does repayment start);
-		lr.setNextPayDate(DateExtension.addMonths(lr.getStartDate(), 1)); // next
+			// fill up the repayment schedule
+
+			lr.setInterval(RepaymentInterval.M.toString()); // Create enum
+															// called
+															// RapaymentInterval
+			lr.setNoOfPayments(loan.getTerm()); // no of payments is loan terms
+			lr.setCreateDate(new Date());
+			lr.setStartDate(new Date()); // when does repayment start);
+			lr.setNextPayDate(DateExtension.addMonths(lr.getStartDate(), 1)); // next
+																				// repayment
+																				// starts
+																				// a
+																				// month
+																				// from
+																				// today
+			lr.setEndDate(DateExtension.addMonths(lr.getStartDate(),
+					lr.getNoOfPayments())); // when does repayment end?
+											// Repayment
+											// ends start date plus no of
+											// payments
+											// months
+			lr.setDrAccount(borrower.getCurrentAccount().getAccountID()); // during
+																			// loan
 																			// repayment
-																			// starts
-																			// a
-																			// month
-																			// from
-																			// today
-		lr.setEndDate(DateExtension.addMonths(lr.getStartDate(),
-				lr.getNoOfPayments())); // when does repayment end? Repayment
-										// ends start date plus no of payments
-										// months
-		lr.setDrAccount(borrower.getCurrentAccount().getAccountID()); // during
+																			// debit
+																			// borrower
+			lr.setCrAccount(lender.getCurrentAccount().getAccountID()); // during
 																		// loan
 																		// repayment
-																		// debit
-																		// borrower
-		lr.setCrAccount(lender.getCurrentAccount().getAccountID()); // during
-																	// loan
-																	// repayment
-																	// credit
-																	// lender
-		lr.setCommissionAccount(Config.GetLong("COMMISSIONACCOUNT"));
-		lr.setDrTxnType(Config.GetLong("LOANDRAWTRANSACTIONTYPE"));
-		lr.setCrTxnType(Config.GetLong("LOANDRAWTRANSACTIONTYPE"));
-		lr.setAmountPaid(0);
+																		// credit
+																		// lender
+			lr.setCommissionAccount(Config.GetLong("COMMISSIONACCOUNT"));
+			lr.setDrTxnType(Config.GetLong("LOANDRAWTRANSACTIONTYPE"));
+			lr.setCrTxnType(Config.GetLong("LOANDRAWTRANSACTIONTYPE"));
+			lr.setAmountPaid(0);
 
-		if (loan.getTerm() != 0) //Re
-		{
-			lr.setPayAmount(((loan.getAmount() + loan.getAccruedInterest()) / loan
-					.getTerm()));
-			lr.setInterestAmount(loan.getAccruedInterest());
-		}
-		
-		lr.setTotalToPay(loan.getAmount() + loan.getAccruedInterest());
-		lr.setFeesFlag(Config.GetInt("LOANREPAYMENTFEESFLAG"));
-		lr.setChargeWho((short) Config.GetInt("CHARGEWHOFLAG"));
-		lr.setLimitFlag(0);
-		lr.setPartialPay(loan.isPartialPay());
+			if (loan.getTerm() != 0) // Re
+			{
+				lr.setPayAmount(((loan.getAmount() + loan.getAccruedInterest()) / loan
+						.getTerm()));
+				lr.setInterestAmount(loan.getAccruedInterest());
+			}
 
-		STOEndpoint stPost = new STOEndpoint();
-		stPost.insertSTO(lr);
+			lr.setTotalToPay(loan.getAmount() + loan.getAccruedInterest());
+			lr.setFeesFlag(Config.GetInt("LOANREPAYMENTFEESFLAG"));
+			String cWho = Config.GetString("CHARGEWHOFLAG");
+			// parse this string e.g. Borrowr to retun short 0
+
+			// try this; howerver you will need to include error checking just
+			// in case a wrong setting is put in the database
+			STOCommissionChargeWho enumWho = STOCommissionChargeWho
+					.valueOf(cWho);
+			lr.setChargeWho((short) enumWho.getValue());
+			lr.setLimitFlag(0);
+			lr.setPartialPay(loan.isPartialPay());
+
+			STOEndpoint stPost = new STOEndpoint();
+			stPost.insertSTO(lr);
 		}
-		//else this was a grant.  identified by a zero term
+		// else this was a grant. identified by a zero term
 	}
 
 	public List<Transaction> LoanTransactions(Member lender, Member borrower,

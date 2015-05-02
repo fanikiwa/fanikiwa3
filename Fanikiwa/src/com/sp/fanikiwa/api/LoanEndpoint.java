@@ -52,7 +52,7 @@ public class LoanEndpoint {
 		Member member = mep.GetMemberByEmail(email);
 
 		Query<Loan> query = ofy().load().type(Loan.class)
-				.filter("memberId", member.getMemberId());
+				.filter("borrowerId", member.getMemberId());
 		return listLoanByQuery(query, cursorString, count);
 	}
 
@@ -67,7 +67,7 @@ public class LoanEndpoint {
 		Member member = mep.GetMemberByEmail(email);
 
 		Query<Loan> query = ofy().load().type(Loan.class)
-				.filter("memberId", member.getMemberId());
+				.filter("lenderId", member.getMemberId());
 		return listLoanByQuery(query, cursorString, count);
 	}
 

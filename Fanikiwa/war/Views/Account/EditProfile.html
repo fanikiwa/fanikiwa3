@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -11,10 +11,10 @@
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
-<script async src="/Scripts/fanikiwaUI.js"></script>
-<script async src="/Scripts/fanikiwa.js"></script>
-<script async src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-
+<script src="/Scripts/MainMenu.js"></script>
+<script src="/Scripts/fanikiwa.js"></script>
+<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+<script src="/Scripts/EditProfile.js"></script>
 
 </head>
 
@@ -40,267 +40,9 @@
 				</section>
 			</div>
 
-
-
-			<div id="nav">
-				<ul id="menu">
-
-					<li id="mnuHome"><a id="btnSubmitIndexForm"
-						style="cursor: pointer;" href="/Views/Home/Index.html">Home</a>
-						<ul class="submenu">
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-											style="cursor: pointer;">Help</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitContactUsForm"
-											href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-											Us</a>
-									</div>
-
-								</div>
-
-							</li>
-
-<!-- 							<li> -->
-
-<!-- 								<div class="floatleft"> -->
-
-<!-- 									<div> -->
-<!-- 										<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html" -->
-<!-- 											style="cursor: pointer;">Contacts</a> -->
-<!-- 									</div> -->
-
-<!-- 								</div> -->
-
-<!-- 							</li> -->
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-											style="cursor: pointer;">About</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuGetaloan"><a>Get a loan</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateBorrowOffer.html">I want to
-											borrow money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListLendOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-					<li id="mnuMakeaninvestment"><a>Make an investment</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateLendOffer.html">I want to lend
-											money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListBorrowOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuMyprofile"><a>My profile</a>
-						<ul class="submenu">
-
-							<li id="subMenuMyAccounts">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyAccountsForm"
-											href="/Views/Account/MyAccounts.html"
-											style="cursor: pointer;">My accounts</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuMyLoans">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyLoansForm"
-											href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-											loans</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyInvestMentsForm"
-											href="/Views/Loans/ListMyInvestments.html"
-											style="cursor: pointer;">My investments</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuLendingGroups">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitGetMyLendingGroupsForm"
-											href="/Views/LendingGroups/List.html"
-											style="cursor: pointer;">My groups</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="mnuprofile"><a>Profile</a>
-								<ul class="submenu">
-
-									<li id="subMenuChangePassword">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitChangePasswordForm"
-													href="/Views/Account/_ChangePasswordPartial.html"
-													style="cursor: pointer;">Change Password</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuMyProfile">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitEditProfileSubForm"
-													href="/Views/Account/EditProfile.html"
-													style="cursor: pointer;">Change my profile</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuDeRegister">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitDeRegisterForm"
-													href="/Views/Account/DeRegister.html"
-													style="cursor: pointer;">Deregister</a>
-											</div>
-
-										</div>
-
-									</li>
-
-								</ul></li>
-
-						</ul></li>
-
-<!-- 					<li> -->
-
-<!-- 						<div class="floatleft"> -->
-
-<!-- 							<div> -->
-<!-- 								<a id="btnSubmitListMyOffersForm" -->
-<!-- 									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My -->
-<!-- 									Offers</a> -->
-<!-- 							</div> -->
-
-<!-- 						</div> -->
-
-<!-- 					</li> -->
-
-
-				</ul>
-			</div>
-
-
+			<div id="MainMenu"></div>
+			<div id="subMenu"></div>
+ 
 		</div>
 
 
@@ -330,32 +72,28 @@
 						<div class="pad">
 
 							<div>
-								<label for="txtEmail">Email</label> <input id="txtEmail"
-									autocomplete="autocomplete" placeholder="Email"
-									autofocus="autofocus" type="text"></input>
+								<input id="txtEmail" placeholder="Email" type="hidden"></input>
 							</div>
 
 							<div>
 								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									autocomplete="autocomplete" placeholder="Surname" type="text"></input>
+									autofocus autocomplete placeholder="Surname" type="text"></input>
 							</div>
 
 							<div>
 								<label for="txtOtherNames">OtherNames</label> <input
-									autocomplete="autocomplete" id="txtOtherNames"
-									placeholder="OtherNames" type="text"></input>
+									autocomplete id="txtOtherNames" placeholder="OtherNames"
+									type="text"></input>
 							</div>
 
 							<div>
-								<label for="txtTelephone">Telephone</label> <input
-									autocomplete="autocomplete" id="txtTelephone"
-									placeholder="Telephone" type="tel"></input>
+								<input id="txtTelephone" placeholder="Telephone" type="hidden"></input>
 							</div>
 
 							<div>
 								<label for="txtNationalID">NationalID</label> <input
-									autocomplete="autocomplete" id="txtNationalID"
-									placeholder="NationalID" type="text"></input>
+									autocomplete id="txtNationalID" placeholder="NationalID"
+									type="text"></input>
 							</div>
 
 
@@ -404,8 +142,8 @@
 					</article>
 
 					<div style="float: left; clear: both">
-						<input type="submit" value="Update" id="btnUpdate" 
-							style="float: left; clear: both" /> 
+						<input type="submit" value="Update" id="btnUpdate"
+							style="float: left; clear: both" />
 					</div>
 
 				</fieldset>
@@ -446,145 +184,10 @@
 
 
 	<script type="text/javascript">
-	 
 		function init() {
-			fanikiwa.memberendpoint.ui.init('//' + window.location.host + '/_ah/api');
-		}
-
-		function enableButton() {
-			$("input[type=submit]").removeAttr("disabled");
-		}
-
-		function populateControls(member) {
-
-			document.getElementById('txtEmail').value = member.result.email;
-			document.getElementById('txtSurname').value = member.result.surname;
-			document.getElementById('txtOtherNames').value = member.result.otherNames;
-			document.getElementById('txtTelephone').value = member.result.telephone;
-			document.getElementById('txtNationalID').value = member.result.nationalID;
-			document.getElementById('dtpDateOfBirth').value = member.result.dateOfBirth;
-			document.getElementById('txtRefferedBy').value = member.result.refferedBy;
-			document.getElementById('txtMaxRecordsToDisplay').value = member.result.maxRecordsToDisplay;
-			document.getElementById('cboGender').value = member.result.gender;
-			document.getElementById('cboInformBy').value = member.result.informBy;
-
+			fanikiwa.memberendpoint.profile.init(GETROOT());
 		}
 	</script>
-
-	<script type="text/javascript">
-		var errormsg = '';
-		errormsg += '<ul id="errorList">';
-
-		function updateProfile() {
-
-			errormsg = '';
-			ClearException();
-			errormsg += '<ul id="errorList">';
-			var error_free = true;
-
-			// Validate the entries
-			var _Email = document.getElementById('txtEmail').value;
-			var _Surname = document.getElementById('txtSurname').value;
-			var _OtherNames = document.getElementById('txtOtherNames').value;
-			var _Telephone = document.getElementById('txtTelephone').value;
-			var _NationalID = document.getElementById('txtNationalID').value;
-			var _DateOfBirth = document.getElementById('dtpDateOfBirth').value;
-			var _RefferedBy = document.getElementById('txtRefferedBy').value;
-			var _MaxRecordsToDisplay = document
-					.getElementById('txtMaxRecordsToDisplay').value;
-			var _Gender = document.getElementById('cboGender').value;
-			var _InformBy = document.getElementById('cboInformBy').value;
-
-			if (_Surname.length == 0) {
-				errormsg += '<li>' + " Surname cannot be null " + '</li>';
-				error_free = false;
-			}
-			if (_OtherNames.length == 0) {
-				errormsg += '<li>' + " OtherNames cannot be null " + '</li>';
-				error_free = false;
-			}
-			if (_Telephone.length == 0) {
-				errormsg += '<li>' + " Telephone cannot be null " + '</li>';
-				error_free = false;
-			}
-			if (_NationalID.length == 0) {
-				errormsg += '<li>' + " NationalID cannot be null " + '</li>';
-				error_free = false;
-			}
-
-			if (!error_free) {
-				errormsg += "</ul>";
-				$("#error-display-div").html(errormsg);
-				$("#error-display-div").removeClass('displaynone');
-				$("#error-display-div").addClass('displayblock');
-				$("#error-display-div").show();
-				return;
-			} else {
-				ClearException();
-			}
-
-			// Build the Request Object
-			var member = {};
-			member.email = _Email;
-			member.surname = _Surname;
-			member.otherNames = _OtherNames;
-			member.telephone = _Telephone;
-			member.nationalID = _NationalID;
-			member.dateOfBirth = _DateOfBirth;
-			member.refferedBy = _RefferedBy;
-			member.maxRecordsToDisplay = _MaxRecordsToDisplay;
-			member.gender = _Gender;
-			member.informBy = _InformBy;
-
-			updateProfileNow(member);
-		}
-
-		function updateProfileNow(member) {
-
-			var request = gapi.client.memberendpoint.updateMember(member)
-			.execute(function(response) {
-						console.log(response);
-						var successmessage = "Member Id: "
-								+ response.result.memberId;
-						sessionStorage.successmessage = successmessage;
-						window.location.href = "/Views/Shared/Successful.html";
-					}, function(reason) {
-						console.log('Error: ' + reason.result.error.message);
-						errormsg += '<li>' + reason + '</li>';
-						DisplayException(errormsg);
-						return;
-					});
-		}
-
-		function Clear() {
-			$("#txtEmail").val("");
-			$("#txtSurname").val("");
-			$("#txtOtherNames").val("");
-			$("#txtTelephone").val("");
-			$("#txtNationalID").val("");
-			$("#dtpDateOfBirth").val("");
-			$("#txtRefferedBy").val("");
-			$("#txtMaxRecordsToDisplay").val("");
-			$("#cboGender").val("-1");
-			$("#cboInformBy").val("-1");
-		}
-
-		function DisplayException(errormsg) {
-
-			errormsg += "</ul>";
-
-			$("#error-display-div").html(errormsg);
-			$("#error-display-div").removeClass('displaynone');
-			$("#error-display-div").addClass('displayblock');
-			$("#error-display-div").show();
-		}
-
-		function ClearException() {
-			$('#errorList').remove();
-			$('#error-display-div').empty();
-		}
-	</script>
-
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
 

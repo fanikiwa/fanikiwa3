@@ -47,6 +47,17 @@ public class LendingGroupEndpoint {
 			Query<Lendinggroup> query = ofy().load().type(Lendinggroup.class);
 			return GetLendinggroupsFromQuery(query, cursorString, count);
 		}
+		
+		@ApiMethod(name = "retrieveLendinggroupsByCreator")
+		public CollectionResponse<Lendinggroup> retrieveLendinggroupsByCreator(
+				@Named("email") String email,
+				@Nullable @Named("cursor") String cursorString,
+				@Nullable @Named("count") Integer count) {
+
+			MemberEndpoint mep = new MemberEndpoint();
+			Member member = mep.GetMemberByEmail(email);
+			return selectLendinggroupsByCreator(member.getMemberId(), cursorString, count);
+		}
 
 		@ApiMethod(name = "selectLendinggroupsByCreator")
 		public CollectionResponse<Lendinggroup> selectLendinggroupsByCreator(

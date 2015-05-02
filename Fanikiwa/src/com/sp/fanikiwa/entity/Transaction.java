@@ -13,32 +13,34 @@ public class Transaction {
 
 	@Id
 	Long transactionID;
- 
+
 	private double amount;
- 
+
 	private String authorizer;
- 
+
 	private String contraReference;
- 
+
 	private boolean forcePostFlag;
- 
+
 	private String narrative;
- 
+
+	@Index
 	private Date postDate;
- 
+
 	private Date recordDate;
- 
+
 	private String reference;
- 
+
 	private String statementFlag;
- 
+
 	private String userID;
- 
+
 	private Date valueDate;
 
-	// Foreign keys 
+	// Foreign keys
+	@Index
 	@Load
-	Ref<Account> account; 
+	Ref<Account> account;
 
 	@Load
 	Ref<TransactionType> transactionType;

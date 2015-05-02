@@ -13,52 +13,53 @@ public class Member {
 
 	@Id
 	Long memberId;
- 
+
 	private Date dateActivated;
- 
+
 	private Date dateJoined;
- 
+
 	private Date dateOfBirth;
 	@Index
 	private String email;
- 
+
 	private String gender;
- 
+
 	private String informBy;
 
 	private int maxRecordsToDisplay;
 	@Index
 	private String nationalID;
- 
+
 	private String otherNames;
 
 	private String photo;
 	@Index
 	private String pwd;
- 
+
 	private int refferedBy;
 	@Index
 	private String status;
- 
+
 	private String surname;
 	@Index
 	private String telephone;
 
-	// FK 
+	// FK
 	@Load
 	Ref<Account> investmentAccount;
- 
+
 	@Load
 	Ref<Account> loanAccount;
- 
+
 	@Load
 	Ref<Account> currentAccount;
- 
+
 	@Load
 	Ref<Account> interestIncAccount;
- 
+
 	@Load
 	Ref<Account> interestExpAccount;
+
 	@Load
 	Ref<Customer> customer;
 
@@ -217,7 +218,7 @@ public class Member {
 	public void setCurrentAccount(Account currentAccount) {
 		this.currentAccount = Ref.create(currentAccount);
 	}
-	
+
 	public Account getinterestExpAccount() {
 		return this.interestExpAccount.get();
 	}
@@ -225,7 +226,7 @@ public class Member {
 	public void setinterestExpAccount(Account interestExpAccount) {
 		this.interestExpAccount = Ref.create(interestExpAccount);
 	}
-	
+
 	public Account getinterestIncAccount() {
 		return this.interestIncAccount.get();
 	}

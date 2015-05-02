@@ -9,9 +9,12 @@ import com.sp.fanikiwa.entity.Coa;
 import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Diaryprogramcontrol;
+import com.sp.fanikiwa.entity.Lendinggroup;
+import com.sp.fanikiwa.entity.Lendinggroupmember;
 import com.sp.fanikiwa.entity.Loan;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.MpesaIPNMessage;
+import com.sp.fanikiwa.entity.MpesaTestIPNMessage;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.Offergroup;
@@ -61,6 +64,9 @@ public class OfyService {
 		ObjectifyService.register(TieredDet.class);
 		ObjectifyService.register(STO.class);
 		ObjectifyService.register(MpesaIPNMessage.class);
+		ObjectifyService.register(MpesaTestIPNMessage.class);
+		ObjectifyService.register(Lendinggroupmember.class);
+		ObjectifyService.register(Lendinggroup.class);
 	}
 
 	public static Objectify ofy() {

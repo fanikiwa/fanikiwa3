@@ -141,17 +141,6 @@ public class MpesaIPNServlet extends HttpServlet {
 
 	private boolean isMessageFromSafaricomMock(HttpServletRequest request) {
 
-		// boolean isMessageFromSafaricom = false;
-		// String server = request.getServerName();
-		// Integer port = request.getServerPort();
-		// String user = request.getParameter("user");
-		// String pass = request.getParameter("pass");
-		//
-		// // compare all the above to what is known and return true if all
-		// match
-		// if (server.equals(SAFARICOM_SERVER_NAME))
-		// isMessageFromSafaricom = true;
-
 		return true;
 	}
 

@@ -48,31 +48,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "informdbendpoint.listInformdb" : {
-      "path" : "informdb",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "informdbendpoint.insertInformdb" : {
       "path" : "informdb",
       "httpMethod" : "POST",
@@ -100,6 +75,31 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "informdbendpoint.listInformdb" : {
+      "path" : "informdb",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -183,11 +183,6 @@
           "$ref" : "Informdb"
         }
       },
-      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Informdb"
-        }
-      },
       "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
         "request" : {
           "$ref" : "Informdb"
@@ -202,6 +197,11 @@
         },
         "response" : {
           "$ref" : "Informdb"
+        }
+      },
+      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Informdb"
         }
       },
       "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb" : {

@@ -20,23 +20,28 @@ public class Offer {
 	private String description;
 
 	private double amount;
- 
+
 	private int term;
- 
+
 	private double interest;
- 
+
+	@Index
 	private boolean publicOffer;
- 
+
 	private Date createdDate;
- 
+
+	@Index
 	private Date expiryDate;
- 
+
+	@Index
 	private String offerType;
- 
+
 	private boolean partialPay;
- 
+
+	@Index
 	private String status;
- 
+
+	@Index
 	@Load
 	Ref<Member> member;
 

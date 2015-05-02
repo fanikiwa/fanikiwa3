@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -11,9 +11,10 @@
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
-<script async src="/Scripts/fanikiwaUI.js"></script>
-<script async src="/Scripts/fanikiwa.js"></script>
-<script async src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+<script src="/Scripts/MainMenu.js"></script>
+<script src="/Scripts/fanikiwa.js"></script>
+<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+<script src="/Scripts/OfferDetails.js"></script>
 
 
 </head>
@@ -40,267 +41,9 @@
 				</section>
 			</div>
 
-
-
-			<div id="nav">
-				<ul id="menu">
-
-					<li id="mnuHome"><a id="btnSubmitIndexForm"
-						style="cursor: pointer;" href="/Views/Home/Index.html">Home</a>
-						<ul class="submenu">
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-											style="cursor: pointer;">Help</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitContactUsForm"
-											href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-											Us</a>
-									</div>
-
-								</div>
-
-							</li>
-
-<!-- 							<li> -->
-
-<!-- 								<div class="floatleft"> -->
-
-<!-- 									<div> -->
-<!-- 										<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html" -->
-<!-- 											style="cursor: pointer;">Contacts</a> -->
-<!-- 									</div> -->
-
-<!-- 								</div> -->
-
-<!-- 							</li> -->
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-											style="cursor: pointer;">About</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuGetaloan"><a>Get a loan</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateBorrowOffer.html">I want to
-											borrow money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListLendOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-					<li id="mnuMakeaninvestment"><a>Make an investment</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateLendOffer.html">I want to lend
-											money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListBorrowOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuMyprofile"><a>My profile</a>
-						<ul class="submenu">
-
-							<li id="subMenuMyAccounts">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyAccountsForm"
-											href="/Views/Account/MyAccounts.html"
-											style="cursor: pointer;">My accounts</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuMyLoans">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyLoansForm"
-											href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-											loans</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyInvestMentsForm"
-											href="/Views/Loans/ListMyInvestments.html"
-											style="cursor: pointer;">My investments</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuLendingGroups">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitGetMyLendingGroupsForm"
-											href="/Views/LendingGroups/List.html"
-											style="cursor: pointer;">My groups</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="mnuprofile"><a>Profile</a>
-								<ul class="submenu">
-
-									<li id="subMenuChangePassword">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitChangePasswordForm"
-													href="/Views/Account/_ChangePasswordPartial.html"
-													style="cursor: pointer;">Change Password</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuMyProfile">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitEditProfileSubForm"
-													href="/Views/Account/EditProfile.html"
-													style="cursor: pointer;">Change my profile</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuDeRegister">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitDeRegisterForm"
-													href="/Views/Account/DeRegister.html"
-													style="cursor: pointer;">Deregister</a>
-											</div>
-
-										</div>
-
-									</li>
-
-								</ul></li>
-
-						</ul></li>
-
-<!-- 					<li> -->
-
-<!-- 						<div class="floatleft"> -->
-
-<!-- 							<div> -->
-<!-- 								<a id="btnSubmitListMyOffersForm" -->
-<!-- 									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My -->
-<!-- 									Offers</a> -->
-<!-- 							</div> -->
-
-<!-- 						</div> -->
-
-<!-- 					</li> -->
-
-
-				</ul>
-			</div>
-
-
+			<div id="MainMenu"></div>
+			<div id="subMenu"></div>
+ 
 		</div>
 
 
@@ -316,81 +59,104 @@
 
 			<div id="error-display-div" class="displaynone"></div>
 
-
 			<hgroup class="title">
 				<h2 class="page-title">Offer Details</h2>
 			</hgroup>
 
-			<form action="javascript:void(0);">
+			<div id="apiResults" style="float: left; clear: both"></div>
 
-				<fieldset>
-					<legend>Offer Details</legend>
+			<div style="float: left; clear: both">
 
-					<article class="col1">
-						<div class="pad">
+				<form action="javascript:void(0);">
 
-							<div>
-								<label for="txtDescription">Description</label> <input
-									id="txtDescription" placeholder="Description"
-									autofocus="autofocus" type="text"></input>
+					<fieldset>
+						<legend>Offer Details</legend>
+
+						<article class="col1">
+							<div class="pad">
+
+								<div>
+									<label for="txtDescription">Description</label> <input
+										id="txtDescription" placeholder="Description" autofocus
+										type="text"></input>
+								</div>
+
+								<div>
+									<label for="txtAmount">Amount</label> <input id="txtAmount"
+										placeholder="Amount" type="number" min="0"></input>
+								</div>
+
+								<div>
+									<label for="txtInterest">Interest Rate(%)</label> <input
+										id="txtInterest" placeholder="Interest Rate(%)" type="number"
+										min="0"></input>
+								</div>
+
+								<div>
+									<label for="txtTerm">Term in Month</label> <input id="txtTerm"
+										placeholder="Term in Month" type="number" min="0"></input>
+								</div>
+
+
 							</div>
+						</article>
 
-							<div>
-								<label for="txtAmount">Amount</label> <input id="txtAmount"
-									placeholder="Amount" type="number" min="0"></input>
+						<article class="col2">
+							<div class="pad">
+
+								<div>
+									<label for="cboOfferType">OfferType</label> <select
+										name="OfferType" id="cboOfferType">
+										<option value="L">Lend</option>
+										<option value="B">Borrow</option>
+									</select>
+								</div>
+
+								<div id="divOfferees" class="displaynone">
+									<label for="txtofferees">Offer made to</label> <input
+										id="txtofferees" placeholder="Offerees" autocomplete
+										type="text"></input>
+								</div>
+
+								<div>
+									<label for="chkPublicOffer">Private Offer</label> <input
+										id="chkPublicOffer" placeholder="Private Offer"
+										type="checkbox"></input>
+								</div>
+
+								<div>
+									<label for="chkPartialPay">PartialPay</label> <input
+										id="chkPartialPay" placeholder="PartialPay" type="checkbox"></input>
+								</div>
+
+								<div>
+									<label for="cbostatus">Status</label> <select id="cbostatus">
+										<option value="Open">Open</option>
+										<option value="Processing">Processing</option>
+										<option value="Closed">Closed</option>
+									</select>
+								</div>
+
+								<div>
+									<label for="dtpcreatedDate">Created Date</label> <input
+										id="dtpcreatedDate" placeholder="Created Date" type="date"></input>
+								</div>
+
+								<div>
+									<label for="dtpexpiryDate">Expiry Date</label> <input
+										id="dtpexpiryDate" placeholder="Expiry Date" type="date"></input>
+								</div>
+
 							</div>
-
-							<div>
-								<label for="txtInterest">Interest</label> <input
-									id="txtInterest" placeholder="Interest" type="number" min="0"></input>
-							</div>
-
-							<div>
-								<label for="txtTerm">Term</label> <input id="txtTerm"
-									placeholder="Term" type="number" min="0"></input>
-							</div>
+						</article>
 
 
-						</div>
-					</article>
-
-					<article class="col2">
-						<div class="pad">
-
-							<div>
-								<label for="cboOfferType">OfferType</label> <select
-									name="OfferType" id="cboOfferType">
-									<option value="L">Lend</option>
-									<option value="B">Borrow</option>
-								</select>
-							</div>
-
-							<div>
-							<label for="txtofferees">Offerees</label> <input
-								id="txtofferees" placeholder="Offerees"
-								autocomplete="autocomplete" type="text"></input>
-						</div>
-						
-							<div>
-								<label for="chkPublicOffer">PublicOffer</label> <input
-									id="chkPublicOffer" placeholder="PublicOffer" type="checkbox"></input>
-							</div>
-
-							<div>
-								<label for="chkPartialPay">PartialPay</label> <input
-									id="chkPartialPay" placeholder="PartialPay" type="checkbox"></input>
-							</div>
- 
-						</div>
-					</article>
-
-					 
-
-				</fieldset>
+					</fieldset>
 
 
-			</form>
+				</form>
 
+			</div>
 
 		</section>
 
@@ -406,17 +172,14 @@
 
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy;  
-					Software Providers Limited. All Rights Reserved.</p>
+				<p style="font-size: 15px">Copyright &copy; Software Providers
+					Limited. All Rights Reserved.</p>
 			</div>
 		</div>
 
 
 		<div class="content-wrapper clearboth">
-			<div>
- 
-
-			</div>
+			<div></div>
 		</div>
 
 
@@ -426,175 +189,22 @@
 
 
 	<script type="text/javascript">
- 
-		 	var errormsg='';
-		 	errormsg +=   '<ul id="errorList">' ;
-		      
-		       function init() {
-		        
-		        	try {
-		        	  
-       	  // Parameters are APIName,APIVersion,CallBack function,API Root
-	       gapi.client.load('offerendpoint', 'v1', null, ROOT);
-	       gapi.client.load('memberendpoint', 'v1', null, ROOT);
-          
-          // wire the submit button
-	       document.getElementById('btnCreate').onclick = function() {
-		   MakeOffer();
-        	  }
-	       
-        	} catch(exception) {  
-                console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-         }
-   }
-        
-     // function that will execute the getMemberByEmail call
-     function  getMemberByEmail(email)
-     {     
-       	try {
-     // make the api call
-     gapi.client.memberendpoint.getMemberByEmail(email).execute(function(resp) {
-       		if (!resp.code) {       			 
-       		return resp;       		
-       		}       		  
-       		else {
-       			console.log(resp.code + " : " + resp.message); 
-    			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-    			DisplayException(errormsg);
-       		}
-       	});       	
-       	} catch(exception) { 
-       		console.log("Error : " + exception);
-            errormsg += '<li>' + exception   + '</li>';
-            DisplayException(errormsg); 
-      }
-     }
-        // function that will execute the MakeOffer call
-        function MakeOffer() {
+		function init() {
+			fanikiwa.offerendpoint.offerdetail.init(GETROOT());
+		}
 
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free=true;
-            
-        	// retrieve the entries
-        	var _Description = document.getElementById('txtDescription').value;
-        	var _Amount = document.getElementById('txtAmount').value;
-        	var _Interest = document.getElementById('txtInterest').value;
-        	var _Term = document.getElementById('txtTerm').value;
-        	var _OfferType = document.getElementById('cboOfferType').value; 
-        	var _PublicOffer = Boolean(document.getElementById('chkPublicOffer').value);
-        	var _PartialPay = Boolean(document.getElementById('chkPartialPay').value);
-        	var _offerees = document.getElementById('txtofferees').value;
-        	
-         if(_Description.length == 0)
-       	 {        		 
-            errormsg += '<li>' + " Description cannot be null "   + '</li>'; 
-           	error_free = false;   
-       	 }
-       	 if(_Amount.length == 0)
-       	 {        		 
-       		errormsg += '<li>' + " Amount cannot be null "   + '</li>'; 
-           	error_free = false; 
-       	 }
-       	 if(_Interest.length == 0)
-       	 {        		 
-       		errormsg += '<li>' + " Interest cannot be null "   + '</li>'; 
-           	error_free = false; 
-       	 }
-       	 if(_Term.length == 0)
-       	 {        		 
-       		errormsg += '<li>' + " Term cannot be null "   + '</li>'; 
-           	error_free = false;  
-       	 } 
-
-      	 if (!error_free){
-	         errormsg += "</ul>";
-	    	 $("#error-display-div").html(errormsg); 
-	         $("#error-display-div").removeClass('displaynone');
-	         $("#error-display-div").addClass('displayblock');
-	         $("#error-display-div").show();  
-	         return;
-         }
-        else{
-	        ClearException(); 
-         }
-      	 
-        	// retrieve email from local storage
-        	var email = localStorage.getItem('loggedinuser')  
-        	 
-        	    
-        	// Build the Request Object
-        	var OfferDTO = {};
-        	OfferDTO.description = _Description;
-        	OfferDTO.amount = _Amount;
-        	OfferDTO.interest = _Interest;
-        	OfferDTO.term = _Term;
-        	OfferDTO.publicOffer = _PublicOffer;
-        	OfferDTO.offerType = _OfferType;
-        	OfferDTO.partialPay = _PartialPay;
-        	OfferDTO.status = "Open";
-        	OfferDTO.email = email;  
-        	OfferDTO.offerees = _offerees;        	 
-        	 
-        	gapi.client.offerendpoint.saveOffer(OfferDTO).execute(function(resp) {
-        		if (!resp.code) {
-        			 
-        		window.location.href = "/Views/Shared/Successful.html";
-        		
-        		} 
-        		else {
-        			console.log(resp.code + " : " + resp.message); 
-        			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-        			DisplayException(errormsg);
-        		}    
-        	});        	
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-        }
-     }        	
-         
-        function Clear(){
- 	       $("#txtDescription").val("");
- 	       $("#txtAmount").val("");
- 	       $("#txtInterest").val("");
- 	       $("#txtTerm").val("");
-	       $("#cboOfferType").val("L");
-	       $("#chkPublicOffer").attr('checked', false);
-	       $("#chkPartialPay").attr('checked', false); 
-        }
-        
-     	function LogOff() { 
-     	localStorage.removeItem("loggedinuser");
-        window.location.href = "/Views/Account/Login.html";  
-     	}
-     	
-     	function ManageProfile() { 
-     	window.location.href = "/Views/Account/EditProfile.html";  
-        }
-         
-        function DisplayException(errormsg) {
-       	 
-	      	errormsg += "</ul>";
-	      		 
-	       	 $("#error-display-div").html(errormsg); 
-	         $("#error-display-div").removeClass('displaynone');
-	         $("#error-display-div").addClass('displayblock');
-	         $("#error-display-div").show();  
-      	  }
-
-	   	function ClearException() {
-	   		$('#errorList').remove();
-	   		$('#error-display-div').empty();
-	   	}
-       	   	
-    </script>
+		$('#chkPublicOffer').change(function() {
+			if ($(this).is(":checked")) {
+				$("#divOfferees").removeClass('displaynone');
+				$("#divOfferees").addClass('displayblock');
+				$("#divOfferees").show();
+			} else {
+				$("#divOfferees").removeClass('displayblock');
+				$("#divOfferees").addClass('displaynone');
+				$("#divOfferees").hide();
+			}
+		});
+	</script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
 

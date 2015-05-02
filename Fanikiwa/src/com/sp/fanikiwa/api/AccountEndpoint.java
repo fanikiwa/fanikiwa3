@@ -16,6 +16,8 @@ import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
+import com.sp.utils.Config;
+import com.sp.utils.DateExtension;
 import com.sp.utils.Utils;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -263,22 +265,25 @@ public class AccountEndpoint {
 
 		RequestResult res2 = new RequestResult();
 		for (final List<Transaction> txns : choppedtxns) {
-			
+
 			res2 = ofy().transact(new Work<RequestResult>() {
 				public RequestResult run() {
 					RequestResult res = new RequestResult();
 					res.setResultMessage("Successful");
 					for (Transaction transaction : txns) {
 						res = Post(transaction, flags);
-						if(!res.isResult()) return res; //get out if you ever get a false situation
+						if (!res.isResult())
+							return res; // get out if you ever get a false
+										// situation
 					}
 
 					return res;
 				}
 			});
-			if(!res2.isResult()) return res2; //get out if you ever get a false situation
+			if (!res2.isResult())
+				return res2; // get out if you ever get a false situation
 		}
-		
+
 		return res2;
 	}
 
@@ -286,18 +291,20 @@ public class AccountEndpoint {
 	public RequestResult DoubleEntryPost(final DoubleEntry doubleEntry,
 			@Named("flags") final PostingCheckFlag flags) {
 		RequestResult res2 = new RequestResult();
-		 res2 = ofy().transact(new Work<RequestResult>() {
+		res2 = ofy().transact(new Work<RequestResult>() {
 			public RequestResult run() {
 
 				RequestResult res = new RequestResult();
 				res.setResultMessage("Successful");
 				res.setResult(true);
-				
+
 				res = Post(doubleEntry.getDr(), flags);
-				if(!res.isResult()) return res;
+				if (!res.isResult())
+					return res;
 				res = Post(doubleEntry.getCr(), flags);
-				if(!res.isResult()) return res;
-				
+				if (!res.isResult())
+					return res;
+
 				return res;
 			}
 		});
@@ -337,12 +344,30 @@ public class AccountEndpoint {
 		List<StatementModel> records = new ArrayList<StatementModel>();
 
 		Account account = findRecord(accountID);
-		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(account,
+		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(accountID,
 				cursorString, count);
 
 		// go through the transactins and compute running balance
 
-		double bal = account.getBookBalance();
+		StatementModel first = new StatementModel();
+		first.setPostDate(new Date());
+		first.setTransactionID(-1L);
+		first.setNarrative("BALANCE B/F");
+		double amt = account.getBookBalance(); double bal=0;
+		if (amt > 0) {
+			first.setCredit(amt);
+			first.setDebit(0);
+			bal = amt;
+		} else {
+			first.setCredit(0);
+			first.setDebit(amt);
+			bal = amt;
+		}
+		first.setBalance(bal);
+
+		records.add(first);
+		
+
 		for (Transaction txn : txnCB.getItems()) {
 			StatementModel txnv = new StatementModel();
 			txnv.setPostDate(txn.getPostDate());
@@ -373,10 +398,19 @@ public class AccountEndpoint {
 
 	@ApiMethod(name = "statement")
 	public CollectionResponse<StatementModel> GetStatement(
-			@Named("accountID") Long accountID, @Named("sdate") Date sdate,
-			@Named("edate") Date edate,
+			@Named("accountID") Long accountID,
+			@Nullable @Named("sdate") Date sdate,
+			@Nullable @Named("edate") Date edate,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
+
+		int months = Config.GetInt("STATEMENTMONTHS", 2);
+		if (sdate == null) {
+			sdate = new Date();
+		}
+		if (edate == null) {
+			edate = DateExtension.addMonths(sdate, (months * -1));
+		}
 
 		TransactionEndpoint tep = new TransactionEndpoint();
 		List<StatementModel> records = new ArrayList<StatementModel>();
@@ -386,7 +420,7 @@ public class AccountEndpoint {
 				account, cursorString, count);
 
 		StatementModel first = new StatementModel();
-		first.setPostDate(new Date());
+		first.setPostDate(sdate);
 		first.setTransactionID(-1L);
 		first.setNarrative("BALANCE B/F");
 

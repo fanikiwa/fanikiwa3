@@ -13,10 +13,13 @@ import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferReceipient;
+import com.sp.fanikiwa.entity.StatementModel;
+import com.sp.utils.PeerLendingUtil;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Named;
@@ -34,11 +37,30 @@ public class OfferReceipientEndpoint {
 	 */  
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listOfferReceipient")
-	public CollectionResponse<OfferReceipient> listOfferReceipient(
+	public CollectionResponse<Offer> listOfferReceipient(
+			@Named("memberId") Long MemberId, 
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Query<OfferReceipient> query = ofy().load().type(OfferReceipient.class);
+		Member member = PeerLendingUtil.GetMember(MemberId);
+		Query<OfferReceipient> query = ofy().load().type(OfferReceipient.class)
+				.filter("member", member);
+		
+		CollectionResponse<OfferReceipient> cb = listOfferReceipientQuery(query,cursorString,count);
+		//convert or into offers
+		List<Offer> records = new ArrayList<Offer>();
+		for(OfferReceipient or : cb.getItems())
+		{
+			records.add(or.getOffer());
+		}
+				
+		return CollectionResponse.<Offer> builder().setItems(records)
+				.setNextPageToken(cb.getNextPageToken()).build();
+	}
+	private CollectionResponse<OfferReceipient> listOfferReceipientQuery(
+			Query<OfferReceipient> query, 
+				@Nullable @Named("cursor") String cursorString,
+				@Nullable @Named("count") Integer count) {
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {

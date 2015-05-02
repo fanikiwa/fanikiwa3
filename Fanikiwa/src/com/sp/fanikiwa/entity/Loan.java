@@ -18,7 +18,10 @@ public class Loan {
 
 	private Date maturityDate;
 
-	private Long memberId;
+	@Index
+	private Long borrowerId;
+	@Index
+	private Long lenderId;
 
 	private Long offerId;
 
@@ -54,14 +57,12 @@ public class Loan {
 											// Permissible values are - D1,
 											// D360, D365, M1, M30, Y
 
-	// Interest Application
-	// This means when is the interest earned/paid for investments or
-	// expensed/paid for loans?.
+	// Interest Application. This means when is the interest earned/paid for
+	// investments or expensed/paid for loans?.
 	@Index
-	private String interestApplicationMethod;// Permissible values are - M
-												// monthly. Inst- when
-												// installment goes thro. All-
-												// when loan is finally paid
+	private String interestApplicationMethod;
+	// Permissible values are - M monthly. Inst- when installment goes thro.
+	// All- when loan is finally paid
 	@Index
 	private Date lastIntAppDate;
 	@Index
@@ -104,12 +105,20 @@ public class Loan {
 		this.maturityDate = maturityDate;
 	}
 
-	public Long getMemberId() {
-		return memberId;
+	public Long getBorrowerId() {
+		return borrowerId;
 	}
 
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
+	public void setBorrowerId(Long borrowerId) {
+		this.borrowerId = borrowerId;
+	}
+
+	public Long getLenderId() {
+		return lenderId;
+	}
+
+	public void setLenderId(Long lenderId) {
+		this.lenderId = lenderId;
 	}
 
 	public Long getOfferId() {

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -11,9 +11,10 @@
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
-<script async src="/Scripts/fanikiwaUI.js"></script>
-<script async src="/Scripts/fanikiwa.js"></script>
-<script async src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+<script src="/Scripts/MainMenu.js"></script>
+<script src="/Scripts/fanikiwa.js"></script>
+<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
+<script src="/Scripts/MyInvestments.js"></script>
 
 
 </head>
@@ -40,267 +41,9 @@
 				</section>
 			</div>
 
-
-
-			<div id="nav">
-				<ul id="menu">
-
-					<li id="mnuHome"><a id="btnSubmitIndexForm"
-						style="cursor: pointer;" href="/Views/Home/Index.html">Home</a>
-						<ul class="submenu">
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-											style="cursor: pointer;">Help</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitContactUsForm"
-											href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-											Us</a>
-									</div>
-
-								</div>
-
-							</li>
-
-<!-- 							<li> -->
-
-<!-- 								<div class="floatleft"> -->
-
-<!-- 									<div> -->
-<!-- 										<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html" -->
-<!-- 											style="cursor: pointer;">Contacts</a> -->
-<!-- 									</div> -->
-
-<!-- 								</div> -->
-
-<!-- 							</li> -->
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-											style="cursor: pointer;">About</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuGetaloan"><a>Get a loan</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateBorrowOffer.html">I want to
-											borrow money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListLendOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-					<li id="mnuMakeaninvestment"><a>Make an investment</a>
-						<ul class="submenu">
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitIndexForm" style="cursor: pointer;"
-											href="/Views/Offers/CreateLendOffer.html">I want to lend
-											money</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-											href="/Views/Offers/ListBorrowOffers.html">My offers</a>
-									</div>
-
-								</div>
-
-							</li>
-
-
-						</ul></li>
-
-
-
-					<li id="mnuMyprofile"><a>My profile</a>
-						<ul class="submenu">
-
-							<li id="subMenuMyAccounts">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyAccountsForm"
-											href="/Views/Account/MyAccounts.html"
-											style="cursor: pointer;">My accounts</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuMyLoans">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyLoansForm"
-											href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-											loans</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li>
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitMyInvestMentsForm"
-											href="/Views/Loans/ListMyInvestments.html"
-											style="cursor: pointer;">My investments</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="subMenuLendingGroups">
-
-								<div class="floatleft">
-
-									<div>
-										<a id="btnSubmitGetMyLendingGroupsForm"
-											href="/Views/LendingGroups/List.html"
-											style="cursor: pointer;">My groups</a>
-									</div>
-
-								</div>
-
-							</li>
-
-							<li id="mnuprofile"><a>Profile</a>
-								<ul class="submenu">
-
-									<li id="subMenuChangePassword">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitChangePasswordForm"
-													href="/Views/Account/_ChangePasswordPartial.html"
-													style="cursor: pointer;">Change Password</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuMyProfile">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitEditProfileSubForm"
-													href="/Views/Account/EditProfile.html"
-													style="cursor: pointer;">Change my profile</a>
-											</div>
-
-										</div>
-
-									</li>
-
-									<li id="subMenuDeRegister">
-
-										<div class="floatleft">
-
-											<div>
-												<a id="btnSubmitDeRegisterForm"
-													href="/Views/Account/DeRegister.html"
-													style="cursor: pointer;">Deregister</a>
-											</div>
-
-										</div>
-
-									</li>
-
-								</ul></li>
-
-						</ul></li>
-
-<!-- 					<li> -->
-
-<!-- 						<div class="floatleft"> -->
-
-<!-- 							<div> -->
-<!-- 								<a id="btnSubmitListMyOffersForm" -->
-<!-- 									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My -->
-<!-- 									Offers</a> -->
-<!-- 							</div> -->
-
-<!-- 						</div> -->
-
-<!-- 					</li> -->
-
-
-				</ul>
-			</div>
-
-
+			<div id="MainMenu"></div>
+			<div id="subMenu"></div>
+ 
 		</div>
 
 
@@ -319,9 +62,9 @@
 			<hgroup class="title">
 				<h2 class="page-title">My Investments</h2>
 			</hgroup>
-  
-        
-			<div id="listLoansResult" style="clear:both"></div>
+
+
+			<div id="listLoansResult" style="clear: both"></div>
 
 
 
@@ -339,18 +82,14 @@
 
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy;  
-					Software Providers Limited. All Rights Reserved.</p>
+				<p style="font-size: 15px">Copyright &copy; Software Providers
+					Limited. All Rights Reserved.</p>
 			</div>
 		</div>
 
 
 		<div class="content-wrapper clearboth">
-			<div>
-
-				 
-
-			</div>
+			<div></div>
 		</div>
 
 
@@ -360,85 +99,13 @@
 
 
 	<script type="text/javascript">
- 
-	 var loanTable = '' ; 
-     
-        function LoadLoans() {
-        	
-        	  var email = localStorage.getItem('loggedinuser');
-        	  var request = gapi.client.loanendpoint.selectMyInvestments({ 
-        		    'email': email
-        		}).then(function(response) {
-                	console.log(response);
-        		  buildTable(response);
-                }, function(reason) {
-                  console.log('Error: ' + reason.result.error.message);
-                }); 
-        }
-
-        function init() {  
-        	gapi.client.load('loanendpoint', 'v1', LoadLoans, ROOT);
-         }
-       
-      function buildTable(response) {
-    	   
-	    loanTable = '' ; 
-          
- 		populateLoans(response);
-          
-       $("#listLoansResult").html(loanTable); 
-     }
-     
-         	function populateLoans(resp)   
-            { 
-
-              if (!resp.code) {
-                resp.items = resp.items || [];  
-            	 
-                loanTable +=   '<table id="listLoansTable">';
-                loanTable +=   "<thead>";
-                loanTable +=   "<tr>"; 
-                loanTable +=   "<th>Amount</th>"; 
-                loanTable +=   "<th>Term</th>"; 
-                loanTable +=   "<th>Interest Rate</th>";  
-                loanTable +=   "<th>Accrued Interest</th>";  
-                loanTable +=   "<th>Maturity Date</th>";  
-                loanTable +=   "<th></th>";  
-                loanTable +=   "</tr>";
-                loanTable +=   "</thead>";
-                loanTable +=   "<tbody>";
-                
-	        for (var i=0;i<resp.result.items.length;i++) {
-	        	loanTable += '<tr>'; 
-	        	loanTable += '<td>' + resp.result.items[i].amount + '</td>'; 
-	        	loanTable += '<td>' + resp.result.items[i].term + '</td>'; 
-	        	loanTable += '<td>' + resp.result.items[i].interestRate + '</td>'; 
-	        	loanTable += '<td>' + resp.result.items[i].AccruedInterest + '</td>'; 
-	        	loanTable += '<td>' + resp.result.items[i].maturityDate + '</td>'; 
-	        	loanTable += '<td><a href="#" onclick="LoanDetails(' + resp.result.items[i].id + ')">Details</a> </td>'; 
-		    	loanTable += "</tr>";
-	              }
-	        
-	        loanTable +=  "</tbody>" ;
-   			loanTable +=  "</table>" ;  
-   			
-   			
-            }   	
-          }
-         	 
-    	function LoanDetails(id) {
-     		 
-		localStorage.loandetailsid = id;
-		console.log(localStorage.getItem('loandetailsid'));
-		window.location.href = "/Views/Loans/Details.html";
-     			 
-        }
-          
-       	  	
-    </script>
+	function init() {
+		fanikiwa.loanendpoint.myinvestments.init(GETROOT());
+	}
+	</script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
- 
+
 
 
 </body>

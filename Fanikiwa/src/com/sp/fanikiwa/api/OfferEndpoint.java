@@ -32,6 +32,7 @@ import com.sp.fanikiwa.entity.OfferDTO;
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
@@ -40,6 +41,7 @@ import com.sp.utils.MailUtil;
 import com.sp.utils.StringExtension;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -73,14 +75,14 @@ public class OfferEndpoint {
 
 	@ApiMethod(name = "retrieveMyOffers")
 	public CollectionResponse<Offer> retrieveMyOffers(
-			@Named("memberid") String email,
+			@Named("email") String email,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Member member = SearchMemberByEmail(email); 
+		Member member = SearchMemberByEmail(email);
 		return ListMyOffers(member.getMemberId(), cursorString, count);
 	}
-	
+
 	@ApiMethod(name = "selectMyOffers")
 	public CollectionResponse<Offer> ListMyOffers(
 			@Named("memberid") long MemberId,
@@ -92,36 +94,36 @@ public class OfferEndpoint {
 				.filter("member", member);
 		return GetOffersFromQuery(query, cursorString, count);
 	}
-	
-	@ApiMethod(name = "retrieveMyLendOffers")
-	public CollectionResponse<Offer> retrieveMyLendOffers(
-			@Named("memberid") String email,
+
+	@ApiMethod(name = "retrieveLendOffers")
+	public CollectionResponse<Offer> retrieveLendOffers(
+			@Named("email") String email,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Member member = SearchMemberByEmail(email); 
-		return ListMyLendOffers(member.getMemberId(), cursorString, count);
+		Member member = SearchMemberByEmail(email);
+		return ListLendOffers(member.getMemberId(), cursorString, count);
 	}
 
-	@ApiMethod(name = "ListMyLendOffers")
-	public CollectionResponse<Offer> ListMyLendOffers(
+	@ApiMethod(name = "ListLendOffers")
+	public CollectionResponse<Offer> ListLendOffers(
 			@Named("memberid") long MemberId,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
+		OfferReceipientEndpoint ore = new OfferReceipientEndpoint();
+		CollectionResponse<Offer> offers = ore.listOfferReceipient(MemberId,
+				cursorString, count);
 
-		Member member = ofy().load().type(Member.class).id(MemberId).now();
-		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("offerType", "L").filter("member", member);
-		return GetOffersFromQuery(query, cursorString, count);
+		return offers;
 	}
-	
+
 	@ApiMethod(name = "retrieveBorrowOffers")
 	public CollectionResponse<Offer> retrieveBorrowOffers(
-			@Named("memberid") String email,
+			@Named("email") String email,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Member member = SearchMemberByEmail(email); 
+		Member member = SearchMemberByEmail(email);
 		return ListBorrowOffers(member.getMemberId(), cursorString, count);
 	}
 
@@ -130,11 +132,11 @@ public class OfferEndpoint {
 			@Named("memberid") long MemberId,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
+		OfferReceipientEndpoint ore = new OfferReceipientEndpoint();
+		CollectionResponse<Offer> offers = ore.listOfferReceipient(MemberId,
+				cursorString, count);
 
-		Member member = ofy().load().type(Member.class).id(MemberId).now();
-		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("offerType", "B").filter("member", member);
-		return GetOffersFromQuery(query, cursorString, count);
+		return offers;
 	}
 
 	// @ApiMethod(name = "PrivateOffersToMember")
@@ -299,7 +301,8 @@ public class OfferEndpoint {
 		o.setAmount(offerDto.getAmount());
 		o.setCreatedDate(new Date());
 		o.setDescription(offerDto.getDescription());
-		o.setExpiryDate(DateExtension.addMonths(o.getCreatedDate(), Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
+		o.setExpiryDate(DateExtension.addMonths(o.getCreatedDate(),
+				Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
 		o.setInterest(offerDto.getInterest());
 
 		// MemberEndpoint mep = new MemberEndpoint();
@@ -357,7 +360,7 @@ public class OfferEndpoint {
 		Member member = mep.getMemberByID(MemberId);
 		return member;
 	}
-	
+
 	private Member SearchMemberByEmail(String email) {
 		MemberEndpoint mep = new MemberEndpoint();
 		Member member = mep.GetMemberByEmail(email);
@@ -443,26 +446,71 @@ public class OfferEndpoint {
 	}
 
 	@ApiMethod(name = "acceptOffer")
-	public void AcceptOffer(@Named("id") Long id, @Named("email") String email) throws Exception {
+	public RequestResult AcceptOffer(@Named("id") Long id,
+			@Named("email") String email) throws Exception {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
 
-		AcceptOfferComponent aoc = new AcceptOfferComponent();
-		
-		Offer offer = findRecord(id);
-		if (offer == null) {
-			throw new NotFoundException("Offer does not exist");
-		}
-		
-		MemberEndpoint mep = new MemberEndpoint();
-		Member member = mep.GetMemberByEmail(email);
-		if (member == null) {
-			throw new NotFoundException("Member does not exist");
-		}
+			AcceptOfferComponent aoc = new AcceptOfferComponent();
 
-		if (offer.getOfferType().toUpperCase().equals("L")) {
-			aoc.AcceptLendOffer(member, offer);
-		} else {
-			aoc.AcceptBorrowOffer(member, offer);
+			Offer offer = findRecord(id);
+			if (offer == null) {
+				throw new NotFoundException("Offer does not exist");
+			}
+
+			MemberEndpoint mep = new MemberEndpoint();
+			Member member = mep.GetMemberByEmail(email);
+			if (member == null) {
+				throw new NotFoundException("Member does not exist");
+			}
+
+			if (offer.getOfferType().toUpperCase().equals("L")) {
+				re.setResultMessage("Loan Id = "
+						+ aoc.AcceptLendOffer(member, offer).getId().toString());
+			} else {
+				re.setResultMessage("Loan Id = "
+						+ aoc.AcceptBorrowOffer(member, offer).getId()
+								.toString());
+			}
+
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
+		return re;
 	}
 
+	@ApiMethod(name = "acceptPartialBorrowOffer")
+	public RequestResult AcceptPartialBorrowOffer(@Named("id") Long id,
+			@Named("email") String email) throws Exception {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+
+			AcceptOfferComponent aoc = new AcceptOfferComponent();
+
+			Offer offer = findRecord(id);
+			if (offer == null) {
+				throw new NotFoundException("Offer does not exist");
+			}
+
+			MemberEndpoint mep = new MemberEndpoint();
+			Member member = mep.GetMemberByEmail(email);
+			if (member == null) {
+				throw new NotFoundException("Member does not exist");
+			}
+
+			re.setResultMessage("Loan Id = "
+					+ aoc.AcceptPartialBorrowOffer(member, offer).getId()
+							.toString());
+
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 }

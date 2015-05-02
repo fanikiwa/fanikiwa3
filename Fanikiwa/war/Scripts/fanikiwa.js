@@ -1,7 +1,14 @@
-//var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-var ROOT = 'http://localhost:8888/_ah/api';
- 
-$(document).ready(function() { 
+var fanikiwa = fanikiwa || {};
+
+function GETROOT() {
+	var ROOT = 'https://1-dot-fanikiwaweb.appspot.com/_ah/api';
+	if (window.location.hostname == 'localhost')
+		ROOT = 'http://localhost:8888/_ah/api';
+	return ROOT;
+}
+
+$(document).ready(function() {
+	CreateMainMenu();
 	$('#lnkloggedinuser').text(sessionStorage.getItem('loggedinuser'));
 });
 
@@ -21,77 +28,25 @@ function LogIn() {
 function Register() {
 	window.location.href = "/Views/Account/Register.html";
 }
- 
-/**
- * @fileoverview
- * Provides methods for the Hello Endpoints sample UI and interaction with the
- * Hello Endpoints API.
- */
 
-/** google global namespace for Google projects. */
-var fanikiwa = fanikiwa || {}; 
-fanikiwa.memberendpoint = fanikiwa.memberendpoint || {};
-fanikiwa.memberendpoint.ui = fanikiwa.memberendpoint.ui || {};
-
-
-fanikiwa.memberendpoint.ui.init = function(apiRoot) {
-	// Loads the OAuth and helloworld APIs asynchronously, and triggers login
-	// when they have completed.
-	var apisToLoad;
-	var callback = function() {
-		if (--apisToLoad == 0) {
-			$('document').ready(function(){				
-				fanikiwa.memberendpoint.ui.initializeControls();	
-			});
-		}
-	}
-
-	apisToLoad = 1; // must match number of calls to gapi.client.load()
-	gapi.client.load('memberendpoint', 'v1', callback, apiRoot);
-
+Number.prototype.formatMoney = function(c, d, t) {
+	var n = this, c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "."
+			: d, t = t == undefined ? "," : t, s = n < 0 ? "-" : "", i = parseInt(n = Math
+			.abs(+n || 0).toFixed(c))
+			+ "", j = (j = i.length) > 3 ? j % 3 : 0;
+	return s + (j ? i.substr(0, j) + t : "")
+			+ i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t)
+			+ (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
-fanikiwa.memberendpoint.ui.initializeControls = function() {
+function formatDate(date) {
+	var d = new Date(date), month = '' + (d.getMonth() + 1), day = ''
+			+ d.getDate(), year = d.getFullYear();
 
-	var email = sessionStorage.getItem('loggedinuser');
-	gapi.client.memberendpoint.getMemberByEmail({
-		'email' : email
-	}).execute(function(response) {
-		console.log(response);
-		if (!response.code) {
-			fanikiwa.memberendpoint.ui.printLogin(response);
-		} else {
-			alert('Login failed! Please check your username and password');
-		}  
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+	if (month.length < 2)
+		month = '0' + month;
+	if (day.length < 2)
+		day = '0' + day;
+
+	return [ day, month, year ].join('-');
 }
-
-fanikiwa.memberendpoint.ui.printLogin = function(response) {
-
-	sessionStorage.surname = response.result.surname;
-	console.log('response = ' + response.toString());
-	fanikiwa.memberendpoint.ui.populateControls(response);
-
-};
-
-fanikiwa.memberendpoint.ui.populateControls = function(member) {
-	document.getElementById('txtEmail').value = member.result.email;
-	document.getElementById('txtSurname').value = member.result.surname;
-	document.getElementById('txtOtherNames').value = member.result.otherNames;
-	document.getElementById('txtTelephone').value = member.result.telephone;
-	document.getElementById('txtNationalID').value = member.result.nationalID;
-	document.getElementById('dtpDateOfBirth').value = member.result.dateOfBirth;
-	document.getElementById('txtRefferedBy').value = member.result.refferedBy;
-	document.getElementById('txtMaxRecordsToDisplay').value = member.result.maxRecordsToDisplay;
-	document.getElementById('cboGender').value = member.result.gender;
-	document.getElementById('cboInformBy').value = member.result.informBy;
-};
-
-
-
-
-
-
-

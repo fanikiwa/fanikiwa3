@@ -16,6 +16,7 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
+import com.sp.utils.GLUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,8 +54,8 @@ public class TransactionEndpoint {
 
 			Query<Transaction> query = ofy().load().type(Transaction.class)
 					.order("postDate")
-					.filter("postDate >=",sdate)
-					.filter("postDate <=",edate)
+					.filter("postDate >=",edate)
+					.filter("postDate <=",sdate)
 					.filter("account",account);
 			return listTransactionByQuery(query, cursorString, count);
 
@@ -86,10 +87,11 @@ public class TransactionEndpoint {
 
 	}
 	public CollectionResponse<Transaction> GetMiniStatement(
-			Account account,
+			@Named("accountId") Long accountId,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
+		Account account = GLUtil.GetAccount(accountId);
 			Query<Transaction> query = ofy().load().type(Transaction.class)
 					.order("-postDate")
 					.filter("account",account);
