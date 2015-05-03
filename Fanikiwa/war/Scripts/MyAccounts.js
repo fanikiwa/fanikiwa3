@@ -78,24 +78,27 @@ function populateAccounts(resp) {
 		accountsTable += "<th>Cleared Balance</th>";
 		accountsTable += "<th>limit</th>";
 		accountsTable += "<th>Available Balance</th>";
-		accountsTable += "<th></th>"; 
+		accountsTable += "<th></th>";
 		accountsTable += "</tr>";
 		accountsTable += "</thead>";
 		accountsTable += "<tbody>";
 
 		for (var i = 0; i < resp.result.items.length; i++) {
-			var availbal = resp.result.items[i].clearedBalance - resp.result.items[i].limit; 			
+			var availbal = resp.result.items[i].clearedBalance
+					- resp.result.items[i].limit;
 			accountsTable += '<tr>';
 			accountsTable += '<td>' + resp.result.items[i].accountID + '</td>';
 			accountsTable += '<td>' + resp.result.items[i].accountName
 					+ '</td>';
-			accountsTable += '<td>' + resp.result.items[i].bookBalance.formatMoney(2)
+			accountsTable += '<td>'
+					+ resp.result.items[i].bookBalance.formatMoney(2) + '</td>';
+			accountsTable += '<td>'
+					+ resp.result.items[i].clearedBalance.formatMoney(2)
 					+ '</td>';
-			accountsTable += '<td>' + resp.result.items[i].clearedBalance.formatMoney(2)
+			accountsTable += '<td>' + resp.result.items[i].limit.formatMoney(2)
 					+ '</td>';
-			accountsTable += '<td>' + resp.result.items[i].limit.formatMoney(2) + '</td>';
-			accountsTable += '<td>' + availbal.formatMoney(2)  + '</td>';
-			 
+			accountsTable += '<td>' + availbal.formatMoney(2) + '</td>';
+
 			accountsTable += '<td><a href="#" onclick="MiniStatement('
 					+ resp.result.items[i].accountID
 					+ ')">Mini Statement</a> </td>';
@@ -112,3 +115,21 @@ function MiniStatement(id) {
 	sessionStorage.ministatementaccountid = id;
 	window.location.href = "/Views/Account/MiniStatement.html";
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Statement.html" style="cursor: pointer;">Statement</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My investments</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

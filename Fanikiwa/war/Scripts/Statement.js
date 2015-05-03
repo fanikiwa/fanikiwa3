@@ -10,8 +10,10 @@ fanikiwa.accountendpoint = fanikiwa.accountendpoint || {};
 fanikiwa.accountendpoint.statement = fanikiwa.accountendpoint.statement || {};
 
 fanikiwa.accountendpoint.statement.enableButtons = function() {
+	$("#btnLoad").removeAttr('style');
+	$("#btnLoad").removeAttr('disabled');
+	$("#btnLoad").val('Load Statement');
 	var btnLoad = document.querySelector('#btnLoad');
-	$('#btnLoad').removeClass('disabled');
 	btnLoad.addEventListener('click', function() {
 		fanikiwa.accountendpoint.statement.LoadStatement();
 	});
@@ -94,11 +96,15 @@ function populateAccounts(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			accountsTable += '<tr>';
-			accountsTable += '<td>' + formatDate(resp.result.items[i].postDate) + '</td>';
+			accountsTable += '<td>' + formatDate(resp.result.items[i].postDate)
+					+ '</td>';
 			accountsTable += '<td>' + resp.result.items[i].narrative + '</td>';
-			accountsTable += '<td>' + resp.result.items[i].debit.formatMoney(2) + '</td>';
-			accountsTable += '<td>' + resp.result.items[i].credit.formatMoney(2) + '</td>';
-			accountsTable += '<td>' + resp.result.items[i].balance.formatMoney(2) + '</td>';
+			accountsTable += '<td>' + resp.result.items[i].debit.formatMoney(2)
+					+ '</td>';
+			accountsTable += '<td>'
+					+ resp.result.items[i].credit.formatMoney(2) + '</td>';
+			accountsTable += '<td>'
+					+ resp.result.items[i].balance.formatMoney(2) + '</td>';
 			accountsTable += "</tr>";
 		}
 

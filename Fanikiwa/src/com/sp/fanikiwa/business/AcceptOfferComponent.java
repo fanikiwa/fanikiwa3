@@ -160,7 +160,7 @@ public class AcceptOfferComponent {
 			throw new ForbiddenException(MessageFormat.format(
 					"Offer [{0}] is expired. ", offer.getId()));
 		}
-		if (!offer.getPublicOffer() && !PrivateOfferred(offer, acceptee)) {
+		if (!offer.getPrivateOffer() && !PrivateOfferred(offer, acceptee)) {
 			// the offer is a private offer and you dont exist in the offerees
 			// list
 			throw new ForbiddenException(MessageFormat.format(
@@ -392,8 +392,10 @@ public class AcceptOfferComponent {
 				new Date(), borrower.getinterestExpAccount(),
 				lender.getinterestIncAccount(), interest, false, "Y",
 				Authorizer, userID, offer.getId().toString());
+		//Txn 1
 		txns.addAll(ltxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(tt), new NarrativeFormat(tt)));
+		//Txn 2
 		txns.addAll(inttxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(tt), new NarrativeFormat(tt)));
 
@@ -404,7 +406,7 @@ public class AcceptOfferComponent {
 				new Date(), lender.getCurrentAccount(),
 				borrower.getCurrentAccount(), offer.getAmount(), false, "Y",
 				Authorizer, userID, offer.getId().toString());
-
+		//Txn 3
 		txns.addAll(Distxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(Distt), new NarrativeFormat(Distt)));
 		return txns;

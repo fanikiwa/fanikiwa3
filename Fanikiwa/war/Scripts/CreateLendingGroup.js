@@ -6,14 +6,14 @@
 
 /** global namespace for projects. */
 var fanikiwa = fanikiwa || {};
-fanikiwa.offerendpoint = fanikiwa.offerendpoint || {};
-fanikiwa.offerendpoint.createlendoffer = fanikiwa.offerendpoint.createlendoffer
+fanikiwa.lendinggroupendpoint = fanikiwa.lendinggroupendpoint || {};
+fanikiwa.lendinggroupendpoint.createlendinggroup = fanikiwa.lendinggroupendpoint.createlendinggroup
 		|| {};
 
 var errormsg = '';
 errormsg += '<ul id="errorList">';
 
-fanikiwa.offerendpoint.createlendoffer = function() {
+fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 
 	errormsg = '';
 	ClearException();
@@ -22,36 +22,12 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 	$('#apiResults').html('');
 
 	// Validate the entries
-	var _Description = document.getElementById('txtDescription').value;
-	var _Amount = document.getElementById('txtAmount').value;
-	var _Interest = document.getElementById('txtInterest').value;
-	var _Term = document.getElementById('txtTerm').value;
-	var _OfferType = document.getElementById('cboOfferType').value;
-	var _PublicOffer = Boolean(document.getElementById('chkPublicOffer').checked);
-	var _PartialPay = Boolean(document.getElementById('chkPartialPay').checked);
-	var _offerees = document.getElementById('txtofferees').value;
+	var _groupName = document.getElementById('txtgroupName').value; 
 
-	if (_Description.length == 0) {
-		errormsg += '<li>' + " Description cannot be null " + '</li>';
+	if (_groupName.length == 0) {
+		errormsg += '<li>' + " Group Name cannot be null " + '</li>';
 		error_free = false;
-	}
-	if (_Amount.length == 0) {
-		errormsg += '<li>' + " Amount cannot be null " + '</li>';
-		error_free = false;
-	}
-	if (_Interest.length == 0) {
-		errormsg += '<li>' + " Interest Rate(%) cannot be null " + '</li>';
-		error_free = false;
-	}
-	if (_Term.length == 0) {
-		errormsg += '<li>' + " Term in Month cannot be null " + '</li>';
-		error_free = false;
-	}
-	if (_PublicOffer == true && _offerees.length == 0) {
-		errormsg += '<li>' + " Offerees cannot be null for a private offer"
-				+ '</li>';
-		error_free = false;
-	}
+	} 
 
 	if (!error_free) {
 		errormsg += "</ul>";
@@ -67,22 +43,16 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 	$('#apiResults').html('creating offer...');
 
 	var email = sessionStorage.getItem('loggedinuser');
+	var parentGroupId = sessionStorage.getItem('lendinggroupparentid');
 
 	// Build the Request Object
-	var OfferDTO = {};
-	OfferDTO.description = _Description;
-	OfferDTO.amount = _Amount;
-	OfferDTO.interest = _Interest;
-	OfferDTO.term = _Term;
-	OfferDTO.publicOffer = _PublicOffer;
-	OfferDTO.offerType = _OfferType;
-	OfferDTO.partialPay = _PartialPay;
-	OfferDTO.status = "Open";
-	OfferDTO.email = email;
-	OfferDTO.offerees = _offerees;
+	var lendingGroupDTO = {};
+	lendingGroupDTO.groupName = _groupName;
+	lendingGroupDTO.creatorEmail = email;
+	lendingGroupDTO.parentGroupId = parentGroupId;
 
-	gapi.client.offerendpoint
-			.saveOffer(OfferDTO)
+	gapi.client.lendinggroupendpoint
+			.saveLendinggroup(lendingGroupDTO)
 			.execute(
 					function(resp) {
 						console.log('response =>> ' + resp);
@@ -93,14 +63,11 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 										'operation failed! Please try again');
 							} else {
 								$('#apiResults').html(
-										'operation successful... <br/>'
-												+ 'offer id = '
-												+ resp.result.id);
-								sessionStorage.createlendofferId = resp.result.id;
+										'operation successful... <br/>');
 								window
 										.setTimeout(
-												'window.location.href = "/Views/Offers/ListLendOffers.html";',
-												3000);
+												'window.location.href = "/Views/LendingGroups/List.html";',
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
@@ -115,12 +82,13 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 /**
  * Enables the button callbacks in the UI.
  */
-fanikiwa.offerendpoint.createlendoffer.enableButtons = function() {
-	var btnRegister = document.querySelector('#btnCreate');
-	$('#btnCreate').removeClass('disabled');
-	$("#chkPublicOffer").attr('checked', false);
-	btnRegister.addEventListener('click', function() {
-		fanikiwa.offerendpoint.createlendoffer();
+fanikiwa.lendinggroupendpoint.createlendinggroup.enableButtons = function() {
+	$("#btnCreate").removeAttr('style');
+	$("#btnCreate").removeAttr('disabled');
+	$("#btnCreate").val('Create');
+	var btnCreate = document.querySelector('#btnCreate');
+	btnCreate.addEventListener('click', function() {
+		fanikiwa.lendinggroupendpoint.createlendinggroup();
 	});
 };
 
@@ -130,31 +98,20 @@ fanikiwa.offerendpoint.createlendoffer.enableButtons = function() {
  * @param {string}
  *            apiRoot Root of the API's path.
  */
-fanikiwa.offerendpoint.createlendoffer.init = function(apiRoot) {
+fanikiwa.lendinggroupendpoint.createlendinggroup.init = function(apiRoot) {
 	// Loads the APIs asynchronously, and triggers callback
 	// when they have completed.
 	var apisToLoad;
 	var callback = function() {
 		if (--apisToLoad == 0) {
-			fanikiwa.offerendpoint.createlendoffer.enableButtons();
+			fanikiwa.lendinggroupendpoint.createlendinggroup.enableButtons();
 		}
 	}
 
 	apisToLoad = 1; // must match number of calls to gapi.client.load()
-	gapi.client.load('offerendpoint', 'v1', callback, apiRoot);
+	gapi.client.load('lendinggroupendpoint', 'v1', callback, apiRoot);
 
 };
-
-function Clear() {
-	$("#txtDescription").val("");
-	$("#txtAmount").val("");
-	$("#txtInterest").val("");
-	$("#txtTerm").val("");
-	$("#txtofferees").val("");
-	$("#cboOfferType").val("L");
-	$("#chkPublicOffer").attr('checked', false);
-	$("#chkPartialPay").attr('checked', false);
-}
 
 function DisplayException(errormsg) {
 

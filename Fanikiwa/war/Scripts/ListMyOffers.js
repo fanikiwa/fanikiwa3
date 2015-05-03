@@ -43,7 +43,7 @@ fanikiwa.offerendpoint.listmyoffers.init = function(apiRoot) {
 	// when they have completed.
 	var apisToLoad;
 	var callback = function() {
-		if (--apisToLoad == 0) { 
+		if (--apisToLoad == 0) {
 			fanikiwa.offerendpoint.listmyoffers.LoadOffers();
 		}
 	}
@@ -75,7 +75,7 @@ function populateOffers(resp) {
 		offerTable += "<th>Amount</th>";
 		offerTable += "<th>Term</th>";
 		offerTable += "<th>Interest</th>";
-		offerTable += "<th>Public Offer</th>";
+		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
 		offerTable += "<th>Status</th>";
 		offerTable += "<th></th>";
@@ -87,10 +87,11 @@ function populateOffers(resp) {
 		for (var i = 0; i < resp.result.items.length; i++) {
 			offerTable += '<tr>';
 			offerTable += '<td>' + resp.result.items[i].description + '</td>';
-			offerTable += '<td>' + resp.result.items[i].amount.formatMoney(2) + '</td>';
+			offerTable += '<td>' + resp.result.items[i].amount.formatMoney(2)
+					+ '</td>';
 			offerTable += '<td>' + resp.result.items[i].term + '</td>';
 			offerTable += '<td>' + resp.result.items[i].interest + '</td>';
-			offerTable += '<td>' + resp.result.items[i].publicOffer + '</td>';
+			offerTable += '<td>' + resp.result.items[i].privateOffer + '</td>';
 			offerTable += '<td>' + resp.result.items[i].partialPay + '</td>';
 			offerTable += '<td>' + resp.result.items[i].status + '</td>';
 			offerTable += '<td><a href="#" onclick="DeleteOffer('
@@ -132,7 +133,7 @@ function DeleteOffer(id) {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListMyOffers.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
@@ -140,3 +141,21 @@ function DeleteOffer(id) {
 						}
 					});
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Offers/Create.html">Make an Offer</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Offers/CreateLendOffer.html">I want to Lend Some Money</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Offers/CreateBorrowOffer.html">I want to Borrow Some Money</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

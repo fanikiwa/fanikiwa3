@@ -664,20 +664,23 @@ public class AccountEndpoint {
 
 	private boolean CheckLimitFlag(AccountLimitStatus limistatus,
 			double AmountAvailableAfterTxn, double AmountAvailableOnUncleared) {
-		if ((limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0)
-				|| (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0)) {
+		if (limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0) {
+			return false;
+		}
+		if (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0) {
+			return false;
 		}
 		return true;
 	}
 
 	private boolean CheckPassFlag(PassFlag lockstatus, Account account,
 			TransactionType _TransactionType) {
-		if ((lockstatus == PassFlag.Locked)
-				|| (lockstatus == PassFlag.AllPostingProhibited)
-				|| (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
-						.getDebitCredit().equals("C"))
-				|| (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
-						.getDebitCredit().equals("D"))) {
+		if (lockstatus == PassFlag.Locked)return false;
+		if (lockstatus == PassFlag.AllPostingProhibited)return false;
+		if (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
+						.getDebitCredit().equals("C"))return false;
+		if (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
+						.getDebitCredit().equals("D")) {
 
 			return false;
 		}

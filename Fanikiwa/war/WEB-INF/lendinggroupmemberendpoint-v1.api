@@ -511,9 +511,6 @@
           },
           "parentGroup" : {
             "$ref" : "Lendinggroup"
-          },
-          "parentGroupId" : {
-            "$ref" : "Lendinggroup"
           }
         }
       }

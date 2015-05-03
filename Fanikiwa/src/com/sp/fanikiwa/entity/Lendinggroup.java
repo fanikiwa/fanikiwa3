@@ -18,15 +18,16 @@ public class Lendinggroup {
 
 	@Id
 	String groupName;
- 
+
 	private Date createdOn;
- 
-	@Index private Ref<Member> creator;
- 
+
+	@Index
+	private Ref<Member> creator;
+
 	private Date lastModified;
- 
-	@Index private Ref<Lendinggroup> parentGroup;
- 
+
+	@Index
+	private Ref<Lendinggroup> parentGroup;
 
 	public Lendinggroup() {
 	}
@@ -67,10 +68,8 @@ public class Lendinggroup {
 		return this.parentGroup.get();
 	}
 
-	public void setParentGroupId(Lendinggroup parentGroup) {
+	public void setParentGroup(Lendinggroup parentGroup) {
 		this.parentGroup = Ref.create(parentGroup);
 	}
-
-
 
 }

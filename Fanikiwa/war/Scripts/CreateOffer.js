@@ -73,7 +73,7 @@ fanikiwa.offerendpoint.createoffer = function() {
 	OfferDTO.amount = _Amount;
 	OfferDTO.interest = _Interest;
 	OfferDTO.term = _Term;
-	OfferDTO.publicOffer = _PublicOffer;
+	OfferDTO.privateOffer = _PublicOffer;
 	OfferDTO.offerType = _OfferType;
 	OfferDTO.partialPay = _PartialPay;
 	OfferDTO.status = "Open";
@@ -99,7 +99,7 @@ fanikiwa.offerendpoint.createoffer = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListMyOffers.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
@@ -115,8 +115,10 @@ fanikiwa.offerendpoint.createoffer = function() {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.offerendpoint.createoffer.enableButtons = function() {
-	var btnRegister = document.querySelector('#btnCreate');
-	$('#btnCreate').removeClass('disabled');
+	$("#btnCreate").removeAttr('style');
+	$("#btnCreate").removeAttr('disabled');
+	$("#btnCreate").val('Create');
+	var btnRegister = document.querySelector('#btnCreate'); 
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.offerendpoint.createoffer();
 	}); 

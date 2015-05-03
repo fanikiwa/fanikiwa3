@@ -26,7 +26,7 @@ public class Offer {
 	private double interest;
 
 	@Index
-	private boolean publicOffer;
+	private boolean privateOffer;
 
 	private Date createdDate;
 
@@ -120,12 +120,12 @@ public class Offer {
 		this.partialPay = partialPay;
 	}
 
-	public boolean getPublicOffer() {
-		return this.publicOffer;
+	public boolean getPrivateOffer() {
+		return this.privateOffer;
 	}
 
-	public void setPublicOffer(boolean publicOffer) {
-		this.publicOffer = publicOffer;
+	public void setPrivateOffer(boolean publicOffer) {
+		this.privateOffer = publicOffer;
 	}
 
 	public String getStatus() {

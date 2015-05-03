@@ -74,7 +74,7 @@ fanikiwa.offerendpoint.createborrowoffer = function() {
 	OfferDTO.amount = _Amount;
 	OfferDTO.interest = _Interest;
 	OfferDTO.term = _Term;
-	OfferDTO.publicOffer = _PublicOffer;
+	OfferDTO.privateOffer = _PublicOffer;
 	OfferDTO.offerType = _OfferType;
 	OfferDTO.partialPay = _PartialPay;
 	OfferDTO.status = "Open";
@@ -100,7 +100,7 @@ fanikiwa.offerendpoint.createborrowoffer = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListBorrowOffers.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
@@ -116,12 +116,14 @@ fanikiwa.offerendpoint.createborrowoffer = function() {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.offerendpoint.createborrowoffer.enableButtons = function() {
-	var btnRegister = document.querySelector('#btnCreate');
-	$('#btnCreate').removeClass('disabled');
-	$("#chkPublicOffer").attr('checked', false);
+	$("#btnCreate").removeAttr('style');
+	$("#btnCreate").removeAttr('disabled');
+	$("#btnCreate").val('Create');
+	var btnRegister = document.querySelector('#btnCreate');  
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.offerendpoint.createborrowoffer();
 	});
+	$("#chkPublicOffer").attr('checked', false);
 };
 
 /**

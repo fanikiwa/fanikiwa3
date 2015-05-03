@@ -14,29 +14,39 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
-
-
+import com.sp.fanikiwa.entity.LendingGroupDTO;
 import com.sp.fanikiwa.entity.Lendinggroup;
 import com.sp.fanikiwa.entity.Member;
+import com.sp.fanikiwa.entity.Offer;
+import com.sp.fanikiwa.entity.OfferDTO;
+import com.sp.fanikiwa.entity.OfferReceipient;
+import com.sp.utils.Config;
+import com.sp.utils.DateExtension;
+import com.sp.utils.GLUtil;
+import com.sp.utils.StringExtension;
 
 public class LendingGroupEndpoint {
 	@Api(name = "lendinggroupendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 	public class LendinggroupEndpoint {
+
+		final int MAXRETRIES = 3;
 
 		public LendinggroupEndpoint() {
 
 		}
 
 		/**
-		 * This method lists all the entities inserted in datastore. It uses HTTP
-		 * GET method and paging support.
+		 * This method lists all the entities inserted in datastore. It uses
+		 * HTTP GET method and paging support.
 		 *
-		 * @return A CollectionResponse class containing the list of all entities
-		 *         persisted and a cursor to the next page.
+		 * @return A CollectionResponse class containing the list of all
+		 *         entities persisted and a cursor to the next page.
 		 */
 		@SuppressWarnings({ "unchecked", "unused" })
 		@ApiMethod(name = "listLendinggroup")
@@ -47,7 +57,7 @@ public class LendingGroupEndpoint {
 			Query<Lendinggroup> query = ofy().load().type(Lendinggroup.class);
 			return GetLendinggroupsFromQuery(query, cursorString, count);
 		}
-		
+
 		@ApiMethod(name = "retrieveLendinggroupsByCreator")
 		public CollectionResponse<Lendinggroup> retrieveLendinggroupsByCreator(
 				@Named("email") String email,
@@ -56,7 +66,8 @@ public class LendingGroupEndpoint {
 
 			MemberEndpoint mep = new MemberEndpoint();
 			Member member = mep.GetMemberByEmail(email);
-			return selectLendinggroupsByCreator(member.getMemberId(), cursorString, count);
+			return selectLendinggroupsByCreator(member.getMemberId(),
+					cursorString, count);
 		}
 
 		@ApiMethod(name = "selectLendinggroupsByCreator")
@@ -71,8 +82,8 @@ public class LendingGroupEndpoint {
 			return GetLendinggroupsFromQuery(query, cursorString, count);
 		}
 
-		private CollectionResponse<Lendinggroup> GetLendinggroupsFromQuery(Query<Lendinggroup> query,
-				String cursorString, Integer count) {
+		private CollectionResponse<Lendinggroup> GetLendinggroupsFromQuery(
+				Query<Lendinggroup> query, String cursorString, Integer count) {
 
 			if (count != null)
 				query.limit(count);
@@ -99,11 +110,9 @@ public class LendingGroupEndpoint {
 					cursorString = cursor.toWebSafeString();
 				}
 			}
-			return CollectionResponse.<Lendinggroup> builder().setItems(records)
-					.setNextPageToken(cursorString).build();
+			return CollectionResponse.<Lendinggroup> builder()
+					.setItems(records).setNextPageToken(cursorString).build();
 		}
-
-		 
 
 		/**
 		 * This method gets the entity having primary key id. It uses HTTP GET
@@ -119,9 +128,9 @@ public class LendingGroupEndpoint {
 		}
 
 		/**
-		 * This method is used for updating an existing entity. If the entity does
-		 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
-		 * method.
+		 * This method is used for updating an existing entity. If the entity
+		 * does not exist in the datastore, an exception is thrown. It uses HTTP
+		 * PUT method.
 		 *
 		 * @param Lendinggroup
 		 *            the entity to be updated.
@@ -129,7 +138,8 @@ public class LendingGroupEndpoint {
 		 * @throws NotFoundException
 		 */
 		@ApiMethod(name = "updateLendinggroup")
-		public Lendinggroup updateLendinggroup(Lendinggroup Lendinggroup) throws NotFoundException {
+		public Lendinggroup updateLendinggroup(Lendinggroup Lendinggroup)
+				throws NotFoundException {
 			Lendinggroup record = findRecord(Lendinggroup.getGroupName());
 			if (record == null) {
 				throw new NotFoundException("Record does not exist");
@@ -139,15 +149,16 @@ public class LendingGroupEndpoint {
 		}
 
 		/**
-		 * This method removes the entity with primary key id. It uses HTTP DELETE
-		 * method.
+		 * This method removes the entity with primary key id. It uses HTTP
+		 * DELETE method.
 		 *
 		 * @param id
 		 *            the primary key of the entity to be deleted.
 		 * @throws NotFoundException
 		 */
 		@ApiMethod(name = "removeLendinggroup")
-		public void removeLendinggroup(@Named("id") String id) throws NotFoundException {
+		public void removeLendinggroup(@Named("id") String id)
+				throws NotFoundException {
 			Lendinggroup record = findRecord(id);
 			if (record == null) {
 				throw new NotFoundException("Record does not exist");
@@ -169,9 +180,9 @@ public class LendingGroupEndpoint {
 		 * @return The inserted entity.
 		 * @throws ConflictException
 		 */
-		//@ApiMethod(name = "insertLendinggroup")
-		public Lendinggroup insertLendinggroup(Lendinggroup Lendinggroup) throws NotFoundException,
-				ConflictException {
+		// @ApiMethod(name = "insertLendinggroup")
+		public Lendinggroup insertLendinggroup(Lendinggroup Lendinggroup)
+				throws NotFoundException, ConflictException {
 			if (Lendinggroup.getGroupName() != null) {
 				if (findRecord(Lendinggroup.getGroupName()) != null) {
 					throw new ConflictException("Object already exists");
@@ -181,5 +192,54 @@ public class LendingGroupEndpoint {
 			return Lendinggroup;
 		}
 
+		@ApiMethod(name = "saveLendinggroup")
+		public Lendinggroup saveLendinggroup(
+				final LendingGroupDTO lendingGroupDTO) {
+			Lendinggroup group = ofy().transactNew(MAXRETRIES,
+					new Work<Lendinggroup>() {
+						public Lendinggroup run() {
+							// This work must be Idempotent
+							Lendinggroup group = null;
+							try {
+								group = createLendinggroupDTO(lendingGroupDTO);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return group;
+						}
+					});
+			return group;
+		}
+
+		private Lendinggroup createLendinggroupDTO(
+				LendingGroupDTO lendingGroupDTO) throws Exception {
+			// Construct Lendinggroup
+			Lendinggroup group = new Lendinggroup();
+			group.setGroupName(lendingGroupDTO.getGroupName());
+			group.setCreatedOn(new Date());
+			group.setLastModified(new Date());
+
+			if (lendingGroupDTO.getParentGroupId() != 0) {
+				Lendinggroup parentGroup = ofy()
+						.transactionless()
+						.load()
+						.type(Lendinggroup.class)
+						.filter("parentGroup",
+								lendingGroupDTO.getParentGroupId()).first()
+						.now();
+				group.setParentGroup(parentGroup);
+			}
+
+			Member member = ofy().transactionless().load().type(Member.class)
+					.filter("creator", lendingGroupDTO.getCreatorEmail())
+					.first().now();
+			group.setCreator(member);
+
+			// save it
+			Lendinggroup savedgroup = this.insertLendinggroup(group);
+
+			return savedgroup;
+		}
 	}
 }

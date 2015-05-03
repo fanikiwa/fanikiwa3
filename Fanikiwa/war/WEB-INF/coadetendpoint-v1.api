@@ -43,19 +43,23 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "coadetendpoint.getCoadetByID" : {
-      "path" : "coadet/{id}",
+    "coadetendpoint.listCoadet" : {
+      "path" : "coadet",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet",
       "request" : {
         "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -85,23 +89,19 @@
         "body" : "empty"
       }
     },
-    "coadetendpoint.listCoadet" : {
-      "path" : "coadet",
+    "coadetendpoint.getCoadetByID" : {
+      "path" : "coadet/{id}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID",
       "request" : {
         "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
+          "id" : {
+            "type" : "int64",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -192,16 +192,16 @@
           "$ref" : "Coadet"
         }
       },
-      "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID" : {
+      "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet" : {
         "response" : {
-          "$ref" : "Coadet"
+          "$ref" : "CollectionResponse_Coadet"
         }
       },
       "com.sp.fanikiwa.api.CoadetEndpoint.removeCoadet" : {
       },
-      "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet" : {
+      "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID" : {
         "response" : {
-          "$ref" : "CollectionResponse_Coadet"
+          "$ref" : "Coadet"
         }
       },
       "com.sp.fanikiwa.api.CoadetEndpoint.updateCoadet" : {

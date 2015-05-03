@@ -48,8 +48,9 @@ fanikiwa.memberendpoint.register = function() {
 		errormsg += '<li>' + " Email cannot be null " + '</li>';
 		error_free = false;
 	}
-	if (sessionStorage.isemailvalidinregister === "false") {
-		errormsg += '<li>' + " Validation failed! Please check Email "
+	if (_Email.length != 0 && sessionStorage.isemailvalidinregister === "false") {
+		errormsg += '<li>' + " Validation failed! Please check Email.<br/> "
+		+ "Valid format is user@domain.com"
 				+ '</li>';
 		error_free = false;
 	}
@@ -103,12 +104,12 @@ fanikiwa.memberendpoint.register = function() {
 												'Registration successful... <br/>'
 														+ 'Member id = '
 														+ resp.result.memberId
-														+ '<br/>redirecting to login in 3 secs...');
+														+ '<br/>redirecting to login...');
 								sessionStorage.registermemberId = resp.result.memberId;
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/Login.html";',
-												3000);
+												1000);
 							}
 
 						} else {
@@ -146,8 +147,10 @@ fanikiwa.memberendpoint.register.init = function(apiRoot) {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.memberendpoint.register.enableButtons = function() {
+	$("#btnRegister").removeAttr('style');
+	$("#btnRegister").removeAttr('disabled');
+	$("#btnRegister").val('Register');
 	var btnRegister = document.querySelector('#btnRegister');
-	$('#btnRegister').removeClass('disabled');
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.memberendpoint.register();
 	});
@@ -171,7 +174,8 @@ fanikiwa.memberendpoint.isEmailValid = function(email) {
 							if (resp.result.result == false) {
 								$('#apiResults')
 										.html(
-												'validation failed! Please check your email...');
+												'Validation failed! Please check Email.<br/>'
+												+ 'Valid format is user@domain.com');
 								sessionStorage.isemailvalidinregister = false;
 							} else {
 
@@ -179,12 +183,13 @@ fanikiwa.memberendpoint.isEmailValid = function(email) {
 								$('#apiResults').html(
 										'email validation successful...');
 								window.setTimeout('$("#apiResults").html("");',
-										3000);
+										1000);
 							}
 						} else {
 							$('#apiResults')
 									.html(
-											'validation failed! Please check your email');
+											'Validation failed! Please check Email.<br/>'
+											+ 'Valid format is user@domain.com');
 							sessionStorage.isemailvalidinregister = false;
 						}
 

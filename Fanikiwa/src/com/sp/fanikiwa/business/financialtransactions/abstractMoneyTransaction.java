@@ -260,7 +260,7 @@ public abstract class abstractMoneyTransaction
     public  List<Transaction> GetTransactionsIncludingCommission(NarrativeFormat MainFmt, NarrativeFormat CommFmt)
     {
         List<Transaction> txns = new ArrayList<Transaction>();
-        DoubleEntry mainDe = GetDoubleEntry(MainFmt);
+        DoubleEntry mainDe = GetDoubleEntry(MainFmt,true);
         if (mainDe.getDr() != null) txns.add(mainDe.getDr());
         if (mainDe.getCr()!= null) txns.add(mainDe.getCr());
 

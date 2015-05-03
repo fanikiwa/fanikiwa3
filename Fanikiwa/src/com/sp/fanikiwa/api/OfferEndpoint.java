@@ -113,7 +113,6 @@ public class OfferEndpoint {
 		OfferReceipientEndpoint ore = new OfferReceipientEndpoint();
 		CollectionResponse<Offer> offers = ore.listOfferReceipient(MemberId,
 				cursorString, count);
-
 		return offers;
 	}
 
@@ -147,7 +146,7 @@ public class OfferEndpoint {
 	//
 	// Member member = ofy().load().type(Member.class).id(MemberId).now();
 	// Query<Offer> query = ofy().load().type(Offer.class)
-	// .filter("publicOffer", false).filter("offerrees", member)
+	// .filter("privateOffer", false).filter("offerrees", member)
 	// .filter("status", "Open").filter("expiryDate >", new Date());
 	// return GetOffersFromQuery(query, cursorString, count);
 	// }
@@ -158,7 +157,7 @@ public class OfferEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("publicOffer", true).filter("status", "Open")
+				.filter("privateOffer", true).filter("status", "Open")
 				.filter("expiryDate >", new Date());
 		return GetOffersFromQuery(query, cursorString, count);
 	}
@@ -314,7 +313,7 @@ public class OfferEndpoint {
 		// o.setOfferees(offerDto.getOfferees());
 		o.setOfferType(offerDto.getOfferType());
 		o.setPartialPay(offerDto.isPartialPay());
-		o.setPublicOffer(offerDto.isPublicOffer());
+		o.setPrivateOffer(offerDto.isPrivateOffer());
 		o.setStatus(offerDto.getStatus());
 		o.setTerm(offerDto.getTerm());
 

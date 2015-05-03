@@ -12,7 +12,7 @@ public class OfferDTO {
 	private double amount = 0;
 	private int term = 1;
 	private double interest = 1;
-	private boolean publicOffer = false;
+	private boolean privateOffer = false;
 	private Date createdDate = new Date();
 	private Date expiryDate = DateExtension.addMonths(new Date(), 1);
 	private String offerees = "";
@@ -53,12 +53,12 @@ public class OfferDTO {
 		this.interest = interest;
 	}
 
-	public boolean isPublicOffer() {
-		return publicOffer;
+	public boolean isPrivateOffer() {
+		return privateOffer;
 	}
 
-	public void setPublicOffer(boolean publicOffer) {
-		this.publicOffer = publicOffer;
+	public void setPrivateOffer(boolean privateOffer) {
+		this.privateOffer = privateOffer;
 	}
 
 	public Date getCreatedDate() {

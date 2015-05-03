@@ -42,8 +42,8 @@
 			</div>
 
 			<div id="MainMenu"></div>
-			<div id="subMenu"></div>
- 
+			<div id="SubMenu"></div>
+
 		</div>
 
 
@@ -92,7 +92,9 @@
 
 
 	<script type="text/javascript">
-		 
+		function init() {
+			fanikiwa.userprofile.changePassword.init(GETROOT());
+		}
 	</script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

@@ -76,7 +76,7 @@ function populateOffers(resp) {
 		offerTable += "<th>Amount</th>";
 		offerTable += "<th>Term</th>";
 		offerTable += "<th>Interest</th>";
-		offerTable += "<th>Public Offer</th>";
+		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
 		offerTable += "<th>Status</th>";
 		offerTable += "<th></th>";
@@ -85,17 +85,25 @@ function populateOffers(resp) {
 		offerTable += "<tbody>";
 
 		for (var i = 0; i < resp.result.items.length; i++) {
-			offerTable += '<tr>';
-			offerTable += '<td>' + resp.result.items[i].description + '</td>';
-			offerTable += '<td>' + resp.result.items[i].amount.formatMoney(2) + '</td>';
-			offerTable += '<td>' + resp.result.items[i].term + '</td>';
-			offerTable += '<td>' + resp.result.items[i].interest + '</td>';
-			offerTable += '<td>' + resp.result.items[i].publicOffer + '</td>';
-			offerTable += '<td>' + resp.result.items[i].partialPay + '</td>';
-			offerTable += '<td>' + resp.result.items[i].status + '</td>';
-			offerTable += '<td><a href="#" onclick="Accept('
-					+ resp.result.items[i].id + ')">Accept</a> </td>';
-			offerTable += "</tr>";
+			var expiryDate = new Date(resp.result.items[i].expiryDate);
+			var today = new Date();
+			if (resp.result.items[i].status == 'Open' && expiryDate > today) {
+				offerTable += '<tr>';
+				offerTable += '<td>' + resp.result.items[i].description
+						+ '</td>';
+				offerTable += '<td>'
+						+ resp.result.items[i].amount.formatMoney(2) + '</td>';
+				offerTable += '<td>' + resp.result.items[i].term + '</td>';
+				offerTable += '<td>' + resp.result.items[i].interest + '</td>';
+				offerTable += '<td>' + resp.result.items[i].privateOffer
+						+ '</td>';
+				offerTable += '<td>' + resp.result.items[i].partialPay
+						+ '</td>';
+				offerTable += '<td>' + resp.result.items[i].status + '</td>';
+				offerTable += '<td><a href="#" onclick="Accept('
+						+ resp.result.items[i].id + ')">Accept</a> </td>';
+				offerTable += "</tr>";
+			}
 		}
 
 		offerTable += "</tbody>";
@@ -129,11 +137,31 @@ function Accept(id) {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListLendOffers.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
 									'operation failed! Please try again');
 						}
 					});
+}
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a style="cursor: pointer;" href="/Views/Offers/CreateBorrowOffer.html">I want to borrow money</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a style="cursor: pointer;" onclick="PopulatePublicOffers()">Show public Offers</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});
+
+function PopulatePublicOffers() {
+
 }

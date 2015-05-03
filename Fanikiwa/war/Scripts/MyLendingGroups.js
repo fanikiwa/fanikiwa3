@@ -72,11 +72,10 @@ function populateLendingGroups(resp) {
 		lendinggroupTable += '<table id="listLendingGroupsTable">';
 		lendinggroupTable += "<thead>";
 		lendinggroupTable += "<tr>";
-		lendinggroupTable += "<th>Amount</th>";
-		lendinggroupTable += "<th>Term</th>";
-		lendinggroupTable += "<th>Interest Rate</th>";
-		lendinggroupTable += "<th>Accrued Interest</th>";
-		lendinggroupTable += "<th>Maturity Date</th>";
+		lendinggroupTable += "<th>Name</th>";
+		lendinggroupTable += "<th>Created On</th>";
+		lendinggroupTable += "<th>Last Modified</th>"; 
+		lendinggroupTable += "<th></th>";
 		lendinggroupTable += "<th></th>";
 		lendinggroupTable += "</tr>";
 		lendinggroupTable += "</thead>";
@@ -84,14 +83,13 @@ function populateLendingGroups(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			lendinggroupTable += '<tr>';
-			lendinggroupTable += '<td>' + resp.result.items[i].amount + '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].term + '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].interestRate + '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].accruedInterest
-					+ '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].maturityDate + '</td>';
-			lendinggroupTable += '<td><a href="#" onclick="LendingGroupDetails('
-					+ resp.result.items[i].id + ')">Details</a> </td>';
+			lendinggroupTable += '<td>' + resp.result.items[i].groupName + '</td>';
+			lendinggroupTable += '<td>' + resp.result.items[i].createdOn + '</td>';
+			lendinggroupTable += '<td>' + resp.result.items[i].lastModified + '</td>';			 
+			lendinggroupTable += '<td><a href="#" onclick="Create('
+					+ resp.result.items[i].id + ')">Create</a> </td>';
+			lendinggroupTable += '<td><a href="#" onclick="Delete('
+				+ resp.result.items[i].id + ')">Delete</a> </td>';
 			lendinggroupTable += "</tr>";
 		}
 
@@ -101,7 +99,12 @@ function populateLendingGroups(resp) {
 	}
 }
 
-function LendingGroupDetails(id) {
+function Create(id) {
+	sessionStorage.lendinggroupparentid = id;
+	window.location.href = "/Views/LendingGroups/Create.html";
+}
+
+function Delete(id) {
 	sessionStorage.mylendinggroupdetailsid = id;
 	console.log(sessionStorage.getItem('mylendinggroupdetailsid = ' + mylendinggroupdetailsid));
 	window.location.href = "/Views/LendingGroups/Details.html";

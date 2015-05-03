@@ -86,7 +86,7 @@ fanikiwa.memberendpoint.updateprofile = function() {
 							window
 									.setTimeout(
 											'window.location.href = "/Views/Account/EditProfile.html";',
-											3000);
+											1000);
 
 						} else {
 							$('#apiResults').html(
@@ -102,8 +102,10 @@ fanikiwa.memberendpoint.updateprofile = function() {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.memberendpoint.profile.enableButtons = function() {
-	var btnRegister = document.querySelector('#btnUpdate');
-	$('#btnUpdate').removeClass('disabled');
+	$("#btnUpdate").removeAttr('style');
+	$("#btnUpdate").removeAttr('disabled');
+	$("#btnUpdate").val('Update');
+	var btnRegister = document.querySelector('#btnUpdate'); 
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.memberendpoint.updateprofile();
 	});

@@ -26,7 +26,7 @@ fanikiwa.userprofile.ui.printLogin = function(loginResponse) {
 		console.log('response = ' + loginResponse.toString());
 		window.setTimeout(
 				'window.location.href = "/Views/Offers/ListMyOffers.html";',
-				2000);
+				1000);
 	}
 };
 
@@ -101,8 +101,11 @@ fanikiwa.userprofile.ui.login = function() {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.userprofile.ui.enableButtons = function() {
-	var getLogin = document.querySelector('#btnLogin');
-	getLogin.addEventListener('click', function() {
+	$("#btnLogin").removeAttr('style');
+	$("#btnLogin").removeAttr('disabled');
+	$("#btnLogin").val('Login');
+	var btnLogin = document.querySelector('#btnLogin');
+	btnLogin.addEventListener('click', function() {
 		fanikiwa.userprofile.ui.login();
 	});
 };

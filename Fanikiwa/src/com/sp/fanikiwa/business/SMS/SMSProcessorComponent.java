@@ -583,7 +583,7 @@ public class SMSProcessorComponent {
 
 		OfferDTO offer = new OfferDTO();
 		offer.setAmount(message.Amount);
-		offer.setPublicOffer(true);
+		offer.setPrivateOffer(false);
 		offer.setTerm(message.Term);
 		offer.setInterest(message.InterestRate);
 		offer.setOfferType("L");
@@ -619,7 +619,7 @@ public class SMSProcessorComponent {
 
 		OfferDTO offer = new OfferDTO();
 		offer.setAmount(message.Amount);
-		offer.setPublicOffer(true);
+		offer.setPrivateOffer(false);
 		offer.setTerm(message.Term);
 		offer.setInterest(message.InterestRate);
 		offer.setOfferType("B");

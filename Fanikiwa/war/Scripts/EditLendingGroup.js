@@ -100,7 +100,7 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListLendOffers.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults').html(
@@ -116,9 +116,10 @@ fanikiwa.offerendpoint.createlendoffer = function() {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.offerendpoint.createlendoffer.enableButtons = function() {
-	var btnRegister = document.querySelector('#btnCreate');
-	$('#btnCreate').removeClass('disabled');
-	$("#chkPublicOffer").attr('checked', false);
+	$("#btnCreate").removeAttr('style');
+	$("#btnCreate").removeAttr('disabled');
+	$("#btnCreate").val('Create');
+	var btnRegister = document.querySelector('#btnCreate');  
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.offerendpoint.createlendoffer();
 	});

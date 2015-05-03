@@ -111,7 +111,7 @@ fanikiwa.userprofile.changePassword = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/Login.html";',
-												3000);
+												1000);
 							}
 						} else {
 							$('#apiResults')
@@ -150,6 +150,9 @@ fanikiwa.userprofile.changePassword.init = function(apiRoot) {
  * Enables the button callbacks in the UI.
  */
 fanikiwa.userprofile.changePassword.enableButtons = function() {
+	$("#btnChangePassword").removeAttr('style');
+	$("#btnChangePassword").removeAttr('disabled');
+	$("#btnChangePassword").val('Change Password');
 	var getLogin = document.querySelector('#btnChangePassword');
 	getLogin.addEventListener('click', function() {
 		fanikiwa.userprofile.changePassword();
@@ -188,7 +191,7 @@ fanikiwa.userprofile.login = function() {
 												+ resp.result.userId);
 								sessionStorage.isuserauthenticatedinchangepassword = true;
 								window.setTimeout('$("#apiResults").html("");',
-										3000);
+										1000);
 							}
 
 						} else {
