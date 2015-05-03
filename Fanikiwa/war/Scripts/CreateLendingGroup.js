@@ -22,12 +22,12 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 	$('#apiResults').html('');
 
 	// Validate the entries
-	var _groupName = document.getElementById('txtgroupName').value; 
+	var _groupName = document.getElementById('txtgroupName').value;
 
 	if (_groupName.length == 0) {
 		errormsg += '<li>' + " Group Name cannot be null " + '</li>';
 		error_free = false;
-	} 
+	}
 
 	if (!error_free) {
 		errormsg += "</ul>";
@@ -40,7 +40,9 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 		ClearException();
 	}
 
-	$('#apiResults').html('creating offer...');
+	$('#apiResults').html('creating group...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = sessionStorage.getItem('loggedinuser');
 	var parentGroupId = sessionStorage.getItem('lendinggroupparentid');
@@ -57,21 +59,30 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.id == undefined
-									|| resp.result.id == null) {
-								$('#apiResults').html(
-										'operation failed! Please try again');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults').html(
-										'operation successful... <br/>');
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								window
 										.setTimeout(
 												'window.location.href = "/Views/LendingGroups/List.html";',
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							$('#errormessage').html(
+									'operation failed! Please try again.');
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
 					}, function(reason) {

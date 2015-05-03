@@ -73,22 +73,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "tiereddetendpoint.updateTieredDet" : {
-      "path" : "tiereddet",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tiereddetendpoint.insertTieredDet" : {
       "path" : "tiereddet",
       "httpMethod" : "POST",
@@ -124,6 +108,22 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "tiereddetendpoint.updateTieredDet" : {
+      "path" : "tiereddet",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -194,14 +194,6 @@
           "$ref" : "TieredDetCollection"
         }
       },
-      "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet" : {
-        "request" : {
-          "$ref" : "TieredDet"
-        },
-        "response" : {
-          "$ref" : "TieredDet"
-        }
-      },
       "com.sp.fanikiwa.api.TieredDetEndpoint.insertTieredDet" : {
         "request" : {
           "$ref" : "TieredDet"
@@ -211,6 +203,14 @@
         }
       },
       "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet" : {
+      },
+      "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet" : {
+        "request" : {
+          "$ref" : "TieredDet"
+        },
+        "response" : {
+          "$ref" : "TieredDet"
+        }
       }
     }
   }

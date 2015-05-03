@@ -50,3 +50,19 @@ function formatDate(date) {
 
 	return [ day, month, year ].join('-');
 }
+function formatDateForControl(date) {
+	var d = new Date(date), month = '' + (d.getMonth() + 1), day = ''
+			+ d.getDate(), year = d.getFullYear();
+
+	if (month.length < 2)
+		month = '0' + month;
+	if (day.length < 2)
+		day = '0' + day;
+
+	return [ year, month, day ].join('-');
+}
+function incrementDateByYear(date_str, count) {
+	var date = new Date(date_str);
+	date.setDate(date.getFullYear() - count);
+	return formatDateForControl(date);
+}

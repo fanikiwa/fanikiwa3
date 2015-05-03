@@ -50,8 +50,7 @@ fanikiwa.memberendpoint.register = function() {
 	}
 	if (_Email.length != 0 && sessionStorage.isemailvalidinregister === "false") {
 		errormsg += '<li>' + " Validation failed! Please check Email.<br/> "
-		+ "Valid format is user@domain.com"
-				+ '</li>';
+				+ "Valid format is user@domain.com" + '</li>';
 		error_free = false;
 	}
 	if (_Pwd.length == 0) {
@@ -79,6 +78,8 @@ fanikiwa.memberendpoint.register = function() {
 	}
 
 	$('#apiResults').html('registering...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	// Build the Request Object
 	var memberDTO = {};
@@ -93,32 +94,44 @@ fanikiwa.memberendpoint.register = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.memberId == undefined
-									|| resp.result.memberId == null) {
-								$('#apiResults')
-										.html(
-												'Registration failed! Please try again');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults')
-										.html(
-												'Registration successful... <br/>'
-														+ 'Member id = '
-														+ resp.result.memberId
-														+ '<br/>redirecting to login...');
-								sessionStorage.registermemberId = resp.result.memberId;
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
+								sessionStorage.clear();
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/Login.html";',
 												1000);
 							}
-
 						} else {
-							$('#apiResults').html(
-									'Registration failed! Please try again');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
-					}, function(reason) {
+					},
+					function(reason) {
 						console.log('Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message
+												.toString());
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 };
 
@@ -172,32 +185,43 @@ fanikiwa.memberendpoint.isEmailValid = function(email) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
 							if (resp.result.result == false) {
-								$('#apiResults')
-										.html(
-												'Validation failed! Please check Email.<br/>'
-												+ 'Valid format is user@domain.com');
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.isemailvalidinregister = false;
 							} else {
-
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.isemailvalidinregister = true;
-								$('#apiResults').html(
-										'email validation successful...');
-								window.setTimeout('$("#apiResults").html("");',
-										1000);
+								window.setTimeout(
+										'$("#successmessage").html("");', 1000);
 							}
 						} else {
-							$('#apiResults')
-									.html(
-											'Validation failed! Please check Email.<br/>'
-											+ 'Valid format is user@domain.com');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 							sessionStorage.isemailvalidinregister = false;
 						}
 
 					},
 					function(reason) {
 						console.log('Error: ' + reason.result.error.message);
-						$('#apiResults').html(
-								'Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message
+												.toString());
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 						sessionStorage.isemailvalidinregister = false;
 					});
 

@@ -11,10 +11,14 @@ import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
+import com.google.gson.JsonPrimitive;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Userprofile;
+import com.sp.utils.DateExtension;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,25 +147,52 @@ public class UserprofileEndpoint {
 		ofy().save().entities(userprofile).now();
 		return userprofile;
 	}
-	
+
 	@ApiMethod(name = "changePassword")
-	public Userprofile changePassword(@Named("userId") String userId,
-			@Named("pwd") String pwd) throws NotFoundException {
-		Userprofile user = null;
-		user = findRecord(userId);
-		user.setPwd(pwd);
-		return updateUserprofile(user);
+	public RequestResult changePassword(@Named("userId") String userId,
+			@Named("pwd") String pwd) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Userprofile user = null;
+			user = findRecord(userId);
+			user.setPwd(pwd);
+
+			updateUserprofile(user);
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	@ApiMethod(name = "login")
-	public Userprofile Login(@Named("userId") String userId,
+	public RequestResult Login(@Named("userId") String userId,
 			@Named("pwd") String pwd) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
 		Userprofile user = null;
 		user = findRecord(userId);
+		if (user == null) {
+			re.setResult(false);
+			re.setResultMessage("User with email [ " + userId + " ] does not exist!");
+			return re;
+		}
 		if (AuthenticateUser(user, pwd)) {
-			return user;
-		} else
-			return null;
+			re.setResult(true);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+			re.setResultMessage("created date:"
+					+ sdf.format(user.getCreateDate()));
+			re.setClientToken(user.getUserId());
+			return re;
+		} else {
+			re.setResult(false);
+			re.setResultMessage("User Exists but Password is incorrect.");
+		}
+		return re;
 	}
 
 	private boolean AuthenticateUser(Userprofile user, String pwd) {
@@ -178,7 +209,7 @@ public class UserprofileEndpoint {
 	}
 
 	public Userprofile LoginByPhone(@Named("telephone") String telephone,
-			@Named("pwd")  String pwd) {
+			@Named("pwd") String pwd) {
 		// TODO Auto-generated method stub
 		Userprofile user = ofy().load().type(Userprofile.class)
 				.filter("telephone", telephone).first().now();

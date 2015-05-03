@@ -64,6 +64,8 @@ fanikiwa.offerendpoint.createoffer = function() {
 	}
 
 	$('#apiResults').html('creating offer...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = sessionStorage.getItem('loggedinuser');
 
@@ -86,24 +88,30 @@ fanikiwa.offerendpoint.createoffer = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.id == undefined
-									|| resp.result.id == null) {
-								$('#apiResults').html(
-										'operation failed! Please try again');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults').html(
+								$('#successmessage').html(
 										'operation successful... <br/>'
-												+ 'offer id = '
-												+ resp.result.id);
-								sessionStorage.createmyofferId = resp.result.id;
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListMyOffers.html";',
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							$('#errormessage').html(
+									'operation failed! Please try again.');
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
 					}, function(reason) {
@@ -118,11 +126,11 @@ fanikiwa.offerendpoint.createoffer.enableButtons = function() {
 	$("#btnCreate").removeAttr('style');
 	$("#btnCreate").removeAttr('disabled');
 	$("#btnCreate").val('Create');
-	var btnRegister = document.querySelector('#btnCreate'); 
+	var btnRegister = document.querySelector('#btnCreate');
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.offerendpoint.createoffer();
-	}); 
-	$("#chkPublicOffer").attr('checked', false); 
+	});
+	$("#chkPublicOffer").attr('checked', false);
 };
 
 /**
@@ -145,7 +153,7 @@ fanikiwa.offerendpoint.createoffer.init = function(apiRoot) {
 	gapi.client.load('offerendpoint', 'v1', callback, apiRoot);
 
 };
- 
+
 function Clear() {
 	$("#txtDescription").val("");
 	$("#txtAmount").val("");

@@ -25,6 +25,7 @@ import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferDTO;
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.utils.GLUtil;
 import com.sp.utils.MailUtil;
 import com.sp.utils.StringExtension;
@@ -33,7 +34,7 @@ public class MakeOfferComponent {
 
 	
 
-	public Offer MakeOffer(OfferDTO offerDto) throws Exception {
+	public RequestResult MakeOffer(OfferDTO offerDto) throws Exception {
 		if (offerDto.getOfferType().toUpperCase().equals("L")) {
 			return MakeLendOffer(offerDto);
 		} else {
@@ -41,11 +42,11 @@ public class MakeOfferComponent {
 		}
 	}
 
-	private Offer MakeBorrowOffer(OfferDTO offerModel) throws Exception {
+	private RequestResult MakeBorrowOffer(OfferDTO offerModel) throws Exception {
 		return createOfferDTO(offerModel);
 	}
 
-	private Offer MakeLendOffer(OfferDTO offerDto) throws Exception {
+	private RequestResult MakeLendOffer(OfferDTO offerDto) throws Exception {
 		// Step 1 - Block funds.
 		Member member = SearchMemberByEmail(offerDto.getEmail());
 
@@ -77,7 +78,7 @@ public class MakeOfferComponent {
 	}
 
 
-	private Offer createOfferDTO(OfferDTO offerDto)
+	private RequestResult createOfferDTO(OfferDTO offerDto)
 	{
 		OfferEndpoint oep = new OfferEndpoint();
 		return oep.saveOffer(offerDto);

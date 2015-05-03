@@ -9,6 +9,7 @@ public class RequestResult {
 	
 	private boolean Result;
 	private String ResultMessage;
+	private Object clientToken; 
 	
 	
 	public Long getId() {
@@ -29,6 +30,12 @@ public class RequestResult {
 	}
 	public void setResultMessage(String resultMessage) {
 		ResultMessage = resultMessage;
+	}
+	public Object getClientToken() {
+		return clientToken;
+	}
+	public void setClientToken(Object clienttoken) {
+		clientToken = clienttoken;
 	}
 
 }

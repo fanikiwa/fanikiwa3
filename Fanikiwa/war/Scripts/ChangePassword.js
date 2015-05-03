@@ -85,6 +85,8 @@ fanikiwa.userprofile.changePassword = function() {
 	}
 
 	$('#apiResults').html('processing...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	gapi.client.userprofileendpoint
 			.changePassword({
@@ -95,18 +97,20 @@ fanikiwa.userprofile.changePassword = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp == false
-									|| resp.result.userId == undefined
-									|| resp.result.userId == null) {
-								$('#apiResults')
-										.html(
-												'operation failed! Please check your password');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults')
-										.html(
-												'operation successful...'
-														+ '<br/> password changed...'
-														+ '<br/> redirecting to login in 3 seconds...');
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.clear();
 								window
 										.setTimeout(
@@ -114,9 +118,11 @@ fanikiwa.userprofile.changePassword = function() {
 												1000);
 							}
 						} else {
-							$('#apiResults')
+							$('#errormessage')
 									.html(
-											'operation failed! Please check your password');
+											'operation failed! Please check your password and try again.');
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
 					}, function(reason) {

@@ -18,19 +18,22 @@ fanikiwa.lendinggroupendpoint.lendinggroups.LoadLendingGroups = function() {
 
 	gapi.client.lendinggroupendpoint.retrieveLendinggroupsByCreator({
 		'email' : email
-	}).execute(function(resp) {
-		console.log('response =>> ' + resp);
-		if (!resp.code) {
-			if (resp.result.items == undefined || resp.result.items == null) {
-				$('#listLendingGroupsResult').html('You have no LendingGroups...');
-			} else {
-				buildTable(resp);
-			}
-		}
+	}).execute(
+			function(resp) {
+				console.log('response =>> ' + resp);
+				if (!resp.code) {
+					if (resp == false || resp.result.items == undefined
+							|| resp.result.items == null) {
+						$('#listLendingGroupsResult').html(
+								'You have no LendingGroups...');
+					} else {
+						buildTable(resp);
+					}
+				}
 
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+			}, function(reason) {
+				console.log('Error: ' + reason.result.error.message);
+			});
 };
 
 /**
@@ -74,7 +77,7 @@ function populateLendingGroups(resp) {
 		lendinggroupTable += "<tr>";
 		lendinggroupTable += "<th>Name</th>";
 		lendinggroupTable += "<th>Created On</th>";
-		lendinggroupTable += "<th>Last Modified</th>"; 
+		lendinggroupTable += "<th>Last Modified</th>";
 		lendinggroupTable += "<th></th>";
 		lendinggroupTable += "<th></th>";
 		lendinggroupTable += "</tr>";
@@ -83,13 +86,16 @@ function populateLendingGroups(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			lendinggroupTable += '<tr>';
-			lendinggroupTable += '<td>' + resp.result.items[i].groupName + '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].createdOn + '</td>';
-			lendinggroupTable += '<td>' + resp.result.items[i].lastModified + '</td>';			 
+			lendinggroupTable += '<td>' + resp.result.items[i].groupName
+					+ '</td>';
+			lendinggroupTable += '<td>' + resp.result.items[i].createdOn
+					+ '</td>';
+			lendinggroupTable += '<td>' + resp.result.items[i].lastModified
+					+ '</td>';
 			lendinggroupTable += '<td><a href="#" onclick="Create('
 					+ resp.result.items[i].id + ')">Create</a> </td>';
 			lendinggroupTable += '<td><a href="#" onclick="Delete('
-				+ resp.result.items[i].id + ')">Delete</a> </td>';
+					+ resp.result.items[i].id + ')">Delete</a> </td>';
 			lendinggroupTable += "</tr>";
 		}
 
@@ -106,6 +112,21 @@ function Create(id) {
 
 function Delete(id) {
 	sessionStorage.mylendinggroupdetailsid = id;
-	console.log(sessionStorage.getItem('mylendinggroupdetailsid = ' + mylendinggroupdetailsid));
+	console.log(sessionStorage.getItem('mylendinggroupdetailsid = '
+			+ mylendinggroupdetailsid));
 	window.location.href = "/Views/LendingGroups/Details.html";
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/LendingGroups/Create.html" >Create</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

@@ -72,28 +72,29 @@
 						<div class="pad">
 
 							<div>
-								<input id="txtEmail" placeholder="Email" type="hidden"></input>
-							</div>
-
-							<div>
 								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									autofocus autocomplete placeholder="Surname" type="text"></input>
+									placeholder="Surname" type="text" text></input>
 							</div>
 
 							<div>
 								<label for="txtOtherNames">OtherNames</label> <input
-									autocomplete id="txtOtherNames" placeholder="OtherNames"
-									type="text"></input>
+									id="txtOtherNames" placeholder="OtherNames" type="text"></input>
 							</div>
 
 							<div>
-								<input id="txtTelephone" placeholder="Telephone" type="hidden"></input>
+								<label for="txtEmail">Email</label> <input id="txtEmail"
+									placeholder="Email" type="text" disabled></input>
+							</div>
+
+							<div>
+								<label for="txtNationalID">Telephone</label> <input
+									id="txtTelephone" placeholder="Telephone" type="text" disabled></input>
 							</div>
 
 							<div>
 								<label for="txtNationalID">NationalID</label> <input
-									autocomplete id="txtNationalID" placeholder="NationalID"
-									type="text"></input>
+									id="txtNationalID" placeholder="NationalID" type="text"
+									disabled></input>
 							</div>
 
 
@@ -110,15 +111,15 @@
 
 							<div>
 								<label for="txtRefferedBy">RefferedBy</label> <input
-									id="txtRefferedBy" placeholder="RefferedBy" type="number"
-									min="0"></input>
+									id="txtRefferedBy" placeholder="Refferer Member Id"
+									type="number" min="0"></input>
 							</div>
 
 
 							<div>
 								<label for="txtMaxRecordsToDisplay">MaxRecordsToDisplay</label>
 								<input id="txtMaxRecordsToDisplay"
-									placeholder="MaxRecordsToDisplay" type="number" min="0"></input>
+									placeholder="MaxRecordsToDisplay" type="number" min="1"></input>
 							</div>
 
 							<div>
@@ -132,8 +133,8 @@
 							<div>
 								<label for="cboInformBy">InformBy</label> <select
 									name="InformBy" id="cboInformBy">
-									<option value="Email">Email</option>
-									<option value="Sms">Sms</option>
+									<option value="EMAIL">Email</option>
+									<option value="SMS">Sms</option>
 								</select>
 							</div>
 
@@ -151,6 +152,10 @@
 
 
 			</form>
+
+			<div id="apiResults" style="float: left; clear: both"></div>
+			<div id="successmessage" style="float: left; clear: both"></div>
+			<div id="errormessage" style="float: left; clear: both"></div>
 
 
 		</section>

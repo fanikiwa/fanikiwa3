@@ -26,6 +26,7 @@ import com.sp.fanikiwa.entity.Userprofile;
 import com.sp.utils.Config;
 import com.sp.utils.MailUtil;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -120,13 +121,64 @@ public class MemberEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateMember")
-	public Member updateMember(Member Member) throws NotFoundException {
-		Member record = findRecord(Member.getMemberId());
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult updateMember(Member member) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+
+			Member existingmember = findRecord(member.getMemberId());
+			if (existingmember == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			existingmember
+					.setCurrentAccount(existingmember.getCurrentAccount());
+			existingmember.setCustomer(existingmember.getCustomer());
+			existingmember.setDateActivated(existingmember.getDateActivated());
+			existingmember.setDateJoined(existingmember.getDateJoined());
+			existingmember.setDateOfBirth(member.getDateOfBirth());
+			existingmember.setEmail(existingmember.getEmail());
+			existingmember.setGender(member.getGender());
+			existingmember.setInformBy(member.getInformBy());
+			existingmember.setinterestExpAccount(existingmember
+					.getinterestExpAccount());
+			existingmember.setinterestIncAccount(existingmember
+					.getinterestIncAccount());
+			existingmember.setInvestmentAccount(existingmember
+					.getInvestmentAccount());
+			existingmember.setLoanAccount(existingmember.getLoanAccount());
+			existingmember.setMaxRecordsToDisplay(member
+					.getMaxRecordsToDisplay());
+			existingmember.setMemberId(existingmember.getMemberId());
+			existingmember.setNationalID(existingmember.getNationalID());
+			existingmember.setOtherNames(member.getOtherNames());
+			existingmember.setPhoto(existingmember.getPhoto());
+			existingmember.setPwd(existingmember.getPwd());
+			existingmember.setRefferedBy(member.getRefferedBy());
+			existingmember.setStatus(existingmember.getStatus());
+			existingmember.setSurname(member.getSurname());
+			existingmember.setTelephone(existingmember.getTelephone());
+
+			ofy().save().entities(existingmember).now();
+			re.setResultMessage(MessageFormat
+					.format("Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
+							existingmember.getMemberId().toString(),
+							existingmember.getCurrentAccount().getAccountID()
+									.toString(),
+							existingmember.getLoanAccount().getAccountID()
+									.toString(), existingmember
+									.getInvestmentAccount().getAccountID()
+									.toString(), existingmember
+									.getinterestIncAccount().getAccountID()
+									.toString(), existingmember
+									.getinterestExpAccount().getAccountID()
+									.toString()));
+
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entities(Member).now();
-		return Member;
+		return re;
 	}
 
 	/**
@@ -161,7 +213,28 @@ public class MemberEndpoint {
 	}
 
 	// Non CRUD
-	@ApiMethod(name = "GetMemberByEmail")
+	@ApiMethod(name = "getMemberByEmailWeb")
+	public RequestResult GetMemberByEmailWeb(@Named("email") String email) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Member member = ofy().load().type(Member.class)
+					.filter("email", email).first().now();
+			if (member == null) {
+				re.setResult(false);
+				re.setResultMessage("Could not find Member Info");
+				return re;
+			}
+			re.setClientToken(member);
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	@ApiMethod(name = "getMemberByEmail")
 	public Member GetMemberByEmail(@Named("email") String email) {
 		return ofy().load().type(Member.class).filter("email", email).first()
 				.now();
@@ -174,141 +247,237 @@ public class MemberEndpoint {
 	}
 
 	@ApiMethod(name = "Register")
-	public Member Register(MemberDTO memberDTO) throws ConflictException,
-			NotFoundException {
+	public RequestResult Register(MemberDTO memberDTO) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
 
-		// Create the user
-		Userprofile user = new Userprofile();
-		user.setCreateDate(new Date());
-		user.setPwd(memberDTO.getPwd()); // think of encrypting
-		user.setUserId(memberDTO.getEmail());
-		user.setTelephone(memberDTO.getTelephone());
+			Member emailexists = ofy().transactionless().load()
+					.type(Member.class).filter("email", memberDTO.getEmail())
+					.first().now();
+			if (emailexists != null) {
+				re.setResult(false);
+				re.setResultMessage("Email is already Registered in Fanikiwa!");
+				return re;
+			}
+			Member telephoneexists = ofy().transactionless().load()
+					.type(Member.class)
+					.filter("telephone", memberDTO.getTelephone()).first()
+					.now();
+			if (telephoneexists != null) {
+				re.setResult(false);
+				re.setResultMessage("Telephone is already Registered in Fanikiwa!");
+				return re;
+			}
+			Member nationalidexists = ofy().transactionless().load()
+					.type(Member.class)
+					.filter("nationalID", memberDTO.getNationalID()).first()
+					.now();
+			if (nationalidexists != null) {
+				re.setResult(false);
+				re.setResultMessage("National Id is already Registered in Fanikiwa!");
+				return re;
+			}
 
-		UserprofileEndpoint upep = new UserprofileEndpoint();
-		upep.insertUserprofile(user);
+			// Create the user
+			Userprofile user = new Userprofile();
+			user.setCreateDate(new Date());
+			user.setPwd(memberDTO.getPwd()); // think of encrypting
+			user.setUserId(memberDTO.getEmail());
+			user.setTelephone(memberDTO.getTelephone());
 
-		Customer customer = new Customer();
-		// at this point, fill the customer with the details from the UI
-		customer.setName(memberDTO.getSurname());
-		customer.setEmail(memberDTO.getEmail());
-		customer.setTelephone(memberDTO.getTelephone());
-		customer.setCreatedDate(new Date());
-		customer.setOrganization(new Organization(Config.GetLong("CURRENT_ORG")));
+			UserprofileEndpoint upep = new UserprofileEndpoint();
+			Userprofile userReturned = upep.insertUserprofile(user);
+			if (userReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating User!");
+				return re;
+			}
 
-		CustomerEndpoint cep = new CustomerEndpoint();
-		Customer customerReturned = cep.insertCustomer(customer);
+			Customer customer = new Customer();
+			// at this point, fill the customer with the details from the UI
+			customer.setName(memberDTO.getSurname());
+			customer.setEmail(memberDTO.getEmail());
+			customer.setTelephone(memberDTO.getTelephone());
+			customer.setCreatedDate(new Date());
+			customer.setOrganization(new Organization(Config
+					.GetLong("CURRENT_ORG")));
+			customer.setBillToEmail(memberDTO.getEmail());
+			customer.setBillToTelephone(memberDTO.getTelephone());
 
-		// Step 3. Create 3 accounts. Currentaccount, loanaccount and
-		// invesmentaccount using the customerReturned
-		Account currentAccount = new Account();
-		currentAccount.setAccountName(customerReturned.getName() + " Curr A/c");
-		currentAccount.setCustomer(customerReturned);
-		currentAccount.setCoadet(new Coadet(Config
-				.GetLong("CURRENT_ACC_COA_ID")));
-		currentAccount.setAccounttype(new AccountType(Config
-				.GetLong("CURRENT_ACC_TYPE_ID")));
-		currentAccount.setBookBalance(0.00);
-		currentAccount.setClearedBalance(0.00);
-		currentAccount.setLimit(0.00);
-		currentAccount.setInterestRate(0.00);
-		currentAccount.setAccruedInt(0.00);
-		currentAccount
-				.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
-						.getValue());
+			CustomerEndpoint cep = new CustomerEndpoint();
+			Customer customerReturned = cep.insertCustomer(customer);
+			if (customerReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Customer!");
+				return re;
+			}
 
-		Account loanaccount = new Account();
-		loanaccount.setAccountName(customerReturned.getName() + " Loan A/c");
-		loanaccount.setCustomer(customerReturned);
-		loanaccount.setCoadet(new Coadet(Config.GetLong("LOAN_ACC_COA_ID")));
-		loanaccount.setAccounttype(new AccountType(Config
-				.GetLong("LOAN_ACC_COA_ID")));
-		loanaccount.setBookBalance(0.00);
-		loanaccount.setClearedBalance(0.00);
-		loanaccount.setLimit(0.00);
-		loanaccount.setInterestRate(0.00);
-		loanaccount.setAccruedInt(0.00);
+			// Step 3. Create 3 accounts. Currentaccount, loanaccount and
+			// invesmentaccount using the customerReturned
+			Account currentAccount = new Account();
+			currentAccount.setAccountName(customerReturned.getName()
+					+ " Curr A/c");
+			currentAccount.setCustomer(customerReturned);
+			currentAccount.setCoadet(new Coadet(Config
+					.GetLong("CURRENT_ACC_COA_ID")));
+			currentAccount.setAccounttype(new AccountType(Config
+					.GetLong("CURRENT_ACC_TYPE_ID")));
+			currentAccount.setBookBalance(0.00);
+			currentAccount.setClearedBalance(0.00);
+			currentAccount.setLimit(0.00);
+			currentAccount.setInterestRate(0.00);
+			currentAccount.setAccruedInt(0.00);
+			currentAccount
+					.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
+							.getValue());
 
-		Account interestexpenseaccount = new Account();
-		interestexpenseaccount.setAccountName(customerReturned.getName()
-				+ " Interest Exp A/c");
-		interestexpenseaccount.setCustomer(customerReturned);
-		interestexpenseaccount.setCoadet(new Coadet(Config
-				.GetLong("INTEREST_EXP_ACC_COA_ID")));
-		interestexpenseaccount.setAccounttype(new AccountType(Config
-				.GetLong("INTEREST_EXP_ACC_TYPE_ID")));
-		interestexpenseaccount.setBookBalance(0.00);
-		interestexpenseaccount.setClearedBalance(0.00);
-		interestexpenseaccount.setLimit(0.00);
-		interestexpenseaccount.setInterestRate(0.00);
-		interestexpenseaccount.setAccruedInt(0.00);
+			Account loanaccount = new Account();
+			loanaccount
+					.setAccountName(customerReturned.getName() + " Loan A/c");
+			loanaccount.setCustomer(customerReturned);
+			loanaccount
+					.setCoadet(new Coadet(Config.GetLong("LOAN_ACC_COA_ID")));
+			loanaccount.setAccounttype(new AccountType(Config
+					.GetLong("LOAN_ACC_COA_ID")));
+			loanaccount.setBookBalance(0.00);
+			loanaccount.setClearedBalance(0.00);
+			loanaccount.setLimit(0.00);
+			loanaccount.setInterestRate(0.00);
+			loanaccount.setAccruedInt(0.00);
 
-		Account invesmentaccount = new Account();
-		invesmentaccount.setAccountName(customerReturned.getName()
-				+ " Investment A/c");
-		invesmentaccount.setCustomer(customerReturned);
-		invesmentaccount.setCoadet(new Coadet(Config
-				.GetLong("INVESTMENT_ACC_COA_ID")));
-		invesmentaccount.setAccounttype(new AccountType(Config
-				.GetLong("INVESTMENT_ACC_TYPE_ID")));
-		invesmentaccount.setBookBalance(0.00);
-		invesmentaccount.setClearedBalance(0.00);
-		invesmentaccount.setLimit(0.00);
-		invesmentaccount.setInterestRate(0.00);
-		invesmentaccount.setAccruedInt(0.00);
-		invesmentaccount
-				.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
-						.getValue());
+			Account interestexpenseaccount = new Account();
+			interestexpenseaccount.setAccountName(customerReturned.getName()
+					+ " Interest Exp A/c");
+			interestexpenseaccount.setCustomer(customerReturned);
+			interestexpenseaccount.setCoadet(new Coadet(Config
+					.GetLong("INTEREST_EXP_ACC_COA_ID")));
+			interestexpenseaccount.setAccounttype(new AccountType(Config
+					.GetLong("INTEREST_EXP_ACC_TYPE_ID")));
+			interestexpenseaccount.setBookBalance(0.00);
+			interestexpenseaccount.setClearedBalance(0.00);
+			interestexpenseaccount.setLimit(0.00);
+			interestexpenseaccount.setInterestRate(0.00);
+			interestexpenseaccount.setAccruedInt(0.00);
 
-		Account interestincomeaccount = new Account();
-		interestincomeaccount.setAccountName(customerReturned.getName()
-				+ " Interest Inc A/c");
-		interestincomeaccount.setCustomer(customerReturned);
-		interestincomeaccount.setCoadet(new Coadet(Config
-				.GetLong("INTEREST_INC_ACC_COA_ID")));
-		interestincomeaccount.setAccounttype(new AccountType(Config
-				.GetLong("INTEREST_INC_ACC_TYPE_ID")));
-		interestincomeaccount.setBookBalance(0.00);
-		interestincomeaccount.setClearedBalance(0.00);
-		interestincomeaccount.setLimit(0.00);
-		interestincomeaccount.setInterestRate(0.00);
-		interestincomeaccount.setAccruedInt(0.00);
+			Account invesmentaccount = new Account();
+			invesmentaccount.setAccountName(customerReturned.getName()
+					+ " Investment A/c");
+			invesmentaccount.setCustomer(customerReturned);
+			invesmentaccount.setCoadet(new Coadet(Config
+					.GetLong("INVESTMENT_ACC_COA_ID")));
+			invesmentaccount.setAccounttype(new AccountType(Config
+					.GetLong("INVESTMENT_ACC_TYPE_ID")));
+			invesmentaccount.setBookBalance(0.00);
+			invesmentaccount.setClearedBalance(0.00);
+			invesmentaccount.setLimit(0.00);
+			invesmentaccount.setInterestRate(0.00);
+			invesmentaccount.setAccruedInt(0.00);
+			invesmentaccount
+					.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
+							.getValue());
 
-		AccountEndpoint aep = new AccountEndpoint();
-		Account currentAccountReturned = aep.insertAccount(currentAccount);
-		Account loanAccountReturned = aep.insertAccount(loanaccount);
-		Account investmentAccountReturned = aep.insertAccount(invesmentaccount);
+			Account interestincomeaccount = new Account();
+			interestincomeaccount.setAccountName(customerReturned.getName()
+					+ " Interest Inc A/c");
+			interestincomeaccount.setCustomer(customerReturned);
+			interestincomeaccount.setCoadet(new Coadet(Config
+					.GetLong("INTEREST_INC_ACC_COA_ID")));
+			interestincomeaccount.setAccounttype(new AccountType(Config
+					.GetLong("INTEREST_INC_ACC_TYPE_ID")));
+			interestincomeaccount.setBookBalance(0.00);
+			interestincomeaccount.setClearedBalance(0.00);
+			interestincomeaccount.setLimit(0.00);
+			interestincomeaccount.setInterestRate(0.00);
+			interestincomeaccount.setAccruedInt(0.00);
 
-		Account intexpAccountReturned = aep
-				.insertAccount(interestexpenseaccount);
-		Account intincAccountReturned = aep
-				.insertAccount(interestincomeaccount);
+			AccountEndpoint aep = new AccountEndpoint();
+			Account currentAccountReturned = aep.insertAccount(currentAccount);
+			Account loanAccountReturned = aep.insertAccount(loanaccount);
+			Account investmentAccountReturned = aep
+					.insertAccount(invesmentaccount);
 
-		// Step 4. Update the member account created in step1 with the three
-		// accounts
-		Member member = new Member();
-		member.setEmail(memberDTO.getEmail());
-		member.setPwd(memberDTO.getPwd());
-		member.setTelephone(memberDTO.getTelephone());
-		member.setSurname(memberDTO.getSurname());
-		member.setDateJoined(new Date());
-		member.setStatus("A");
-		member.setCurrentAccount(currentAccountReturned);
-		member.setLoanAccount(loanAccountReturned);
-		member.setInvestmentAccount(investmentAccountReturned);
-		member.setinterestExpAccount(intexpAccountReturned);
-		member.setinterestIncAccount(intincAccountReturned);
-		member.setCustomer(customerReturned);
-		Member newMember = insertMember(member);
+			Account intexpAccountReturned = aep
+					.insertAccount(interestexpenseaccount);
+			Account intincAccountReturned = aep
+					.insertAccount(interestincomeaccount);
 
-		// Step 5. Update the customer id
-		customerReturned.setMemberId(newMember.getMemberId());
-		cep.updateCustomer(customerReturned);
+			if (currentAccountReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Current Account!");
+				return re;
+			}
+			if (loanAccountReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Loan Account!");
+				return re;
+			}
+			if (intexpAccountReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Interest Expense Account!");
+				return re;
+			}
+			if (investmentAccountReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Investment Account!");
+				return re;
+			}
+			if (intincAccountReturned == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Interet Income Account!");
+				return re;
+			}
 
-		// Step 6. Create ROOT Mailing Group for member
-		// MailingGroupsComponent mc = new MailingGroupsComponent();
-		// mc.CreateRootMailingGroup(_Member.MemberId);
+			// Step 4. create the member with the three accounts created in
+			// step1
+			Member member = new Member();
+			member.setEmail(memberDTO.getEmail());
+			member.setPwd(memberDTO.getPwd());
+			member.setTelephone(memberDTO.getTelephone());
+			member.setSurname(memberDTO.getSurname());
+			member.setDateJoined(new Date());
+			member.setStatus("A");
+			member.setMaxRecordsToDisplay(5);
+			member.setCurrentAccount(currentAccountReturned);
+			member.setLoanAccount(loanAccountReturned);
+			member.setInvestmentAccount(investmentAccountReturned);
+			member.setinterestExpAccount(intexpAccountReturned);
+			member.setinterestIncAccount(intincAccountReturned);
+			member.setCustomer(customerReturned);
+			Member newMember = insertMember(member);
+			if (newMember == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Member!");
+				return re;
+			}
 
-		return newMember;
+			// Step 5. Update the customer with memberid
+			customerReturned.setMemberId(newMember.getMemberId());
+			cep.updateCustomer(customerReturned);
+
+			// Step 6. Create ROOT Mailing Group for member
+			LendingGroupEndpoint mc = new LendingGroupEndpoint();
+			mc.CreateRootMailingGroup(newMember);
+
+			re.setResult(true);
+			re.setResultMessage(MessageFormat
+					.format("Successfully Registered. Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
+							newMember.getMemberId().toString(), newMember
+									.getCurrentAccount().getAccountID()
+									.toString(), newMember.getLoanAccount()
+									.getAccountID().toString(), newMember
+									.getInvestmentAccount().getAccountID()
+									.toString(), newMember
+									.getinterestIncAccount().getAccountID()
+									.toString(), newMember
+									.getinterestExpAccount().getAccountID()
+									.toString()));
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	@ApiMethod(name = "DeRegister")
@@ -373,8 +542,15 @@ public class MemberEndpoint {
 
 			String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 			Boolean isemailvalid = email.matches(EMAIL_REGEX);
-			re.setResult(isemailvalid);
-			re.setResultMessage(email);
+			if (isemailvalid) {
+				re.setResult(isemailvalid);
+				re.setResultMessage("email validation successful...");
+				return re;
+			} else {
+				re.setResult(isemailvalid);
+				re.setResultMessage("Validation failed! Please check Email.<br/>Valid format is user@domain.com");
+				return re;
+			}
 
 		} catch (Exception e) {
 			re.setResult(false);

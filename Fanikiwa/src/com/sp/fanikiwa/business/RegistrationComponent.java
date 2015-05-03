@@ -6,6 +6,7 @@ import com.sp.fanikiwa.api.MemberEndpoint;
 import com.sp.fanikiwa.api.UserprofileEndpoint;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.MemberDTO;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Userprofile;
 
 public class RegistrationComponent {
@@ -65,11 +66,10 @@ public class RegistrationComponent {
         		 IsNationalIDRegistered(ID) ;
      }
      
-     public Member Register(MemberDTO m) throws ConflictException, NotFoundException
+     public RequestResult Register(MemberDTO m) throws ConflictException, NotFoundException
      {
     	 MemberEndpoint mep = new MemberEndpoint();
-    	 return mep.Register(m);
-    	 
+    	 return mep.Register(m); 
      }
 
 	public Member SelectMemberByPhone(String senderTelno) {

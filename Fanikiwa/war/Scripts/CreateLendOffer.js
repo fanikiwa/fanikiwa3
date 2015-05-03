@@ -65,6 +65,8 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 	}
 
 	$('#apiResults').html('creating offer...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = sessionStorage.getItem('loggedinuser');
 
@@ -87,24 +89,30 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.id == undefined
-									|| resp.result.id == null) {
-								$('#apiResults').html(
-										'operation failed! Please try again');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults').html(
+								$('#successmessage').html(
 										'operation successful... <br/>'
-												+ 'offer id = '
-												+ resp.result.id);
-								sessionStorage.createlendofferId = resp.result.id;
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								window
 										.setTimeout(
-												'window.location.href = "/Views/Offers/ListLendOffers.html";',
+												'window.location.href = "/Views/Offers/ListBorrowOffers.html";',
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							$('#errormessage').html(
+									'operation failed! Please try again.');
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
 					}, function(reason) {
@@ -119,7 +127,7 @@ fanikiwa.offerendpoint.createlendoffer.enableButtons = function() {
 	$("#btnCreate").removeAttr('style');
 	$("#btnCreate").removeAttr('disabled');
 	$("#btnCreate").val('Create');
-	var btnRegister = document.querySelector('#btnCreate');  
+	var btnRegister = document.querySelector('#btnCreate');
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.offerendpoint.createlendoffer();
 	});

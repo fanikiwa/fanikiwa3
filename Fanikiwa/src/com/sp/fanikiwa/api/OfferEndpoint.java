@@ -271,25 +271,33 @@ public class OfferEndpoint {
 	}
 
 	@ApiMethod(name = "saveOffer")
-	public Offer saveOffer(final OfferDTO offerDto) {
+	public RequestResult saveOffer(final OfferDTO offerDto) {
+		final RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
 		Offer offer = ofy().transactNew(MAXRETRIES, new Work<Offer>() {
 			public Offer run() {
 				// This work must be Idempotent
 				Offer offer = null;
 				try {
 					offer = createOfferFromDTO(offerDto);
+					re.setResultMessage("Offer Id = "
+							+ offer.getId().toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					re.setResult(false);
+					re.setResultMessage(e.getMessage().toString());
 				}
 				return offer;
 			}
 		});
-		return offer;
+		return re;
 	}
 
 	@ApiMethod(name = "createLendOffer")
-	public Offer CreateLendOffer(final OfferDTO offerDto) throws Exception {
+	public RequestResult CreateLendOffer(final OfferDTO offerDto) throws Exception {
 		MakeOfferComponent moc = new MakeOfferComponent();
 		return moc.MakeOffer(offerDto);
 	}

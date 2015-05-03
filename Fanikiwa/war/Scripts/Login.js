@@ -9,35 +9,7 @@ var fanikiwa = fanikiwa || {};
 // fanikiwa.appengine = com.sp.fanikiwa.api || {};
 fanikiwa.userprofile = fanikiwa.userprofile || {};
 fanikiwa.userprofile.ui = fanikiwa.userprofile.ui || {};
-
-/**
- * Prints a greeting to the greeting log. param {Object} greeting Greeting to
- * print.
- */
-fanikiwa.userprofile.ui.printLogin = function(loginResponse) {
-
-	if (loginResponse.result.userId == undefined
-			|| loginResponse.result.userId == null) {
-		$('#apiResults').html(
-				'Login failed! Please check your username and password');
-	} else {
-		$('#apiResults').html('Login successful...');
-		sessionStorage.loggedinuser = loginResponse.result.userId;
-		console.log('response = ' + loginResponse.toString());
-		window.setTimeout(
-				'window.location.href = "/Views/Offers/ListMyOffers.html";',
-				1000);
-	}
-};
-
-/**
- * call login via the API.
- * 
- * @param {string}
- *            userId, {string} pwd email of registerd member. password of
- *            registerd member.
- */
-
+ 
 var errormsg = '';
 errormsg += '<ul id="errorList">';
 
@@ -84,11 +56,32 @@ fanikiwa.userprofile.ui.login = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							fanikiwa.userprofile.ui.printLogin(resp);
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
+							} else {
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
+								sessionStorage.loggedinuser = resp.result.clientToken;
+								window
+										.setTimeout(
+												'window.location.href = "/Views/Offers/ListMyOffers.html";',
+												1000);
+							}
 						} else {
-							$('#apiResults')
+							$('#errormessage')
 									.html(
-											'Login failed! Please check your username and password');
+											'operation failed! Please check your username and password and try again.');
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
 					}, function(reason) {

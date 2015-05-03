@@ -1668,14 +1668,6 @@ img
 padding: 10px 10px 10px 10px; 
 }
 
-#apiResults
-{
-color: cornflowerblue;
-font-size: 20px;
-font: bold;
-font-weight: 900;
-}
-
 #btnLogin .disabled
 {
 background-color: grey;
@@ -1686,4 +1678,26 @@ cursor: wait;
 hr
 {
 width : 100%;
+}
+ 
+#apiResults  
+{ 
+color: cornflowerblue;
+font-size: 20px;
+font: bold;
+font-weight: 900;
+}
+#successmessage 
+{ 
+color: cornflowerblue;
+font-size: 20px;
+font: bold;
+font-weight: 900;
+}
+#errormessage 
+{ 
+color: red;  
+font-size: 20px;
+font: bold;
+font-weight: 900;
 }

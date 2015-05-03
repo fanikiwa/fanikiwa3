@@ -28,6 +28,7 @@ import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.MemberDTO;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferDTO;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.utils.Config;
@@ -529,16 +530,9 @@ public class SMSProcessorComponent {
 				&& !rc.IsPhoneRegistered(message.SenderTelno)
 				&& !rc.IsNationalIDRegistered(message.NationalID)) {
 
-			Member regmember = rc.Register(SMSToMember(message));
-			if (regmember != null) {
-				return MessageFormat
-						.format("Successfully Registered. Details\nMember Id {0}, Current Account Id {1}, Loan Account Id {2}, Investment Account Id {3}, Interest Income Account Id {4}, Interest Expense Account Id {5}",
-								regmember.getMemberId().toString(), 
-								regmember.getCurrentAccount().getAccountID().toString(), 
-								regmember.getLoanAccount().getAccountID().toString(), 
-								regmember.getInvestmentAccount().getAccountID().toString(),
-								regmember.getinterestIncAccount().getAccountID().toString(), 
-								regmember.getinterestExpAccount().getAccountID().toString());
+			RequestResult re = rc.Register(SMSToMember(message));
+			if (re.isResult() != false) {
+				return re.getResultMessage();
 			} else
 				return "Member registration was not successful";
 		} else {
@@ -757,8 +751,9 @@ public class SMSProcessorComponent {
 			return "No offers found";
 
 	}
-	
-	private String ProcessFanikiwaAccountsMessage(FanikiwaAccountsMessage message) {
+
+	private String ProcessFanikiwaAccountsMessage(
+			FanikiwaAccountsMessage message) {
 		if (!this.AuthenticateAndAuthorize(message.SenderTelno, message.Pwd))
 			return "Not authenticated";
 
@@ -772,14 +767,16 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 
-		Collection<Account> accounts = mep.listMemberAccountMobile(member, null, 5).getItems();
+		Collection<Account> accounts = mep.listMemberAccountMobile(member,
+				null, 5).getItems();
 
 		if (accounts.size() > 0) {
 			String msg = "";
 			for (Account c : accounts) {
-				msg += c.getAccountName() + " Id=" + c.getAccountID().toString() + " BookBalance=" + c.getBookBalance()
-						+ " ClearedBalance=" + c.getClearedBalance() + " Limit="
-						+ c.getLimit();
+				msg += c.getAccountName() + " Id="
+						+ c.getAccountID().toString() + " BookBalance="
+						+ c.getBookBalance() + " ClearedBalance="
+						+ c.getClearedBalance() + " Limit=" + c.getLimit();
 			}
 			return msg;
 		} else

@@ -61,14 +61,14 @@ fanikiwa.memberendpoint.updateprofile = function() {
 	}
 
 	$('#apiResults').html('updating profile...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	// Build the Request Object
 	var member = {};
-	member.email = _Email;
+	member.memberId = sessionStorage.getItem("profilememberId"); 
 	member.surname = _Surname;
-	member.otherNames = _OtherNames;
-	member.telephone = _Telephone;
-	member.nationalID = _NationalID;
+	member.otherNames = _OtherNames; 
 	member.dateOfBirth = _DateOfBirth;
 	member.refferedBy = _RefferedBy;
 	member.maxRecordsToDisplay = _MaxRecordsToDisplay;
@@ -81,20 +81,44 @@ fanikiwa.memberendpoint.updateprofile = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							$('#apiResults').html('operation successful...');
-							sessionStorage.memberId = resp.result.memberId;
-							window
-									.setTimeout(
-											'window.location.href = "/Views/Account/EditProfile.html";',
-											1000);
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
+							} else {
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
+								window
+										.setTimeout(
+												'window.location.href = "/Views/Account/EditProfile.html";',
+												1000);
+							}
 
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 
-					}, function(reason) {
+					},
+					function(reason) {
 						console.log('Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message
+												.toString());
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 };
 
@@ -105,7 +129,7 @@ fanikiwa.memberendpoint.profile.enableButtons = function() {
 	$("#btnUpdate").removeAttr('style');
 	$("#btnUpdate").removeAttr('disabled');
 	$("#btnUpdate").val('Update');
-	var btnRegister = document.querySelector('#btnUpdate'); 
+	var btnRegister = document.querySelector('#btnUpdate');
 	btnRegister.addEventListener('click', function() {
 		fanikiwa.memberendpoint.updateprofile();
 	});
@@ -138,42 +162,65 @@ fanikiwa.memberendpoint.profile.initializeControls = function() {
 	var email = sessionStorage.getItem('loggedinuser');
 	gapi.client.memberendpoint.getMemberByEmail({
 		'email' : email
-	}).execute(function(response) {
-		console.log(response);
-		if (!response.code) {
-			fanikiwa.memberendpoint.profile.printLogin(response);
-		} else {
-			alert('Error retrieving member info! Try refreshing...');
-		}
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+	})
+			.execute(
+					function(resp) {
+						console.log(resp);
+						if (!resp.code) {
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
+							} else {
+								fanikiwa.memberendpoint.profile
+										.populateControls(resp);
+								$('#successmessage').html('');
+								$('#errormessage').html('');
+								$('#apiResults').html('');
+							}
+						} else {
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
+						}
+					},
+					function(reason) {
+						console.log('Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message
+												.toString());
+						$('#successmessage').html('');
+						$('#apiResults').html('');
+					});
 }
 
-fanikiwa.memberendpoint.profile.printLogin = function(response) {
-	if (response.result.memberId == undefined
-			|| response.result.memberId == null) {
-		$('#apiResults')
-				.html('Error retrieving member info! Try refreshing...');
-	} else {
-		sessionStorage.profilesurname = response.result.surname;
-		sessionStorage.profilememberId = response.result.memberId;
-		console.log('response = ' + response.toString());
-		fanikiwa.memberendpoint.profile.populateControls(response);
-	}
-};
-
 fanikiwa.memberendpoint.profile.populateControls = function(member) {
-	document.getElementById('txtEmail').value = member.result.email;
-	document.getElementById('txtSurname').value = member.result.surname;
-	document.getElementById('txtOtherNames').value = member.result.otherNames;
-	document.getElementById('txtTelephone').value = member.result.telephone;
-	document.getElementById('txtNationalID').value = member.result.nationalID;
-	document.getElementById('dtpDateOfBirth').value = member.result.dateOfBirth;
-	document.getElementById('txtRefferedBy').value = member.result.refferedBy;
-	document.getElementById('txtMaxRecordsToDisplay').value = member.result.maxRecordsToDisplay;
-	document.getElementById('cboGender').value = member.result.gender;
-	document.getElementById('cboInformBy').value = member.result.informBy;
+	sessionStorage.profilememberId = member.memberId;
+	document.getElementById('txtEmail').value = member.email;
+	document.getElementById('txtSurname').value = member.surname;
+	document.getElementById('txtOtherNames').value = member.otherNames;
+	document.getElementById('txtTelephone').value = member.telephone;
+	document.getElementById('txtNationalID').value = member.nationalID;
+	if (member.result.dateOfBirth != undefined)
+		document.getElementById('dtpDateOfBirth').value = member.dateOfBirth;
+	else {
+		document.getElementById('dtpDateOfBirth').value = incrementDateByYear(
+				new Date(), 18);
+	}
+	document.getElementById('txtRefferedBy').value = member.refferedBy;
+	document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;
+	document.getElementById('cboGender').value = member.gender;
+	if (member.result.informBy != undefined)
+		document.getElementById('cboInformBy').value = member.informBy;
+	else
+		document.getElementById('cboInformBy').value = "EMAIL";
 };
 
 function Clear() {
@@ -203,3 +250,21 @@ function ClearException() {
 	$('#errorList').remove();
 	$('#error-display-div').empty();
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/LendingGroups/List.html" style="cursor: pointer;">My groups</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/ChangePassword.html" style="cursor: pointer;">Change Password</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/DeRegister.html" style="cursor: pointer;">Deregister</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});
