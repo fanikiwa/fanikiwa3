@@ -38,8 +38,10 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.MailUtil;
+import com.sp.utils.PeerLendingUtil;
 import com.sp.utils.StringExtension;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -152,13 +154,16 @@ public class OfferEndpoint {
 	// }
 
 	@ApiMethod(name = "retrievePublicOffers")
-	public CollectionResponse<Offer> retrievePublicOffers(
+	public CollectionResponse<Offer> RetrievePublicOffers(
+			@Named("email") String email, @Named("offerType") String offerType,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
+		Member member = PeerLendingUtil.GetMember(email);
+
 		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("privateOffer", true).filter("status", "Open")
-				.filter("expiryDate >", new Date());
+				.filter("member !=", member).filter("offerType", offerType)
+				.filter("privateOffer", false).filter("status", "Open");
 		return GetOffersFromQuery(query, cursorString, count);
 	}
 
@@ -236,12 +241,41 @@ public class OfferEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeOffer")
-	public void removeOffer(@Named("id") Long id) throws NotFoundException {
-		Offer record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult removeOffer(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+
+			Offer record = findRecord(id);
+			if (record == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			if (record.getStatus().equals("Processing")) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat.format(
+						"Offer [{0}] is already taken, Status is Processing. ",
+						record.getId()));
+				return re;
+			}
+			if (record.getStatus().equals("Closed")) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat.format(
+						"Offer [{0}] is already taken, Status is Closed. ",
+						record.getId()));
+				return re;
+			}
+
+			ofy().delete().entity(record).now();
+			re.setResultMessage("Offer deleted.");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
 	}
 
 	private Offer findRecord(Long id) {
@@ -297,7 +331,8 @@ public class OfferEndpoint {
 	}
 
 	@ApiMethod(name = "createLendOffer")
-	public RequestResult CreateLendOffer(final OfferDTO offerDto) throws Exception {
+	public RequestResult CreateLendOffer(final OfferDTO offerDto)
+			throws Exception {
 		MakeOfferComponent moc = new MakeOfferComponent();
 		return moc.MakeOffer(offerDto);
 	}

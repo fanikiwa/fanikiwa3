@@ -197,6 +197,7 @@ public class LendingGroupEndpoint {
 						Lendinggroup group = null;
 						try {
 							group = createLendinggroupDTO(lendingGroupDTO);
+							re.setResultMessage("Group Created.");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -241,7 +242,7 @@ public class LendingGroupEndpoint {
 			throws NotFoundException, ConflictException {
 		// Construct Lendinggroup
 		Lendinggroup group = new Lendinggroup();
-		group.setGroupName(member.getSurname());
+		group.setGroupName(member.getSurname() + " - " + member.getEmail());
 		group.setCreatedOn(new Date());
 		group.setLastModified(new Date());
 		group.setCreator(member);

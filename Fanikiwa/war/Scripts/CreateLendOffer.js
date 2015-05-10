@@ -27,8 +27,7 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 	var _Interest = document.getElementById('txtInterest').value;
 	var _Term = document.getElementById('txtTerm').value;
 	var _OfferType = document.getElementById('cboOfferType').value;
-	var _PublicOffer = Boolean(document.getElementById('chkPublicOffer').checked);
-	var _PartialPay = Boolean(document.getElementById('chkPartialPay').checked);
+	var _PublicOffer = Boolean(document.getElementById('chkPublicOffer').checked); 
 	var _offerees = document.getElementById('txtofferees').value;
 
 	if (_Description.length == 0) {
@@ -78,7 +77,7 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 	OfferDTO.term = _Term;
 	OfferDTO.privateOffer = _PublicOffer;
 	OfferDTO.offerType = _OfferType;
-	OfferDTO.partialPay = _PartialPay;
+	OfferDTO.partialPay = false;
 	OfferDTO.status = "Open";
 	OfferDTO.email = email;
 	OfferDTO.offerees = _offerees;
@@ -162,8 +161,7 @@ function Clear() {
 	$("#txtTerm").val("");
 	$("#txtofferees").val("");
 	$("#cboOfferType").val("L");
-	$("#chkPublicOffer").attr('checked', false);
-	$("#chkPartialPay").attr('checked', false);
+	$("#chkPublicOffer").attr('checked', false); 
 }
 
 function DisplayException(errormsg) {

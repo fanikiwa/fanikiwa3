@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
+      "path" : "valuedatedtransaction",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "valuedatedtransactionendpoint.valueDatedTransactionEndpoint.selectByValueDate" : {
       "path" : "SelectByValueDate/{date}",
       "httpMethod" : "POST",
@@ -43,22 +59,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
-      "path" : "valuedatedtransaction",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -251,10 +251,10 @@
             "type" : "integer"
           },
           "limitFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "passFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "interestAccrualInterval" : {
             "type" : "string"
@@ -577,17 +577,17 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.SelectByValueDate" : {
-        "response" : {
-          "$ref" : "ValueDatedTransactionCollection"
-        }
-      },
       "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction" : {
         "request" : {
           "$ref" : "ValueDatedTransaction"
         },
         "response" : {
           "$ref" : "ValueDatedTransaction"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.SelectByValueDate" : {
+        "response" : {
+          "$ref" : "ValueDatedTransactionCollection"
         }
       },
       "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.listValueDatedTransaction" : {

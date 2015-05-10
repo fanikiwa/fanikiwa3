@@ -20,8 +20,8 @@ fanikiwa.loanendpoint.loandetail.LoadLoanDetails = function() {
 			if (resp == false || resp.result.id == undefined) {
 				$('#apiResults').html('failed to load loan details...');
 			} else {
-				fanikiwa.loanendpoint.loandetail.populateLoanDetails(resp);
 				$('#apiResults').html('');
+				fanikiwa.loanendpoint.loandetail.populateLoanDetails(resp);
 			}
 		}
 
@@ -52,29 +52,34 @@ fanikiwa.loanendpoint.loandetail.init = function(apiRoot) {
 };
 
 fanikiwa.loanendpoint.loandetail.populateLoanDetails = function(resp) {
+	$("#txtLoanId").val(resp.result.id);
 	$("#txtamount").val(resp.result.amount);
-	$("#dtpcreatedDate").val(resp.result.createdDate);
-	$("#dtpmaturityDate").val(resp.result.maturityDate);
+	$("#txtterm").val(resp.result.term);
+	$("#txtinterestRate").val(resp.result.interestRate);
+	$("#txtAccruedInterest").val(resp.result.accruedInterest);
+	$("#txtinterestRateSusp").val(resp.result.interestRateSusp);
+	$("#txtaccruedIntInSusp").val(resp.result.accruedIntInSusp);
+	$("#txtintPayingAccount").val(resp.result.intPayingAccount);
+	$("#txtintPaidAccount").val(resp.result.intPaidAccount);
 	$("#txtborrowerId").val(resp.result.borrowerId);
 	$("#txtlenderId").val(resp.result.lenderId);
 	$("#txtofferId").val(resp.result.offerId);
-	$("#chkpartialPay").val(resp.result.partialPay);
-	$("#txtterm").val(resp.result.term);
-	$("#txtAccruedInterest").val(resp.AccruedInterest);
-	$("#txtinterestRate").val(resp.result.interestRate);
-	$("#txtinterestRateSusp").val(resp.result.interestRateSusp);
-	$("#txtaccruedIntInSusp").val(resp.result.accruedIntInSusp);
-	$("#txtinterestAccrualInterval").val(resp.result.interestAccrualInterval);
-	$("#txtlastIntAccrualDate").val(resp.result.lastIntAccrualDate);
-	$("#txtnextIntAccrualDate").val(resp.result.nextIntAccrualDate);
-	$("#txtaccrueInSusp").val(resp.result.accrueInSusp);
-	$("#txtinterestComputationMethod").val(
+	$("#cbointerestAccrualInterval").val(resp.result.interestAccrualInterval);
+	$("#cbointerestComputationMethod").val(
 			resp.result.interestComputationMethod);
-	$("#txtinterestComputationTerm").val(resp.result.interestComputationTerm);
-	$("#txtinterestApplicationMethod").val(
+	$("#cbointerestComputationTerm").val(resp.result.interestComputationTerm);
+	$("#cbointerestApplicationMethod").val(
 			resp.result.interestApplicationMethod);
-	$("#txtlastIntAppDate").val(resp.result.lastIntAppDate);
-	$("#txtnextIntAppDate").val(resp.result.nextIntAppDate);
-	$("#txtintPayingAccount").val(resp.result.intPayingAccount);
-	$("#txtintPaidAccount").val(resp.result.intPaidAccount);
+	document.getElementById('chkaccrueInSusp').checked = resp.result.accrueInSusp;
+	document.getElementById('chkPartialPay').checked = resp.result.partialPay;
+	$("#dtpcreatedDate").val(formatDateForControl(resp.result.createdDate));
+	$("#dtpmaturityDate").val(formatDateForControl(resp.result.maturityDate));
+	$("#dtplastIntAccrualDate").val(
+			formatDateForControl(resp.result.lastIntAccrualDate));
+	$("#dtpnextIntAccrualDate").val(
+			formatDateForControl(resp.result.nextIntAccrualDate));
+	$("#dtplastIntAppDate").val(
+			formatDateForControl(resp.result.lastIntAppDate));
+	$("#dtpnextIntAppDate").val(
+			formatDateForControl(resp.result.nextIntAppDate));
 }

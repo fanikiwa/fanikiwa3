@@ -17,15 +17,52 @@ fanikiwa.accountendpoint.statement.enableButtons = function() {
 	btnLoad.addEventListener('click', function() {
 		fanikiwa.accountendpoint.statement.LoadStatement();
 	});
+	document.getElementById('dtpstartdate').value = decrementDateByMonth(
+			new Date(), -3, 'm');
+	document.getElementById('dtpenddate').value = formatDateForControl(new Date());
 };
+
+var errormsg = '';
+errormsg += '<ul id="errorList">';
 
 fanikiwa.accountendpoint.statement.LoadStatement = function() {
 
-	$('#listAccountsResult').html('loading...');
+	errormsg = '';
+	$('#errorList').remove();
+	$('#error-display-div').empty();
+	errormsg += '<ul id="errorList">';
+	var error_free = true;
 
-	var accountID = sessionStorage.getItem('statementaccountid');
+	var accountID = document.getElementById('cboAccount').value;
 	var sdate = document.getElementById('dtpstartdate').value;
 	var edate = document.getElementById('dtpenddate').value;
+
+	if (accountID.length == 0) {
+		errormsg += '<li>' + " Select Account " + '</li>';
+		error_free = false;
+	}
+	if (sdate.length == 0) {
+		errormsg += '<li>' + " Select start Date " + '</li>';
+		error_free = false;
+	}
+	if (edate.length == 0) {
+		errormsg += '<li>' + " Select End Date " + '</li>';
+		error_free = false;
+	}
+
+	if (!error_free) {
+		errormsg += "</ul>";
+		$("#error-display-div").html(errormsg);
+		$("#error-display-div").removeClass('displaynone');
+		$("#error-display-div").addClass('displayblock');
+		$("#error-display-div").show();
+		return;
+	} else {
+		$('#errorList').remove();
+		$('#error-display-div').empty();
+	}
+
+	$('#listAccountsResult').html('loading...');
 
 	gapi.client.accountendpoint.statement({
 		'accountID' : accountID,
@@ -59,11 +96,13 @@ fanikiwa.accountendpoint.statement.init = function(apiRoot) {
 	var callback = function() {
 		if (--apisToLoad == 0) {
 			fanikiwa.accountendpoint.statement.enableButtons();
+			fanikiwa.accountendpoint.statement.LoadAccounts();
 		}
 	}
 
-	apisToLoad = 1; // must match number of calls to gapi.client.load()
+	apisToLoad = 2; // must match number of calls to gapi.client.load()
 	gapi.client.load('accountendpoint', 'v1', callback, apiRoot);
+	gapi.client.load('memberendpoint', 'v1', callback, apiRoot);
 
 };
 
@@ -113,3 +152,40 @@ function populateAccounts(resp) {
 
 	}
 }
+fanikiwa.accountendpoint.statement.LoadAccounts = function() {
+	var email = sessionStorage.getItem('loggedinuser');
+	var accountsOptions = '';
+	gapi.client.memberendpoint
+			.listMemberAccountWeb({
+				'email' : email
+			})
+			.execute(
+					function(resp) {
+						console.log('response =>> ' + resp);
+						if (!resp.code) {
+							if (resp.result.items == undefined
+									|| resp.result.items == null) {
+								accountsOptions += '<option value="">Select Account</option>';
+								$('#cboAccount').append(accountsOptions);
+							} else {
+								for (var i = 0; i < resp.result.items.length; i++) {
+									accountsOptions += '<option value="'
+											+ resp.result.items[i].accountID
+											+ '">'
+											+ resp.result.items[i].accountName
+											+ '</option>';
+									console.log('<option value="'
+											+ resp.result.items[i].accountID
+											+ '">'
+											+ resp.result.items[i].accountName
+											+ '</option>');
+								}
+								accountsOptions += '<option value="">Select Account</option>';
+								$('#cboAccount').append(accountsOptions);
+							}
+						}
+
+					}, function(reason) {
+						console.log('Error: ' + reason.result.error.message);
+					});
+};

@@ -160,6 +160,7 @@ public class UserprofileEndpoint {
 			user.setPwd(pwd);
 
 			updateUserprofile(user);
+			re.setResultMessage("Password Changed...");
 		} catch (Exception e) {
 			re.setResult(false);
 			re.setResultMessage(e.getMessage().toString());

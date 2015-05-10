@@ -43,7 +43,7 @@
 
 			<div id="MainMenu"></div>
 			<div id="SubMenu"></div>
- 
+
 		</div>
 
 
@@ -63,9 +63,14 @@
 				<h2 class="page-title">Offer Details</h2>
 			</hgroup>
 
-			<div id="apiResults" style="float: left; clear: both" ></div>
-			<div id="successmessage" style="float: left; clear: both" ></div>
-			<div id="errormessage" style="float: left; clear: both" ></div>
+			<div id="apiResults" style="float: left; clear: both"></div>
+			<div id="successmessage" style="float: left; clear: both"></div>
+			<div id="errormessage" style="float: left; clear: both"></div>
+
+			<div style="float: left; clear: both">
+				<input type="button" value="Back"
+					onclick="window.history.go(-1); return false;" />
+			</div>
 
 			<div style="float: left; clear: both">
 
@@ -78,9 +83,13 @@
 							<div class="pad">
 
 								<div>
+									<label for="txtOfferId">Id</label> <input id="txtOfferId"
+										placeholder="Id" type="number" min="0" autofocus></input>
+								</div>
+
+								<div>
 									<label for="txtDescription">Description</label> <input
-										id="txtDescription" placeholder="Description" autofocus
-										type="text"></input>
+										id="txtDescription" placeholder="Description" type="text"></input>
 								</div>
 
 								<div>
@@ -99,6 +108,22 @@
 										placeholder="Term in Month" type="number" min="0"></input>
 								</div>
 
+								<div>
+									<label for="cboOfferType">OfferType</label> <select
+										id="cboOfferType" style="width: 95%;">
+										<option value="L">Lend</option>
+										<option value="B">Borrow</option>
+									</select>
+								</div>
+
+								<div>
+									<label for="cbostatus">Status</label> <select id="cbostatus"
+										style="width: 95%;">
+										<option value="Open">Open</option>
+										<option value="Processing">Processing</option>
+										<option value="Closed">Closed</option>
+									</select>
+								</div>
 
 							</div>
 						</article>
@@ -107,17 +132,18 @@
 							<div class="pad">
 
 								<div>
-									<label for="cboOfferType">OfferType</label> <select
-										name="OfferType" id="cboOfferType">
-										<option value="L">Lend</option>
-										<option value="B">Borrow</option>
-									</select>
+									<label for="dtpcreatedDate">Created Date</label> <input
+										id="dtpcreatedDate" placeholder="Created Date" type="date"></input>
+								</div>
+
+								<div>
+									<label for="dtpexpiryDate">Expiry Date</label> <input
+										id="dtpexpiryDate" placeholder="Expiry Date" type="date"></input>
 								</div>
 
 								<div id="divOfferees" class="displaynone">
 									<label for="txtofferees">Offer made to</label> <input
-										id="txtofferees" placeholder="Offerees" autocomplete
-										type="text"></input>
+										id="txtofferees" placeholder="Offerees" type="text"></input>
 								</div>
 
 								<div>
@@ -131,24 +157,6 @@
 										id="chkPartialPay" placeholder="PartialPay" type="checkbox"></input>
 								</div>
 
-								<div>
-									<label for="cbostatus">Status</label> <select id="cbostatus">
-										<option value="Open">Open</option>
-										<option value="Processing">Processing</option>
-										<option value="Closed">Closed</option>
-									</select>
-								</div>
-
-								<div>
-									<label for="dtpcreatedDate">Created Date</label> <input
-										id="dtpcreatedDate" placeholder="Created Date" type="date"></input>
-								</div>
-
-								<div>
-									<label for="dtpexpiryDate">Expiry Date</label> <input
-										id="dtpexpiryDate" placeholder="Expiry Date" type="date"></input>
-								</div>
-
 							</div>
 						</article>
 
@@ -157,7 +165,7 @@
 
 
 				</form>
- 
+
 			</div>
 
 		</section>

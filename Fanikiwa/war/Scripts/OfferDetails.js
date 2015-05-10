@@ -52,15 +52,16 @@ fanikiwa.offerendpoint.offerdetail.init = function(apiRoot) {
 };
 
 fanikiwa.offerendpoint.offerdetail.populateOfferDetails = function(resp) {
+	$("#txtOfferId").val(resp.result.id);
 	$("#txtDescription").val(resp.result.description);
 	$("#txtAmount").val(resp.result.amount);
 	$("#txtInterest").val(resp.result.interest);
 	$("#txtTerm").val(resp.result.term);
 	$("#txtofferees").val(resp.result.offerees);
 	$("#cboOfferType").val(resp.result.offerType);
-	$("#chkPublicOffer").val(resp.result.publicOffer);
-	$("#chkPartialPay").val(resp.result.partialPay);
-	$("#dtpcreatedDate").val(resp.result.createdDate);
-	$("#dtpexpiryDate").val(resp.result.expiryDate);
+	document.getElementById('chkPublicOffer').checked = resp.result.publicOffer;
+	document.getElementById('chkPartialPay').checked = resp.result.partialPay;
+	$("#dtpcreatedDate").val(formatDateForControl(resp.result.createdDate));
+	$("#dtpexpiryDate").val(formatDateForControl(resp.result.expiryDate));
 	$("#cbostatus").val(resp.result.status);
 }

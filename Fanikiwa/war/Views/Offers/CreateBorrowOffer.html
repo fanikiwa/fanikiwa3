@@ -86,12 +86,12 @@
 							<div>
 								<label for="txtInterest">Interest Rate(%)</label> <input
 									id="txtInterest" placeholder="Interest Rate(%)" type="number"
-									min="0"></input>
+									min="1"></input>
 							</div>
 
 							<div>
 								<label for="txtTerm">Term in Month</label> <input id="txtTerm"
-									placeholder="Term in Month" type="number" min="0"></input>
+									placeholder="Term in Month" type="number" min="1" max="12"></input>
 							</div>
 
 
@@ -103,7 +103,7 @@
 
 							<div>
 								<label for="cboOfferType">OfferType</label> <select
-									name="OfferType" id="cboOfferType">
+									name="OfferType" id="cboOfferType" style="width: 50%;">
 									<option value="B">Borrow</option>
 								</select>
 							</div>
@@ -131,8 +131,8 @@
 					<div style="float: left; clear: both">
 						<input id="btnCreate" type="submit" value="Loading please wait..."
 							style="cursor: wait; background-color: grey; color: red;"
-							disabled /> <input type="submit" value="Clear" id="btnClear"
-							onclick="Clear()" />
+							disabled /> <input type="button" value="Back"
+							onclick="window.history.go(-1); return false;" />
 					</div>
 
 				</fieldset>
@@ -140,9 +140,9 @@
 
 			</form>
 
-			<div id="apiResults" style="float: left; clear: both" ></div>
-			<div id="successmessage" style="float: left; clear: both" ></div>
-			<div id="errormessage" style="float: left; clear: both" ></div>
+			<div id="apiResults" style="float: left; clear: both"></div>
+			<div id="successmessage" style="float: left; clear: both"></div>
+			<div id="errormessage" style="float: left; clear: both"></div>
 
 		</section>
 

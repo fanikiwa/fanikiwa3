@@ -13,6 +13,8 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.Enums.AccountLimitStatus;
+import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.AccountType;
 import com.sp.fanikiwa.entity.Coadet;
@@ -150,7 +152,7 @@ public class MemberEndpoint {
 			existingmember.setMaxRecordsToDisplay(member
 					.getMaxRecordsToDisplay());
 			existingmember.setMemberId(existingmember.getMemberId());
-			existingmember.setNationalID(existingmember.getNationalID());
+			existingmember.setNationalID(member.getNationalID());
 			existingmember.setOtherNames(member.getOtherNames());
 			existingmember.setPhoto(existingmember.getPhoto());
 			existingmember.setPwd(existingmember.getPwd());
@@ -253,30 +255,19 @@ public class MemberEndpoint {
 		re.setResultMessage("Success");
 		try {
 
-			Member emailexists = ofy().transactionless().load()
-					.type(Member.class).filter("email", memberDTO.getEmail())
-					.first().now();
+			Member emailexists = ofy().load().type(Member.class)
+					.filter("email", memberDTO.getEmail()).first().now();
 			if (emailexists != null) {
 				re.setResult(false);
 				re.setResultMessage("Email is already Registered in Fanikiwa!");
 				return re;
 			}
-			Member telephoneexists = ofy().transactionless().load()
-					.type(Member.class)
+			Member telephoneexists = ofy().load().type(Member.class)
 					.filter("telephone", memberDTO.getTelephone()).first()
 					.now();
 			if (telephoneexists != null) {
 				re.setResult(false);
 				re.setResultMessage("Telephone is already Registered in Fanikiwa!");
-				return re;
-			}
-			Member nationalidexists = ofy().transactionless().load()
-					.type(Member.class)
-					.filter("nationalID", memberDTO.getNationalID()).first()
-					.now();
-			if (nationalidexists != null) {
-				re.setResult(false);
-				re.setResultMessage("National Id is already Registered in Fanikiwa!");
 				return re;
 			}
 
@@ -331,7 +322,8 @@ public class MemberEndpoint {
 			currentAccount.setAccruedInt(0.00);
 			currentAccount
 					.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
-							.getValue());
+							.name());
+			currentAccount.setPassFlag(PassFlag.Ok.name());
 
 			Account loanaccount = new Account();
 			loanaccount
@@ -346,6 +338,8 @@ public class MemberEndpoint {
 			loanaccount.setLimit(0.00);
 			loanaccount.setInterestRate(0.00);
 			loanaccount.setAccruedInt(0.00);
+			loanaccount.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking.name());
+			loanaccount.setPassFlag(PassFlag.Ok.name());
 
 			Account interestexpenseaccount = new Account();
 			interestexpenseaccount.setAccountName(customerReturned.getName()
@@ -360,6 +354,8 @@ public class MemberEndpoint {
 			interestexpenseaccount.setLimit(0.00);
 			interestexpenseaccount.setInterestRate(0.00);
 			interestexpenseaccount.setAccruedInt(0.00);
+			interestexpenseaccount.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking.name());
+			interestexpenseaccount.setPassFlag(PassFlag.Ok.name());
 
 			Account invesmentaccount = new Account();
 			invesmentaccount.setAccountName(customerReturned.getName()
@@ -376,7 +372,8 @@ public class MemberEndpoint {
 			invesmentaccount.setAccruedInt(0.00);
 			invesmentaccount
 					.setLimitFlag(AccountLimitStatus.PostingOverDrawingProhibited
-							.getValue());
+							.name());
+			invesmentaccount.setPassFlag(PassFlag.Ok.name());
 
 			Account interestincomeaccount = new Account();
 			interestincomeaccount.setAccountName(customerReturned.getName()
@@ -391,6 +388,8 @@ public class MemberEndpoint {
 			interestincomeaccount.setLimit(0.00);
 			interestincomeaccount.setInterestRate(0.00);
 			interestincomeaccount.setAccruedInt(0.00);
+			interestincomeaccount.setLimitFlag(AccountLimitStatus.Ok.name());
+			interestincomeaccount.setPassFlag(PassFlag.Ok.name());
 
 			AccountEndpoint aep = new AccountEndpoint();
 			Account currentAccountReturned = aep.insertAccount(currentAccount);
@@ -462,7 +461,7 @@ public class MemberEndpoint {
 
 			re.setResult(true);
 			re.setResultMessage(MessageFormat
-					.format("Successfully Registered. Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
+					.format("Registration Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
 							newMember.getMemberId().toString(), newMember
 									.getCurrentAccount().getAccountID()
 									.toString(), newMember.getLoanAccount()
@@ -558,5 +557,4 @@ public class MemberEndpoint {
 		}
 		return re;
 	}
-
 }

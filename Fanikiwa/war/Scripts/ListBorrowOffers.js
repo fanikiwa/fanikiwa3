@@ -12,25 +12,29 @@ fanikiwa.offerendpoint.listborrowoffers = fanikiwa.offerendpoint.listborrowoffer
 
 fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 
+	$('.page-title').html('Private Borow Offers');
 	$('#listOffersResult').html('loading...');
 
 	var email = sessionStorage.getItem('loggedinuser');
-
+	
 	gapi.client.offerendpoint.retrieveBorrowOffers({
 		'email' : email
-	}).execute(function(resp) {
-		console.log('response =>> ' + resp);
-		if (!resp.code) {
-			if (resp.result.items == undefined || resp.result.items == null) {
-				$('#listOffersResult').html('You have no Offers...');
-			} else {
-				buildTable(resp);
-			}
-		}
+	}).execute(
+			function(resp) {
+				console.log('response =>> ' + resp);
+				if (!resp.code) {
+					if (resp.result.items == undefined
+							|| resp.result.items == null) {
+						$('#listOffersResult').html(
+								'You have no private borrow Offers...');
+					} else {
+						buildTable(resp);
+					}
+				}
 
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+			}, function(reason) {
+				console.log('Error: ' + reason.result.error.message);
+			});
 };
 
 /**
@@ -78,7 +82,9 @@ function populateOffers(resp) {
 		offerTable += "<th>Interest</th>";
 		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
+		offerTable += "<th>Expiry Date</th>";
 		offerTable += "<th>Status</th>";
+		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "</tr>";
@@ -103,13 +109,24 @@ function populateOffers(resp) {
 							+ '</td>';
 					offerTable += '<td>' + resp.result.items[i].partialPay
 							+ '</td>';
+					offerTable += '<td>'
+							+ formatDate(resp.result.items[i].expiryDate)
+							+ '</td>';
 					offerTable += '<td>' + resp.result.items[i].status
 							+ '</td>';
+					var canAccept = (sessionStorage.getItem('canAccept')==null ?true : sessionStorage.getItem('canAccept'));
+					if(canAccept){
 					offerTable += '<td><a href="#" onclick="Accept('
 							+ resp.result.items[i].id + ')">Accept</a> </td>';
-					offerTable += '<td><a href="#" onclick="PartialAccept('
-							+ resp.result.items[i].id
-							+ ')">PartialAccept</a> </td>';
+					}
+					if (resp.result.items[i].partialPay == true) {
+						offerTable += '<td><a href="#" onclick="PartialAccept('
+								+ resp.result.items[i].id
+								+ ')">Partial Accept</a> </td>';
+						offerTable += '<td><a href="#" onclick="OfferDetails('
+								+ resp.result.items[i].id
+								+ ')">Details</a> </td>';
+					}
 					offerTable += "</tr>";
 				}
 			}
@@ -121,8 +138,17 @@ function populateOffers(resp) {
 	}
 }
 
+function OfferDetails(id) {
+	sessionStorage.offerdetailsid = id;
+	window.location.href = "/Views/Offers/Details.html";
+}
+
 function Accept(id) {
+
 	$('#apiResults').html('processing...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
+
 	var email = sessionStorage.getItem('loggedinuser');
 	gapi.client.offerendpoint
 			.acceptOffer({
@@ -133,15 +159,19 @@ function Accept(id) {
 					function(resp) {
 						if (!resp.code) {
 							if (resp.result.result == false) {
-								$('#apiResults').html(
+								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
 														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults').html(
+								$('#successmessage').html(
 										'operation successful... <br/>'
 												+ resp.result.resultMessage
 														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.acceptlendofferId = resp.result.id;
 								window
 										.setTimeout(
@@ -149,14 +179,22 @@ function Accept(id) {
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 					});
 }
 
 function PartialAccept(id) {
+
 	$('#apiResults').html('processing...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
+
 	var email = sessionStorage.getItem('loggedinuser');
 	gapi.client.offerendpoint
 			.acceptPartialBorrowOffer({
@@ -167,15 +205,19 @@ function PartialAccept(id) {
 					function(resp) {
 						if (!resp.code) {
 							if (resp.result.result == false) {
-								$('#apiResults').html(
+								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
 														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults').html(
+								$('#successmessage').html(
 										'operation successful... <br/>'
 												+ resp.result.resultMessage
 														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.acceptlendofferId = resp.result.id;
 								window
 										.setTimeout(
@@ -183,8 +225,12 @@ function PartialAccept(id) {
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 					});
 }
@@ -206,5 +252,32 @@ $(document).ready(function() {
 });
 
 function PopulatePublicOffers() {
-
+	fanikiwa.offerendpoint.listborrowoffers.LoadPublicBorrowOffers();
 }
+fanikiwa.offerendpoint.listborrowoffers.LoadPublicBorrowOffers = function() {
+
+	$('.page-title').html('Public Borow Offers');
+	$('#listOffersResult').html('loading...');
+
+	var email = sessionStorage.getItem('loggedinuser');
+
+	gapi.client.offerendpoint.retrievePublicOffers({
+		'email' : email,
+		'offerType' : 'B'
+	}).execute(
+			function(resp) {
+				console.log('response =>> ' + resp);
+				if (!resp.code) {
+					if (resp.result.items == undefined
+							|| resp.result.items == null) {
+						$('#listOffersResult').html(
+								'You have no public borrow Offers...');
+					} else {
+						buildTable(resp);
+					}
+				}
+
+			}, function(reason) {
+				console.log('Error: ' + reason.result.error.message);
+			});
+};

@@ -73,7 +73,7 @@
 
 							<div>
 								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									placeholder="Surname" type="text" text></input>
+									placeholder="Surname" type="text" autocomplete autofocus></input>
 							</div>
 
 							<div>
@@ -82,21 +82,21 @@
 							</div>
 
 							<div>
+								<label for="txtNationalID">NationalID</label> <input
+									id="txtNationalID" placeholder="NationalID" type="text"></input>
+							</div>
+
+							<div>
 								<label for="txtEmail">Email</label> <input id="txtEmail"
-									placeholder="Email" type="text" disabled></input>
+									placeholder="Email" type="text" disabled
+									style="cursor: pointer;"></input>
 							</div>
 
 							<div>
 								<label for="txtNationalID">Telephone</label> <input
-									id="txtTelephone" placeholder="Telephone" type="text" disabled></input>
+									id="txtTelephone" placeholder="Telephone" type="text" disabled
+									style="cursor: pointer;"></input>
 							</div>
-
-							<div>
-								<label for="txtNationalID">NationalID</label> <input
-									id="txtNationalID" placeholder="NationalID" type="text"
-									disabled></input>
-							</div>
-
 
 						</div>
 					</article>
@@ -124,7 +124,7 @@
 
 							<div>
 								<label for="cboGender">Gender</label> <select name="Gender"
-									id="cboGender">
+									id="cboGender" style="width: 50%;">
 									<option value="M">Male</option>
 									<option value="F">Female</option>
 								</select>
@@ -132,7 +132,7 @@
 
 							<div>
 								<label for="cboInformBy">InformBy</label> <select
-									name="InformBy" id="cboInformBy">
+									name="InformBy" id="cboInformBy" style="width: 50%;">
 									<option value="EMAIL">Email</option>
 									<option value="SMS">Sms</option>
 								</select>
@@ -145,7 +145,8 @@
 					<div style="float: left; clear: both">
 						<input id="btnUpdate" type="submit" value="Loading please wait..."
 							style="cursor: wait; background-color: grey; color: red;"
-							disabled />
+							disabled /> <input type="button" value="Back"
+							onclick="window.history.go(-1); return false;" />
 					</div>
 
 				</fieldset>

@@ -77,6 +77,7 @@ function populateOffers(resp) {
 		offerTable += "<th>Interest</th>";
 		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
+		offerTable += "<th>Offer Type</th>";
 		offerTable += "<th>Status</th>";
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
@@ -93,6 +94,10 @@ function populateOffers(resp) {
 			offerTable += '<td>' + resp.result.items[i].interest + '</td>';
 			offerTable += '<td>' + resp.result.items[i].privateOffer + '</td>';
 			offerTable += '<td>' + resp.result.items[i].partialPay + '</td>';
+			if (resp.result.items[i].offerType == 'L')
+				offerTable += '<td>' + 'Lend' + '</td>';
+			else
+				offerTable += '<td>' + 'Borrow' + '</td>';
 			offerTable += '<td>' + resp.result.items[i].status + '</td>';
 			offerTable += '<td><a href="#" onclick="DeleteOffer('
 					+ resp.result.items[i].id + ')">Delete</a> </td>';
@@ -109,12 +114,15 @@ function populateOffers(resp) {
 
 function OfferDetails(id) {
 	sessionStorage.offerdetailsid = id;
-	console.log(sessionStorage.getItem('offerdetailsid'));
 	window.location.href = "/Views/Offers/Details.html";
 }
 
 function DeleteOffer(id) {
+
 	$('#apiResults').html('processing...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
+
 	gapi.client.offerendpoint
 			.removeOffer({
 				'id' : id
@@ -123,21 +131,31 @@ function DeleteOffer(id) {
 					function(resp) {
 						if (!resp.code) {
 							if (resp.result.result == false) {
-								$('#apiResults').html(
+								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
 														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 							} else {
-								$('#apiResults')
-										.html('operation successful...');
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Offers/ListMyOffers.html";',
 												1000);
 							}
 						} else {
-							$('#apiResults').html(
-									'operation failed! Please try again');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 						}
 					});
 }

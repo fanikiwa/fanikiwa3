@@ -40,9 +40,9 @@ public class Account {
 
 	private int limitCheckFlag;
 
-	private int limitFlag;
+	private String limitFlag;
 
-	private int passFlag;
+	private String passFlag;
 	//Interest Accrual
 	@Index private String interestAccrualInterval; // Permissible values are - D, M, Y or 1 time. This field will determine how interest is accrued in the account.
 	@Index private Date lastIntAccrualDate;
@@ -184,16 +184,16 @@ public class Account {
 	public void setLimitCheckFlag(int limitCheckFlag) {
 		this.limitCheckFlag = limitCheckFlag;
 	}
-	public int getLimitFlag() {
+	public String getLimitFlag() {
 		return limitFlag;
 	}
-	public void setLimitFlag(int limitFlag) {
+	public void setLimitFlag(String limitFlag) {
 		this.limitFlag = limitFlag;
 	}
-	public int getPassFlag() {
+	public String getPassFlag() {
 		return passFlag;
 	}
-	public void setPassFlag(int passFlag) {
+	public void setPassFlag(String passFlag) {
 		this.passFlag = passFlag;
 	}
 	public String getInterestAccrualInterval() {

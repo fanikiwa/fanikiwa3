@@ -19,7 +19,10 @@ fanikiwa.userprofile.changePassword = function() {
 	ClearException();
 	errormsg += '<ul id="errorList">';
 	var error_free = true;
+
 	$('#apiResults').html('');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = sessionStorage.getItem('loggedinuser');
 
@@ -36,17 +39,18 @@ fanikiwa.userprofile.changePassword = function() {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp = false || resp.result.userId == undefined
-									|| resp.result.userId == null) {
+							if (resp.result.result == false) { 
 								sessionStorage.isuserauthenticatedinchangepassword = false;
-							} else {
+							} else { 
 								sessionStorage.isuserauthenticatedinchangepassword = true;
 							}
 						} else {
+							console.log('Error: ' + resp.error.message); 
 							sessionStorage.isuserauthenticatedinchangepassword = false;
 						}
 					}, function(reason) {
 						console.log('Error: ' + reason.result.error.message);
+						sessionStorage.isuserauthenticatedinchangepassword = false;
 					});
 
 	if (_OldPassword.length == 0) {
@@ -118,9 +122,10 @@ fanikiwa.userprofile.changePassword = function() {
 												1000);
 							}
 						} else {
-							$('#errormessage')
-									.html(
-											'operation failed! Please check your password and try again.');
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.result.resultMessage
+													.toString());
 							$('#successmessage').html('');
 							$('#apiResults').html('');
 						}
@@ -172,6 +177,9 @@ fanikiwa.userprofile.changePassword.enableButtons = function() {
 fanikiwa.userprofile.login = function() {
 
 	$('#apiResults').html('authenticating old password...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
+
 	var email = sessionStorage.getItem('loggedinuser');
 	var pwd = document.getElementById('txtOldPassword').value;
 
@@ -184,34 +192,45 @@ fanikiwa.userprofile.login = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.userId == undefined
-									|| resp.result.userId == null) {
-								$('#apiResults')
-										.html(
-												'authentication failed! Please check your password');
+							if (resp.result.result == false) {
+								$('#errormessage').html(
+										'operation failed! Error...<br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#successmessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.isuserauthenticatedinchangepassword = false;
 							} else {
-								$('#apiResults').html(
-										'authentication successful... <br/>'
-												+ 'userid id = '
-												+ resp.result.userId);
+								$('#successmessage').html(
+										'operation successful... <br/>'
+												+ resp.result.resultMessage
+														.toString());
+								$('#errormessage').html('');
+								$('#apiResults').html('');
 								sessionStorage.isuserauthenticatedinchangepassword = true;
-								window.setTimeout('$("#apiResults").html("");',
-										1000);
+								window.setTimeout(
+										'$("#successmessage").html("");', 1000);
 							}
 
 						} else {
-							$('#apiResults')
-									.html(
-											'authentication failed! Please check your password');
+							console.log('Error: ' + resp.error.message);
+							$('#errormessage').html(
+									'operation failed! Error...<br/>'
+											+ resp.error.message.toString());
+							$('#successmessage').html('');
+							$('#apiResults').html('');
 							sessionStorage.isuserauthenticatedinchangepassword = false;
 						}
 
 					},
 					function(reason) {
 						console.log('Error: ' + reason.result.error.message);
-						$('#apiResults').html(
-								'Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message
+												.toString());
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 
 };

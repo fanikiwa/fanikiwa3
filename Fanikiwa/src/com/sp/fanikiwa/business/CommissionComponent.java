@@ -368,7 +368,7 @@ public class CommissionComponent {
 		List<LookupRow> lr = new ArrayList<LookupRow>();
 
 		TieredDetEndpoint tep = new TieredDetEndpoint();
-		Collection<TieredDet> trd = tep.getTieredTableId(TT.getTieredTableId());
+		Collection<TieredDet> trd = tep.getTieredtableId(TT.getTieredTableId());
 		for (TieredDet t : trd) {
 			LookupRow lookupTable = new LookupRow();
 			lookupTable.Id = t.getId();

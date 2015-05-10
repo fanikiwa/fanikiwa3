@@ -43,7 +43,7 @@
 
 			<div id="MainMenu"></div>
 			<div id="SubMenu"></div>
- 
+
 		</div>
 
 
@@ -67,6 +67,11 @@
 			<div id="apiResults" style="float: left; clear: both"></div>
 
 			<div style="float: left; clear: both">
+				<input type="button" value="Back"
+					onclick="window.history.go(-1); return false;" />
+			</div>
+
+			<div style="float: left; clear: both">
 
 				<form action="javascript:void(0);">
 
@@ -79,8 +84,54 @@
 								<div class="pad">
 
 									<div>
+										<label for="txtLoanId">Id</label> <input id="txtLoanId"
+											placeholder="Id" autofocus type="number"></input>
+									</div>
+
+									<div>
 										<label for="txtamount">Amount</label> <input id="txtamount"
-											placeholder="Amount" autofocus type="number"></input>
+											placeholder="Amount" type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtterm">Term</label> <input id="txtterm"
+											placeholder="Term" type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtinterestRate">Interest Rate</label> <input
+											id="txtinterestRate" placeholder="Interest Rate"
+											type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtAccruedInterest">Accrued Interest</label> <input
+											id="txtAccruedInterest" placeholder="Accrued Interest"
+											type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtinterestRateSusp">Interest Rate In
+											Suspense</label> <input id="txtinterestRateSusp"
+											placeholder="Interest Rate In Suspense" type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtaccruedIntInSusp">Accrued Interest In
+											Suspense</label> <input id="txtaccruedIntInSusp"
+											placeholder="txtaccruedIntInSusp" type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtintPayingAccount">Interest Paying
+											Account</label> <input id="txtintPayingAccount"
+											placeholder="Interest Paying Account" type="number"></input>
+									</div>
+
+									<div>
+										<label for="txtintPaidAccount">Interest Paid Account</label> <input
+											id="txtintPaidAccount" placeholder="Interest Paid Account"
+											type="number"></input>
 									</div>
 
 									<div>
@@ -98,42 +149,6 @@
 											placeholder="OfferId" type="number"></input>
 									</div>
 
-									<div>
-										<label for="txtterm">Term</label> <input id="txtterm"
-											placeholder="Term" type="number"></input>
-									</div>
-
-									<div>
-										<label for="txtAccruedInterest">Accrued Interest</label> <input
-											id="txtAccruedInterest" placeholder="Accrued Interest"
-											type="number"></input>
-									</div>
-
-									<div>
-										<label for="txtinterestRate">Interest Rate</label> <input
-											id="txtinterestRate" placeholder="Interest Rate"
-											type="number"></input>
-									</div>
-
-									<div>
-										<label for="txtinterestRateSusp">Interest Rate In
-											Suspense</label> <input id="txtinterestRateSusp"
-											placeholder="Interest Rate In Suspense" type="number"></input>
-									</div>
-
-									<div>
-										<label for="txtaccruedIntInSusp">Accrued Interest In
-											Suspense</label> <input id="txtaccruedIntInSusp"
-											placeholder="txtaccruedIntInSusp" type="number"></input>
-									</div>
-
-									<div>
-										<label for="txtinterestAccrualInterval">Interest
-											Accrual Interval</label> <input id="txtinterestAccrualInterval"
-											placeholder="Interest Accrual Interval" type="number"></input>
-									</div>
-
-
 								</div>
 							</article>
 
@@ -141,33 +156,53 @@
 								<div class="pad">
 
 									<div>
-										<label for="txtinterestComputationMethod">Interest
-											Computation Method</label> <input id="txtinterestComputationMethod"
-											placeholder="Interest Computation Method" type="text"></input>
+										<label for="cbointerestAccrualInterval">Interest
+											Accrual Interval</label> <select id="cbointerestAccrualInterval"
+											style="width: 95%;">
+											<option value="Y">Yearly</option>
+											<option value="M">Monthly</option>
+											<option value="D">Daily</option>
+										</select>
 									</div>
 
 									<div>
-										<label for="txtinterestComputationTerm">Interest
-											Computation Term</label> <input id="txtinterestComputationTerm"
-											placeholder="Interest Computation Term" type="text"></input>
+										<label for="cbointerestComputationMethod">Interest
+											Computation Method</label> <select id="cbointerestComputationMethod"
+											style="width: 95%;">
+											<option value="C">Compound</option>
+											<option value="S">Simple</option>
+										</select>
 									</div>
 
 									<div>
-										<label for="txtinterestApplicationMethod">Interest
-											Application Method</label> <input id="txtinterestApplicationMethod"
-											placeholder="Interest Application Method" type="text"></input>
+										<label for="cbointerestComputationTerm">Interest
+											Computation Term</label> <select id="cbointerestComputationTerm"
+											style="width: 95%;">
+											<option value="Y">Yearly</option>
+											<option value="M">Monthly</option>
+											<option value="D">Daily</option>
+										</select>
 									</div>
 
 									<div>
-										<label for="txtintPayingAccount">Interest Paying
-											Account</label> <input id="txtintPayingAccount"
-											placeholder="Interest Paying Account" type="number"></input>
+										<label for="cbointerestApplicationMethod">Interest
+											Application Method</label> <select id="cbointerestApplicationMethod"
+											style="width: 95%;">
+											<option value="Y">Yearly</option>
+											<option value="M">Monthly</option>
+											<option value="D">Daily</option>
+										</select>
 									</div>
 
 									<div>
-										<label for="txtintPaidAccount">Interest Paid Account</label> <input
-											id="txtintPaidAccount" placeholder="Interest Paid Account"
-											type="number"></input>
+										<label for="chkaccrueInSusp">Accrual In Suspense</label> <input
+											id="chkaccrueInSusp" placeholder="Accrual In Suspense"
+											type="checkbox"></input>
+									</div>
+
+									<div>
+										<label for="chkPartialPay">Partial Pay</label> <input
+											id="chkPartialPay" placeholder="Partial Pay" type="checkbox"></input>
 									</div>
 
 								</div>
@@ -209,17 +244,6 @@
 										<label for="txtnextIntAppDate">Next Interest
 											Application Date</label> <input id="txtnextIntAppDate"
 											placeholder="Next Interest Application Date" type="date"></input>
-									</div>
-
-									<div>
-										<label for="txtaccrueInSusp">Accrual In Suspense</label> <input
-											id="txtaccrueInSusp" placeholder="Accrual In Suspense"
-											type="checkbox"></input>
-									</div>
-
-									<div>
-										<label for="chkpartialPay">Partial Pay</label> <input
-											id="chkpartialPay" placeholder="Partial Pay" type="checkbox"></input>
 									</div>
 
 								</div>

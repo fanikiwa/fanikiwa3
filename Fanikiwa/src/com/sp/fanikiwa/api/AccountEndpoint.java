@@ -2,6 +2,7 @@ package com.sp.fanikiwa.api;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.Enums.AccountLimitStatus;
 import com.sp.fanikiwa.Enums.PostingCheckFlag;
@@ -9,6 +10,7 @@ import com.sp.fanikiwa.entity.BatchSimulateStatus;
 import com.sp.fanikiwa.entity.DoubleEntry;
 import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.SimulatePostStatus;
@@ -18,6 +20,7 @@ import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
+import com.sp.utils.GLUtil;
 import com.sp.utils.Utils;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -201,10 +204,30 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "CloseAccount")
-	public void CloseAccount(Account account) throws NotFoundException {
-		Account acc = findRecord(account.getAccountID());
-		acc.setClosed(true);
-		this.updateAccount(acc);
+	public RequestResult CloseAccount(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+
+			Account acc = findRecord(id);
+
+			if (acc.getClearedBalance() > 0) {
+				re.setResultMessage("Cannot close an Account with a balance."
+						+ "<br/>BookBalance = " + acc.getBookBalance()
+						+ "<br/>ClearedBalance = " + acc.getClearedBalance()
+						+ "<br/>Limit = " + acc.getLimit());
+			}
+			acc.setClosed(true);
+			this.updateAccount(acc);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	@ApiMethod(name = "SetAccountLimitStatus")
@@ -212,7 +235,7 @@ public class AccountEndpoint {
 			@Named("status") AccountLimitStatus status)
 			throws NotFoundException {
 		Account acc = findRecord(account.getAccountID());
-		acc.setLimitFlag(status.ordinal());
+		acc.setLimitFlag(status.name());
 		this.updateAccount(acc);
 	}
 
@@ -220,7 +243,7 @@ public class AccountEndpoint {
 	public void SetAccountLockStatus(Account account,
 			@Named("status") PassFlag status) throws NotFoundException {
 		Account acc = findRecord(account.getAccountID());
-		acc.setPassFlag(status.ordinal());
+		acc.setPassFlag(status.name());
 		this.updateAccount(acc);
 	}
 
@@ -353,7 +376,8 @@ public class AccountEndpoint {
 		first.setPostDate(new Date());
 		first.setTransactionID(-1L);
 		first.setNarrative("BALANCE B/F");
-		double amt = account.getBookBalance(); double bal=0;
+		double amt = account.getBookBalance();
+		double bal = 0;
 		if (amt > 0) {
 			first.setCredit(amt);
 			first.setDebit(0);
@@ -366,7 +390,6 @@ public class AccountEndpoint {
 		first.setBalance(bal);
 
 		records.add(first);
-		
 
 		for (Transaction txn : txnCB.getItems()) {
 			StatementModel txnv = new StatementModel();
@@ -559,6 +582,10 @@ public class AccountEndpoint {
 			Transaction transaction, PostingCheckFlag limitCheck) {
 		SimulatePostStatus result = new SimulatePostStatus();
 
+		if (transaction == null) {
+			result.Errors.add(new NotFoundException("transaction is null"));
+			return result;
+		}
 		// Step 1 - See if we can post into this account by looking at lock and
 		// limit flags.
 		double AmountAvailableOnUncleared = account.getBookBalance()
@@ -567,19 +594,19 @@ public class AccountEndpoint {
 				+ transaction.getAmount();
 
 		// get account status
-		AccountLimitStatus limistatus = AccountLimitStatus.values()[account
-				.getLimitFlag()];
+		AccountLimitStatus limistatus = AccountLimitStatus.valueOf(account
+				.getLimitFlag());
 
 		// transaction type
 		TransactionType _TransactionType = transaction.getTransactionType();
 
 		// populate status object
 		result.AccountID = account.getAccountID();
-		result.BlockedStatus = PassFlag.values()[account.getPassFlag()];
+		result.BlockedStatus = PassFlag.valueOf(account.getPassFlag());
 		result.BookBalanceBeforePosting = account.getBookBalance();
 		result.ClearedBalanceBeforePosting = account.getClearedBalance();
 		result.Limit = account.getLimit();
-		result.LimitStatus = AccountLimitStatus.values()[account.getLimitFlag()];
+		result.LimitStatus = AccountLimitStatus.valueOf(account.getLimitFlag());
 		result.TransactionAmount = transaction.getAmount();
 		result.TransactionTypeId = transaction.getTransactionType()
 				.getTransactionTypeID();
@@ -590,17 +617,12 @@ public class AccountEndpoint {
 			return result;
 		}
 
-		if (transaction == null) {
-			result.Errors.add(new NotFoundException("transaction is null"));
-			return result;
-		}
-
 		// Do account status tests only if the transaction is not a force post
 		if (transaction.getForcePostFlag()
 				|| limitCheck == PostingCheckFlag.ForcePost)
 			return result;
 
-		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
+		PassFlag lockstatus = PassFlag.valueOf(account.getPassFlag());
 		switch (limitCheck) {
 		case CheckPassFlagOnly:// does not check limit but checks PassFlag
 			if (!CheckPassFlag(lockstatus, account, _TransactionType)) {
@@ -664,10 +686,12 @@ public class AccountEndpoint {
 
 	private boolean CheckLimitFlag(AccountLimitStatus limistatus,
 			double AmountAvailableAfterTxn, double AmountAvailableOnUncleared) {
-		if (limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0) {
+		if (limistatus == AccountLimitStatus.PostingOverDrawingProhibited
+				&& AmountAvailableAfterTxn < 0) {
 			return false;
 		}
-		if (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0) {
+		if (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed
+				&& AmountAvailableOnUncleared < 0) {
 			return false;
 		}
 		return true;
@@ -675,12 +699,15 @@ public class AccountEndpoint {
 
 	private boolean CheckPassFlag(PassFlag lockstatus, Account account,
 			TransactionType _TransactionType) {
-		if (lockstatus == PassFlag.Locked)return false;
-		if (lockstatus == PassFlag.AllPostingProhibited)return false;
-		if (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
-						.getDebitCredit().equals("C"))return false;
-		if (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
-						.getDebitCredit().equals("D")) {
+		if (lockstatus == PassFlag.Locked)
+			return false;
+		if (lockstatus == PassFlag.AllPostingProhibited)
+			return false;
+		if (lockstatus == PassFlag.CreditPostingProhibited
+				&& _TransactionType.getDebitCredit().equals("C"))
+			return false;
+		if (lockstatus == PassFlag.DebitPostingProhibited
+				&& _TransactionType.getDebitCredit().equals("D")) {
 
 			return false;
 		}
@@ -693,9 +720,9 @@ public class AccountEndpoint {
 			throw new NotFoundException("Account closed");
 
 		// check that funds are available after limiting
-		AccountLimitStatus limistatus = AccountLimitStatus.values()[account
-				.getLimitFlag()];
-		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
+		AccountLimitStatus limistatus = AccountLimitStatus.valueOf(account
+				.getLimitFlag());
+		PassFlag lockstatus = PassFlag.valueOf(account.getPassFlag());
 
 		double AmountAvailable = account.getClearedBalance()
 				- account.getLimit();
@@ -761,4 +788,38 @@ public class AccountEndpoint {
 		return isProofed;
 	}
 
+	@ApiMethod(name = "memberWithdraw")
+	public RequestResult MemberWithdraw(@Named("email") String email,
+			@Named("amount") double amount) {
+
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+
+			Member member = ofy().transactionless().load().type(Member.class)
+					.filter("email", email).first().now();
+
+			// 1.does member current account contain enough money to complete
+			// the transaction.
+			double availablebalance = GLUtil.GetAvailableBalance(member
+					.getCurrentAccount());
+			double commission = 100.0;
+			double neededbalance = availablebalance + commission;
+			if (availablebalance < neededbalance) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat
+						.format("You do not have enough money to make a withdaw of {0}.<br/> Available balance is {1}",
+								amount, availablebalance));
+				return re;
+			}
+			WithdrawalComponent wc = new WithdrawalComponent();
+			re.setResultMessage(wc.MemberWithdraw(member, amount));
+
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 }

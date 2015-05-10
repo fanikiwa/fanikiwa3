@@ -320,10 +320,10 @@
             "type" : "integer"
           },
           "limitFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "passFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "interestAccrualInterval" : {
             "type" : "string"

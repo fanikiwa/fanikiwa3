@@ -16,7 +16,7 @@ public class Userprofile {
 	@Index
 	private String telephone;
 	
-	private Date CreateDate;
+	private Date createDate;
 
 	public Userprofile() {
 	}
@@ -38,11 +38,11 @@ public class Userprofile {
 	}
 
 	public Date getCreateDate() {
-		return CreateDate;
+		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		CreateDate = createDate;
+	public void setCreateDate(Date CreateDate) {
+		createDate = CreateDate;
 	}
 
 	public String getTelephone() {

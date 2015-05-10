@@ -77,7 +77,11 @@ fanikiwa.offerendpoint.createoffer = function() {
 	OfferDTO.term = _Term;
 	OfferDTO.privateOffer = _PublicOffer;
 	OfferDTO.offerType = _OfferType;
-	OfferDTO.partialPay = _PartialPay;
+	if (_OfferType == 'L') {
+		OfferDTO.partialPay = false;
+	} else {
+		OfferDTO.partialPay = _PartialPay;
+	}
 	OfferDTO.status = "Open";
 	OfferDTO.email = email;
 	OfferDTO.offerees = _offerees;

@@ -11,4 +11,9 @@ public class PeerLendingUtil {
 		return mep.getMemberByID(id);
 	}
 
+	public static Member GetMember(String email) {
+		MemberEndpoint mep = new MemberEndpoint();
+		return mep.GetMemberByEmail(email);
+	}
+
 }

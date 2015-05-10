@@ -10,9 +10,8 @@ public class AccountType {
 	@Id
 	Long id;
 
-	 
 	private String description;
-	 
+
 	private String shortCode;
 
 	public AccountType() {

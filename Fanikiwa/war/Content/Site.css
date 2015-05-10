@@ -592,7 +592,7 @@ display: inline;
 cursor: pointer;
 }
 
-input, textarea, select , input[type="date"] 
+input, textarea, select , input[type="date"], input[type="number"] 
 {
 border: 1px solid black; 
 border-radius: 5px; /* give a curvy edge */
@@ -603,7 +603,7 @@ margin: 5px 0 6px 0;
 padding: 5px;
 width: 300px;
 }
-
+  
 textarea 
 {
 font-family: inherit;
@@ -1551,10 +1551,12 @@ border: 0px solid;
 .col1,.col2,.col3,.col4
 {
 float:left; 
+overflow: hidden;
 }
 .col1 
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: 320px;
 white-space: nowrap;
@@ -1562,6 +1564,7 @@ white-space: nowrap;
 .col2 
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width:600px;
 white-space: nowrap;  
@@ -1569,6 +1572,7 @@ white-space: nowrap;
 .col3 
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width:600px;
 white-space: nowrap;  
@@ -1576,6 +1580,7 @@ white-space: nowrap;
 .col4 
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width:600px;
 white-space: nowrap;  
@@ -1605,6 +1610,7 @@ white-space: nowrap;
 #column-div .col1 
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: 250px;
 white-space: nowrap;
@@ -1612,6 +1618,7 @@ white-space: nowrap;
 #column-div .col2
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: 250px;
 white-space: nowrap;
@@ -1619,6 +1626,7 @@ white-space: nowrap;
 #column-div .col3
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: 250px;
 white-space: nowrap;
@@ -1626,6 +1634,7 @@ white-space: nowrap;
 #column-div .col4
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: 250px;
 white-space: nowrap;
@@ -1633,6 +1642,7 @@ white-space: nowrap;
 #column-div
 {
 float:left;
+overflow: hidden;
 overflow-x:auto;
 width: auto;
 white-space: nowrap;
@@ -1656,6 +1666,7 @@ border: 2px solid cornflowerblue;
 #column-div h5
 {
 font-size: 15px; 
+overflow: hidden;
 border: 0px solid black; 
 border-radius: 0px; /* give a curvy edge */ 
 color: black; 
@@ -1700,4 +1711,23 @@ color: red;
 font-size: 20px;
 font: bold;
 font-weight: 900;
+}
+
+#statementheader .col1
+{ 
+width: 200px;
+}
+#statementheader .col2
+{ 
+width: 200px; 
+overflow: hidden;
+}
+#statementheader .col3
+{ 
+width: 200px; 
+overflow: hidden;
+}
+#statementheader .col4
+{ 
+width: 200px;
 }

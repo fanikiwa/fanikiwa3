@@ -48,7 +48,7 @@ function formatDate(date) {
 	if (day.length < 2)
 		day = '0' + day;
 
-	return [ day, month, year ].join('-');
+	return [ month, day, year ].join('-');
 }
 function formatDateForControl(date) {
 	var d = new Date(date), month = '' + (d.getMonth() + 1), day = ''
@@ -61,8 +61,38 @@ function formatDateForControl(date) {
 
 	return [ year, month, day ].join('-');
 }
-function incrementDateByYear(date_str, count) {
-	var date = new Date(date_str);
-	date.setDate(date.getFullYear() - count);
-	return formatDateForControl(date);
+function decrementDateByMonth(oldDate, offset, offsetType) {
+	return formatDateForControl(AddDate(oldDate, offset, offsetType));
+}
+function decrementDateByYear(oldDate, offset, offsetType) {
+	return formatDateForControl(AddDate(oldDate, offset, offsetType));
+}
+function AddDate(oldDate, offset, offsetType) {
+	var year = parseInt(oldDate.getFullYear());
+	var month = parseInt(oldDate.getMonth());
+	var date = parseInt(oldDate.getDate());
+	var hour = parseInt(oldDate.getHours());
+	var newDate;
+	switch (offsetType) {
+	case "Y":
+	case "y":
+		newDate = new Date(year + offset, month, date, hour);
+		break;
+
+	case "M":
+	case "m":
+		newDate = new Date(year, month + offset, date, hour);
+		break;
+
+	case "D":
+	case "d":
+		newDate = new Date(year, month, date + offset, hour);
+		break;
+
+	case "H":
+	case "h":
+		newDate = new Date(year, month, date, hour + offset);
+		break;
+	}
+	return newDate;
 }

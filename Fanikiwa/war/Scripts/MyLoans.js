@@ -71,11 +71,12 @@ function populateLoans(resp) {
 		loanTable += '<table id="listLoansTable">';
 		loanTable += "<thead>";
 		loanTable += "<tr>";
-		loanTable += "<th>Amount</th>";
+		loanTable += "<th>Maturity Date</th>";
+		loanTable += "<th>Partial Pay</th>";
 		loanTable += "<th>Term</th>";
 		loanTable += "<th>Interest Rate</th>";
+		loanTable += "<th>Amount</th>";
 		loanTable += "<th>Accrued Interest</th>";
-		loanTable += "<th>Maturity Date</th>";
 		loanTable += "<th></th>";
 		loanTable += "</tr>";
 		loanTable += "</thead>";
@@ -83,12 +84,17 @@ function populateLoans(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			loanTable += '<tr>';
-			loanTable += '<td>' + resp.result.items[i].amount.formatMoney(2) + '</td>';
+			loanTable += '<td>' + formatDate(resp.result.items[i].maturityDate)
+					+ '</td>';
+			loanTable += '<td>' + resp.result.items[i].partialPay + '</td>';
 			loanTable += '<td>' + resp.result.items[i].term + '</td>';
 			loanTable += '<td>' + resp.result.items[i].interestRate + '</td>';
-			loanTable += '<td>' + resp.result.items[i].accruedInterest
+			loanTable += '<td>' + resp.result.items[i].amount.formatMoney(2)
 					+ '</td>';
-			loanTable += '<td>' + resp.result.items[i].maturityDate + '</td>';
+			loanTable += '<td>'
+					+ resp.result.items[i].accruedInterest.formatMoney(2)
+					+ '</td>';
+
 			loanTable += '<td><a href="#" onclick="LoanDetails('
 					+ resp.result.items[i].id + ')">Details</a> </td>';
 			loanTable += "</tr>";

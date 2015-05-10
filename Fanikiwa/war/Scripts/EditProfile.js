@@ -20,10 +20,8 @@ fanikiwa.memberendpoint.updateprofile = function() {
 	var error_free = true;
 
 	// Validate the entries
-	var _Email = document.getElementById('txtEmail').value;
 	var _Surname = document.getElementById('txtSurname').value;
 	var _OtherNames = document.getElementById('txtOtherNames').value;
-	var _Telephone = document.getElementById('txtTelephone').value;
 	var _NationalID = document.getElementById('txtNationalID').value;
 	var _DateOfBirth = document.getElementById('dtpDateOfBirth').value;
 	var _RefferedBy = document.getElementById('txtRefferedBy').value;
@@ -38,10 +36,6 @@ fanikiwa.memberendpoint.updateprofile = function() {
 	}
 	if (_OtherNames.length == 0) {
 		errormsg += '<li>' + " OtherNames cannot be null " + '</li>';
-		error_free = false;
-	}
-	if (_Telephone.length == 0) {
-		errormsg += '<li>' + " Telephone cannot be null " + '</li>';
 		error_free = false;
 	}
 	if (_NationalID.length == 0) {
@@ -66,9 +60,10 @@ fanikiwa.memberendpoint.updateprofile = function() {
 
 	// Build the Request Object
 	var member = {};
-	member.memberId = sessionStorage.getItem("profilememberId"); 
+	member.memberId = sessionStorage.getItem("profilememberId");
 	member.surname = _Surname;
-	member.otherNames = _OtherNames; 
+	member.otherNames = _OtherNames;
+	member.nationalID = _NationalID;
 	member.dateOfBirth = _DateOfBirth;
 	member.refferedBy = _RefferedBy;
 	member.maxRecordsToDisplay = _MaxRecordsToDisplay;
@@ -98,7 +93,7 @@ fanikiwa.memberendpoint.updateprofile = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/EditProfile.html";',
-												1000);
+												5000);
 							}
 
 						} else {
@@ -203,16 +198,37 @@ fanikiwa.memberendpoint.profile.initializeControls = function() {
 
 fanikiwa.memberendpoint.profile.populateControls = function(member) {
 	sessionStorage.profilememberId = member.memberId;
-	document.getElementById('txtEmail').value = member.email;
-	document.getElementById('txtSurname').value = member.surname;
-	document.getElementById('txtOtherNames').value = member.otherNames;
-	document.getElementById('txtTelephone').value = member.telephone;
-	document.getElementById('txtNationalID').value = member.nationalID;
-	if (member.result.dateOfBirth != undefined)
-		document.getElementById('dtpDateOfBirth').value = member.dateOfBirth;
+
+	if (member.email != undefined)
+		document.getElementById('txtEmail').value = member.email;
 	else {
-		document.getElementById('dtpDateOfBirth').value = incrementDateByYear(
-				new Date(), 18);
+		document.getElementById('txtEmail').value = "";
+	}
+	if (member.surname != undefined)
+		document.getElementById('txtSurname').value = member.surname;
+	else {
+		document.getElementById('txtSurname').value = "";
+	}
+	if (member.otherNames != undefined)
+		document.getElementById('txtOtherNames').value = member.otherNames;
+	else {
+		document.getElementById('txtOtherNames').value = "";
+	}
+	if (member.telephone != undefined)
+		document.getElementById('txtTelephone').value = member.telephone;
+	else {
+		document.getElementById('txtTelephone').value = "";
+	}
+	if (member.nationalID != undefined)
+		document.getElementById('txtNationalID').value = member.nationalID;
+	else {
+		document.getElementById('txtNationalID').value = "";
+	}
+	if (member.dateOfBirth != undefined)
+		document.getElementById('dtpDateOfBirth').value = formatDateForControl(member.dateOfBirth);
+	else {
+		document.getElementById('dtpDateOfBirth').value = decrementDateByYear(
+				new Date(), -18, 'y');
 	}
 	document.getElementById('txtRefferedBy').value = member.refferedBy;
 	document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;

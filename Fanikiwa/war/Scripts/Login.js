@@ -9,7 +9,7 @@ var fanikiwa = fanikiwa || {};
 // fanikiwa.appengine = com.sp.fanikiwa.api || {};
 fanikiwa.userprofile = fanikiwa.userprofile || {};
 fanikiwa.userprofile.ui = fanikiwa.userprofile.ui || {};
- 
+
 var errormsg = '';
 errormsg += '<ul id="errorList">';
 
@@ -46,6 +46,8 @@ fanikiwa.userprofile.ui.login = function() {
 	}
 
 	$('#apiResults').html('authenticating...');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	gapi.client.userprofileendpoint
 			.login({

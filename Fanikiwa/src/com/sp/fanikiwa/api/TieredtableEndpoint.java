@@ -1,6 +1,8 @@
 package com.sp.fanikiwa.api;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
+
+import com.sp.fanikiwa.entity.TieredDet;
 import com.sp.fanikiwa.entity.Tieredtable;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -127,19 +129,21 @@ public class TieredtableEndpoint {
 		}
 		ofy().delete().entity(record).now();
 	}
-
-	// Private method to retrieve a <code>Tieredtable</code> record
+ 
 	private Tieredtable findRecord(Long id) {
-		return ofy().load().type(Tieredtable.class).id(id).now();
-		// or return
-		// ofy().load().type(Tieredtable.class).filter("id",id).first.now();
+		return ofy().load().type(Tieredtable.class).id(id).now(); 
 	}
-
+	
 	public Collection<Tieredtable> getTieredTableId(
 			@Named("tableid") Long tieredTableId) {
 		Query<Tieredtable> query = ofy().load().type(Tieredtable.class)
 				.filter("TieredID", tieredTableId);
 		return listTieredtableFromQuery(query, null, null).getItems();
+	}
+
+	@ApiMethod(name = "getTieredtableById") 
+	public Tieredtable getTieredtableById(@Named("id") Long id) {
+		return findRecord(id);
 	}
 
 }

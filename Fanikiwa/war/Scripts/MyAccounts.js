@@ -122,6 +122,8 @@ function CreateSubMenu() {
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Account/Statement.html" style="cursor: pointer;">Statement</a></div></div></li>');
 	SubMenu
+	.push('<li><div class="floatleft"><div><a href="/Views/Account/Withdraw.html" style="cursor: pointer;">Withdraw</a></div></div></li>');
+	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My investments</a></div></div></li>');
