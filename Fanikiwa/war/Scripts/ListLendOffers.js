@@ -97,10 +97,12 @@ function populateOffers(resp) {
 				offerTable += '<tr>';
 				offerTable += '<td>' + resp.result.items[i].description
 						+ '</td>';
-				offerTable += '<td>'
+				offerTable += '<td style="text-align:right">'
 						+ resp.result.items[i].amount.formatMoney(2) + '</td>';
-				offerTable += '<td>' + resp.result.items[i].term + '</td>';
-				offerTable += '<td>' + resp.result.items[i].interest + '</td>';
+				offerTable += '<td style="text-align:right">'
+						+ resp.result.items[i].term + '</td>';
+				offerTable += '<td style="text-align:right">'
+						+ resp.result.items[i].interest + '</td>';
 				offerTable += '<td>' + resp.result.items[i].privateOffer
 						+ '</td>';
 				offerTable += '<td>' + resp.result.items[i].partialPay

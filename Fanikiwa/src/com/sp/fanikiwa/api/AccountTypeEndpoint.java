@@ -14,6 +14,9 @@ import com.googlecode.objectify.cmd.Query;
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.AccountType;
+import com.sp.fanikiwa.entity.Customer;
+import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.fanikiwa.entity.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,20 +78,51 @@ public class AccountTypeEndpoint {
 	 * @return The object to be added.
 	 */
 	@ApiMethod(name = "insertAccountType")
-	public AccountType insertAccountType(AccountType AccountType) throws ConflictException {
-		// If if is not null, then check if it exists. If yes, throw an
-		// Exception
-		// that it is already present
-		if (AccountType.getId() != null) {
-			if (findRecord(AccountType.getId()) != null) {
-				throw new ConflictException("Object already exists");
+	public RequestResult insertAccountType(AccountType AccountType) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			if (AccountType.getId() != null) {
+				if (findRecord(AccountType.getId()) != null) {
+					throw new ConflictException("Object already exists");
+				}
 			}
+			ofy().save().entity(AccountType).now();
+			re.setResultMessage("Account Type Created.<br/>Id = "
+					+ AccountType.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		// Since our @Id field is a Long, Objectify will generate a unique value
-		// for us
-		// when we use put
-		ofy().save().entity(AccountType).now();
-		return AccountType;
+		return re;
+	}
+
+	@ApiMethod(name = "getAccountType")
+	public AccountType getAccountType(@Named("id") Long id) {
+		return findRecord(id);
+	}
+
+	@ApiMethod(name = "retrieveAccountType")
+	public RequestResult retrieveAccountType(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			AccountType accountType = findRecord(id);
+			if (accountType == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			re.setClientToken(accountType);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	/**
@@ -99,12 +133,24 @@ public class AccountTypeEndpoint {
 	 * @return The object to be updated.
 	 */
 	@ApiMethod(name = "updateAccountType")
-	public AccountType updateAccountType(AccountType AccountType) throws NotFoundException {
-		if (findRecord(AccountType.getId()) == null) {
-			throw new NotFoundException("AccountType Record does not exist");
+	public RequestResult updateAccountType(AccountType AccountType) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			if (findRecord(AccountType.getId()) == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().save().entity(AccountType).now();
+			re.setResultMessage("Account Type Updated.<br/>Id = "
+					+ AccountType.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entity(AccountType).now();
-		return AccountType;
+		return re;
 	}
 
 	/**
@@ -114,18 +160,29 @@ public class AccountTypeEndpoint {
 	 *            The id of the object to be deleted.
 	 */
 	@ApiMethod(name = "removeAccountType")
-	public void removeAccountType(@Named("id") Long id) throws NotFoundException {
-		AccountType record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("AccountType Record does not exist");
+	public RequestResult removeAccountType(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			AccountType accounttype = findRecord(id);
+			if (accounttype == null) {
+				throw new NotFoundException("AccountType Record does not exist");
+			}
+			ofy().delete().entity(accounttype).now();
+			re.setResultMessage("Account Type Deleted.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
 	}
 
 	// Private method to retrieve a <code>AccountType</code> record
 	private AccountType findRecord(Long id) {
 		return ofy().load().type(AccountType.class).id(id).now();
-		// or return ofy().load().type(AccountType.class).filter("id",id).first.now();
 	}
 
 }

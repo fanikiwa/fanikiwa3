@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "informdbendpoint.insertInformdb" : {
+      "path" : "informdb",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "informdbendpoint.listInformdb" : {
       "path" : "informdb",
       "httpMethod" : "GET",
@@ -47,22 +63,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "informdbendpoint.updateInformdb" : {
-      "path" : "informdb",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -89,14 +89,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "informdbendpoint.insertInformdb" : {
+    "informdbendpoint.updateInformdb" : {
       "path" : "informdb",
-      "httpMethod" : "POST",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -129,21 +129,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Informdb" : {
-        "id" : "CollectionResponse_Informdb",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Informdb"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
       "Informdb" : {
         "id" : "Informdb",
         "type" : "object",
@@ -175,15 +160,25 @@
             "type" : "string"
           }
         }
+      },
+      "CollectionResponse_Informdb" : {
+        "id" : "CollectionResponse_Informdb",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Informdb"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Informdb"
-        }
-      },
-      "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb" : {
+      "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
         "request" : {
           "$ref" : "Informdb"
         },
@@ -191,12 +186,17 @@
           "$ref" : "Informdb"
         }
       },
+      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Informdb"
+        }
+      },
       "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
         "response" : {
           "$ref" : "Informdb"
         }
       },
-      "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
+      "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb" : {
         "request" : {
           "$ref" : "Informdb"
         },

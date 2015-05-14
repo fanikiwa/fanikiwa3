@@ -87,7 +87,10 @@ public class LendingGroupEndpoint {
 		QueryResultIterator<Lendinggroup> iterator = query.iterator();
 		int num = 0;
 		while (iterator.hasNext()) {
-			records.add(iterator.next());
+			Lendinggroup grp = iterator.next();
+			if (grp.getParentGroup() != null) {
+				records.add(grp);
+			}
 			if (count != null) {
 				num++;
 				if (num == count)

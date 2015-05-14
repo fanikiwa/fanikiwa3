@@ -15,6 +15,7 @@ import com.google.gson.JsonPrimitive;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Userprofile;
 import com.sp.utils.DateExtension;
 
@@ -87,6 +88,26 @@ public class UserprofileEndpoint {
 		return findRecord(id);
 	}
 
+	@ApiMethod(name = "retrieveUser")
+	public RequestResult retrieveUser(@Named("id") String id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Userprofile user = findRecord(id);
+			if (user == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			re.setClientToken(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
 	/**
 	 * This method is used for updating an existing entity. If the entity does
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
@@ -98,14 +119,24 @@ public class UserprofileEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateUserprofile")
-	public Userprofile updateUserprofile(Userprofile Userprofile)
-			throws NotFoundException {
-		Userprofile record = findRecord(Userprofile.getUserId());
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult updateUserprofile(Userprofile Userprofile) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Userprofile user = findRecord(Userprofile.getUserId());
+			if (user == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().save().entities(Userprofile).now();
+			re.setResultMessage("User Updated.<br/>Id = " + user.getUserId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entities(Userprofile).now();
-		return Userprofile;
+		return re;
 	}
 
 	/**
@@ -117,13 +148,25 @@ public class UserprofileEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeUserprofile")
-	public void removeUserprofile(@Named("id") String id)
-			throws NotFoundException {
-		Userprofile record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult removeUserprofile(@Named("id") String id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Userprofile user = findRecord(id);
+			if (user == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().delete().entity(user).now();
+			re.setResultMessage("Setting Removed");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
+
 	}
 
 	/**
@@ -137,15 +180,26 @@ public class UserprofileEndpoint {
 	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertUserprofile")
-	public Userprofile insertUserprofile(Userprofile userprofile)
-			throws NotFoundException, ConflictException {
-		if (userprofile.getUserId() != null) {
-			if (findRecord(userprofile.getUserId()) != null) {
-				throw new ConflictException("Object already exists");
+	public RequestResult insertUserprofile(Userprofile userprofile) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			if (userprofile.getUserId() != null) {
+				if (findRecord(userprofile.getUserId()) != null) {
+					throw new ConflictException("Object already exists");
+				}
 			}
+			ofy().save().entities(userprofile).now();
+			re.setResultMessage("User Created.<br/>Id = "
+					+ userprofile.getUserId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entities(userprofile).now();
-		return userprofile;
+		return re;
 	}
 
 	@ApiMethod(name = "changePassword")
@@ -179,7 +233,8 @@ public class UserprofileEndpoint {
 		user = findRecord(userId);
 		if (user == null) {
 			re.setResult(false);
-			re.setResultMessage("User with email [ " + userId + " ] does not exist!");
+			re.setResultMessage("User with email [ " + userId
+					+ " ] does not exist!");
 			return re;
 		}
 		if (AuthenticateUser(user, pwd)) {
@@ -187,12 +242,29 @@ public class UserprofileEndpoint {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			re.setResultMessage("created date:"
 					+ sdf.format(user.getCreateDate()));
-			re.setClientToken(user.getUserId());
+			re.setClientToken(user);
 			return re;
 		} else {
 			re.setResult(false);
 			re.setResultMessage("User Exists but Password is incorrect.");
 		}
+		return re;
+	}
+
+	public RequestResult UserExists(@Named("userId") String userId) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		Userprofile user = null;
+		user = findRecord(userId);
+		if (user == null) {
+			re.setResult(false);
+			re.setResultMessage("User with email [ " + userId
+					+ " ] does not exist!");
+			return re;
+		}
+		re.setClientToken(user);
 		return re;
 	}
 

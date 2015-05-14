@@ -44,7 +44,17 @@ public class CoadetEndpoint {
 				.filter("coa", coa);
 		return GetCoadetsFromQuery(query, cursorString, count);
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectCoadet")
+	public CollectionResponse<Coadet> selectCoadet( 
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+ 
+		Query<Coadet> query = ofy().load().type(Coadet.class);
+		return GetCoadetsFromQuery(query, cursorString, count);
+	}
+	
 	private CollectionResponse<Coadet> GetCoadetsFromQuery(Query<Coadet> query,
 			String cursorString, Integer count) {
 

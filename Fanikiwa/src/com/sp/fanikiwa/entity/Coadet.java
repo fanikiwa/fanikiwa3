@@ -10,15 +10,15 @@ public class Coadet {
 
 	@Id
 	Long id;
- 
-	private int COALevel;
- 
+
+	private int coaLevel;
+
 	private String description;
- 
+
 	private int rorder;
- 
+
 	private String shortCode;
- 
+
 	private Ref<Coa> coa;
 
 	public Coadet() {
@@ -37,11 +37,11 @@ public class Coadet {
 	}
 
 	public int getCOALevel() {
-		return this.COALevel;
+		return this.coaLevel;
 	}
 
 	public void setCOALevel(int COALevel) {
-		this.COALevel = COALevel;
+		this.coaLevel = COALevel;
 	}
 
 	public String getDescription() {

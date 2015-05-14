@@ -10,7 +10,15 @@ import com.sp.fanikiwa.entity.BatchSimulateStatus;
 import com.sp.fanikiwa.entity.DoubleEntry;
 import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.entity.AccountDTO;
+import com.sp.fanikiwa.entity.AccountType;
+import com.sp.fanikiwa.entity.Coa;
+import com.sp.fanikiwa.entity.Coadet;
+import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
+import com.sp.fanikiwa.entity.Offer;
+import com.sp.fanikiwa.entity.OfferDTO;
+import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.SimulatePostStatus;
@@ -21,6 +29,7 @@ import com.sp.fanikiwa.entity.ValueDatedTransaction;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
+import com.sp.utils.StringExtension;
 import com.sp.utils.Utils;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -28,9 +37,11 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
@@ -99,6 +110,50 @@ public class AccountEndpoint {
 				.setNextPageToken(cursorString).build();
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectDtoAccounts")
+	public CollectionResponse<AccountDTO> selectDtoAccounts(
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+
+		Query<Account> query = ofy().load().type(Account.class);
+		return selectDtoAccountByQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<AccountDTO> selectDtoAccountByQuery(
+			Query<Account> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
+		}
+
+		List<AccountDTO> records = new ArrayList<AccountDTO>();
+		QueryResultIterator<Account> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			AccountDTO dto = createDTOFromAccount(iterator.next());
+			records.add(dto);
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<AccountDTO> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
+	}
+
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
 	 * method.
@@ -112,6 +167,27 @@ public class AccountEndpoint {
 		return findRecord(id);
 	}
 
+	@ApiMethod(name = "retrieveAccount")
+	public RequestResult retrieveAccount(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+			Account account = findRecord(id);
+			if (account == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			AccountDTO accountDTO = createDTOFromAccount(account);
+			re.setClientToken(accountDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
 	/**
 	 * This inserts a new entity into App Engine datastore. If the entity
 	 * already exists in the datastore, an exception is thrown. It uses HTTP
@@ -122,6 +198,118 @@ public class AccountEndpoint {
 	 * @return The inserted entity.
 	 * @throws ConflictException
 	 */
+	@ApiMethod(name = "createAccount")
+	public RequestResult createAccount(AccountDTO accountDto) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+			// create account from dto
+			Account accountFromDTO = createAccountFromDTO(accountDto);
+			// save it
+			Account insertedAcc = this.insertAccount(accountFromDTO);
+			if (insertedAcc.getAccountID() == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Account.");
+				return re;
+			}
+			re.setResultMessage("Account Created.<br/>Id = "
+					+ insertedAcc.getAccountID());
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	private Account createAccountFromDTO(AccountDTO accountDto)
+			throws Exception {
+		// Construct Account
+		CoadetEndpoint coadetEndpoint = new CoadetEndpoint();
+		CustomerEndpoint customerendpoint = new CustomerEndpoint();
+		AccountTypeEndpoint accounttypeendpoint = new AccountTypeEndpoint();
+
+		Account acc = new Account();
+		acc.setAccountID(accountDto.getAccountID());
+		acc.setCustomer(customerendpoint.getCustomer(accountDto.getCustomer()));
+		acc.setAccounttype(accounttypeendpoint.getAccountType(accountDto
+				.getAccounttype()));
+		acc.setCoadet(coadetEndpoint.selectCoadetByID(accountDto.getCoadet()));
+		acc.setAccountName(accountDto.getAccountName());
+		acc.setAccountNo(accountDto.getAccountNo());
+		acc.setAccruedInt(accountDto.getAccruedInt());
+		acc.setAccruedIntInSusp(accountDto.getAccruedIntInSusp());
+		acc.setMaturityDate(accountDto.getMaturityDate());
+		acc.setAccrueInSusp(accountDto.getAccrueInSusp());
+		acc.setInterestRateSusp(accountDto.getInterestRateSusp());
+		acc.setBookBalance(accountDto.getBookBalance());
+		acc.setBranch(accountDto.getBranch());
+		acc.setClearedBalance(accountDto.getClearedBalance());
+		acc.setClosed(accountDto.getClosed());
+		acc.setInterestRate(accountDto.getInterestRate());
+		acc.setLimit(accountDto.getLimit());
+		acc.setLimitCheckFlag(accountDto.getLimitCheckFlag());
+		acc.setLimitFlag(accountDto.getLimitFlag());
+		acc.setPassFlag(accountDto.getPassFlag());
+		acc.setIntPayAccount(accountDto.getIntPayAccount());
+		acc.setInterestAccrualInterval(accountDto.getInterestAccrualInterval());
+		acc.setLastIntAccrualDate(accountDto.getLastIntAccrualDate());
+		acc.setNextIntAccrualDate(accountDto.getNextIntAccrualDate());
+		acc.setInterestComputationMethod(accountDto
+				.getInterestComputationMethod());
+		acc.setInterestComputationTerm(accountDto.getInterestComputationTerm());
+		acc.setInterestApplicationMethod(accountDto
+				.getInterestApplicationMethod());
+		acc.setLastIntAppDate(accountDto.getLastIntAppDate());
+		acc.setNextIntAppDate(accountDto.getNextIntAppDate());
+		acc.setCreateDate(new Date());
+
+		return acc;
+	}
+
+	private AccountDTO createDTOFromAccount(Account account) throws Exception {
+		// Construct dto
+		AccountDTO accountDto = new AccountDTO();
+		accountDto.setAccountID(account.getAccountID());
+		accountDto.setCustomer(account.getCustomer().getCustomerId());
+		accountDto.setAccounttype(account.getAccounttype().getId());
+		accountDto.setCoadet(account.getCoadet().getId());
+		accountDto.setAccountName(account.getAccountName());
+		accountDto.setAccountNo(account.getAccountNo());
+		accountDto.setAccruedInt(account.getAccruedInt());
+		accountDto.setAccruedIntInSusp(account.getAccruedIntInSusp());
+		accountDto.setMaturityDate(account.getMaturityDate());
+		accountDto.setAccrueInSusp(account.getAccrueInSusp());
+		accountDto.setInterestRateSusp(account.getInterestRateSusp());
+		accountDto.setBookBalance(account.getBookBalance());
+		accountDto.setBranch(account.getBranch());
+		accountDto.setClearedBalance(account.getClearedBalance());
+		accountDto.setClosed(account.getClosed());
+		accountDto.setInterestRate(account.getInterestRate());
+		accountDto.setLimit(account.getLimit());
+		accountDto.setLimitCheckFlag(account.getLimitCheckFlag());
+		accountDto.setLimitFlag(account.getLimitFlag());
+		accountDto.setPassFlag(account.getPassFlag());
+		accountDto.setIntPayAccount(account.getIntPayAccount());
+		accountDto.setInterestAccrualInterval(account
+				.getInterestAccrualInterval());
+		accountDto.setLastIntAccrualDate(account.getLastIntAccrualDate());
+		accountDto.setNextIntAccrualDate(account.getNextIntAccrualDate());
+		accountDto.setInterestComputationMethod(account
+				.getInterestComputationMethod());
+		accountDto.setInterestComputationTerm(account
+				.getInterestComputationTerm());
+		accountDto.setInterestApplicationMethod(account
+				.getInterestApplicationMethod());
+		accountDto.setLastIntAppDate(account.getLastIntAppDate());
+		accountDto.setNextIntAppDate(account.getNextIntAppDate());
+		accountDto.setCreateDate(account.getCreateDate());
+
+		return accountDto;
+	}
+
 	@ApiMethod(name = "insertAccount")
 	public Account insertAccount(Account Account) throws ConflictException {
 		if (Account.getAccountID() != null) {
@@ -151,6 +339,37 @@ public class AccountEndpoint {
 		}
 		ofy().save().entities(Account).now();
 		return Account;
+	}
+
+	@ApiMethod(name = "editAccount")
+	public RequestResult editAccount(AccountDTO accountDTO) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+			// create account from dto
+			Account accountFromDTO = createAccountFromDTO(accountDTO);
+			// check if account actually exists
+			Account accountExists = findRecord(accountFromDTO.getAccountID());
+			if (accountExists == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			// update it
+			ofy().save().entities(accountFromDTO).now();
+			if (accountFromDTO.getAccountID() == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Updating Account.");
+				return re;
+			}
+			re.setResultMessage("Account Updated.<br/>Id = "
+					+ accountFromDTO.getAccountID());
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	/**
@@ -203,7 +422,7 @@ public class AccountEndpoint {
 		return vDac.SelectByValueDate(date);
 	}
 
-	@ApiMethod(name = "CloseAccount")
+	@ApiMethod(name = "closeAccount")
 	public RequestResult CloseAccount(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
 		re.setResult(true);

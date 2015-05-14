@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Settings;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class SettingsEndpoint {
 		return CollectionResponse.<Settings> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
 	}
-	
+
 	/**
 	 * This inserts a new entity into App Engine datastore. If the entity
 	 * already exists in the datastore, an exception is thrown. It uses HTTP
@@ -77,21 +78,54 @@ public class SettingsEndpoint {
 	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertSettings")
-	public Settings insertSettings(Settings Settings) throws ConflictException {
-		if (Settings.getProperty() != null) {
-			if (findRecord(Settings.getProperty()) != null) {
-				throw new ConflictException("Object already exists");
+	public RequestResult insertSettings(Settings Settings) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			if (Settings.getProperty() != null) {
+				if (findRecord(Settings.getProperty()) != null) {
+					throw new ConflictException("Object already exists");
+				}
 			}
+			ofy().save().entities(Settings).now();
+			re.setResultMessage("Setting Created.<br/>Id = "
+					+ Settings.getProperty());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entities(Settings).now();
-		return Settings;
+		return re;
 	}
 
 	@ApiMethod(name = "getSettingsByKey")
-	public Settings getSettingsByKey(@Named("Key") String property)
-	{
-		return findRecord( property);
+	public Settings getSettingsByKey(@Named("Key") String property) {
+		return findRecord(property);
+
 	}
+
+	@ApiMethod(name = "retrieveSettingsByKey")
+	public RequestResult retrieveSettingsByKey(@Named("key") String property) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Settings setting = findRecord(property);
+			if (setting == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			re.setClientToken(setting);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
 	/**
 	 * This method is used for updating an existing entity. If the entity does
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
@@ -103,13 +137,25 @@ public class SettingsEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateSettings")
-	public Settings updateSettings(Settings Settings) throws NotFoundException {
-		Settings record = findRecord(Settings.getProperty());
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult updateSettings(Settings Settings) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Settings record = findRecord(Settings.getProperty());
+			if (record == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().save().entities(Settings).now();
+			re.setResultMessage("Setting Updated.<br/>Id = "
+					+ Settings.getProperty());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().save().entities(Settings).now();
-		return Settings;
+		return re;
 	}
 
 	/**
@@ -121,12 +167,24 @@ public class SettingsEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeSettings")
-	public void removeSettings(@Named("id") String id) throws NotFoundException {
-		Settings record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult removeSettings(@Named("id") String id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Settings setting = findRecord(id);
+			if (setting == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().delete().entity(setting).now();
+			re.setResultMessage("Setting Removed");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
 	}
 
 	private Settings findRecord(String id) {

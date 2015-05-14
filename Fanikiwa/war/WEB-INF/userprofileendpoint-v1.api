@@ -126,23 +126,19 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.listUserprofile" : {
-      "path" : "userprofile",
-      "httpMethod" : "GET",
+    "userprofileendpoint.userprofileEndpoint.userExists" : {
+      "path" : "UserExists/{userId}",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile",
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists",
       "request" : {
         "parameters" : {
-          "cursor" : {
+          "userId" : {
             "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
+            "required" : true
           }
         },
         "body" : "empty"
@@ -168,6 +164,31 @@
           "pwd" : {
             "type" : "string",
             "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "userprofileendpoint.listUserprofile" : {
+      "path" : "userprofile",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -243,6 +264,23 @@
           "createDate" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "lastLoginDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expiryDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "userType" : {
+            "type" : "string"
+          },
+          "role" : {
+            "type" : "string"
           }
         }
       },
@@ -291,14 +329,19 @@
           "$ref" : "Userprofile"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
+      "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists" : {
         "response" : {
-          "$ref" : "CollectionResponse_Userprofile"
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.UserprofileEndpoint.Login" : {
         "response" : {
           "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Userprofile"
         }
       },
       "com.sp.fanikiwa.api.UserprofileEndpoint.LoginByPhone" : {

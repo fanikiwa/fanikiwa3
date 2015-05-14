@@ -88,10 +88,12 @@ function populateOffers(resp) {
 		for (var i = 0; i < resp.result.items.length; i++) {
 			offerTable += '<tr>';
 			offerTable += '<td>' + resp.result.items[i].description + '</td>';
-			offerTable += '<td>' + resp.result.items[i].amount.formatMoney(2)
-					+ '</td>';
-			offerTable += '<td>' + resp.result.items[i].term + '</td>';
-			offerTable += '<td>' + resp.result.items[i].interest + '</td>';
+			offerTable += '<td style="text-align:right">'
+					+ resp.result.items[i].amount.formatMoney(2) + '</td>';
+			offerTable += '<td style="text-align:right">'
+					+ resp.result.items[i].term + '</td>';
+			offerTable += '<td style="text-align:right">'
+					+ resp.result.items[i].interest + '</td>';
 			offerTable += '<td>' + resp.result.items[i].privateOffer + '</td>';
 			offerTable += '<td>' + resp.result.items[i].partialPay + '</td>';
 			if (resp.result.items[i].offerType == 'L')
@@ -99,9 +101,9 @@ function populateOffers(resp) {
 			else
 				offerTable += '<td>' + 'Borrow' + '</td>';
 			offerTable += '<td>' + resp.result.items[i].status + '</td>';
-			offerTable += '<td><a href="#" onclick="DeleteOffer('
+			offerTable += '<td><a href="#" onclick="Delete('
 					+ resp.result.items[i].id + ')">Delete</a> </td>';
-			offerTable += '<td><a href="#" onclick="OfferDetails('
+			offerTable += '<td><a href="#" onclick="Details('
 					+ resp.result.items[i].id + ')">Details</a> </td>';
 			offerTable += "</tr>";
 		}
@@ -112,12 +114,12 @@ function populateOffers(resp) {
 	}
 }
 
-function OfferDetails(id) {
+function Details(id) {
 	sessionStorage.offerdetailsid = id;
 	window.location.href = "/Views/Offers/Details.html";
 }
 
-function DeleteOffer(id) {
+function Delete(id) {
 
 	$('#apiResults').html('processing...');
 	$('#successmessage').html('');

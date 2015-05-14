@@ -13,12 +13,14 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator; 
 import com.googlecode.objectify.cmd.Query; 
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer; 
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
+import com.sp.fanikiwa.entity.TransactionType;
 
 import java.util.ArrayList; 
 import java.util.Date;
@@ -99,7 +101,26 @@ public class STOEndpoint {
 	public STO getSTOByID(@Named("id") Long id) {
 		return findRecord(id);
 	}
-
+	
+	@ApiMethod(name = "retrieveSTO")
+	public RequestResult retrieveSTO(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			STO sto = findRecord(id);
+			if (sto == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			re.setClientToken(sto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 	/**
 	 * This method is used for updating an existing entity. If the entity does
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT

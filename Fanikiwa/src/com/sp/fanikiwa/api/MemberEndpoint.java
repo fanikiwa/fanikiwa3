@@ -14,13 +14,14 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.Enums.AccountLimitStatus;
 import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.Enums.UserType;
 import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.AccountType;
 import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
-import com.sp.fanikiwa.entity.MemberDTO;
+import com.sp.fanikiwa.entity.UserDTO;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.Organization;
 import com.sp.fanikiwa.entity.RequestResult;
@@ -163,7 +164,7 @@ public class MemberEndpoint {
 
 			ofy().save().entities(existingmember).now();
 			re.setResultMessage(MessageFormat
-					.format("Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
+					.format("Details:<br/>Member Id: {0}, <br/>Current Account Id: {1}, <br/>Loan Account Id: {2}, <br/>Investment Account Id: {3}, <br/>Interest Income Account Id: {4}, <br/>Interest Expense Account Id: {5}",
 							existingmember.getMemberId().toString(),
 							existingmember.getCurrentAccount().getAccountID()
 									.toString(),
@@ -249,10 +250,43 @@ public class MemberEndpoint {
 	}
 
 	@ApiMethod(name = "Register")
-	public RequestResult Register(MemberDTO memberDTO) {
+	public RequestResult Register(UserDTO memberDTO) {
+		String userType = memberDTO.getUserType();
+
 		RequestResult re = new RequestResult();
 		re.setResult(true);
 		re.setResultMessage("Success");
+
+		// STEP 1: Create the user
+		UserprofileEndpoint upep = new UserprofileEndpoint();
+		if (!upep.UserExists(memberDTO.getEmail()).isResult()) {
+			Userprofile user = new Userprofile();
+			user.setCreateDate(new Date());
+			user.setPwd(memberDTO.getPwd()); // think of encrypting
+			user.setUserId(memberDTO.getEmail());
+			user.setTelephone(memberDTO.getTelephone());
+			user.setUserType(userType);
+
+			Userprofile userReturned;
+
+				try {
+					userReturned = upep.insertUserprofile(user);
+					if (userReturned == null) {
+						re.setResult(false);
+						re.setResultMessage("Error Creating User!");
+						return re;
+					}
+				} catch (NotFoundException | ConflictException e) {
+					re.setResult(false);
+					re.setResultMessage(e.getMessage());
+					return re;
+				}
+		}
+		//Continue only if you are creating a member user
+		if(!userType.equals(UserType.Member))
+			return re;
+		
+		//Create a member user
 		try {
 
 			Member emailexists = ofy().load().type(Member.class)
@@ -268,21 +302,6 @@ public class MemberEndpoint {
 			if (telephoneexists != null) {
 				re.setResult(false);
 				re.setResultMessage("Telephone is already Registered in Fanikiwa!");
-				return re;
-			}
-
-			// Create the user
-			Userprofile user = new Userprofile();
-			user.setCreateDate(new Date());
-			user.setPwd(memberDTO.getPwd()); // think of encrypting
-			user.setUserId(memberDTO.getEmail());
-			user.setTelephone(memberDTO.getTelephone());
-
-			UserprofileEndpoint upep = new UserprofileEndpoint();
-			Userprofile userReturned = upep.insertUserprofile(user);
-			if (userReturned == null) {
-				re.setResult(false);
-				re.setResultMessage("Error Creating User!");
 				return re;
 			}
 
@@ -338,7 +357,8 @@ public class MemberEndpoint {
 			loanaccount.setLimit(0.00);
 			loanaccount.setInterestRate(0.00);
 			loanaccount.setAccruedInt(0.00);
-			loanaccount.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking.name());
+			loanaccount.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking
+					.name());
 			loanaccount.setPassFlag(PassFlag.Ok.name());
 
 			Account interestexpenseaccount = new Account();
@@ -354,7 +374,9 @@ public class MemberEndpoint {
 			interestexpenseaccount.setLimit(0.00);
 			interestexpenseaccount.setInterestRate(0.00);
 			interestexpenseaccount.setAccruedInt(0.00);
-			interestexpenseaccount.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking.name());
+			interestexpenseaccount
+					.setLimitFlag(AccountLimitStatus.PostingNoLimitChecking
+							.name());
 			interestexpenseaccount.setPassFlag(PassFlag.Ok.name());
 
 			Account invesmentaccount = new Account();
@@ -461,7 +483,7 @@ public class MemberEndpoint {
 
 			re.setResult(true);
 			re.setResultMessage(MessageFormat
-					.format("Registration Details:<br/>Member Id {0}, <br/>Current Account Id {1}, <br/>Loan Account Id {2}, <br/>Investment Account Id {3}, <br/>Interest Income Account Id {4}, <br/>Interest Expense Account Id {5}",
+					.format("Registration Details:<br/>Member Id: {0}, <br/>Current Account Id: {1}, <br/>Loan Account Id: {2}, <br/>Investment Account Id: {3}, <br/>Interest Income Account Id: {4}, <br/>Interest Expense Account Id: {5}",
 							newMember.getMemberId().toString(), newMember
 									.getCurrentAccount().getAccountID()
 									.toString(), newMember.getLoanAccount()

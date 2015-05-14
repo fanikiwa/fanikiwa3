@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.googlecode.objectify.annotation.Index;
 
-public class MemberDTO {
+public class UserDTO {
 
 	private String email;
 	private String pwd;
@@ -13,8 +13,9 @@ public class MemberDTO {
 	private String nationalID;
 	private String status = "A";
 	private Date dateActivated = new Date();
-	private Date dateJoined;
+	private Date dateJoined = new Date();
 	private String informBy = "EMAIL";
+	private String userType;
 
 	public String getEmail() {
 		return email;
@@ -22,6 +23,14 @@ public class MemberDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public String getPwd() {

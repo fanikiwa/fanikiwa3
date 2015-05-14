@@ -238,20 +238,7 @@ fanikiwa.memberendpoint.profile.populateControls = function(member) {
 	else
 		document.getElementById('cboInformBy').value = "EMAIL";
 };
-
-function Clear() {
-	$("#txtEmail").val("");
-	$("#txtSurname").val("");
-	$("#txtOtherNames").val("");
-	$("#txtTelephone").val("");
-	$("#txtNationalID").val("");
-	$("#dtpDateOfBirth").val("");
-	$("#txtRefferedBy").val("");
-	$("#txtMaxRecordsToDisplay").val("");
-	$("#cboGender").val("-1");
-	$("#cboInformBy").val("-1");
-}
-
+ 
 function DisplayException(errormsg) {
 
 	errormsg += "</ul>";

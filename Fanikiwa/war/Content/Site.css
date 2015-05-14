@@ -14,7 +14,7 @@ body
 background-color: #fff;
 border-top: solid 0px #000;
 color: #000000;
-font-size: .85em;
+font-size: 1em;
 font-family: "Segoe UI" , Verdana, Helvetica, Sans-Serif;
 margin: 0;
 padding: 0;
@@ -106,22 +106,22 @@ padding-bottom: 0;
 
 h1 
 {
-font-size: 2em;
+font-size: 1em;
 }
 
 h2 
 {
-font-size: 1.75em;
+font-size: 1em;
 }
 
 h3 
 {
-font-size: 1.2em;
+font-size: 1em;
 }
 
 h4 
 {
-font-size: 1.1em;
+font-size: 1em;
 }
 
 h5, h6 
@@ -174,9 +174,9 @@ footer
 {
 clear: both;
 background-color: #e2e2e2;
-font-size: .9em; 
+font-size: 1em; 
 height: 50%;
-background: url("../Images/bg_top2.gif") repeat;
+background: url("../Images/bg_top2.gif") repeat; 
 }
 
 
@@ -191,7 +191,7 @@ border-top: 1px solid white;
 border-radius: 5px; /* give the title a curvy edge */ 
 color: white;
 font-family: Verdana, Geneva, Tahoma, sans-serif;
-font-size: 15px;
+font-size: 1em;
 padding-bottom: 5px;
 padding-top: 5px;
 padding-left: 5px;
@@ -225,7 +225,7 @@ display:flexbox;
 flex-direction:column;
 } 
  
-/* login
+/* start login
 ----------------------------------------------------------*/
 #login
 {
@@ -279,7 +279,7 @@ border: 1px solid black;
 border-radius: 5px; /* give a curvy edge */
 margin: 0;
 padding: 0;
-font-size: 15px;
+font-size: 1em;
 text-decoration: none; 
 }
 
@@ -324,7 +324,7 @@ color: #fff;
 
 .featured p 
 {
-font-size: 1.1em;
+font-size: 1em;
 }
 
 /* page titles */
@@ -519,7 +519,7 @@ margin-bottom: 12px;
 #logoutForm
 {
 display: inline;
-font-size: 15px;
+font-size: 1em;
 }
 #login logoutForm:hover 
 {
@@ -528,20 +528,20 @@ margin: 0;
 padding: 0;
 text-decoration: underline;
 color:white;
-font-size: 15px;
+font-size: 1em;
 }
 #logoff 
 {
 }
 #logoff:hover 
 {
-font-size: 15px;
+font-size: 1em;
 }
 
 /* contact */
 .contact h3 
 {
-font-size: 1.2em;
+font-size: 1em;
 }
 
 .contact p 
@@ -582,8 +582,10 @@ padding-bottom: 5px;
 label 
 {
 display: block;
-font-size: 1.2em;
+font-size: 1em;
 font-weight: 600;
+overflow-x:auto;
+word-wrap: break-word;
 }
 
 label.checkbox 
@@ -598,7 +600,7 @@ border: 1px solid black;
 border-radius: 5px; /* give a curvy edge */
 background: #fff;
 color: black;
-font-size: 1.2em;
+font-size: 1em;
 margin: 5px 0 6px 0;
 padding: 5px;
 width: 300px;
@@ -631,7 +633,7 @@ color:black;
 border: 1px solid black;
 border-radius: 5px; /* give a curvy edge */
 cursor: pointer;
-font-size: 1.2em;
+font-size: 1em;
 font-weight: 600;
 padding: 7px;
 margin-right: 8px;
@@ -647,7 +649,7 @@ color:white;
 border: 1px solid black;
 border-radius: 5px; /* give a curvy edge */
 cursor: pointer;
-font-size: 1.2em;
+font-size: 1em;
 font-weight: 600;
 padding: 7px;
 margin-right: 8px;
@@ -666,7 +668,7 @@ padding: 10px 20px;
 {
 clear: both;
 color: #e80c4d;
-font-size: 1.1em;
+font-size: 1em;
 font-weight: bold;
 margin: 20px 0 10px 0;
 }
@@ -674,7 +676,7 @@ margin: 20px 0 10px 0;
 .message-success 
 {
 color: #7ac0da;
-font-size: 1.3em;
+font-size: 1em;
 font-weight: bold;
 margin: 20px 0 10px 0;
 }
@@ -710,7 +712,7 @@ border: 0 none;
 {
 color: #e80c4d;
 font-weight: bold;
-font-size: 1.1em;
+font-size: 1em;
 }
 
 .validation-summary-valid 
@@ -737,13 +739,18 @@ table-layout: fixed;
 
 th 
 {
-font-size: 1.2em;
+margin: 0px;
+padding: 5px 5px 5px 5px;
+overflow-x:auto;
+word-wrap: break-word;   
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+font-size: 1em;
 text-align: left;
-border: none 0px;
-color:cornflowerblue;
-background-color: #e8eef4; 
-border-radius: 10px;
-border-color: cornflowerblue; 
+border: 0 0 0 0;  
+text-justify:trim; 
+color: black; 
 }
 
 tr 
@@ -770,12 +777,12 @@ td
 {
 margin: 0px;
 padding: 5px 5px 5px 5px;
-overflow-x:auto;
+overflow-x: hidden;
 word-wrap: break-word;   
 -webkit-hyphens: auto;
 -moz-hyphens: auto;
 hyphens: auto;
-font-size: 1.2em;
+font-size: 1em;
 text-align: left;
 border: 0 0 0 0;  
 text-justify:trim;
@@ -791,7 +798,7 @@ border: 1px solid black;
 border-radius: 1px; /* give a curvy edge */
 border-color: cornflowerblue;
 cursor: pointer;
-font-size: 15px;
+font-size: 1em;
 font-weight: 600;
 padding: 5px 5px 5px 5px;
 margin: 1px 1px 1px 1px; 
@@ -804,7 +811,7 @@ color:white;
 border: 1px solid black;
 border-radius: 5px; /* give a curvy edge */
 cursor: pointer;
-font-size: 15px;
+font-size: 1em;
 font-weight: 600;
 padding: 1px 1px 1px 1px;
 margin: 1px 1px 1px 1px; 
@@ -821,7 +828,7 @@ display: block;
 position: absolute;
 right: 0em;
 top: 0;
-font-size: 0.75em;
+font-size: 1em;
 }
 
 td.asc a:after 
@@ -967,7 +974,7 @@ section.feature img
 {
 color: #999;
 content: attr(alt);
-font-size: 1.5em;
+font-size: 1em;
 font-weight: 600;
 }
 
@@ -1066,7 +1073,7 @@ padding-bottom: 8px;
 .tabs li a
 {
 font-weight: bold;
-font-size: 15px;
+font-size: 1em;
 float: left;
 text-decoration: none;
 text-align: center; /* center the text horizontally */
@@ -1272,7 +1279,7 @@ margin-bottom:0px;
 .menu li a
 {
 font-weight: bold;
-font-size: 15px;
+font-size: 1em;
 text-decoration: none;
 text-align: center; /* center the text horizontally */
 color: white;
@@ -1434,7 +1441,7 @@ margin-bottom:0px;
 #helpmenu li a
 {
 font-weight: bold;
-font-size: 12px;
+font-size: 1em;
 text-decoration: none;
 text-align: center; /* center the text horizontally */
 color: white;
@@ -1472,7 +1479,7 @@ color: white;
 }
 #helpmenu .submenu li a
 {
-font-size: 20px;
+font-size: 1em;
 padding-bottom: 1px; /*place a space between submenu items*/
 padding-top: 1px;
 padding-left: 1px;
@@ -1490,7 +1497,7 @@ background-position: top left;
 .page-title
 {
 color: cornflowerblue;
-font-size: 20px;
+font-size: 1em;
 font: bold;
 font-weight: 900;
 }
@@ -1498,7 +1505,7 @@ font-weight: 900;
 .searchbutton
 {
 font-weight: bold;
-font-size: 15px;
+font-size: 1em;
 text-decoration: none;
 text-align:center; /* center the text horizontally */
 color: black;
@@ -1526,12 +1533,12 @@ border-radius:5px;
 #error-display-div
 { 
 color:red; 
-font-size:15px;
+font-size: 1em;
 padding:5px 5px 5px 5px; 
 }
 #loginPartial-div
 {  
-font-size:15px; 
+font-size: 1em; 
 }
 .editor-label
 {
@@ -1653,7 +1660,7 @@ border: 1px solid black;
 border-radius: 3px; /* give a curvy edge */
 background: white;
 color: black;
-font-size: 1.2em;
+font-size: 1em;
 margin: 1px 1px 1px 1px;
 padding: 1px;
 width: 230px;
@@ -1665,7 +1672,7 @@ border: 2px solid cornflowerblue;
 }
 #column-div h5
 {
-font-size: 15px; 
+font-size: 1em; 
 overflow: hidden;
 border: 0px solid black; 
 border-radius: 0px; /* give a curvy edge */ 
@@ -1694,21 +1701,21 @@ width : 100%;
 #apiResults  
 { 
 color: cornflowerblue;
-font-size: 20px;
+font-size: 1em;
 font: bold;
 font-weight: 900;
 }
 #successmessage 
 { 
 color: cornflowerblue;
-font-size: 20px;
+font-size: 1em;
 font: bold;
 font-weight: 900;
 }
 #errormessage 
 { 
 color: red;  
-font-size: 20px;
+font-size: 1em;
 font: bold;
 font-weight: 900;
 }
@@ -1730,4 +1737,4 @@ overflow: hidden;
 #statementheader .col4
 { 
 width: 200px;
-}
+} 

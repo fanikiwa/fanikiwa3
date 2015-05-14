@@ -16,7 +16,7 @@ fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 	$('#listOffersResult').html('loading...');
 
 	var email = sessionStorage.getItem('loggedinuser');
-	
+
 	gapi.client.offerendpoint.retrieveBorrowOffers({
 		'email' : email
 	}).execute(
@@ -99,11 +99,11 @@ function populateOffers(resp) {
 					offerTable += '<tr>';
 					offerTable += '<td>' + resp.result.items[i].description
 							+ '</td>';
-					offerTable += '<td>'
+					offerTable += '<td style="text-align:right">'
 							+ resp.result.items[i].amount.formatMoney(2)
 							+ '</td>';
-					offerTable += '<td>' + resp.result.items[i].term + '</td>';
-					offerTable += '<td>' + resp.result.items[i].interest
+					offerTable += '<td style="text-align:right">' + resp.result.items[i].term + '</td>';
+					offerTable += '<td style="text-align:right">' + resp.result.items[i].interest
 							+ '</td>';
 					offerTable += '<td>' + resp.result.items[i].privateOffer
 							+ '</td>';
@@ -114,10 +114,12 @@ function populateOffers(resp) {
 							+ '</td>';
 					offerTable += '<td>' + resp.result.items[i].status
 							+ '</td>';
-					var canAccept = (sessionStorage.getItem('canAccept')==null ?true : sessionStorage.getItem('canAccept'));
-					if(canAccept){
-					offerTable += '<td><a href="#" onclick="Accept('
-							+ resp.result.items[i].id + ')">Accept</a> </td>';
+					var canAccept = (sessionStorage.getItem('canAccept') == null ? true
+							: sessionStorage.getItem('canAccept'));
+					if (canAccept) {
+						offerTable += '<td><a href="#" onclick="Accept('
+								+ resp.result.items[i].id
+								+ ')">Accept</a> </td>';
 					}
 					if (resp.result.items[i].partialPay == true) {
 						offerTable += '<td><a href="#" onclick="PartialAccept('

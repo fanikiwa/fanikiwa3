@@ -82,14 +82,15 @@ fanikiwa.memberendpoint.register = function() {
 	$('#errormessage').html('');
 
 	// Build the Request Object
-	var memberDTO = {};
-	memberDTO.email = _Email;
-	memberDTO.pwd = _Pwd;
-	memberDTO.surname = _Surname;
-	memberDTO.telephone = _Telephone;
+	var userDTO = {};
+	userDTO.email = _Email;
+	userDTO.pwd = _Pwd;
+	userDTO.surname = _Surname;
+	userDTO.telephone = _Telephone;
+	userDTO.userType = 'Member';
 
 	gapi.client.memberendpoint
-			.register(memberDTO)
+			.register(userDTO)
 			.execute(
 					function(resp) {
 						console.log('response =>> ' + resp);
@@ -112,7 +113,7 @@ fanikiwa.memberendpoint.register = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/Login.html";',
-												1000);
+												5000);
 							}
 						} else {
 							console.log('Error: ' + resp.error.message);

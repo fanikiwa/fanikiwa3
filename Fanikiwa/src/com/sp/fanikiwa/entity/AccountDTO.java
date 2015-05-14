@@ -9,7 +9,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 
 @Entity
-public class Account {
+public class AccountDTO {
 
 	@Id
 	Long accountID;
@@ -80,40 +80,37 @@ public class Account {
 	private Date nextIntAppDate;
 	private Long intPayAccount;
 	// Foreign Keys
-	@Load
-	Ref<Customer> customer;
+	private Long customer;
 
-	@Load
-	Ref<Coadet> coadet;
+	private Long coadet;
 
-	@Load
-	Ref<AccountType> accounttype;
+	private Long accounttype;
 
-	public Account() {
+	public AccountDTO() {
 	}
 
-	public Customer getCustomer() {
-		return this.customer.get();
+	public Long getCustomer() {
+		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = Ref.create(customer);
+	public void setCustomer(Long customer) {
+		this.customer = customer;
 	}
 
-	public AccountType getAccounttype() {
-		return this.accounttype.get();
+	public Long getAccounttype() {
+		return accounttype;
 	}
 
-	public void setAccounttype(AccountType accounttype) {
-		this.accounttype = Ref.create(accounttype);
+	public void setAccounttype(Long accounttype) {
+		this.accounttype = accounttype;
 	}
 
-	public Coadet getCoadet() {
-		return this.coadet.get();
+	public Long getCoadet() {
+		return coadet;
 	}
 
-	public void setCoadet(Coadet coadet) {
-		this.coadet = Ref.create(coadet);
+	public void setCoadet(Long coadet) {
+		this.coadet = coadet;
 	}
 
 	public Long getAccountID() {
@@ -316,20 +313,20 @@ public class Account {
 		this.nextIntAppDate = nextIntAppDate;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public Long getIntPayAccount() {
 		return intPayAccount;
 	}
 
 	public void setIntPayAccount(Long intPayAccount) {
 		this.intPayAccount = intPayAccount;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 }

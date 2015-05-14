@@ -87,17 +87,19 @@ function populateAccounts(resp) {
 			var availbal = resp.result.items[i].clearedBalance
 					- resp.result.items[i].limit;
 			accountsTable += '<tr>';
-			accountsTable += '<td>' + resp.result.items[i].accountID + '</td>';
+			accountsTable += '<td style="text-align:right">'
+					+ resp.result.items[i].accountID + '</td>';
 			accountsTable += '<td>' + resp.result.items[i].accountName
 					+ '</td>';
-			accountsTable += '<td>'
+			accountsTable += '<td style="text-align:right">'
 					+ resp.result.items[i].bookBalance.formatMoney(2) + '</td>';
-			accountsTable += '<td>'
+			accountsTable += '<td style="text-align:right">'
 					+ resp.result.items[i].clearedBalance.formatMoney(2)
 					+ '</td>';
-			accountsTable += '<td>' + resp.result.items[i].limit.formatMoney(2)
-					+ '</td>';
-			accountsTable += '<td>' + availbal.formatMoney(2) + '</td>';
+			accountsTable += '<td style="text-align:right">'
+					+ resp.result.items[i].limit.formatMoney(2) + '</td>';
+			accountsTable += '<td style="text-align:right">'
+					+ availbal.formatMoney(2) + '</td>';
 
 			accountsTable += '<td><a href="#" onclick="MiniStatement('
 					+ resp.result.items[i].accountID
@@ -122,7 +124,7 @@ function CreateSubMenu() {
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Account/Statement.html" style="cursor: pointer;">Statement</a></div></div></li>');
 	SubMenu
-	.push('<li><div class="floatleft"><div><a href="/Views/Account/Withdraw.html" style="cursor: pointer;">Withdraw</a></div></div></li>');
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Withdraw.html" style="cursor: pointer;">Withdraw</a></div></div></li>');
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
 	SubMenu

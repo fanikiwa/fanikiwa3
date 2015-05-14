@@ -357,6 +357,10 @@
             "type" : "string",
             "format" : "date-time"
           },
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
           "bookBalance" : {
             "type" : "number"
           },
@@ -417,6 +421,10 @@
           "nextIntAppDate" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "intPayAccount" : {
+            "type" : "string",
+            "format" : "int64"
           },
           "customer" : {
             "$ref" : "Customer"

@@ -83,15 +83,14 @@ function populateAccounts(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			accountsTable += '<tr>';
-			accountsTable += '<td>'
-					+ formatDate(resp.result.items[i].postDate)
+			accountsTable += '<td>' + formatDate(resp.result.items[i].postDate)
 					+ '</td>';
 			accountsTable += '<td>' + resp.result.items[i].narrative + '</td>';
-			accountsTable += '<td>' + resp.result.items[i].debit.formatMoney(2)
-					+ '</td>';
-			accountsTable += '<td>'
+			accountsTable += '<td style="text-align:right">'
+					+ resp.result.items[i].debit.formatMoney(2) + '</td>';
+			accountsTable += '<td style="text-align:right">'
 					+ resp.result.items[i].credit.formatMoney(2) + '</td>';
-			accountsTable += '<td>'
+			accountsTable += '<td style="text-align:right">'
 					+ resp.result.items[i].balance.formatMoney(2) + '</td>';
 			accountsTable += "</tr>";
 		}

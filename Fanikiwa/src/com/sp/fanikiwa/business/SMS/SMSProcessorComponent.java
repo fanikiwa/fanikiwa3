@@ -25,7 +25,7 @@ import com.sp.fanikiwa.business.financialtransactions.TransactionFactory;
 import com.sp.fanikiwa.business.financialtransactions.TransactionPost;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Member;
-import com.sp.fanikiwa.entity.MemberDTO;
+import com.sp.fanikiwa.entity.UserDTO;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferDTO;
 import com.sp.fanikiwa.entity.RequestResult;
@@ -464,8 +464,8 @@ public class SMSProcessorComponent {
 		return MessageFormat.format("Your {0} balance is {1}", Accdes, bal);
 	}
 
-	private MemberDTO SMSToMember(RegisterMessage message) {
-		MemberDTO member = new MemberDTO();
+	private UserDTO SMSToMember(RegisterMessage message) {
+		UserDTO member = new UserDTO();
 		member.setEmail(message.Email.toLowerCase());
 		member.setPwd(message.Pwd);
 		member.setNationalID(message.NationalID);
