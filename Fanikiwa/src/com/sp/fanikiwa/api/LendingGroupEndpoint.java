@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.LendingGroupDTO;
 import com.sp.fanikiwa.entity.Lendinggroup;
 import com.sp.fanikiwa.entity.Member;
@@ -47,7 +48,7 @@ public class LendingGroupEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Lendinggroup> query = ofy().load().type(Lendinggroup.class);
-		return GetLendinggroupsFromQuery(query, cursorString, count);
+		return listLendinggroupsByQuery(query, cursorString, count);
 	}
 
 	@ApiMethod(name = "retrieveLendinggroupsByCreator")
@@ -58,25 +59,25 @@ public class LendingGroupEndpoint {
 
 		MemberEndpoint mep = new MemberEndpoint();
 		Member member = mep.GetMemberByEmail(email);
-		return selectLendinggroupsByCreator(member.getMemberId(), cursorString,
-				count);
+		Query<Lendinggroup> query = ofy().load().type(Lendinggroup.class)
+				.filter("creator", member);
+		return listLendinggroupsByQuery(query, cursorString, count);
 	}
-
-	@ApiMethod(name = "selectLendinggroupsByCreator")
-	public CollectionResponse<Lendinggroup> selectLendinggroupsByCreator(
-			@Named("memberid") long MemberId,
+	
+	public CollectionResponse<Lendinggroup> retrieveSubgroups(
+			@Named("groupname") String groupname,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Member member = ofy().load().type(Member.class).id(MemberId).now();
 		Query<Lendinggroup> query = ofy().load().type(Lendinggroup.class)
-				.filter("creator", member);
-		return GetLendinggroupsFromQuery(query, cursorString, count);
+				.filter("parentGroup", groupname);
+		return listLendinggroupsByQuery(query, cursorString, count);
 	}
 
-	private CollectionResponse<Lendinggroup> GetLendinggroupsFromQuery(
-			Query<Lendinggroup> query, String cursorString, Integer count) {
-
+	private CollectionResponse<Lendinggroup> listLendinggroupsByQuery(
+			Query<Lendinggroup> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -87,10 +88,7 @@ public class LendingGroupEndpoint {
 		QueryResultIterator<Lendinggroup> iterator = query.iterator();
 		int num = 0;
 		while (iterator.hasNext()) {
-			Lendinggroup grp = iterator.next();
-			if (grp.getParentGroup() != null) {
-				records.add(grp);
-			}
+			records.add(iterator.next());
 			if (count != null) {
 				num++;
 				if (num == count)
@@ -108,7 +106,6 @@ public class LendingGroupEndpoint {
 		return CollectionResponse.<Lendinggroup> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
 	}
-
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
 	 * method.
@@ -220,15 +217,9 @@ public class LendingGroupEndpoint {
 		group.setGroupName(lendingGroupDTO.getGroupName());
 		group.setCreatedOn(new Date());
 		group.setLastModified(new Date());
+		group.setParentGroup(lendingGroupDTO.getParentGroup());
 
-		if (lendingGroupDTO.getParentGroupId() != 0) {
-			Lendinggroup parentGroup = ofy().transactionless().load()
-					.type(Lendinggroup.class)
-					.filter("parentGroup", lendingGroupDTO.getParentGroupId())
-					.first().now();
-			group.setParentGroup(parentGroup);
-		}
-
+		
 		Member member = ofy().transactionless().load().type(Member.class)
 				.filter("email", lendingGroupDTO.getCreatorEmail()).first()
 				.now();
@@ -245,10 +236,11 @@ public class LendingGroupEndpoint {
 			throws NotFoundException, ConflictException {
 		// Construct Lendinggroup
 		Lendinggroup group = new Lendinggroup();
-		group.setGroupName(member.getSurname() + " - " + member.getEmail());
+		group.setGroupName(member.getEmail());
 		group.setCreatedOn(new Date());
 		group.setLastModified(new Date());
 		group.setCreator(member);
+		group.setParentGroup("ROOT"); //ROOT Has no parent
 
 		// save it
 		Lendinggroup savedgroup = this.insertLendinggroup(group);

@@ -14,7 +14,7 @@ fanikiwa.lendinggroupendpoint.lendinggroups.LoadLendingGroups = function() {
 
 	$('#listLendingGroupsResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.lendinggroupendpoint.retrieveLendinggroupsByCreator({
 		'email' : email

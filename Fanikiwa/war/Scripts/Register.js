@@ -41,6 +41,7 @@ fanikiwa.memberendpoint.register = function() {
 			}
 		}, function(reason) {
 			console.log('Error: ' + reason.result.error.message);
+			sessionStorage.isemailvalidinregister = false;
 		});
 	}
 
@@ -113,7 +114,7 @@ fanikiwa.memberendpoint.register = function() {
 								window
 										.setTimeout(
 												'window.location.href = "/Views/Account/Login.html";',
-												5000);
+												0);
 							}
 						} else {
 							console.log('Error: ' + resp.error.message);
@@ -227,16 +228,6 @@ fanikiwa.memberendpoint.isEmailValid = function(email) {
 					});
 
 };
-
-function DisplayException(errormsg) {
-
-	errormsg += "</ul>";
-
-	$("#error-display-div").html(errormsg);
-	$("#error-display-div").removeClass('displaynone');
-	$("#error-display-div").addClass('displayblock');
-	$("#error-display-div").show();
-}
 
 function ClearException() {
 	$('#errorList').remove();

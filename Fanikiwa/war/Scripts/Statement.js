@@ -153,7 +153,7 @@ function populateAccounts(resp) {
 	}
 }
 fanikiwa.accountendpoint.statement.LoadAccounts = function() {
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	var accountsOptions = '';
 	gapi.client.memberendpoint
 			.listMemberAccountWeb({

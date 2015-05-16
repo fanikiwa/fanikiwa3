@@ -13,7 +13,7 @@ fanikiwa.offerendpoint.listmyoffers.LoadOffers = function() {
 
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveMyOffers({
 		'email' : email

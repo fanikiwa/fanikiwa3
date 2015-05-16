@@ -17,3 +17,7 @@ function CreateMainMenu() {
 
 	$("#MainMenu").html(MainMenu.join(" "));
 }
+
+$(document).ready(function() {
+	CreateMainMenu();
+});

@@ -4,6 +4,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.sp.fanikiwa.Enums.LendingGroupMemberTypes;
 
 @Entity
 public class Lendinggroupmember {
@@ -14,11 +15,9 @@ public class Lendinggroupmember {
 	@Index String groupName; //parent
  
 	
-	@Index private String idType; //either M or G
- 
-	//Group members = member | another group
-	@Index private Ref<Member> member;
-	@Index private Ref<Lendinggroup> group;
+	@Index private LendingGroupMemberTypes idType; //Email | Telno | Member Id
+	private String name;
+
  
 
 	public Lendinggroupmember() {
@@ -32,28 +31,20 @@ public class Lendinggroupmember {
 		this.id = id;
 	}
 
-	public Lendinggroup getGroup() {
-		return group.get();
+	public String getName() {
+		return name;
 	}
 
-	public void setGroup(Lendinggroup group) {
-		this.group = Ref.create(group);
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getIdType() {
+	public LendingGroupMemberTypes getIdType() {
 		return idType;
 	}
 
-	public void setIdType(String idType) {
+	public void setIdType(LendingGroupMemberTypes idType) {
 		this.idType = idType;
-	}
-
-	public Member getMember() {
-		return member.get();
-	}
-
-	public void setMember(Member member) {
-		this.member = Ref.create(member);
 	}
 
 	public String getGroupName() {

@@ -33,6 +33,7 @@ import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
 import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
@@ -211,7 +212,25 @@ public class OfferEndpoint {
 	public Offer getOfferByID(@Named("id") Long id) {
 		return findRecord(id);
 	}
-
+	@ApiMethod(name = "selectOffer")
+	public RequestResult selectOffer(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Offer offer = findRecord(id);
+			if (offer == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			re.setClientToken(offer);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 	/**
 	 * This method is used for updating an existing entity. If the entity does
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT

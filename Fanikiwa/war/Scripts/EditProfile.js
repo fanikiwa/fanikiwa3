@@ -154,7 +154,7 @@ fanikiwa.memberendpoint.profile.init = function(apiRoot) {
 
 fanikiwa.memberendpoint.profile.initializeControls = function() {
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	gapi.client.memberendpoint.getMemberByEmail({
 		'email' : email
 	})

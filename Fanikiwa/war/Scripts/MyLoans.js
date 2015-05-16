@@ -13,7 +13,7 @@ fanikiwa.loanendpoint.myloans.LoadLoans = function() {
 
 	$('#listLoansResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.loanendpoint.selectMyLoans({
 		'email' : email

@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.gson.JsonPrimitive;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Userprofile;
@@ -166,7 +167,6 @@ public class UserprofileEndpoint {
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
-
 	}
 
 	/**
@@ -180,7 +180,19 @@ public class UserprofileEndpoint {
 	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertUserprofile")
-	public RequestResult insertUserprofile(Userprofile userprofile) {
+	public Userprofile insertUserprofile(Userprofile userprofile)
+			throws NotFoundException, ConflictException {
+		if (userprofile.getUserId() != null) {
+			if (findRecord(userprofile.getUserId()) != null) {
+				throw new ConflictException("Object already exists");
+			}
+		}
+		ofy().save().entities(userprofile).now();
+		return userprofile;
+	}
+
+	@ApiMethod(name = "createUserprofile")
+	public RequestResult createUserprofile(Userprofile userprofile) {
 		RequestResult re = new RequestResult();
 		re.setResult(true);
 		re.setResultMessage("Success");
@@ -242,6 +254,7 @@ public class UserprofileEndpoint {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			re.setResultMessage("created date:"
 					+ sdf.format(user.getCreateDate()));
+			user.setPwd("");
 			re.setClientToken(user);
 			return re;
 		} else {
