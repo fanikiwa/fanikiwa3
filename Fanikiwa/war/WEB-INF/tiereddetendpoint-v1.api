@@ -27,43 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "tiereddetendpoint.removeTieredDet" : {
-      "path" : "tiereddet/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "tiereddetendpoint.insertTieredDet" : {
-      "path" : "tiereddet",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.insertTieredDet",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tiereddetendpoint.listTieredtable" : {
       "path" : "tiereddet",
       "httpMethod" : "GET",
@@ -89,6 +52,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "tiereddetendpoint.insertTieredDet" : {
+      "path" : "tiereddet",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.insertTieredDet",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "tiereddetendpoint.updateTieredDet" : {
       "path" : "tiereddet",
       "httpMethod" : "PUT",
@@ -103,6 +82,27 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tiereddetendpoint.removeTieredDet" : {
+      "path" : "tiereddet/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     },
     "tiereddetendpoint.tieredDetEndpoint.getTieredtableId" : {
@@ -179,6 +179,21 @@
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_TieredDet" : {
+        "id" : "CollectionResponse_TieredDet",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "TieredDet"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "TieredDet" : {
         "id" : "TieredDet",
         "type" : "object",
@@ -205,21 +220,6 @@
           }
         }
       },
-      "CollectionResponse_TieredDet" : {
-        "id" : "CollectionResponse_TieredDet",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "TieredDet"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
       "TieredDetCollection" : {
         "id" : "TieredDetCollection",
         "type" : "object",
@@ -234,7 +234,10 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet" : {
+      "com.sp.fanikiwa.api.TieredDetEndpoint.listTieredtable" : {
+        "response" : {
+          "$ref" : "CollectionResponse_TieredDet"
+        }
       },
       "com.sp.fanikiwa.api.TieredDetEndpoint.insertTieredDet" : {
         "request" : {
@@ -244,11 +247,6 @@
           "$ref" : "TieredDet"
         }
       },
-      "com.sp.fanikiwa.api.TieredDetEndpoint.listTieredtable" : {
-        "response" : {
-          "$ref" : "CollectionResponse_TieredDet"
-        }
-      },
       "com.sp.fanikiwa.api.TieredDetEndpoint.updateTieredDet" : {
         "request" : {
           "$ref" : "TieredDet"
@@ -256,6 +254,8 @@
         "response" : {
           "$ref" : "TieredDet"
         }
+      },
+      "com.sp.fanikiwa.api.TieredDetEndpoint.removeTieredDet" : {
       },
       "com.sp.fanikiwa.api.TieredDetEndpoint.getTieredtableId" : {
         "response" : {

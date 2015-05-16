@@ -52,43 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "stoendpoint.removeSTO" : {
-      "path" : "sto/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.removeSTO",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "stoendpoint.updateSTO" : {
-      "path" : "sto",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.updateSTO",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "stoendpoint.getSTOByID" : {
       "path" : "sto/{id}",
       "httpMethod" : "GET",
@@ -129,6 +92,43 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "stoendpoint.updateSTO" : {
+      "path" : "sto",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.updateSTO",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "stoendpoint.removeSTO" : {
+      "path" : "sto/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.removeSTO",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     },
     "stoendpoint.insertSTO" : {
@@ -326,16 +326,6 @@
           "$ref" : "CollectionResponse_STO"
         }
       },
-      "com.sp.fanikiwa.api.STOEndpoint.removeSTO" : {
-      },
-      "com.sp.fanikiwa.api.STOEndpoint.updateSTO" : {
-        "request" : {
-          "$ref" : "STO"
-        },
-        "response" : {
-          "$ref" : "STO"
-        }
-      },
       "com.sp.fanikiwa.api.STOEndpoint.getSTOByID" : {
         "response" : {
           "$ref" : "STO"
@@ -345,6 +335,16 @@
         "response" : {
           "$ref" : "RequestResult"
         }
+      },
+      "com.sp.fanikiwa.api.STOEndpoint.updateSTO" : {
+        "request" : {
+          "$ref" : "STO"
+        },
+        "response" : {
+          "$ref" : "STO"
+        }
+      },
+      "com.sp.fanikiwa.api.STOEndpoint.removeSTO" : {
       },
       "com.sp.fanikiwa.api.STOEndpoint.insertSTO" : {
         "request" : {

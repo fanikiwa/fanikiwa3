@@ -158,6 +158,7 @@ public class MemberEndpoint {
 			existingmember.setNationalID(member.getNationalID());
 			existingmember.setOtherNames(member.getOtherNames());
 			existingmember.setPhoto(existingmember.getPhoto());
+			existingmember.setPwd(existingmember.getPwd());
 			existingmember.setRefferedBy(member.getRefferedBy());
 			existingmember.setStatus(existingmember.getStatus());
 			existingmember.setSurname(member.getSurname());
@@ -333,8 +334,9 @@ public class MemberEndpoint {
 			customer.setEmail(memberDTO.getEmail());
 			customer.setTelephone(memberDTO.getTelephone());
 			customer.setCreatedDate(new Date());
-			customer.setOrganization(new Organization(Config
-					.GetLong("CURRENT_ORG")));
+			Long lng = Config.GetLong("CURRENT_ORG");
+			Organization org = new Organization(lng);
+			customer.setOrganization(org);
 			customer.setBillToEmail(memberDTO.getEmail());
 			customer.setBillToTelephone(memberDTO.getTelephone());
 
@@ -476,6 +478,7 @@ public class MemberEndpoint {
 			// step1
 			Member member = new Member();
 			member.setEmail(memberDTO.getEmail());
+			member.setPwd(memberDTO.getPwd());
 			member.setTelephone(memberDTO.getTelephone());
 			member.setSurname(memberDTO.getSurname());
 			member.setDateJoined(new Date());
@@ -615,6 +618,7 @@ public class MemberEndpoint {
 		memberDto.setNationalID(member.getNationalID());
 		memberDto.setOtherNames(member.getOtherNames());
 		memberDto.setPhoto(member.getPhoto());
+		memberDto.setPwd(member.getPwd());
 		memberDto.setRefferedBy(member.getRefferedBy());
 		memberDto.setStatus(member.getStatus());
 		memberDto.setSurname(member.getSurname());

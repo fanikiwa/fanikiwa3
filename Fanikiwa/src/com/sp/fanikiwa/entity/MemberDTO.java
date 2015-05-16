@@ -33,6 +33,8 @@ public class MemberDTO {
 	private String otherNames;
 
 	private String photo;
+	@Index
+	private String pwd;
 
 	private int refferedBy;
 	@Index
@@ -146,6 +148,14 @@ public class MemberDTO {
 		this.photo = photo;
 	}
 
+	public String getPwd() {
+		return this.pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
 	public int getRefferedBy() {
 		return this.refferedBy;
 	}
@@ -225,5 +235,5 @@ public class MemberDTO {
 	public void setCustomer(Long customer) {
 		this.customer = customer;
 	}
-
+ 
 }

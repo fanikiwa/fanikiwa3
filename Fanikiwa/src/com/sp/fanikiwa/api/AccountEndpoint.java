@@ -594,7 +594,7 @@ public class AccountEndpoint {
 		StatementModel first = new StatementModel();
 		first.setPostDate(new Date());
 		first.setTransactionID(-1L);
-		first.setNarrative("BALANCE B/F");
+		first.setNarrative("BALANCE");
 		double amt = account.getBookBalance();
 		double bal = 0;
 		if (amt > 0) {
@@ -647,11 +647,11 @@ public class AccountEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		int months = Config.GetInt("STATEMENTMONTHS", 2);
-		if (sdate == null) {
-			sdate = new Date();
-		}
 		if (edate == null) {
-			edate = DateExtension.addMonths(sdate, (months * -1));
+			edate = new Date();
+		}
+		if (sdate == null) {
+			sdate = DateExtension.addMonths(edate, (months * -1));
 		}
 
 		TransactionEndpoint tep = new TransactionEndpoint();
@@ -802,7 +802,7 @@ public class AccountEndpoint {
 		SimulatePostStatus result = new SimulatePostStatus();
 
 		if (transaction == null) {
-			result.Errors.add(new NotFoundException("transaction is null"));
+			result.Errors.add(new NotFoundException("Validating posting failed: Transaction is null"));
 			return result;
 		}
 		// Step 1 - See if we can post into this account by looking at lock and
@@ -832,7 +832,7 @@ public class AccountEndpoint {
 
 		// start checking
 		if (account.getClosed()) {
-			result.Errors.add(new NotFoundException("Account closed"));
+			result.Errors.add(new NotFoundException("ValidatePost failed! Account ["+account.getAccountName()+"] is closed"));
 			return result;
 		}
 
@@ -848,10 +848,8 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-												account.getAccountID(),
-												_TransactionType
-														.getTransactionTypeID(),
+										.format("Posting to account [{0}] prohibited.\nAccount lock status =[{1}]",
+												account.getAccountID().toString(),
 												lockstatus.toString())));
 			}
 			return result;
@@ -863,8 +861,8 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Account [{0}] overdraw prohibited, limit status =[{2}]",
-												account.getAccountID(),
+										.format("Posting to account [{0}] prohibited! Insufficient funds]",
+												account.getAccountID().toString(),
 												_TransactionType
 														.getTransactionTypeID(),
 												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
@@ -878,10 +876,8 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-												account.getAccountID(),
-												_TransactionType
-														.getTransactionTypeID(),
+										.format("Posting to account [{0}] prohibited! \nAccount lock status =[{1}]]",
+												account.getAccountID().toString(),
 												lockstatus.toString())));
 			}
 
@@ -891,8 +887,8 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Account [{0}] overdraw prohibited, limit status =[{2}]",
-												account.getAccountID(),
+										.format("Posting to account [{0}] prohibited! Insufficient funds], limit status =[{2}]",
+												account.getAccountID().toString(),
 												_TransactionType
 														.getTransactionTypeID(),
 												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
@@ -953,7 +949,7 @@ public class AccountEndpoint {
 			throw new NotFoundException(
 					MessageFormat
 							.format("Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
-									account.getAccountID(), lockstatus));
+									account.getAccountID().toString(), lockstatus.toString()));
 
 		// check 2 - Limit status
 		if ((limistatus == AccountLimitStatus.AllLimitsProhibited)
@@ -962,14 +958,14 @@ public class AccountEndpoint {
 			throw new NotFoundException(
 					MessageFormat
 							.format("Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
-									account.getAccountID(), limistatus));
+									account.getAccountID().toString(), limistatus.toString()));
 
 		if (limistatus == AccountLimitStatus.LimitsAllowed
 				&& AvailableBalanceAfterApplyingLimit < 0)
 			throw new NotFoundException(
 					MessageFormat
 							.format("Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
-									amount, account.getAccountID(),
+									amount, account.getAccountID().toString(),
 									AvailableBalanceAfterApplyingLimit));
 
 	}

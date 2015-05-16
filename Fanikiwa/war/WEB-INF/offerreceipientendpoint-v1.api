@@ -59,30 +59,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerreceipientendpoint.insertOfferReceipient" : {
-      "path" : "offerreceipient",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.insertOfferReceipient",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "offerreceipientendpoint.getOfferReceipient" : {
+    "offerreceipientendpoint.removeOfferReceipient" : {
       "path" : "offerreceipient/{id}",
-      "httpMethod" : "GET",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipient",
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient",
       "request" : {
         "parameters" : {
           "id" : {
@@ -93,7 +77,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "autoTemplate(backendResponse)"
+        "body" : "empty"
       }
     },
     "offerreceipientendpoint.listOfferReceipient" : {
@@ -125,14 +109,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerreceipientendpoint.removeOfferReceipient" : {
+    "offerreceipientendpoint.getOfferReceipient" : {
       "path" : "offerreceipient/{id}",
-      "httpMethod" : "DELETE",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient",
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipient",
       "request" : {
         "parameters" : {
           "id" : {
@@ -143,7 +127,23 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerreceipientendpoint.insertOfferReceipient" : {
+      "path" : "offerreceipient",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.insertOfferReceipient",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -204,6 +204,9 @@
             "type" : "string"
           },
           "photo" : {
+            "type" : "string"
+          },
+          "pwd" : {
             "type" : "string"
           },
           "refferedBy" : {
@@ -544,12 +547,11 @@
           "$ref" : "OfferReceipient"
         }
       },
-      "com.sp.fanikiwa.api.OfferReceipientEndpoint.insertOfferReceipient" : {
-        "request" : {
-          "$ref" : "OfferReceipient"
-        },
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient" : {
+      },
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient" : {
         "response" : {
-          "$ref" : "OfferReceipient"
+          "$ref" : "CollectionResponse_Offer"
         }
       },
       "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipient" : {
@@ -557,12 +559,13 @@
           "$ref" : "OfferReceipient"
         }
       },
-      "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient" : {
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.insertOfferReceipient" : {
+        "request" : {
+          "$ref" : "OfferReceipient"
+        },
         "response" : {
-          "$ref" : "CollectionResponse_Offer"
+          "$ref" : "OfferReceipient"
         }
-      },
-      "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient" : {
       }
     }
   }

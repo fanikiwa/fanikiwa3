@@ -51,7 +51,7 @@ public class MpesaIPNMessageEndpoint {
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getMpesaIPNMessage")
-	public MpesaIPNMessage getMpesaIPNMessage(@Named("id") Long id) {
+	public MpesaIPNMessage getMpesaIPNMessage(@Named("id") String id) {
 		return findRecord(id);
 	}
  
@@ -69,8 +69,8 @@ public class MpesaIPNMessageEndpoint {
 		// If if is not null, then check if it exists. If yes, throw an
 		// Exception
 		// that it is already present
-		if (mpesaIPNMessage.getId() != null) {
-			if (findRecord(mpesaIPNMessage.getId()) != null) {
+		if (mpesaIPNMessage.getMpesa_code() != null) {
+			if (findRecord(mpesaIPNMessage.getMpesa_code()) != null) {
 				throw new ConflictException("Object already exists");
 			}
 		}
@@ -91,7 +91,7 @@ public class MpesaIPNMessageEndpoint {
 	 */
 	@ApiMethod(name = "updateMpesaIPNMessage")
 	public MpesaIPNMessage updateMpesaIPNMessage(MpesaIPNMessage mpesaIPNMessage) throws NotFoundException {
-		if (findRecord(mpesaIPNMessage.getId()) == null) {
+		if (findRecord(mpesaIPNMessage.getMpesa_code()) == null) {
 			throw new NotFoundException("Quote Record does not exist");
 		}
 		ofy().save().entity(mpesaIPNMessage).now();
@@ -106,7 +106,7 @@ public class MpesaIPNMessageEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 */
 	@ApiMethod(name = "removeMpesaIPNMessage")
-	public void removeMpesaIPNMessage(@Named("id") Long id) throws NotFoundException {
+	public void removeMpesaIPNMessage(@Named("id") String id) throws NotFoundException {
 		MpesaIPNMessage record = findRecord(id);
 		if (record == null) {
 			throw new NotFoundException("Quote Record does not exist");
@@ -116,7 +116,7 @@ public class MpesaIPNMessageEndpoint {
 
 	
 	// Private method to retrieve a <code>Quote</code> record
-	private MpesaIPNMessage findRecord(Long id) {
+	private MpesaIPNMessage findRecord(String id) {
 		return ofy().load().type(MpesaIPNMessage.class).id(id).now();
 	}
 	
@@ -124,10 +124,7 @@ public class MpesaIPNMessageEndpoint {
 	@ApiMethod(name = "isMpesaIPNMessageExists")
 	public MpesaIPNMessage isMpesaIPNMessageExists(MpesaIPNMessage msg) {
 		// TODO Auto-generated method stub
-		return ofy().load().type(MpesaIPNMessage.class)
-				.filter("mpesaIPNMessageID", msg.getMpesaIPNMessageID()) 
-				.first()
-				.now();
+		return findRecord(msg.getMpesa_code());
 	
 	}
 	

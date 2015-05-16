@@ -33,6 +33,8 @@ public class Member {
 	private String otherNames;
 
 	private String photo;
+	@Index
+	private String pwd;
 
 	private int refferedBy;
 	@Index
@@ -150,6 +152,14 @@ public class Member {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
 
 	public int getRefferedBy() {

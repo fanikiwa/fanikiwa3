@@ -25,18 +25,19 @@ import com.sp.utils.DateSerializer;
 
 public class MpesaComponent {
  
-	public void ProcessMessage(MpesaIPNMessage mpesaIPNMessage) throws Exception {
+	public String ProcessMessage(MpesaIPNMessage mpesaIPNMessage) throws Exception {
   
 			MpesaDepositMessage message = MakeMpesaDepositMessageFromRequest(mpesaIPNMessage);
-		    String narr = "Deposit started...";
+		    String msg = "Deposit started...";
+		    String narr = mpesaIPNMessage.getMpesa_code() + " from " + mpesaIPNMessage.getMpesa_msisdn();
 				 
 			List<Transaction> txns = TransactionFactory.MpesaDeposit(
 					message.AccountId, message.Amount, narr,
 					message.Mpesaref);
 			TransactionPost.Post(txns);
-			narr = message.CustomerTelno + " deposited on "
+			msg += message.CustomerTelno + " deposited on "
 					+ message.MessageDate.toString();		
-			 
+			 return msg;
 	}
 	
 	private MpesaDepositMessage MakeMpesaDepositMessageFromRequest(MpesaIPNMessage mpesaIPNMessage) throws ParseException{

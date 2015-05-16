@@ -36,6 +36,7 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.LoanUtil;
+import com.sp.utils.OfferUtil;
 
 public class AcceptOfferComponent {
 	public AcceptOfferComponent() {
@@ -56,17 +57,18 @@ public class AcceptOfferComponent {
 	public Loan AcceptBorrowOffer(Member lender, Offer aBorrowOffer)
 			throws Exception {
 		// /TODO realize accept offer usecase
-		Loan loan;
+		Loan loan = null;
 
 		ValidateOffer(aBorrowOffer, lender);
-		SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
+		OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
+		try
+		{
 
 		// get the borrower from the offer
 		MemberEndpoint mDAC = new MemberEndpoint();
 		Member borrower = aBorrowOffer.getMember();
 		if (borrower.getMemberId() == lender.getMemberId()) {
 			// Before throwing the error, revert status to open
-			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw new ForbiddenException("Cannot accept self offers");
 		}
 
@@ -75,28 +77,31 @@ public class AcceptOfferComponent {
 				aBorrowOffer);
 		if (txns.size() < 4) {
 			// Before throwing the error, revert status to open
-			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw new ForbiddenException("Loan Transactions not well formed");
 		}
 
 		BatchSimulateStatus bss = TransactionPost.SimulatePost(txns,
 				PostingCheckFlag.CheckLimitAndPassFlag);
-		if (!bss.CanPost()) {
+		boolean canPost = bss.CanPost();
+		if (!canPost) {
 			String msg = "";
 			for (SimulatePostStatus s : bss.SimulateStatus) {
 				for (Exception e : s.Errors) {
 					msg += e.getMessage() + "\n";
 				}
 			}
-			// Before throwing the error, revert status to open
-			SetOfferStatus(aBorrowOffer, OfferStatus.Open);
-			throw new Exception("Simulation Error \n" + msg);
+			throw new Exception("Simulation Error: \n" + msg);
 		}
 
 		// create loan
 		loan = CreateLoan(borrower, lender, aBorrowOffer);
-		SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
+		OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
 
+		}catch(Exception e)
+		{
+			OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Open);
+			throw e;
+		}
 		return loan;
 	}
 
@@ -108,33 +113,34 @@ public class AcceptOfferComponent {
 	public Loan AcceptLendOffer(Member borrower, Offer aLendOffer)
 			throws Exception {
 		// /TODO realize accept offer usecase
-		Loan loan;
+		Loan loan = null;
 
 		ValidateOffer(aLendOffer, borrower);
-		SetOfferStatus(aLendOffer, OfferStatus.Processing);
+		OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Processing);
+		try {
 
-		// get the lender from the offer
-		MemberEndpoint mDAC = new MemberEndpoint();
-		Member lender = aLendOffer.getMember(); // mDAC.getMemberByID(aLendOffer.getMemberId());
-		if (borrower.getMemberId() == lender.getMemberId()) {
+			// get the lender from the offer
+			MemberEndpoint mDAC = new MemberEndpoint();
+			Member lender = aLendOffer.getMember(); // mDAC.getMemberByID(aLendOffer.getMemberId());
+			if (borrower.getMemberId() == lender.getMemberId()) {
+				throw new ForbiddenException("Cannot accept self offers");
+			}
+
+			AccountEndpoint aep = new AccountEndpoint();
+			Account lenderCurr = lender.getCurrentAccount();
+			if (GLUtil.CheckLimit(lenderCurr, aLendOffer.getAmount())) {
+				aep.UnBlockFunds(lenderCurr, aLendOffer.getAmount());
+				loan = CreateLoan(borrower, lender, aLendOffer);
+				OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Closed);
+			} else {
+				throw new Exception("Insufficient Limit");
+			}
+
+		} catch (Exception e) {
 			// Before throwing the error, revert status to open
-			SetOfferStatus(aLendOffer, OfferStatus.Open);
-			throw new ForbiddenException("Cannot accept self offers");
+			OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Open);
+			throw e;
 		}
-
-		AccountEndpoint aep = new AccountEndpoint();
-		Account lenderCurr = lender.getCurrentAccount();
-		if (GLUtil.CheckLimit(lenderCurr, aLendOffer.getAmount())) {
-			aep.UnBlockFunds(lenderCurr, aLendOffer.getAmount());
-			loan = CreateLoan(borrower, lender, aLendOffer);
-		} else {
-			// Before throwing the error, revert status to open
-			SetOfferStatus(aLendOffer, OfferStatus.Open);
-			throw new Exception("Insufficient Limit");
-		}
-
-		SetOfferStatus(aLendOffer, OfferStatus.Closed);
-
 		return loan;
 	}
 
@@ -143,28 +149,31 @@ public class AcceptOfferComponent {
 
 		if (offer.getStatus().equals("Processing")) {
 			throw new NullPointerException(MessageFormat.format(
-					"Offer [{0}] is already taken, Status is Processing. ",
-					offer.getId()));
+					"Cannot accept Offer [{0}], Status is Processing. ", offer
+							.getId().toString()));
 		}
 		if (offer.getStatus().equals("Closed")) {
 			throw new NullPointerException(MessageFormat.format(
-					"Offer [{0}] is already taken,  Status is Closed. ",
-					offer.getId()));
+					"Cannot accept Offer [{0}],,  Status is Closed. ", offer
+							.getId().toString()));
 		}
 		if (offer.getStatus().equals("Edit")) {
 			throw new NullPointerException(MessageFormat.format(
-					"Offer [{0}] is already taken,  Status is Edit. ",
-					offer.getId()));
+					"Cannot accept Offer [{0}],,  Status is Edit. ", offer
+							.getId().toString()));
 		}
 		if (offer.getExpiryDate().before(new Date())) {
 			throw new ForbiddenException(MessageFormat.format(
-					"Offer [{0}] is expired. ", offer.getId()));
+					"Cannot accept Offer [{0}] since it is expired. ", offer
+							.getId().toString()));
 		}
 		if (!offer.getPrivateOffer() && !PrivateOfferred(offer, acceptee)) {
 			// the offer is a private offer and you dont exist in the offerees
 			// list
-			throw new ForbiddenException(MessageFormat.format(
-					"Offer [{0}] is not offerred to you. ", offer.getId()));
+			throw new ForbiddenException(
+					MessageFormat
+							.format("Cannot accept Offer [{0}], private offer is not offerred to you. ",
+									offer.getId().toString()));
 		}
 	}
 
@@ -232,20 +241,15 @@ public class AcceptOfferComponent {
 		// offer.Amount = offer.Amount - loan.Amount;
 		if (_offer.getAmount() <= 0) {
 			// Offer fully subscribed. Change the offer status to closed.
-			SetOfferStatus(_offer, OfferStatus.Closed);
+			OfferUtil.SetOfferStatus(_offer, OfferStatus.Closed);
 		} else {
 			// unlock the offer. Change the offer status to Open.
-			SetOfferStatus(_offer, OfferStatus.Open);
+			OfferUtil.SetOfferStatus(_offer, OfferStatus.Open);
 		}
 		return loan;
 	}
 
-	public void SetOfferStatus(Offer offer, OfferStatus status)
-			throws NotFoundException {
-		OfferEndpoint oep = new OfferEndpoint();
-		offer.setStatus(status.toString());
-		oep.updateOffer(offer);
-	}
+	
 
 	public Loan EstablishLoan(Member lender, Member borrower, Offer offer)
 			throws NotFoundException, ConflictException {
@@ -380,7 +384,11 @@ public class AcceptOfferComponent {
 		TransactionType intt = Config
 				.GetTransactionType("INTERESTTRANSACTIONTYPE");
 		if (tt == null)
-			throw new NullPointerException("Transaction type cannot be null");
+			throw new NullPointerException(
+					"Config Item[ESTABLISHLOANTRANSACTIONTYPE] Transaction type cannot be null");
+		if (intt == null)
+			throw new NullPointerException(
+					"Config Item[INTERESTTRANSACTIONTYPE] Transaction type cannot be null");
 
 		// the loan transaction also unblocks blocked funds
 		GenericTransaction ltxn = new GenericTransaction(tt, "LES", new Date(),
@@ -392,21 +400,25 @@ public class AcceptOfferComponent {
 				new Date(), borrower.getinterestExpAccount(),
 				lender.getinterestIncAccount(), interest, false, "Y",
 				Authorizer, userID, offer.getId().toString());
-		//Txn 1
+		// Txn 1
 		txns.addAll(ltxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(tt), new NarrativeFormat(tt)));
-		//Txn 2
+		// Txn 2
 		txns.addAll(inttxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(tt), new NarrativeFormat(tt)));
 
 		// Disburse Amount
 		TransactionType Distt = Config
 				.GetTransactionType("DISBURSELOANTRANSACTIONTYPE");
+		if (Distt == null)
+			throw new NullPointerException(
+					"Config Item[DISBURSELOANTRANSACTIONTYPE] Transaction type cannot be null");
+
 		GenericTransaction Distxn = new GenericTransaction(Distt, "DIS",
 				new Date(), lender.getCurrentAccount(),
 				borrower.getCurrentAccount(), offer.getAmount(), false, "Y",
 				Authorizer, userID, offer.getId().toString());
-		//Txn 3
+		// Txn 3
 		txns.addAll(Distxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(Distt), new NarrativeFormat(Distt)));
 		return txns;

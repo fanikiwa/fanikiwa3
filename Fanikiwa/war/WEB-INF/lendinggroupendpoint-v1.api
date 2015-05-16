@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "lendinggroupendpoint.lendingGroupEndpoint.createRootMailingGroup" : {
+      "path" : "CreateRootMailingGroup",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.CreateRootMailingGroup",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "lendinggroupendpoint.listLendinggroup" : {
       "path" : "lendinggroup",
       "httpMethod" : "GET",
@@ -68,43 +84,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "lendinggroupendpoint.updateLendinggroup" : {
-      "path" : "lendinggroup",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.updateLendinggroup",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "lendinggroupendpoint.removeLendinggroup" : {
-      "path" : "lendinggroup/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.removeLendinggroup",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "lendinggroupendpoint.getLendinggroupByID" : {
       "path" : "lendinggroup/{groupId}",
       "httpMethod" : "GET",
@@ -142,20 +121,25 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "lendinggroupendpoint.lendingGroupEndpoint.createRootMailingGroup" : {
-      "path" : "CreateRootMailingGroup",
-      "httpMethod" : "POST",
+    "lendinggroupendpoint.removeLendinggroup" : {
+      "path" : "lendinggroup/{id}",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.CreateRootMailingGroup",
+      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.removeLendinggroup",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
-        "body" : "autoTemplate(backendResponse)"
+        "body" : "empty"
       }
     },
     "lendinggroupendpoint.lendingGroupEndpoint.retrieveSubgroups" : {
@@ -182,6 +166,22 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "lendinggroupendpoint.updateLendinggroup" : {
+      "path" : "lendinggroup",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.updateLendinggroup",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -219,44 +219,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Lendinggroup" : {
-        "id" : "CollectionResponse_Lendinggroup",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Lendinggroup"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Lendinggroup" : {
-        "id" : "Lendinggroup",
-        "type" : "object",
-        "properties" : {
-          "groupName" : {
-            "type" : "string"
-          },
-          "createdOn" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "creator" : {
-            "$ref" : "Member"
-          },
-          "lastModified" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "parentGroup" : {
-            "type" : "string"
-          }
-        }
-      },
       "Member" : {
         "id" : "Member",
         "type" : "object",
@@ -296,6 +258,9 @@
             "type" : "string"
           },
           "photo" : {
+            "type" : "string"
+          },
+          "pwd" : {
             "type" : "string"
           },
           "refferedBy" : {
@@ -558,6 +523,44 @@
           }
         }
       },
+      "Lendinggroup" : {
+        "id" : "Lendinggroup",
+        "type" : "object",
+        "properties" : {
+          "groupName" : {
+            "type" : "string"
+          },
+          "createdOn" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "creator" : {
+            "$ref" : "Member"
+          },
+          "lastModified" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "parentGroup" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionResponse_Lendinggroup" : {
+        "id" : "CollectionResponse_Lendinggroup",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Lendinggroup"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "LendingGroupDTO" : {
         "id" : "LendingGroupDTO",
         "type" : "object",
@@ -606,6 +609,14 @@
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.LendingGroupEndpoint.CreateRootMailingGroup" : {
+        "request" : {
+          "$ref" : "Member"
+        },
+        "response" : {
+          "$ref" : "Lendinggroup"
+        }
+      },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.listLendinggroup" : {
         "response" : {
           "$ref" : "CollectionResponse_Lendinggroup"
@@ -618,16 +629,6 @@
         "response" : {
           "$ref" : "RequestResult"
         }
-      },
-      "com.sp.fanikiwa.api.LendingGroupEndpoint.updateLendinggroup" : {
-        "request" : {
-          "$ref" : "Lendinggroup"
-        },
-        "response" : {
-          "$ref" : "Lendinggroup"
-        }
-      },
-      "com.sp.fanikiwa.api.LendingGroupEndpoint.removeLendinggroup" : {
       },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.getLendinggroupByID" : {
         "response" : {
@@ -642,17 +643,19 @@
           "$ref" : "Lendinggroup"
         }
       },
-      "com.sp.fanikiwa.api.LendingGroupEndpoint.CreateRootMailingGroup" : {
-        "request" : {
-          "$ref" : "Member"
-        },
-        "response" : {
-          "$ref" : "Lendinggroup"
-        }
+      "com.sp.fanikiwa.api.LendingGroupEndpoint.removeLendinggroup" : {
       },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.retrieveSubgroups" : {
         "response" : {
           "$ref" : "CollectionResponse_Lendinggroup"
+        }
+      },
+      "com.sp.fanikiwa.api.LendingGroupEndpoint.updateLendinggroup" : {
+        "request" : {
+          "$ref" : "Lendinggroup"
+        },
+        "response" : {
+          "$ref" : "Lendinggroup"
         }
       },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.retrieveLendinggroupsByCreator" : {

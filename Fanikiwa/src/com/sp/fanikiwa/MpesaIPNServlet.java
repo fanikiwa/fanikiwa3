@@ -38,8 +38,7 @@ public class MpesaIPNServlet extends HttpServlet {
 	// final String KUFANIKIWA_USER_NAME = "user";
 	// final String KUFANIKIWA_PWD = "pwd";
 
-	final String SAFARICOM_SERVER_NAME = "http://www."
-			+ "kufanikiwa.co.ke/Mpesa";
+	final String SAFARICOM_SERVER_NAME = "http://www."+ "kufanikiwa.co.ke/Mpesa";
 	final Integer SAFARICOM_SERVER_PORT = 8888;
 	final String KUFANIKIWA_USER_NAME = "123";
 	final String KUFANIKIWA_PWD = "123";
@@ -64,7 +63,9 @@ public class MpesaIPNServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		try {
+			resp.getWriter().println("Processing....");
 			ProcessIPNNotification(req, resp);
+			resp.getWriter().println("Processed.");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +73,7 @@ public class MpesaIPNServlet extends HttpServlet {
 	}
 
 	private void ProcessIPNNotification(HttpServletRequest request,
-			HttpServletResponse response) throws ParseException {
+			HttpServletResponse response) throws ParseException, IOException {
 
 		try {
 
@@ -82,16 +83,15 @@ public class MpesaIPNServlet extends HttpServlet {
 
 				// 2. Get message
 				MpesaIPNMessage msg = GetMpeasaIPNMessageFromRequest(request);
+				response.getWriter().println("STEP 1: Message sucessfully parsed");
 
 				// 3. Save message
 				MpesaIPNMessageEndpoint mep = new MpesaIPNMessageEndpoint();
 
 				// make sure no duplicate safcomid
 				MpesaIPNMessage exists = mep.isMpesaIPNMessageExists(msg);
-				if (exists == null) {
-
-					mep.insertMpesaIPNMessage(msg);
-				}
+				mep.insertMpesaIPNMessage(msg); //system will check duplicates
+				response.getWriter().println("STEP 2: Message sucessfully saved in DB");
 
 				// 4. Process Message
 				// make sure the message is not processed twice
@@ -99,25 +99,31 @@ public class MpesaIPNServlet extends HttpServlet {
 				Collection<MpesaIPNMessage> mpesaMsgs = mep
 						.ListNewMpesaIPNMessages(null, null).getItems();
 
+				response.getWriter().println("STEP 3: Processing "+ mpesaMsgs.size() + " new messages..." );
 				for (MpesaIPNMessage mpesaMsg : mpesaMsgs) {
 
 					MpesaComponent mcomp = new MpesaComponent();
-					mcomp.ProcessMessage(mpesaMsg);
-
+					String str = mcomp.ProcessMessage(mpesaMsg);
+					response.getWriter().println("STEP 3.1: Processed mgsid["+ mpesaMsg.getMpesa_code() + "] ...\nResult =" + str );
+					
 					// 5. update the processed messaged status so it is not
 					// processed again.
 					mpesaMsg.setStatus("Processed");
 					mep.updateMpesaIPNMessage(mpesaMsg);
+					response.getWriter().println("STEP 3.2: DB Status of message id["+ mpesaMsg.getMpesa_code() + "] changed to Processed" );
+					
 
 				}
 
 			} else {
 				// This is an impostor; Log the message for audit purposes
+				response.getWriter().println("Source Url not recognized.");
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			response.getWriter().println("An error occurred:\n ");
+			response.getWriter().println(e.getMessage());
 		}
 	}
 
@@ -147,15 +153,15 @@ public class MpesaIPNServlet extends HttpServlet {
 	private MpesaIPNMessage GetMpeasaIPNMessageFromRequest(
 			HttpServletRequest request) {
 		MpesaIPNMessage msg = new MpesaIPNMessage();
-		msg.setMpesaIPNMessageID(request.getParameter("id"));
+		msg.setMpesaIPNMessageID(request.getParameter("id").trim());
 		msg.setOrig(request.getParameter("orig"));
 		msg.setDest(request.getParameter("dest"));
 		msg.setTstamp(request.getParameter("tstamp"));
 		msg.setText(request.getParameter("text"));
 		msg.setUser(request.getParameter("user"));
 		msg.setPass(request.getParameter("pass"));
-		msg.setMpesa_code(request.getParameter("mpesa_code"));
-		msg.setMpesa_acc(request.getParameter("mpesa_acc"));
+		msg.setMpesa_code(request.getParameter("mpesa_code").trim());
+		msg.setMpesa_acc(request.getParameter("mpesa_acc").trim());
 		msg.setMpesa_msisdn(request.getParameter("mpesa_msisdn"));
 		msg.setMpesa_trx_date(request.getParameter("mpesa_trx_date"));
 		msg.setMpesa_trx_time(request.getParameter("mpesa_trx_time"));

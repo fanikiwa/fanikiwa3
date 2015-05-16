@@ -19,7 +19,7 @@ import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer; 
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
-import com.sp.fanikiwa.entity.OfferStatus;
+import com.sp.fanikiwa.Enums.OfferStatus;
 import com.sp.fanikiwa.entity.TransactionType;
 
 import java.util.ArrayList; 

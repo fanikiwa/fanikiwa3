@@ -10,7 +10,8 @@ import com.googlecode.objectify.annotation.Load;
 public class MpesaIPNMessage {
 	
 	@Id
-	Long id ;
+	String mpesa_code 	; //	Assumed to be unique The MPESA transaction code. 	: Eg. 	BI55EQ862 
+	
 	@Index
 	private String mpesaIPNMessageID; //	This is the IPN notification unique number 	: Eg. 	100 
 	private String orig 	; //	This will be source of the notification. 	: Eg. 	MPESA 
@@ -20,7 +21,6 @@ public class MpesaIPNMessage {
 	private String text 	; //	This is the full text message as received from MPESA.	: Eg. 	This is will be the full SMS message. 
 	private String user 	; //	If you provide us a username and password to access your URL this parameter will contain the username	: Eg. 	Username for Developer URL 
 	private String pass 	; //	If you provide us a username and password to access your URL this parameter will contain the password. 	: Eg. 	Password for Developer URL 
-	@Index private String mpesa_code 	; //	The MPESA transaction code. 	: Eg. 	BI55EQ862 
 	@Index private String mpesa_acc 	; //	The Account as entered by the subscriber 	: Eg. 	TEST 
 	@Index private String mpesa_msisdn 	; //	The mobile number of the subscriber that has sent the funds 	: Eg. 	254722123456
 	@Index private String mpesa_trx_date 	; //	The transaction date 	: Eg. 	26/4/11 
@@ -31,12 +31,6 @@ public class MpesaIPNMessage {
 	private String status; 
 	
 	 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getOrig() {
 		return orig;
 	}

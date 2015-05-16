@@ -31,7 +31,7 @@ import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferDTO;
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
-import com.sp.fanikiwa.entity.OfferStatus;
+import com.sp.fanikiwa.Enums.OfferStatus;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Transaction;
@@ -39,6 +39,7 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.MailUtil;
+import com.sp.utils.OfferUtil;
 import com.sp.utils.PeerLendingUtil;
 import com.sp.utils.StringExtension;
 
@@ -266,27 +267,52 @@ public class OfferEndpoint {
 		re.setResultMessage("Success");
 
 		try {
+			
 
-			Offer record = findRecord(id);
-			if (record == null) {
+			Offer offer = findRecord(id);
+			Member member = offer.getMember();
+			if (offer == null) {
 				throw new NotFoundException("Record does not exist");
 			}
-			if (record.getStatus().equals("Processing")) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat.format(
-						"Offer [{0}] is already taken, Status is Processing. ",
-						record.getId()));
-				return re;
-			}
-			if (record.getStatus().equals("Closed")) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat.format(
-						"Offer [{0}] is already taken, Status is Closed. ",
-						record.getId()));
-				return re;
-			}
+			
 
-			ofy().delete().entity(record).now();
+			OfferUtil.SetOfferStatus(offer, OfferStatus.Deleting);
+			
+			
+			if (offer.getStatus().equals("Processing")) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat.format(
+						"Cannot delete Offer [{0}], Status is Processing. ",
+						offer.getId().toString()));
+				return re;
+			}
+			if (offer.getStatus().equals("Closed")) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat.format(
+						"Cannot delete Offer [{0}], Status is Closed. ",
+						offer.getId().toString()));
+				return re;
+			}
+			if (offer.getStatus().equals("Deleting")) {
+				re.setResult(false);
+				re.setResultMessage(MessageFormat.format(
+						"Cannot delete Offer [{0}], Status is Deleting. ",
+						offer.getId().toString()));
+				return re;
+			}
+			
+			//1.Unblock funds
+			if(offer.getOfferType().toUpperCase().equals("L"))
+			{
+				AccountEndpoint aep = new AccountEndpoint();
+				Account lenderCurr = member.getCurrentAccount();
+				aep.UnBlockFunds(lenderCurr, offer.getAmount());
+			}
+			
+			//remove the recepients
+
+			//remove the offer
+			ofy().delete().entity(offer).now();
 			re.setResultMessage("Offer deleted.");
 
 		} catch (Exception e) {

@@ -254,7 +254,6 @@ public class UserprofileEndpoint {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			re.setResultMessage("created date:"
 					+ sdf.format(user.getCreateDate()));
-			user.setPwd("");
 			re.setClientToken(user);
 			return re;
 		} else {

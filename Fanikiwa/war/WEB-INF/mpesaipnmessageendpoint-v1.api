@@ -27,96 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "mpesaipnmessageendpoint.isMpesaIPNMessageExists" : {
-      "path" : "isMpesaIPNMessageExists",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.isMpesaIPNMessageExists",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "mpesaipnmessageendpoint.updateMpesaIPNMessage" : {
-      "path" : "mpesaipnmessage",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.updateMpesaIPNMessage",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "mpesaipnmessageendpoint.removeMpesaIPNMessage" : {
-      "path" : "mpesaipnmessage/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.removeMpesaIPNMessage",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "mpesaipnmessageendpoint.insertMpesaIPNMessage" : {
-      "path" : "mpesaipnmessage",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.insertMpesaIPNMessage",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "mpesaipnmessageendpoint.getMpesaIPNMessage" : {
-      "path" : "mpesaipnmessage/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.getMpesaIPNMessage",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "mpesaipnmessageendpoint.listNewMpesaIPNMessages" : {
       "path" : "ListNewMpesaIPNMessages",
       "httpMethod" : "POST",
@@ -142,6 +52,75 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "mpesaipnmessageendpoint.isMpesaIPNMessageExists" : {
+      "path" : "isMpesaIPNMessageExists",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.isMpesaIPNMessageExists",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "mpesaipnmessageendpoint.removeMpesaIPNMessage" : {
+      "path" : "mpesaipnmessage/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.removeMpesaIPNMessage",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "mpesaipnmessageendpoint.updateMpesaIPNMessage" : {
+      "path" : "mpesaipnmessage",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.updateMpesaIPNMessage",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "mpesaipnmessageendpoint.insertMpesaIPNMessage" : {
+      "path" : "mpesaipnmessage",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.insertMpesaIPNMessage",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "mpesaipnmessageendpoint.listMpesaIPNMessage" : {
       "path" : "mpesaipnmessage",
       "httpMethod" : "GET",
@@ -159,6 +138,27 @@
           "count" : {
             "type" : "int32",
             "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "mpesaipnmessageendpoint.getMpesaIPNMessage" : {
+      "path" : "mpesaipnmessage/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.getMpesaIPNMessage",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -213,17 +213,26 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "mpesaipnmessageendpoint.insertMpesaTestIPNMessage" : {
-      "path" : "mpesatestipnmessage",
+    "mpesaipnmessageendpoint.listNewMpesaTestIPNMessages" : {
+      "path" : "ListNewMpesaTestIPNMessages",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.insertMpesaTestIPNMessage",
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.ListNewMpesaTestIPNMessages",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -237,6 +246,22 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.updateMpesaTestIPNMessage",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "mpesaipnmessageendpoint.insertMpesaTestIPNMessage" : {
+      "path" : "mpesatestipnmessage",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.insertMpesaTestIPNMessage",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -281,42 +306,31 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "mpesaipnmessageendpoint.listNewMpesaTestIPNMessages" : {
-      "path" : "ListNewMpesaTestIPNMessages",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.ListNewMpesaTestIPNMessages",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_MpesaIPNMessage" : {
+        "id" : "CollectionResponse_MpesaIPNMessage",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "MpesaIPNMessage"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "MpesaIPNMessage" : {
         "id" : "MpesaIPNMessage",
         "type" : "object",
         "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
+          "mpesa_code" : {
+            "type" : "string"
           },
           "mpesaIPNMessageID" : {
             "type" : "string"
@@ -339,9 +353,6 @@
           "pass" : {
             "type" : "string"
           },
-          "mpesa_code" : {
-            "type" : "string"
-          },
           "mpesa_acc" : {
             "type" : "string"
           },
@@ -361,21 +372,6 @@
             "type" : "string"
           },
           "status" : {
-            "type" : "string"
-          }
-        }
-      },
-      "CollectionResponse_MpesaIPNMessage" : {
-        "id" : "CollectionResponse_MpesaIPNMessage",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "MpesaIPNMessage"
-            }
-          },
-          "nextPageToken" : {
             "type" : "string"
           }
         }
@@ -452,15 +448,12 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.isMpesaIPNMessageExists" : {
-        "request" : {
-          "$ref" : "MpesaIPNMessage"
-        },
+      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.ListNewMpesaIPNMessages" : {
         "response" : {
-          "$ref" : "MpesaIPNMessage"
+          "$ref" : "CollectionResponse_MpesaIPNMessage"
         }
       },
-      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.updateMpesaIPNMessage" : {
+      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.isMpesaIPNMessageExists" : {
         "request" : {
           "$ref" : "MpesaIPNMessage"
         },
@@ -470,6 +463,14 @@
       },
       "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.removeMpesaIPNMessage" : {
       },
+      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.updateMpesaIPNMessage" : {
+        "request" : {
+          "$ref" : "MpesaIPNMessage"
+        },
+        "response" : {
+          "$ref" : "MpesaIPNMessage"
+        }
+      },
       "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.insertMpesaIPNMessage" : {
         "request" : {
           "$ref" : "MpesaIPNMessage"
@@ -478,19 +479,14 @@
           "$ref" : "MpesaIPNMessage"
         }
       },
-      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.getMpesaIPNMessage" : {
-        "response" : {
-          "$ref" : "MpesaIPNMessage"
-        }
-      },
-      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.ListNewMpesaIPNMessages" : {
-        "response" : {
-          "$ref" : "CollectionResponse_MpesaIPNMessage"
-        }
-      },
       "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.listMpesaIPNMessage" : {
         "response" : {
           "$ref" : "CollectionResponse_MpesaIPNMessage"
+        }
+      },
+      "com.sp.fanikiwa.api.MpesaIPNMessageEndpoint.getMpesaIPNMessage" : {
+        "response" : {
+          "$ref" : "MpesaIPNMessage"
         }
       },
       "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.listMpesaTestIPNMessage" : {
@@ -503,7 +499,12 @@
           "$ref" : "MpesaTestIPNMessage"
         }
       },
-      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.insertMpesaTestIPNMessage" : {
+      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.ListNewMpesaTestIPNMessages" : {
+        "response" : {
+          "$ref" : "CollectionResponse_MpesaTestIPNMessage"
+        }
+      },
+      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.updateMpesaTestIPNMessage" : {
         "request" : {
           "$ref" : "MpesaTestIPNMessage"
         },
@@ -511,7 +512,7 @@
           "$ref" : "MpesaTestIPNMessage"
         }
       },
-      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.updateMpesaTestIPNMessage" : {
+      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.insertMpesaTestIPNMessage" : {
         "request" : {
           "$ref" : "MpesaTestIPNMessage"
         },
@@ -527,11 +528,6 @@
         },
         "response" : {
           "$ref" : "MpesaTestIPNMessage"
-        }
-      },
-      "com.sp.fanikiwa.api.MpesaIPNTestMessageEndpoint.ListNewMpesaTestIPNMessages" : {
-        "response" : {
-          "$ref" : "CollectionResponse_MpesaTestIPNMessage"
         }
       }
     }

@@ -11,7 +11,9 @@ public class BatchSimulateStatus {
 
 		boolean canPost = true;
 		for (SimulatePostStatus s : SimulateStatus)
-			canPost = s.isCanPost();
+			{
+			if(!s.isCanPost())	canPost = s.isCanPost();
+			}
 		return canPost;
 	}
 

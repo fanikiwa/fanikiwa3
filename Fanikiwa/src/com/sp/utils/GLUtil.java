@@ -22,7 +22,7 @@ public class GLUtil {
 	
 	public static boolean CheckLimit( Account acc, double Amount)
 	{
-		return acc.getLimit() > Amount;
+		return acc.getLimit() >= Amount;
 	}
 	public static Account GetAccount(Long accId)
 	{
