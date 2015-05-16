@@ -66,7 +66,7 @@ fanikiwa.offerendpoint.createlendoffer = function() {
 
 	$('#apiResults').html('creating offer...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	// Build the Request Object
 	var OfferDTO = {};

@@ -3,7 +3,10 @@ package com.sp.fanikiwa.business.MakeOffer;
 import java.util.Collection;
 import java.util.List;
 
+import com.sp.fanikiwa.api.LendingGroupEndpoint;
 import com.sp.fanikiwa.api.LendingGroupMemberEndpoint;
+import com.sp.fanikiwa.api.MemberEndpoint;
+import com.sp.fanikiwa.entity.Lendinggroup;
 import com.sp.fanikiwa.entity.Lendinggroupmember;
 import com.sp.fanikiwa.entity.Member;
 
@@ -37,16 +40,36 @@ public class GroupOfferee  extends Offeree {
 		Collection<Lendinggroupmember> grpmembers = (ep.selectgroupMembers(Groupname, null, null)).getItems();
 		for(Lendinggroupmember m : grpmembers)
 		{
-			if(m.getIdType().toUpperCase().equals("M") )
+			MemberEndpoint mep = new MemberEndpoint();
+			Member meb ;
+			
+			switch(m.getIdType())
 			{
-				Member meb = m.getMember();
+			case EMAIL:
+				meb = mep.GetMemberByEmail(m.getName());
 				if(meb != null)
-				members.add(meb);
+					members.add(meb);
+				break;
+			case TELNO:
+				meb = mep.GetMemberByTelephone(m.getName());
+				if(meb != null)
+					members.add(meb);
+				break;
+			case MEMBER:
+				Long id = Long.parseLong(m.getName());
+				meb = mep.getMemberByID(id);
+				if(meb != null)
+					members.add(meb);
+				break;
 			}
-			else //this is a nested group; find out its members recursively
-			{
-				FillMembers(m.getGroup().getGroupName());
-			}
+
+		}
+		
+		LendingGroupEndpoint lep = new LendingGroupEndpoint();
+		Collection<Lendinggroup> subgroups = (lep.retrieveSubgroups(Groupname, null, null)).getItems();
+		for(Lendinggroup lg:subgroups) //this is a nested group; find out its members recursively
+		{
+			FillMembers(lg.getGroupName());
 		}
 	}
 

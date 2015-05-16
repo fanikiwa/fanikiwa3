@@ -16,6 +16,7 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.TransactionType;
+import com.sp.fanikiwa.entity.Userprofile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,13 +180,24 @@ public class TransactionTypeEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeTransactionType")
-	public void removeTransactionType(@Named("id") Long id)
-			throws NotFoundException {
-		TransactionType record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult removeTransactionType(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			TransactionType transactiontype = findRecord(id);
+			if (transactiontype == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().delete().entity(transactiontype).now();
+			re.setResultMessage("Transaction Type Removed");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
 	}
 
 	private TransactionType findRecord(Long id) {

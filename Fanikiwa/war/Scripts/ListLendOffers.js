@@ -15,7 +15,7 @@ fanikiwa.offerendpoint.listlendoffers.LoadOffers = function() {
 	$('.page-title').html('Private Lend Offers');
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveLendOffers({
 		'email' : email
@@ -135,7 +135,7 @@ function Accept(id) {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	gapi.client.offerendpoint
 			.acceptOffer({
 				'id' : id,
@@ -199,7 +199,7 @@ fanikiwa.offerendpoint.listlendoffers.LoadPublicLendOffers = function() {
 	$('.page-title').html('Public Lend Offers');
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrievePublicOffers({
 		'email' : email,

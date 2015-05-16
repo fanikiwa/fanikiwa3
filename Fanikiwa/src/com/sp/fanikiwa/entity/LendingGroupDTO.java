@@ -18,7 +18,7 @@ public class LendingGroupDTO {
 
 	private Date lastModified;
 
-	private int parentGroupId;
+	private String parentGroup;
 
 	public LendingGroupDTO() {
 	}
@@ -55,12 +55,14 @@ public class LendingGroupDTO {
 		this.lastModified = lastModified;
 	}
 
-	public int getParentGroupId() {
-		return parentGroupId;
+	public String getParentGroup() {
+		return parentGroup;
 	}
 
-	public void setParentGroupId(int parentGroupId) {
-		this.parentGroupId = parentGroupId;
+	public void setParentGroup(String parentGroup) {
+		this.parentGroup = parentGroup;
 	}
+
+
 
 }

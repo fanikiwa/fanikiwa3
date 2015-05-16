@@ -14,7 +14,7 @@ fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveBorrowOffers({
 		'email' : email
@@ -59,7 +59,7 @@ fanikiwa.offerendpoint.listborrowoffers.init = function(apiRoot) {
  
 function PartialAccept(id) {
 	$('#apiResults').html('processing...');
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	gapi.client.offerendpoint
 			.acceptPartialBorrowOffer({
 				'id' : id,

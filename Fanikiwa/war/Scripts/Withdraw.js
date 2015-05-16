@@ -31,7 +31,7 @@ fanikiwa.accountendpoint.withdraw.memberWithdraw = function() {
 	var error_free = true;
 
 	var amount = document.getElementById('txtAmount').value; 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	if (amount.length == 0) {
 		errormsg += '<li>' + " Amount cannot be null " + '</li>';

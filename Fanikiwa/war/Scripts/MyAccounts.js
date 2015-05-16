@@ -13,7 +13,7 @@ fanikiwa.memberendpoint.myaccounts.LoadAccounts = function() {
 
 	$('#listAccountsResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.memberendpoint.listMemberAccountWeb({
 		'email' : email

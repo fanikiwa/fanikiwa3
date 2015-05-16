@@ -9,13 +9,21 @@ import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.cmd.Query;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.AccountDTO;
 import com.sp.fanikiwa.entity.Customer;
+import com.sp.fanikiwa.entity.CustomerDTO;
+import com.sp.fanikiwa.entity.Loan;
+import com.sp.fanikiwa.entity.Organization;
+import com.sp.fanikiwa.entity.RequestResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,11 +33,11 @@ import javax.inject.Named;
 public class CustomerEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listCustomer")
@@ -68,9 +76,11 @@ public class CustomerEndpoint {
 	}
 
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getCustomer")
@@ -79,16 +89,18 @@ public class CustomerEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param customer the entity to be inserted.
+	 * @param customer
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertCustomer")
-	public Customer insertCustomer(Customer customer) throws NotFoundException, ConflictException {
+	public Customer insertCustomer(Customer customer) throws NotFoundException,
+			ConflictException {
 		if (customer.getCustomerId() != null) {
 			if (findRecord(customer.getCustomerId()) != null) {
 				throw new ConflictException("Object already exists");
@@ -98,14 +110,39 @@ public class CustomerEndpoint {
 		return customer;
 	}
 
+	@ApiMethod(name = "createCustomer")
+	public RequestResult createCustomer(CustomerDTO customerDTO) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+			Customer customerFromDTO = createCustomerFromDTO(customerDTO);
+			Customer insertedcustomer = this.insertCustomer(customerFromDTO);
+			if (insertedcustomer.getCustomerId() == null) {
+				re.setResult(false);
+				re.setResultMessage("Error Creating Customer.");
+				return re;
+			}
+			re.setResultMessage("Customer Created.<br/>Id = "
+					+ insertedcustomer.getCustomerId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param customer the entity to be updated.
+	 * @param customer
+	 *            the entity to be updated.
 	 * @return The updated entity.
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateCustomer")
 	public Customer updateCustomer(Customer customer) throws NotFoundException {
@@ -116,16 +153,41 @@ public class CustomerEndpoint {
 		ofy().save().entities(customer).now();
 		return customer;
 	}
+	
+	@ApiMethod(name = "editCustomer")
+	public RequestResult editCustomer(CustomerDTO customerDTO) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+
+		try {
+			Customer customerFromDTO = createCustomerFromDTO(customerDTO);
+			Customer customerexists = findRecord(customerFromDTO
+					.getCustomerId());
+			if (customerexists == null) {
+				throw new NotFoundException("Record does not exist");
+			}
+			ofy().save().entities(customerexists).now();
+			re.setResultMessage("Customer Updated.<br/>Id = "
+					+ customerexists.getCustomerId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
-	 * @throws NotFoundException 
+	 * @param id
+	 *            the primary key of the entity to be deleted.
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeCustomer")
-	public void removeCustomer(@Named("id") Long id) throws NotFoundException  {
+	public void removeCustomer(@Named("id") Long id) throws NotFoundException {
 		Customer record = findRecord(id);
 		if (record == null) {
 			throw new NotFoundException("Record does not exist");
@@ -133,18 +195,53 @@ public class CustomerEndpoint {
 		ofy().delete().entity(record).now();
 	}
 
-	private boolean containsCustomer(Customer customer) {
-		boolean contains = true;
-
-			Customer item = findRecord(customer.getCustomerId());
-			if (item == null) {
-				contains = false;
-			}
-		return contains;
-	}
-
 	private Customer findRecord(Long id) {
 		return ofy().load().type(Customer.class).id(id).now();
 	}
 
+	private Customer createCustomerFromDTO(CustomerDTO customerDto) {
+		// Construct Account
+		OrganizationEndpoint organizationEndpoint = new OrganizationEndpoint();
+
+		Customer customer = new Customer();
+		customer.setCustomerId(customerDto.getCustomerId());
+		customer.setAddress(customerDto.getAddress());
+		customer.setBillToAddress(customerDto.getBillToAddress());
+		customer.setBillToEmail(customerDto.getBillToEmail());
+		customer.setBillToName(customerDto.getBillToName());
+		customer.setBillToTelephone(customerDto.getBillToTelephone());
+		customer.setBranch(customerDto.getBranch());
+		customer.setCreatedDate(customerDto.getCreatedDate());
+		customer.setCustomerNo(customerDto.getCustomerNo());
+		customer.setEmail(customerDto.getEmail());
+		customer.setMemberId(customerDto.getMemberId());
+		customer.setName(customerDto.getName());
+		customer.setOrganization(organizationEndpoint
+				.getOrganization(customerDto.getOrganization()));
+		customer.setTelephone(customerDto.getTelephone());
+
+		return customer;
+	}
+
+	private CustomerDTO createDTOFromCustomer(Customer customer) {
+		// Construct dto
+		CustomerDTO customerDto = new CustomerDTO();
+		customerDto.setCustomerId(customer.getCustomerId());
+		customerDto.setAddress(customer.getAddress());
+		customerDto.setBillToAddress(customer.getBillToAddress());
+		customerDto.setBillToEmail(customer.getBillToEmail());
+		customerDto.setBillToName(customer.getBillToName());
+		customerDto.setBillToTelephone(customer.getBillToTelephone());
+		customerDto.setBranch(customer.getBranch());
+		customerDto.setCreatedDate(customer.getCreatedDate());
+		customerDto.setCustomerNo(customer.getCustomerNo());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setMemberId(customer.getMemberId());
+		customerDto.setName(customer.getName());
+		customerDto.setOrganization(customer.getOrganization()
+				.getOrganizationID());
+		customerDto.setTelephone(customer.getTelephone());
+
+		return customerDto;
+	}
 }

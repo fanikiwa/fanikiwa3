@@ -24,7 +24,7 @@ fanikiwa.userprofile.changePassword = function() {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	// Validate the entries
 	var _OldPassword = document.getElementById('txtOldPassword').value;
@@ -180,7 +180,7 @@ fanikiwa.userprofile.login = function() {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	var pwd = document.getElementById('txtOldPassword').value;
 
 	gapi.client.userprofileendpoint

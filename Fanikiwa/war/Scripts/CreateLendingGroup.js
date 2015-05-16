@@ -44,7 +44,7 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	var parentGroupId = sessionStorage.getItem('lendinggroupparentid');
 
 	// Build the Request Object

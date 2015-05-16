@@ -9,7 +9,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 
 @Entity
-public class Member {
+public class MemberDTO {
 
 	@Id
 	Long memberId;
@@ -43,29 +43,23 @@ public class Member {
 	private String telephone;
 
 	// FK
-	@Load
-	Ref<Account> investmentAccount;
+	Long investmentAccount;
 
-	@Load
-	Ref<Account> loanAccount;
+	Long loanAccount;
 
-	@Load
-	Ref<Account> currentAccount;
+	Long currentAccount;
 
-	@Load
-	Ref<Account> interestIncAccount;
+	Long interestIncAccount;
 
-	@Load
-	Ref<Account> interestExpAccount;
+	Long interestExpAccount;
 
-	@Load
-	Ref<Customer> customer;
+	Long customer;
 
-	public Member() {
+	public MemberDTO() {
 	}
 
 	public Long getMemberId() {
-		return memberId;
+		return this.memberId;
 	}
 
 	public void setMemberId(Long memberId) {
@@ -73,7 +67,7 @@ public class Member {
 	}
 
 	public Date getDateActivated() {
-		return dateActivated;
+		return this.dateActivated;
 	}
 
 	public void setDateActivated(Date dateActivated) {
@@ -81,7 +75,7 @@ public class Member {
 	}
 
 	public Date getDateJoined() {
-		return dateJoined;
+		return this.dateJoined;
 	}
 
 	public void setDateJoined(Date dateJoined) {
@@ -89,7 +83,7 @@ public class Member {
 	}
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return this.dateOfBirth;
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
@@ -97,7 +91,7 @@ public class Member {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -105,7 +99,7 @@ public class Member {
 	}
 
 	public String getGender() {
-		return gender;
+		return this.gender;
 	}
 
 	public void setGender(String gender) {
@@ -113,7 +107,7 @@ public class Member {
 	}
 
 	public String getInformBy() {
-		return informBy;
+		return this.informBy;
 	}
 
 	public void setInformBy(String informBy) {
@@ -121,7 +115,7 @@ public class Member {
 	}
 
 	public int getMaxRecordsToDisplay() {
-		return maxRecordsToDisplay;
+		return this.maxRecordsToDisplay;
 	}
 
 	public void setMaxRecordsToDisplay(int maxRecordsToDisplay) {
@@ -129,7 +123,7 @@ public class Member {
 	}
 
 	public String getNationalID() {
-		return nationalID;
+		return this.nationalID;
 	}
 
 	public void setNationalID(String nationalID) {
@@ -137,7 +131,7 @@ public class Member {
 	}
 
 	public String getOtherNames() {
-		return otherNames;
+		return this.otherNames;
 	}
 
 	public void setOtherNames(String otherNames) {
@@ -145,7 +139,7 @@ public class Member {
 	}
 
 	public String getPhoto() {
-		return photo;
+		return this.photo;
 	}
 
 	public void setPhoto(String photo) {
@@ -153,7 +147,7 @@ public class Member {
 	}
 
 	public int getRefferedBy() {
-		return refferedBy;
+		return this.refferedBy;
 	}
 
 	public void setRefferedBy(int refferedBy) {
@@ -161,7 +155,7 @@ public class Member {
 	}
 
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 
 	public void setStatus(String status) {
@@ -169,7 +163,7 @@ public class Member {
 	}
 
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
 
 	public void setSurname(String surname) {
@@ -177,59 +171,59 @@ public class Member {
 	}
 
 	public String getTelephone() {
-		return telephone;
+		return this.telephone;
 	}
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
-	public Account getInvestmentAccount() {
-		return this.investmentAccount.get();
+	public Long getInvestmentAccount() {
+		return investmentAccount;
 	}
 
-	public void setInvestmentAccount(Account investmentAccount) {
-		this.investmentAccount = Ref.create(investmentAccount);
+	public void setInvestmentAccount(Long investmentAccount) {
+		this.investmentAccount = investmentAccount;
 	}
 
-	public Account getLoanAccount() {
-		return this.loanAccount.get();
+	public Long getLoanAccount() {
+		return loanAccount;
 	}
 
-	public void setLoanAccount(Account loanAccount) {
-		this.loanAccount = Ref.create(loanAccount);
+	public void setLoanAccount(Long loanAccount) {
+		this.loanAccount = loanAccount;
 	}
 
-	public Account getCurrentAccount() {
-		return this.currentAccount.get();
+	public Long getCurrentAccount() {
+		return currentAccount;
 	}
 
-	public void setCurrentAccount(Account currentAccount) {
-		this.currentAccount = Ref.create(currentAccount);
+	public void setCurrentAccount(Long currentAccount) {
+		this.currentAccount = currentAccount;
 	}
 
-	public Account getinterestExpAccount() {
-		return this.interestExpAccount.get();
+	public Long getInterestIncAccount() {
+		return interestIncAccount;
 	}
 
-	public void setinterestExpAccount(Account interestExpAccount) {
-		this.interestExpAccount = Ref.create(interestExpAccount);
+	public void setInterestIncAccount(Long interestIncAccount) {
+		this.interestIncAccount = interestIncAccount;
 	}
 
-	public Account getinterestIncAccount() {
-		return this.interestIncAccount.get();
+	public Long getInterestExpAccount() {
+		return interestExpAccount;
 	}
 
-	public void setinterestIncAccount(Account interestIncAccount) {
-		this.interestIncAccount = Ref.create(interestIncAccount);
+	public void setInterestExpAccount(Long interestExpAccount) {
+		this.interestExpAccount = interestExpAccount;
 	}
 
-	public Customer getCustomer() {
-		return this.customer.get();
+	public Long getCustomer() {
+		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = Ref.create(customer);
+	public void setCustomer(Long customer) {
+		this.customer = customer;
 	}
 
 }

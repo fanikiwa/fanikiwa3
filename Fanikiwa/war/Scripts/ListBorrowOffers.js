@@ -15,7 +15,7 @@ fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 	$('.page-title').html('Private Borow Offers');
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveBorrowOffers({
 		'email' : email
@@ -151,7 +151,7 @@ function Accept(id) {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	gapi.client.offerendpoint
 			.acceptOffer({
 				'id' : id,
@@ -197,7 +197,7 @@ function PartialAccept(id) {
 	$('#successmessage').html('');
 	$('#errormessage').html('');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 	gapi.client.offerendpoint
 			.acceptPartialBorrowOffer({
 				'id' : id,
@@ -261,7 +261,7 @@ fanikiwa.offerendpoint.listborrowoffers.LoadPublicBorrowOffers = function() {
 	$('.page-title').html('Public Borow Offers');
 	$('#listOffersResult').html('loading...');
 
-	var email = sessionStorage.getItem('loggedinuser');
+	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrievePublicOffers({
 		'email' : email,

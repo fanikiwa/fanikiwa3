@@ -7,13 +7,6 @@ function GETROOT() {
 	return ROOT;
 }
 
-$(document).ready(function() {
-	CreateMainMenu();
-	$('#lnkloggedinuser').text(sessionStorage.getItem('loggedinuser'));
-	var year = parseInt(new Date().getFullYear());
-	$('#footerdate').html(year);
-});
-
 function LogOff() {
 	sessionStorage.removeItem("loggedinuser");
 	window.location.href = "/Views/Account/Login.html";
@@ -97,4 +90,44 @@ function AddDate(oldDate, offset, offsetType) {
 		break;
 	}
 	return newDate;
+}
+
+$(document).ready(function() {
+	var loggedinuser = JSON.parse(sessionStorage.getItem('loggedinuser'));
+	if (loggedinuser != null || loggedinuser != undefined) {
+		var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
+		$('#lnkloggedinuser').text(email);
+	}
+	setTime();
+});
+
+function setTime() {
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = today.getMonth();
+	var date = today.getDate();
+	var hours = today.getHours();
+	var minutes = today.getMinutes();
+	var seconds = today.getSeconds();
+	var milliseconds = today.getMilliseconds();
+	var DayNight = "PM"
+	if (hours < 12)
+		DayNight = "AM";
+	minutes = checkTime(minutes);
+	seconds = checkTime(seconds);
+	$('#footerdate').html(year);
+	// $('#footerdate').html(
+	// year + "-" + month + "-" + date + " " + hours + ":" + minutes
+	// + ":" + seconds + ":" + milliseconds + " " + DayNight);
+	var t = setTimeout(function() {
+		setTime()
+	}, 0.5);
+}
+
+function checkTime(i) {
+	if (i < 10) {
+		i = "0" + i
+	}
+	; // add zero in front of numbers < 10
+	return i;
 }

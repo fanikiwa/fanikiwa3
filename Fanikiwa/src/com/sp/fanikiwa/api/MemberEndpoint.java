@@ -17,10 +17,12 @@ import com.sp.fanikiwa.Enums.PassFlag;
 import com.sp.fanikiwa.Enums.UserType;
 import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.AccountDTO;
 import com.sp.fanikiwa.entity.AccountType;
 import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
+import com.sp.fanikiwa.entity.MemberDTO;
 import com.sp.fanikiwa.entity.UserDTO;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.Organization;
@@ -156,7 +158,6 @@ public class MemberEndpoint {
 			existingmember.setNationalID(member.getNationalID());
 			existingmember.setOtherNames(member.getOtherNames());
 			existingmember.setPhoto(existingmember.getPhoto());
-			existingmember.setPwd(existingmember.getPwd());
 			existingmember.setRefferedBy(member.getRefferedBy());
 			existingmember.setStatus(existingmember.getStatus());
 			existingmember.setSurname(member.getSurname());
@@ -237,6 +238,27 @@ public class MemberEndpoint {
 		return re;
 	}
 
+	@ApiMethod(name = "retrieveMember")
+	public RequestResult retrieveMember(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setResult(true);
+		re.setResultMessage("Success");
+		try {
+			Member member = findRecord(id);
+			if (member == null) {
+				re.setResult(false);
+				re.setResultMessage("Record does not exist");
+				return re;
+			}
+			MemberDTO memberDto = createDTOFromMember(member);
+			re.setClientToken(memberDto);
+		} catch (Exception e) {
+			re.setResult(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
 	@ApiMethod(name = "getMemberByEmail")
 	public Member GetMemberByEmail(@Named("email") String email) {
 		return ofy().load().type(Member.class).filter("email", email).first()
@@ -269,24 +291,24 @@ public class MemberEndpoint {
 
 			Userprofile userReturned;
 
-				try {
-					userReturned = upep.insertUserprofile(user);
-					if (userReturned == null) {
-						re.setResult(false);
-						re.setResultMessage("Error Creating User!");
-						return re;
-					}
-				} catch (NotFoundException | ConflictException e) {
+			try {
+				userReturned = upep.insertUserprofile(user);
+				if (userReturned == null) {
 					re.setResult(false);
-					re.setResultMessage(e.getMessage());
+					re.setResultMessage("Error Creating User!");
 					return re;
 				}
+			} catch (NotFoundException | ConflictException e) {
+				re.setResult(false);
+				re.setResultMessage(e.getMessage());
+				return re;
+			}
 		}
-		//Continue only if you are creating a member user
-		if(!userType.equals(UserType.Member))
+		// Continue only if you are creating a member user
+		if (!userType.equals(UserType.Member.name()))
 			return re;
-		
-		//Create a member user
+
+		// Create a member user
 		try {
 
 			Member emailexists = ofy().load().type(Member.class)
@@ -454,7 +476,6 @@ public class MemberEndpoint {
 			// step1
 			Member member = new Member();
 			member.setEmail(memberDTO.getEmail());
-			member.setPwd(memberDTO.getPwd());
 			member.setTelephone(memberDTO.getTelephone());
 			member.setSurname(memberDTO.getSurname());
 			member.setDateJoined(new Date());
@@ -579,4 +600,36 @@ public class MemberEndpoint {
 		}
 		return re;
 	}
+
+	private MemberDTO createDTOFromMember(Member member) throws Exception {
+		// Construct dto
+		MemberDTO memberDto = new MemberDTO();
+		memberDto.setMemberId(member.getMemberId());
+		memberDto.setDateActivated(member.getDateActivated());
+		memberDto.setDateJoined(member.getDateJoined());
+		memberDto.setDateOfBirth(member.getDateOfBirth());
+		memberDto.setEmail(member.getEmail());
+		memberDto.setGender(member.getGender());
+		memberDto.setInformBy(member.getInformBy());
+		memberDto.setMaxRecordsToDisplay(member.getMaxRecordsToDisplay());
+		memberDto.setNationalID(member.getNationalID());
+		memberDto.setOtherNames(member.getOtherNames());
+		memberDto.setPhoto(member.getPhoto());
+		memberDto.setRefferedBy(member.getRefferedBy());
+		memberDto.setStatus(member.getStatus());
+		memberDto.setSurname(member.getSurname());
+		memberDto.setTelephone(member.getTelephone());
+		memberDto.setInvestmentAccount(member.getInvestmentAccount()
+				.getAccountID());
+		memberDto.setCurrentAccount(member.getCurrentAccount().getAccountID());
+		memberDto.setInterestIncAccount(member.getinterestIncAccount()
+				.getAccountID());
+		memberDto.setInterestExpAccount(member.getinterestExpAccount()
+				.getAccountID());
+		memberDto.setLoanAccount(member.getLoanAccount().getAccountID());
+		memberDto.setCustomer(member.getCustomer().getCustomerId());
+
+		return memberDto;
+	}
+
 }
