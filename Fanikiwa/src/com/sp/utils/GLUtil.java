@@ -1,8 +1,16 @@
 package com.sp.utils;
 
+import java.util.List;
+
+import com.sp.fanikiwa.Enums.PostingCheckFlag;
 import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.TransactionTypeEndpoint;
+import com.sp.fanikiwa.business.financialtransactions.TransactionPost;
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.BatchSimulateStatus;
+import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.fanikiwa.entity.SimulatePostStatus;
+import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
 
 public class GLUtil {
@@ -37,5 +45,29 @@ public class GLUtil {
 		TransactionTypeEndpoint aep = new TransactionTypeEndpoint();
 		
 		return aep.getTransactionType(TtypeId);
+	}
+	
+	public static RequestResult Simulate(List<Transaction> txns)
+	{
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Sucessfull");
+		
+		BatchSimulateStatus bss = TransactionPost.SimulatePost(txns,
+				PostingCheckFlag.CheckLimitAndPassFlag);
+		boolean canPost = bss.CanPost();
+		if (!canPost) {
+			String msg = "";
+			for (SimulatePostStatus s : bss.SimulateStatus) {
+				for (Exception e : s.Errors) {
+					msg += e.getMessage() + "\n";
+				}
+			}
+			
+			re.setSuccess(false);
+			re.setResultMessage("Simulation Error: \n" + msg);
+			return re;
+		}
+		return re;
 	}
 }

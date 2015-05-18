@@ -82,7 +82,7 @@ public class WithdrawalMessageEndpoint {
 					throw new ConflictException("Object already exists");
 				}
 			}
-			 ofy().save().entity(wm).now();
+			 ofy().save().entity(wm).now(); //.now() is synchronous and generated id on wm
 
 		return wm;
 	}

@@ -27,80 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "tieredtableendpoint.updateTieredtable" : {
-      "path" : "tieredtable",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateTieredtable",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tieredtableendpoint.getTieredtableById" : {
-      "path" : "tieredtable/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredtableById",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tieredtableendpoint.insertTieredtable" : {
-      "path" : "tieredtable",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.insertTieredtable",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "tieredtableendpoint.removeTieredtable" : {
-      "path" : "tieredtable/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.removeTieredtable",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "tieredtableendpoint.listTieredtable" : {
       "path" : "tieredtable",
       "httpMethod" : "GET",
@@ -146,23 +72,84 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "tieredtableendpoint.insertTieredtable" : {
+      "path" : "tieredtable",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.insertTieredtable",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tieredtableendpoint.updateTieredtable" : {
+      "path" : "tieredtable",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateTieredtable",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tieredtableendpoint.removeTieredtable" : {
+      "path" : "tieredtable/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.removeTieredtable",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "tieredtableendpoint.getTieredtableById" : {
+      "path" : "tieredtable/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredtableById",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "Tieredtable" : {
-        "id" : "Tieredtable",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "description" : {
-            "type" : "string"
-          }
-        }
-      },
       "CollectionResponse_Tieredtable" : {
         "id" : "CollectionResponse_Tieredtable",
         "type" : "object",
@@ -174,6 +161,19 @@
             }
           },
           "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Tieredtable" : {
+        "id" : "Tieredtable",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
             "type" : "string"
           }
         }
@@ -192,17 +192,14 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.TieredtableEndpoint.updateTieredtable" : {
-        "request" : {
-          "$ref" : "Tieredtable"
-        },
+      "com.sp.fanikiwa.api.TieredtableEndpoint.listTieredtable" : {
         "response" : {
-          "$ref" : "Tieredtable"
+          "$ref" : "CollectionResponse_Tieredtable"
         }
       },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredtableById" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredTableId" : {
         "response" : {
-          "$ref" : "Tieredtable"
+          "$ref" : "TieredtableCollection"
         }
       },
       "com.sp.fanikiwa.api.TieredtableEndpoint.insertTieredtable" : {
@@ -213,16 +210,19 @@
           "$ref" : "Tieredtable"
         }
       },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.removeTieredtable" : {
-      },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.listTieredtable" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.updateTieredtable" : {
+        "request" : {
+          "$ref" : "Tieredtable"
+        },
         "response" : {
-          "$ref" : "CollectionResponse_Tieredtable"
+          "$ref" : "Tieredtable"
         }
       },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredTableId" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.removeTieredtable" : {
+      },
+      "com.sp.fanikiwa.api.TieredtableEndpoint.getTieredtableById" : {
         "response" : {
-          "$ref" : "TieredtableCollection"
+          "$ref" : "Tieredtable"
         }
       }
     }

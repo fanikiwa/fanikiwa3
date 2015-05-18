@@ -36,22 +36,24 @@ public class Loan {
 	private double interestRateSusp;
 
 	private double accruedIntInSusp;
-	// Interest Accrual
+	
+	/* Interest Accrual
+	 Permissible values are - D, M, Y or 1 time. 
+	 This field will determine how interest is accrued in the account.
+	 */
 	@Index
-	private String interestAccrualInterval; // Permissible values are - D, M, Y
-											// or 1 time. This field will
-											// determine how interest is accrued
-											// in the account.
+	private String interestAccrualInterval; 
 	@Index
 	private Date lastIntAccrualDate;
 	@Index
 	private Date nextIntAccrualDate;
 	private boolean accrueInSusp;
-	// Interest Computation
+	/* Interest Computation
+	 Used in interest computation formular. 
+	 Permissible values are -S simple; C compound
+	 */
 	@Index
-	private String interestComputationMethod; // Used in interest computation
-												// formular. Permissible values
-												// are -S simple; C compound
+	private String interestComputationMethod; 
 	@Index
 	private String interestComputationTerm; // Used in int computation formula.
 											// Permissible values are - D1,

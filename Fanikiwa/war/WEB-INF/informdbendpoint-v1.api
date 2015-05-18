@@ -27,22 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "informdbendpoint.insertInformdb" : {
-      "path" : "informdb",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "informdbendpoint.listInformdb" : {
       "path" : "informdb",
       "httpMethod" : "GET",
@@ -68,43 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "informdbendpoint.removeInformdb" : {
-      "path" : "informdb/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "informdbendpoint.updateInformdb" : {
-      "path" : "informdb",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "informdbendpoint.getInformdb" : {
       "path" : "informdb/{id}",
       "httpMethod" : "GET",
@@ -125,10 +72,78 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "informdbendpoint.insertInformdb" : {
+      "path" : "informdb",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "informdbendpoint.updateInformdb" : {
+      "path" : "informdb",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "informdbendpoint.removeInformdb" : {
+      "path" : "informdb/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_Informdb" : {
+        "id" : "CollectionResponse_Informdb",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Informdb"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "Informdb" : {
         "id" : "Informdb",
         "type" : "object",
@@ -160,24 +175,19 @@
             "type" : "string"
           }
         }
-      },
-      "CollectionResponse_Informdb" : {
-        "id" : "CollectionResponse_Informdb",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Informdb"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Informdb"
+        }
+      },
+      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
+        "response" : {
+          "$ref" : "Informdb"
+        }
+      },
       "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
         "request" : {
           "$ref" : "Informdb"
@@ -185,13 +195,6 @@
         "response" : {
           "$ref" : "Informdb"
         }
-      },
-      "com.sp.fanikiwa.api.InformdbEndpoint.listInformdb" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Informdb"
-        }
-      },
-      "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb" : {
       },
       "com.sp.fanikiwa.api.InformdbEndpoint.updateInformdb" : {
         "request" : {
@@ -201,10 +204,7 @@
           "$ref" : "Informdb"
         }
       },
-      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
-        "response" : {
-          "$ref" : "Informdb"
-        }
+      "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb" : {
       }
     }
   }

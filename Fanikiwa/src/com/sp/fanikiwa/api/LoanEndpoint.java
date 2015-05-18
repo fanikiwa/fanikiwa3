@@ -199,7 +199,9 @@ public class LoanEndpoint {
 	public CollectionResponse<Loan> NextIntAppLoanByDate(
 			@Named("date") Date date) {
 		Query<Loan> query = ofy().load().type(Loan.class)
-				.filter("nextIntAppDate", date);
+				.filter("nextIntAppDate <=", date);
+//		.filter("nextIntAppDate >=",Loan.getLastIntAppDate())
+//		.filter("nextIntAppDate <=",date)
 		return listLoanByQuery(query, null, null);
 	}
 

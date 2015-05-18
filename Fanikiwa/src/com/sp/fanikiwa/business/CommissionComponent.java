@@ -394,8 +394,8 @@ public class CommissionComponent {
 		// compute commission if _sto.ChargeCommFlag==true &&
 		// !_sto.CommissionPaidFlag
 		if (_sto.getChargeCommFlag() && !_sto.getCommissionPaidFlag()) {
-			STOCommSourceFlag stoflag = STOCommSourceFlag.values()[_sto
-					.getCommSourceFlag()];
+			STOCommSourceFlag stoflag = STOCommSourceFlag.valueOf(_sto
+					.getCommSourceFlag());
 
 			switch (stoflag) {
 			case NoCommission:

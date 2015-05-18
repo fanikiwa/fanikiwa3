@@ -36,8 +36,12 @@ public class STO {
  
 	private boolean commissionPaidFlag;
 
- 
-	private short commSourceFlag;
+ /*
+  * [NoCommission |STO|TransactionType]
+  * STO - Pick the value in the STO.commissionAmount 
+  * TransactionType - Compute commission as defined by the TransactionType
+  * */
+	private String commSourceFlag;
 
  
 	private Long crAccount;
@@ -95,7 +99,7 @@ public class STO {
 	private int STOAccType;
 
  
-	private int STOType;
+	private String STOType;
 
  
 	private double totalToPay;
@@ -184,11 +188,11 @@ public class STO {
 		this.commissionPaidFlag = commissionPaidFlag;
 	}
 
-	public short getCommSourceFlag() {
+	public String getCommSourceFlag() {
 		return this.commSourceFlag;
 	}
 
-	public void setCommSourceFlag(short commSourceFlag) {
+	public void setCommSourceFlag(String commSourceFlag) {
 		this.commSourceFlag = commSourceFlag;
 	}
 
@@ -336,11 +340,11 @@ public class STO {
 		this.STOAccType = STOAccType;
 	}
 
-	public int getSTOType() {
+	public String getSTOType() {
 		return this.STOType;
 	}
 
-	public void setSTOType(int STOType) {
+	public void setSTOType(String STOType) {
 		this.STOType = STOType;
 	}
 

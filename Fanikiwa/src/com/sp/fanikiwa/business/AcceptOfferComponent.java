@@ -12,6 +12,7 @@ import com.sp.fanikiwa.Enums.OfferStatus;
 import com.sp.fanikiwa.Enums.PostingCheckFlag;
 import com.sp.fanikiwa.Enums.RepaymentInterval;
 import com.sp.fanikiwa.Enums.STOCommissionChargeWho;
+import com.sp.fanikiwa.Enums.STOType;
 import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.LoanEndpoint;
 import com.sp.fanikiwa.api.MemberEndpoint;
@@ -36,7 +37,6 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.LoanUtil;
-
 import com.sp.utils.PeerLendingUtil;
 
 public class AcceptOfferComponent {
@@ -315,6 +315,7 @@ public class AcceptOfferComponent {
 			lr.setInterval(RepaymentInterval.M.toString()); // Create enum
 															// called
 															// RapaymentInterval
+			lr.setSTOType(STOType.Normal.name());
 			lr.setNoOfPayments(loan.getTerm()); // no of payments is loan terms
 			lr.setCreateDate(new Date());
 			lr.setStartDate(new Date()); // when does repayment start);

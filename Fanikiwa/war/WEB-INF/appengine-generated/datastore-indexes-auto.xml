@@ -1,20 +1,6 @@
-<!-- Indices written at Sat, 16 May 2015 15:01:04 EAT -->
+<!-- Indices written at Mon, 18 May 2015 13:16:54 EAT -->
 
 <datastore-indexes>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Offer" ancestor="false" source="auto">
-        <property name="offerType" direction="asc"/>
-        <property name="privateOffer" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="member" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Transaction" ancestor="false" source="auto">
-        <property name="account" direction="asc"/>
-        <property name="postDate" direction="desc"/>
-    </datastore-index>
 
     <!-- Used 2 times in query history -->
     <datastore-index kind="Transaction" ancestor="false" source="auto">

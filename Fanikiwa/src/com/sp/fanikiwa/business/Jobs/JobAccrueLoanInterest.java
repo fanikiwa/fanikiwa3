@@ -17,6 +17,16 @@ import com.sp.utils.DateExtension;
 import com.sp.utils.LoanUtil;
 import com.sp.utils.StringExtension;
 
+/*
+ * This job accrues interest to all loans that are due. It uses the Loan.nextIntAccrualDate <= rundate to determine
+ * the loans to accrue the interest to. 
+ * It computes interest using the interest computation method defined in loan.InterestComputationMethod
+ * and accrues interest on the either field loan.AccruedInterest or loan.AccruedIntInSusp depending on the
+ * setting loan.AccrueInSusp value. It adds interest to the already existing figure in those fields
+ * 
+ * Finally it adjusts the loan.LastIntAccrualDate and loan.NextIntAccrualDate depending on the setting
+ * in field loan.InterestAccrualInterval
+ * */
 public class JobAccrueLoanInterest implements IJobItem {
 
 	boolean EnableLog = true;
