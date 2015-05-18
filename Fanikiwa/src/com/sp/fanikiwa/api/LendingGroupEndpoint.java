@@ -187,7 +187,7 @@ public class LendingGroupEndpoint {
 	@ApiMethod(name = "saveLendinggroup")
 	public RequestResult saveLendinggroup(final LendingGroupDTO lendingGroupDTO) {
 		final RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		Lendinggroup group = ofy().transactNew(MAXRETRIES,
@@ -201,7 +201,7 @@ public class LendingGroupEndpoint {
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							re.setResult(false);
+							re.setSuccess(false);
 							re.setResultMessage(e.getMessage().toString());
 						}
 						return group;

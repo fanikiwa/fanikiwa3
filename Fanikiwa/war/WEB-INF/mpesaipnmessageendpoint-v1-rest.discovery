@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/75Bk5bO5cROvxGOp12dE3qovUv0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9BWC5lsHlrzyUpNl8IWqIfNJ9q0\"",
  "discoveryVersion": "v1",
  "id": "mpesaipnmessageendpoint:v1",
  "name": "mpesaipnmessageendpoint",
@@ -89,8 +89,75 @@
     }
    }
   },
+  "CollectionResponse_MpesaTestIPNMessage": {
+   "id": "CollectionResponse_MpesaTestIPNMessage",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "MpesaTestIPNMessage"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "MpesaIPNMessage": {
    "id": "MpesaIPNMessage",
+   "type": "object",
+   "properties": {
+    "dest": {
+     "type": "string"
+    },
+    "mpesaIPNMessageID": {
+     "type": "string"
+    },
+    "mpesa_acc": {
+     "type": "string"
+    },
+    "mpesa_amt": {
+     "type": "number",
+     "format": "double"
+    },
+    "mpesa_code": {
+     "type": "string"
+    },
+    "mpesa_msisdn": {
+     "type": "string"
+    },
+    "mpesa_sender": {
+     "type": "string"
+    },
+    "mpesa_trx_date": {
+     "type": "string"
+    },
+    "mpesa_trx_time": {
+     "type": "string"
+    },
+    "orig": {
+     "type": "string"
+    },
+    "pass": {
+     "type": "string"
+    },
+    "status": {
+     "type": "string"
+    },
+    "text": {
+     "type": "string"
+    },
+    "tstamp": {
+     "type": "string"
+    },
+    "user": {
+     "type": "string"
+    }
+   }
+  },
+  "MpesaTestIPNMessage": {
+   "id": "MpesaTestIPNMessage",
    "type": "object",
    "properties": {
     "dest": {
@@ -155,7 +222,6 @@
     "id": {
      "type": "string",
      "required": true,
-     "format": "int64",
      "location": "path"
     }
    },
@@ -164,6 +230,28 @@
    ],
    "response": {
     "$ref": "MpesaIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getMpesaTestIPNMessage": {
+   "id": "mpesaipnmessageendpoint.getMpesaTestIPNMessage",
+   "path": "mpesatestipnmessage/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "MpesaTestIPNMessage"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -184,6 +272,21 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "insertMpesaTestIPNMessage": {
+   "id": "mpesaipnmessageendpoint.insertMpesaTestIPNMessage",
+   "path": "mpesatestipnmessage",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "MpesaTestIPNMessage",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "MpesaTestIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "isMpesaIPNMessageExists": {
    "id": "mpesaipnmessageendpoint.isMpesaIPNMessageExists",
    "path": "isMpesaIPNMessageExists",
@@ -194,6 +297,21 @@
    },
    "response": {
     "$ref": "MpesaIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "isMpesaTestIPNMessageExists": {
+   "id": "mpesaipnmessageendpoint.isMpesaTestIPNMessageExists",
+   "path": "isMpesaTestIPNMessageExists",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "MpesaTestIPNMessage",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "MpesaTestIPNMessage"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -221,6 +339,28 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "listMpesaTestIPNMessage": {
+   "id": "mpesaipnmessageendpoint.listMpesaTestIPNMessage",
+   "path": "mpesatestipnmessage",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_MpesaTestIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "listNewMpesaIPNMessages": {
    "id": "mpesaipnmessageendpoint.listNewMpesaIPNMessages",
    "path": "ListNewMpesaIPNMessages",
@@ -243,9 +383,49 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "listNewMpesaTestIPNMessages": {
+   "id": "mpesaipnmessageendpoint.listNewMpesaTestIPNMessages",
+   "path": "ListNewMpesaTestIPNMessages",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_MpesaTestIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "removeMpesaIPNMessage": {
    "id": "mpesaipnmessageendpoint.removeMpesaIPNMessage",
    "path": "mpesaipnmessage/{id}",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "removeMpesaTestIPNMessage": {
+   "id": "mpesaipnmessageendpoint.removeMpesaTestIPNMessage",
+   "path": "mpesatestipnmessage/{id}",
    "httpMethod": "DELETE",
    "parameters": {
     "id": {
@@ -272,6 +452,21 @@
    },
    "response": {
     "$ref": "MpesaIPNMessage"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "updateMpesaTestIPNMessage": {
+   "id": "mpesaipnmessageendpoint.updateMpesaTestIPNMessage",
+   "path": "mpesatestipnmessage",
+   "httpMethod": "PUT",
+   "request": {
+    "$ref": "MpesaTestIPNMessage",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "MpesaTestIPNMessage"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

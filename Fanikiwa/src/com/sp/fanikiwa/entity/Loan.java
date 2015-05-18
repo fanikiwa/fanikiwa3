@@ -69,6 +69,7 @@ public class Loan {
 	private Date nextIntAppDate;
 	private Long intPayingAccount;
 	private Long intPaidAccount;
+	private Long transactionType;
 
 	public Loan() {
 	}
@@ -265,4 +266,11 @@ public class Loan {
 		this.intPaidAccount = intPaidAccount;
 	}
 
+	public Long getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(Long transactionType) {
+		this.transactionType = transactionType;
+	}
 }

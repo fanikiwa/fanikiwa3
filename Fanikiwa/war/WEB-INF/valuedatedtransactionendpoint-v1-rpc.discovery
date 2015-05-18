@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/h8D5o2-ODcthcFIp4BOwD4NlfHA\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/x1nf8tKmWJU-McWa-VZrNkZSuUY\"",
  "discoveryVersion": "v1",
  "id": "valuedatedtransactionendpoint:v1",
  "name": "valuedatedtransactionendpoint",
@@ -117,8 +117,16 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
+    },
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
     "interestAccrualInterval": {
      "type": "string"
@@ -157,8 +165,7 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "maturityDate": {
      "type": "string",
@@ -173,8 +180,7 @@
      "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },

@@ -105,7 +105,7 @@ public class STOEndpoint {
 	@ApiMethod(name = "retrieveSTO")
 	public RequestResult retrieveSTO(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			STO sto = findRecord(id);
@@ -116,7 +116,7 @@ public class STOEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

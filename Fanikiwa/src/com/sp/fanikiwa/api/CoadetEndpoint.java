@@ -104,7 +104,7 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "retrieveCoadet")
 	public RequestResult retrieveCoadet(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coadet coadet = findRecord(id);
@@ -115,7 +115,7 @@ public class CoadetEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -134,7 +134,7 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "insertCoadet")
 	public RequestResult insertCoadet(Coadet coadet) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (coadet.getId() != null) {
@@ -148,7 +148,7 @@ public class CoadetEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -167,7 +167,7 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "updateCoadet")
 	public RequestResult updateCoadet(Coadet Coadet) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coadet coadet = findRecord(Coadet.getId());
@@ -180,7 +180,7 @@ public class CoadetEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -197,7 +197,7 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "removeCoadet")
 	public RequestResult removeCoadet(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coadet coadet = findRecord(id);
@@ -209,7 +209,7 @@ public class CoadetEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

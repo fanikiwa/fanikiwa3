@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/7z5RQtwp7xMxEleGiptVMgEHO_k\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Q5_Bn4bMl-kh1LaxUdmwFDroSEY\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",
@@ -117,8 +117,16 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
+    },
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
     "interestAccrualInterval": {
      "type": "string"
@@ -157,8 +165,7 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "maturityDate": {
      "type": "string",
@@ -173,8 +180,7 @@
      "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -393,8 +399,46 @@
     }
    }
   },
-  "MemberDTO": {
-   "id": "MemberDTO",
+  "Organization": {
+   "id": "Organization",
+   "type": "object",
+   "properties": {
+    "address": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "name": {
+     "type": "string"
+    },
+    "organizationID": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
+  "UserDTO": {
+   "id": "UserDTO",
    "type": "object",
    "properties": {
     "dateActivated": {
@@ -425,27 +469,15 @@
     },
     "telephone": {
      "type": "string"
+    },
+    "userType": {
+     "type": "string"
     }
    }
   },
-  "Organization": {
-   "id": "Organization",
-   "type": "object",
-   "properties": {
-    "address": {
-     "type": "string"
-    },
-    "email": {
-     "type": "string"
-    },
-    "name": {
-     "type": "string"
-    },
-    "organizationID": {
-     "type": "string",
-     "format": "int64"
-    }
-   }
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -476,6 +508,24 @@
    ],
    "returns": {
     "$ref": "Member"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "memberendpoint.getMemberByEmailWeb": {
+   "id": "memberendpoint.getMemberByEmailWeb",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -538,6 +588,24 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "memberendpoint.isEmailValid": {
+   "id": "memberendpoint.isEmailValid",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "memberendpoint.listMember": {
    "id": "memberendpoint.listMember",
    "allowGet": true,
@@ -557,18 +625,44 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "memberendpoint.listMemberAccountWeb": {
+   "id": "memberendpoint.listMemberAccountWeb",
+   "allowGet": true,
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "memberendpoint.register": {
    "id": "memberendpoint.register",
    "parameters": {
     "resource": {
-     "$ref": "MemberDTO"
+     "$ref": "UserDTO"
     }
    },
    "parameterOrder": [
     "resource"
    ],
    "returns": {
-    "$ref": "Member"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -590,27 +684,20 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "memberendpoint.retrieveMemberAccounts": {
-   "id": "memberendpoint.retrieveMemberAccounts",
-   "allowGet": true,
+  "memberendpoint.retrieveMember": {
+   "id": "memberendpoint.retrieveMember",
    "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "cursor": {
-     "type": "string"
-    },
-    "email": {
+    "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
-    "email"
+    "id"
    ],
    "returns": {
-    "$ref": "CollectionResponse_Account"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -670,7 +757,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Member"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

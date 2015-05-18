@@ -128,7 +128,7 @@ public class MemberEndpoint {
 	@ApiMethod(name = "updateMember")
 	public RequestResult updateMember(Member member) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 
@@ -180,7 +180,7 @@ public class MemberEndpoint {
 									.toString()));
 
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -221,19 +221,19 @@ public class MemberEndpoint {
 	@ApiMethod(name = "getMemberByEmailWeb")
 	public RequestResult GetMemberByEmailWeb(@Named("email") String email) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Member member = ofy().load().type(Member.class)
 					.filter("email", email).first().now();
 			if (member == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Could not find Member Info");
 				return re;
 			}
 			re.setClientToken(member);
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -242,19 +242,19 @@ public class MemberEndpoint {
 	@ApiMethod(name = "retrieveMember")
 	public RequestResult retrieveMember(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Member member = findRecord(id);
 			if (member == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Record does not exist");
 				return re;
 			}
 			MemberDTO memberDto = createDTOFromMember(member);
 			re.setClientToken(memberDto);
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -277,12 +277,12 @@ public class MemberEndpoint {
 		String userType = memberDTO.getUserType();
 
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		// STEP 1: Create the user
 		UserprofileEndpoint upep = new UserprofileEndpoint();
-		if (!upep.UserExists(memberDTO.getEmail()).isResult()) {
+		if (!upep.UserExists(memberDTO.getEmail()).isSuccess()) {
 			Userprofile user = new Userprofile();
 			user.setCreateDate(new Date());
 			user.setPwd(memberDTO.getPwd()); // think of encrypting
@@ -295,12 +295,12 @@ public class MemberEndpoint {
 			try {
 				userReturned = upep.insertUserprofile(user);
 				if (userReturned == null) {
-					re.setResult(false);
+					re.setSuccess(false);
 					re.setResultMessage("Error Creating User!");
 					return re;
 				}
 			} catch (NotFoundException | ConflictException e) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage(e.getMessage());
 				return re;
 			}
@@ -315,7 +315,7 @@ public class MemberEndpoint {
 			Member emailexists = ofy().load().type(Member.class)
 					.filter("email", memberDTO.getEmail()).first().now();
 			if (emailexists != null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Email is already Registered in Fanikiwa!");
 				return re;
 			}
@@ -323,7 +323,7 @@ public class MemberEndpoint {
 					.filter("telephone", memberDTO.getTelephone()).first()
 					.now();
 			if (telephoneexists != null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Telephone is already Registered in Fanikiwa!");
 				return re;
 			}
@@ -343,7 +343,7 @@ public class MemberEndpoint {
 			CustomerEndpoint cep = new CustomerEndpoint();
 			Customer customerReturned = cep.insertCustomer(customer);
 			if (customerReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Customer!");
 				return re;
 			}
@@ -449,27 +449,27 @@ public class MemberEndpoint {
 					.insertAccount(interestincomeaccount);
 
 			if (currentAccountReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Current Account!");
 				return re;
 			}
 			if (loanAccountReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Loan Account!");
 				return re;
 			}
 			if (intexpAccountReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Interest Expense Account!");
 				return re;
 			}
 			if (investmentAccountReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Investment Account!");
 				return re;
 			}
 			if (intincAccountReturned == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Interet Income Account!");
 				return re;
 			}
@@ -492,7 +492,7 @@ public class MemberEndpoint {
 			member.setCustomer(customerReturned);
 			Member newMember = insertMember(member);
 			if (newMember == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Member!");
 				return re;
 			}
@@ -505,7 +505,7 @@ public class MemberEndpoint {
 			LendingGroupEndpoint mc = new LendingGroupEndpoint();
 			mc.CreateRootMailingGroup(newMember);
 
-			re.setResult(true);
+			re.setSuccess(true);
 			re.setResultMessage(MessageFormat
 					.format("Registration Details:<br/>Member Id: {0}, <br/>Current Account Id: {1}, <br/>Loan Account Id: {2}, <br/>Investment Account Id: {3}, <br/>Interest Income Account Id: {4}, <br/>Interest Expense Account Id: {5}",
 							newMember.getMemberId().toString(), newMember
@@ -519,7 +519,7 @@ public class MemberEndpoint {
 									.getinterestExpAccount().getAccountID()
 									.toString()));
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -580,7 +580,7 @@ public class MemberEndpoint {
 	public RequestResult isEmailValid(@Named("email") String email) {
 
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		try {
@@ -588,17 +588,17 @@ public class MemberEndpoint {
 			String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 			Boolean isemailvalid = email.matches(EMAIL_REGEX);
 			if (isemailvalid) {
-				re.setResult(isemailvalid);
+				re.setSuccess(isemailvalid);
 				re.setResultMessage("email validation successful...");
 				return re;
 			} else {
-				re.setResult(isemailvalid);
+				re.setSuccess(isemailvalid);
 				re.setResultMessage("Validation failed! Please check Email.<br/>Valid format is user@domain.com");
 				return re;
 			}
 
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

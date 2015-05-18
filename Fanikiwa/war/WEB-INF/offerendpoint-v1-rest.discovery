@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/EC6K53tn7sxndOyt1vj5m-ZT40o\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/74YxtrYAm-CcR04GohXPZ5ApFAY\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -119,8 +119,16 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
+    },
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
     "interestAccrualInterval": {
      "type": "string"
@@ -159,8 +167,7 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "maturityDate": {
      "type": "string",
@@ -175,8 +182,7 @@
      "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -416,7 +422,7 @@
     "partialPay": {
      "type": "boolean"
     },
-    "publicOffer": {
+    "privateOffer": {
      "type": "boolean"
     },
     "status": {
@@ -463,7 +469,7 @@
     "partialPay": {
      "type": "boolean"
     },
-    "publicOffer": {
+    "privateOffer": {
      "type": "boolean"
     },
     "status": {
@@ -493,6 +499,29 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -517,20 +546,36 @@
     "id",
     "email"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "createLendOffer": {
-   "id": "offerendpoint.createLendOffer",
-   "path": "CreateLendOffer",
+  "acceptPartialBorrowOffer": {
+   "id": "offerendpoint.acceptPartialBorrowOffer",
+   "path": "AcceptPartialBorrowOffer/{id}/{email}",
    "httpMethod": "POST",
-   "request": {
-    "$ref": "OfferDTO",
-    "parameterName": "resource"
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    },
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
    },
+   "parameterOrder": [
+    "id",
+    "email"
+   ],
    "response": {
-    "$ref": "Offer"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -604,9 +649,9 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "listMyLendOffers": {
-   "id": "offerendpoint.listMyLendOffers",
-   "path": "ListMyLendOffers/{memberid}",
+  "listLendOffers": {
+   "id": "offerendpoint.listLendOffers",
+   "path": "ListLendOffers/{memberid}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -672,13 +717,16 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "retrieveBorrowOffers": {
    "id": "offerendpoint.retrieveBorrowOffers",
-   "path": "retrieveBorrowOffers/{memberid}",
+   "path": "retrieveBorrowOffers/{email}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -690,14 +738,14 @@
      "type": "string",
      "location": "query"
     },
-    "memberid": {
+    "email": {
      "type": "string",
      "required": true,
      "location": "path"
     }
    },
    "parameterOrder": [
-    "memberid"
+    "email"
    ],
    "response": {
     "$ref": "CollectionResponse_Offer"
@@ -706,9 +754,9 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "retrieveMyLendOffers": {
-   "id": "offerendpoint.retrieveMyLendOffers",
-   "path": "retrieveMyLendOffers/{memberid}",
+  "retrieveLendOffers": {
+   "id": "offerendpoint.retrieveLendOffers",
+   "path": "retrieveLendOffers/{email}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -720,14 +768,14 @@
      "type": "string",
      "location": "query"
     },
-    "memberid": {
+    "email": {
      "type": "string",
      "required": true,
      "location": "path"
     }
    },
    "parameterOrder": [
-    "memberid"
+    "email"
    ],
    "response": {
     "$ref": "CollectionResponse_Offer"
@@ -738,7 +786,7 @@
   },
   "retrieveMyOffers": {
    "id": "offerendpoint.retrieveMyOffers",
-   "path": "retrieveMyOffers/{memberid}",
+   "path": "retrieveMyOffers/{email}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -750,14 +798,14 @@
      "type": "string",
      "location": "query"
     },
-    "memberid": {
+    "email": {
      "type": "string",
      "required": true,
      "location": "path"
     }
    },
    "parameterOrder": [
-    "memberid"
+    "email"
    ],
    "response": {
     "$ref": "CollectionResponse_Offer"
@@ -768,7 +816,7 @@
   },
   "retrievePublicOffers": {
    "id": "offerendpoint.retrievePublicOffers",
-   "path": "retrievePublicOffers",
+   "path": "RetrievePublicOffers/{email}/{offerType}",
    "httpMethod": "POST",
    "parameters": {
     "count": {
@@ -779,8 +827,22 @@
     "cursor": {
      "type": "string",
      "location": "query"
+    },
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    },
+    "offerType": {
+     "type": "string",
+     "required": true,
+     "location": "path"
     }
    },
+   "parameterOrder": [
+    "email",
+    "offerType"
+   ],
    "response": {
     "$ref": "CollectionResponse_Offer"
    },
@@ -797,7 +859,7 @@
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Offer"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -829,6 +891,28 @@
    ],
    "response": {
     "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectOffer": {
+   "id": "offerendpoint.selectOffer",
+   "path": "selectOffer/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

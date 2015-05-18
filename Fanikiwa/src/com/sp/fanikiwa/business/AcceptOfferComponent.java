@@ -36,7 +36,8 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.LoanUtil;
-import com.sp.utils.OfferUtil;
+
+import com.sp.utils.PeerLendingUtil;
 
 public class AcceptOfferComponent {
 	public AcceptOfferComponent() {
@@ -60,7 +61,7 @@ public class AcceptOfferComponent {
 		Loan loan = null;
 
 		ValidateOffer(aBorrowOffer, lender);
-		OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
+		PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
 		try
 		{
 
@@ -95,11 +96,11 @@ public class AcceptOfferComponent {
 
 		// create loan
 		loan = CreateLoan(borrower, lender, aBorrowOffer);
-		OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
+		PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
 
 		}catch(Exception e)
 		{
-			OfferUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Open);
+			PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw e;
 		}
 		return loan;
@@ -116,7 +117,7 @@ public class AcceptOfferComponent {
 		Loan loan = null;
 
 		ValidateOffer(aLendOffer, borrower);
-		OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Processing);
+		PeerLendingUtil.SetOfferStatus(aLendOffer, OfferStatus.Processing);
 		try {
 
 			// get the lender from the offer
@@ -131,14 +132,14 @@ public class AcceptOfferComponent {
 			if (GLUtil.CheckLimit(lenderCurr, aLendOffer.getAmount())) {
 				aep.UnBlockFunds(lenderCurr, aLendOffer.getAmount());
 				loan = CreateLoan(borrower, lender, aLendOffer);
-				OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Closed);
+				PeerLendingUtil.SetOfferStatus(aLendOffer, OfferStatus.Closed);
 			} else {
 				throw new Exception("Insufficient Limit");
 			}
 
 		} catch (Exception e) {
 			// Before throwing the error, revert status to open
-			OfferUtil.SetOfferStatus(aLendOffer, OfferStatus.Open);
+			PeerLendingUtil.SetOfferStatus(aLendOffer, OfferStatus.Open);
 			throw e;
 		}
 		return loan;
@@ -241,10 +242,10 @@ public class AcceptOfferComponent {
 		// offer.Amount = offer.Amount - loan.Amount;
 		if (_offer.getAmount() <= 0) {
 			// Offer fully subscribed. Change the offer status to closed.
-			OfferUtil.SetOfferStatus(_offer, OfferStatus.Closed);
+			PeerLendingUtil.SetOfferStatus(_offer, OfferStatus.Closed);
 		} else {
 			// unlock the offer. Change the offer status to Open.
-			OfferUtil.SetOfferStatus(_offer, OfferStatus.Open);
+			PeerLendingUtil.SetOfferStatus(_offer, OfferStatus.Open);
 		}
 		return loan;
 	}
@@ -290,6 +291,9 @@ public class AcceptOfferComponent {
 		// loan.setLastIntAccrualDate(lastIntAccrualDate);
 		loan.setNextIntAccrualDate(LoanUtil.GetNextIntAccrualDate(loan,
 				new Date()));
+		
+		//ESTABLISHLOANTRANSACTIONTYPE
+		loan.setTransactionType(Config.GetLong("ESTABLISHLOANTRANSACTIONTYPE"));
 
 		// Now create the loan in the loan book
 		return loanepC.insertLoan(loan);
@@ -375,9 +379,7 @@ public class AcceptOfferComponent {
 		// create all transactions
 		List<Transaction> txns = new ArrayList<Transaction>();
 		InterestComponent ic = new InterestComponent();
-		double interest = ic.ComputeSimpleInterest(offer.getAmount(),
-				offer.getTerm(), (double) offer.getInterest());
-
+		
 		// establish loan with attendant commission
 		TransactionType tt = Config
 				.GetTransactionType("ESTABLISHLOANTRANSACTIONTYPE");
@@ -396,6 +398,11 @@ public class AcceptOfferComponent {
 				offer.getAmount(), false, "Y", Authorizer, userID, offer
 						.getId().toString());
 		// Accrue interest
+		//Default interest is Simple and only computation method for this version
+		double interest = ic.ComputeSimpleInterest(offer.getAmount(),
+						offer.getTerm(), (double) offer.getInterest());
+		
+
 		GenericTransaction inttxn = new GenericTransaction(intt, "INT",
 				new Date(), borrower.getinterestExpAccount(),
 				lender.getinterestIncAccount(), interest, false, "Y",

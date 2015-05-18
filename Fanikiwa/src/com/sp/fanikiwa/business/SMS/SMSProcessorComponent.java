@@ -18,7 +18,7 @@ import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.MemberEndpoint;
 import com.sp.fanikiwa.api.OfferEndpoint;
 import com.sp.fanikiwa.business.AcceptOfferComponent;
-import com.sp.fanikiwa.business.MakeOfferComponent;
+
 import com.sp.fanikiwa.business.RegistrationComponent;
 import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.business.financialtransactions.TransactionFactory;
@@ -531,7 +531,7 @@ public class SMSProcessorComponent {
 				&& !rc.IsNationalIDRegistered(message.NationalID)) {
 
 			RequestResult re = rc.Register(SMSToMember(message));
-			if (re.isResult() != false) {
+			if (re.isSuccess() != false) {
 				return re.getResultMessage();
 			} else
 				return "Member registration was not successful";
@@ -588,8 +588,8 @@ public class SMSProcessorComponent {
 				Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
 
 		try {
-			MakeOfferComponent mo = new MakeOfferComponent();
-			mo.MakeOffer(offer);
+			OfferEndpoint mo = new OfferEndpoint();
+			mo.saveOffer(offer);
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -624,8 +624,8 @@ public class SMSProcessorComponent {
 				Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
 
 		try {
-			MakeOfferComponent mo = new MakeOfferComponent();
-			mo.MakeOffer(offer);
+			OfferEndpoint mo = new OfferEndpoint();
+			mo.saveOffer(offer);;
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -825,8 +825,11 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 		try {
-			WithdrawalComponent wc = new WithdrawalComponent();
-			msg = wc.MemberWithdraw(member, message.Amount);
+			/*
+			 * 1. convert WithdrawMessage to WithdrawalMessage
+			 * 2. save WithdrawalMessage
+			 * 3. get the saved message and pass it to WithdrawalComponent.Withdraw
+			 * */
 
 		} catch (Exception we) {
 			msg = we.getMessage();

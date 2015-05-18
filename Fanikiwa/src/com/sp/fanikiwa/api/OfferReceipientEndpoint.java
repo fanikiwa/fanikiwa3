@@ -13,6 +13,7 @@ import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferReceipient;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.utils.PeerLendingUtil;
 
@@ -56,6 +57,36 @@ public class OfferReceipientEndpoint {
 				
 		return CollectionResponse.<Offer> builder().setItems(records)
 				.setNextPageToken(cb.getNextPageToken()).build();
+	}
+	
+	public CollectionResponse<OfferReceipient> getOfferReceipients(
+			@Named("offerId") Long offerId, 
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		
+		Offer offer = PeerLendingUtil.GetOffer(offerId);
+		Query<OfferReceipient> query = ofy().load().type(OfferReceipient.class)
+				.filter("offer", offer);
+		
+		return listOfferReceipientQuery(query,cursorString,count);
+	}
+	public RequestResult DeleteOfferReciepients(@Named("offerId") Long offerId)
+	{
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+		try
+		{
+		for(OfferReceipient or :getOfferReceipients(offerId,null,null).getItems())
+		{
+			removeOfferReceipient(or.getOfferReceipientId());
+		}
+		}catch(Exception e)
+		{
+			re.setSuccess(false);
+			re.setResultMessage("An error occured: " + e.getMessage());
+		}
+		return re;
 	}
 	private CollectionResponse<OfferReceipient> listOfferReceipientQuery(
 			Query<OfferReceipient> query, 

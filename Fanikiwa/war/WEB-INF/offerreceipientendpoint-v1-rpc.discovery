@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/eip7xsdM1_j1my0VqCSBGm1kMV4\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/UWz6ZPSNE5Rz814Nwbnzi3v1xbo\"",
  "discoveryVersion": "v1",
  "id": "offerreceipientendpoint:v1",
  "name": "offerreceipientendpoint",
@@ -117,8 +117,16 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
+    },
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
     "interestAccrualInterval": {
      "type": "string"
@@ -157,8 +165,7 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "maturityDate": {
      "type": "string",
@@ -173,8 +180,7 @@
      "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -230,6 +236,21 @@
      "format": "int32"
     },
     "shortCode": {
+     "type": "string"
+    }
+   }
+  },
+  "CollectionResponse_Offer": {
+   "id": "CollectionResponse_Offer",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Offer"
+     }
+    },
+    "nextPageToken": {
      "type": "string"
     }
    }
@@ -414,7 +435,7 @@
     "partialPay": {
      "type": "boolean"
     },
-    "publicOffer": {
+    "privateOffer": {
      "type": "boolean"
     },
     "status": {
@@ -460,6 +481,29 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -527,8 +571,62 @@
     },
     "cursor": {
      "type": "string"
+    },
+    "memberId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
     }
    },
+   "parameterOrder": [
+    "memberId"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerreceipientendpoint.offerReceipientEndpoint.deleteOfferReciepients": {
+   "id": "offerreceipientendpoint.offerReceipientEndpoint.deleteOfferReciepients",
+   "parameters": {
+    "offerId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "offerId"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerreceipientendpoint.offerReceipientEndpoint.getOfferReceipients": {
+   "id": "offerreceipientendpoint.offerReceipientEndpoint.getOfferReceipients",
+   "allowGet": true,
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "offerId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "offerId"
+   ],
    "returns": {
     "$ref": "CollectionResponse_OfferReceipient"
    },

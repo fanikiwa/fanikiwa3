@@ -328,7 +328,7 @@ public class CommissionComponent {
 			return null;
 
 		switch (TT.getCommComputationMethod()) {
-		case "L": // tiered
+		case "L": // Lookup
 			LookupRule lrule = new LookupRule();
 			if (TT.getTieredTableId() == 0)
 				throw new IllegalArgumentException(

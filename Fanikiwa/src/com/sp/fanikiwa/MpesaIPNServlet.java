@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -93,27 +94,9 @@ public class MpesaIPNServlet extends HttpServlet {
 				mep.insertMpesaIPNMessage(msg); //system will check duplicates
 				response.getWriter().println("STEP 2: Message sucessfully saved in DB");
 
-				// 4. Process Message
-				// make sure the message is not processed twice
-				// get all messages where status = 'New'
-				Collection<MpesaIPNMessage> mpesaMsgs = mep
-						.ListNewMpesaIPNMessages(null, null).getItems();
-
-				response.getWriter().println("STEP 3: Processing "+ mpesaMsgs.size() + " new messages..." );
-				for (MpesaIPNMessage mpesaMsg : mpesaMsgs) {
-
-					MpesaComponent mcomp = new MpesaComponent();
-					String str = mcomp.ProcessMessage(mpesaMsg);
-					response.getWriter().println("STEP 3.1: Processed mgsid["+ mpesaMsg.getMpesa_code() + "] ...\nResult =" + str );
-					
-					// 5. update the processed messaged status so it is not
-					// processed again.
-					mpesaMsg.setStatus("Processed");
-					mep.updateMpesaIPNMessage(mpesaMsg);
-					response.getWriter().println("STEP 3.2: DB Status of message id["+ mpesaMsg.getMpesa_code() + "] changed to Processed" );
-					
-
-				}
+				// 4. Process Message by forwarding this to MpesaProcessServelet
+				RequestDispatcher rd = request.getRequestDispatcher("/MpesaProcessServeletCron");
+				rd.forward(request,response);
 
 			} else {
 				// This is an impostor; Log the message for audit purposes

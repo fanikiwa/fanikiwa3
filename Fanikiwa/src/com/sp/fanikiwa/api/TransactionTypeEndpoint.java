@@ -85,7 +85,7 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "retrieveTransactionType")
 	public RequestResult retrieveTransactionType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			TransactionType transactionType = findRecord(id);
@@ -96,7 +96,7 @@ public class TransactionTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -120,7 +120,7 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "insertTransactionType")
 	public RequestResult insertTransactionType(TransactionType transactionType) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (findRecord(transactionType.getTransactionTypeID()) != null) {
@@ -132,7 +132,7 @@ public class TransactionTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -151,7 +151,7 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "updateTransactionType")
 	public RequestResult updateTransactionType(TransactionType transactionType) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			TransactionType record = findRecord(transactionType
@@ -165,7 +165,7 @@ public class TransactionTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -182,7 +182,7 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "removeTransactionType")
 	public RequestResult removeTransactionType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			TransactionType transactiontype = findRecord(id);
@@ -194,7 +194,7 @@ public class TransactionTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

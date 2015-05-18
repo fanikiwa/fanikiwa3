@@ -92,7 +92,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "retrieveUser")
 	public RequestResult retrieveUser(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Userprofile user = findRecord(id);
@@ -103,7 +103,7 @@ public class UserprofileEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -122,7 +122,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "updateUserprofile")
 	public RequestResult updateUserprofile(Userprofile Userprofile) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Userprofile user = findRecord(Userprofile.getUserId());
@@ -134,7 +134,7 @@ public class UserprofileEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -151,7 +151,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "removeUserprofile")
 	public RequestResult removeUserprofile(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Userprofile user = findRecord(id);
@@ -163,7 +163,7 @@ public class UserprofileEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -194,7 +194,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "createUserprofile")
 	public RequestResult createUserprofile(Userprofile userprofile) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (userprofile.getUserId() != null) {
@@ -208,7 +208,7 @@ public class UserprofileEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -218,7 +218,7 @@ public class UserprofileEndpoint {
 	public RequestResult changePassword(@Named("userId") String userId,
 			@Named("pwd") String pwd) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Userprofile user = null;
@@ -228,7 +228,7 @@ public class UserprofileEndpoint {
 			updateUserprofile(user);
 			re.setResultMessage("Password Changed...");
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -238,26 +238,26 @@ public class UserprofileEndpoint {
 	public RequestResult Login(@Named("userId") String userId,
 			@Named("pwd") String pwd) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		Userprofile user = null;
 		user = findRecord(userId);
 		if (user == null) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage("User with email [ " + userId
 					+ " ] does not exist!");
 			return re;
 		}
 		if (AuthenticateUser(user, pwd)) {
-			re.setResult(true);
+			re.setSuccess(true);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			re.setResultMessage("created date:"
 					+ sdf.format(user.getCreateDate()));
 			re.setClientToken(user);
 			return re;
 		} else {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage("User Exists but Password is incorrect.");
 		}
 		return re;
@@ -265,13 +265,13 @@ public class UserprofileEndpoint {
 
 	public RequestResult UserExists(@Named("userId") String userId) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		Userprofile user = null;
 		user = findRecord(userId);
 		if (user == null) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage("User with email [ " + userId
 					+ " ] does not exist!");
 			return re;

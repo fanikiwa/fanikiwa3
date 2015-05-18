@@ -3,83 +3,220 @@ package com.sp.fanikiwa.entity;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.sp.utils.Config;
 
 @Entity
 public class TransactionType {
 
 	@Id
-	Long transactionTypeID;
+	Long transactionTypeID; 
 
-	private boolean absolute;
+	/*
+	 * When true, the commission amount in the {commissionAmount} field is absolute and not a percentage
+	 * 
+	 * */
+	private boolean absolute; 
 
+	/*
+	 * For future use: An expression that evaluates to an amount value.
+	 * */
 	private String amountExpression;
 
+	/*
+	 * When set, if an account used in this transaction type is does not exist, the value is posted in the
+	 * suspenseCrAccount or suspenseDrAccount defined here.  The suspenseDrAccount & suspenseCrAccount accounts 
+	 * are not tested for existence
+	 * When Not Set, an exception is thrown
+	 * */
 	private boolean canSuspend;
 
+	/*
+	 * When set, commission is computed and posted otherwise it is not
+	 * */
 	private boolean chargeCommission;
 
-	private boolean chargeCommissionToTransaction;
+	/*
+	 * if true, the computed commission is removed from the transaction itself. 3 transactions are created instead of 4.
+	 * */
+	private boolean chargeCommissionToTransaction; 
 
+	/*
+	 * D|C. If D, the account being debited is charged commission otherwise the credit account is charged
+	 * */
 	private String chargeWho;
 
+	/*
+	 * [L|T\F] 
+	 * L = Lookup commission from a table.
+	 * T = Compute tiered value from a Tieredtable
+	 * F = Flate rate
+	 * */
 	private String commComputationMethod;
 
-	private double commissionAmount;
+	/*
+	 * Commission amount used in Flatrate method. Can be an absolute or percentage. Interpretation is determined by {absolute} field
+	 * */
+	private double commissionAmount; 
 
+	/*
+	 * For future use: An expression that evaluates to an amount value.
+	 * */
 	private String commissionAmountExpression;
 
+	/*
+	 * A formatter string with placeholders for formatting the contra commission narrative. 
+	 * The allowable place holders are in the format {abstractMoneyTransaction.*} where *= abstractMoneyTransaction properties
+	 *  Defaults to  "{ShortCode} Comm{DebitAccount}" --> 
+	 * */
 	private String commissionContraNarrative;
 
+	/*
+	 * The account where commission is credited. It defaults to Config["COMMISSIONACCOUNT"] if not set.
+	 * */
 	private Long commissionCrAccount;
 
+	/*
+	 * For future use.
+	 * */
 	private Long commissionDrAccount;
 
+	/*
+	 * For future use.
+	 * */
 	private boolean commissionDrAnotherAccount;
 
+	/*
+	 * A formatter string with placeholders for formatting the main commission narrative. 
+	 * The allowable place holders are in the format {abstractMoneyTransaction.*} where *= abstractMoneyTransaction properties
+	 *Defaults to "{ShortCode} Comm"
+	 * */
 	private String commissionMainNarrative;
 
+	/*
+	 * Determines which narrative formatting method to use.
+	 * */
 	private short commissionNarrativeFlag;
+	
 
+	/*
+	 *Used to post commission transaction if this transaction canCharge commission. If not set, defaults to
+	 * Config.GetTransactionType("COMMISSIONTRANSACTIONTYPE")
+	 * */
 	private Long commissionTransactionType;
 
+	/*
+	 * For future use.
+	 * */
 	private String crCommCalcMethod;
 
+	/*
+	 * [D|C] Determines how to treate the amount for Main and Contra transactions. When set to
+	 * 1) D - the amount in Main transaction  is -ve and the amount in Contra transaction is +ve
+	 * 2) C - opposite of 1 above
+	 * */
 	private String debitCredit;
 
+	/*
+	 *  For future use. Default amount for the transaction
+	 * */
 	private double defaultAmount;
 
+	/*
+	 *  For future use. Default contra account for the transaction
+	 * */
 	private Long defaultContraAccount;
 
+	/*
+	 * A formatter string with placeholders for formatting the contra narrative. 
+	 * The allowable place holders are in the format {abstractMoneyTransaction.*} where *= abstractMoneyTransaction properties
+	 * Defaults to  "{ShortCode}" --> that evaluates to the shortcode of the transaction
+	 * */
 	private String defaultContraNarrative;
 
+	/*
+	 *  Default main account for the transaction. 
+	 *  If set or withdrawal transaction, it overrides the Config[CASHACCOUNT]
+	 * */
 	private Long defaultMainAccount;
 
+	/*
+	 * A formatter string with placeholders for formatting the main narrative. 
+	 * The allowable place holders are in the format {abstractMoneyTransaction.*} where *= abstractMoneyTransaction properties
+	 * Defaults to  "{ShortCode}" --> that evaluates to the shortcode of the transaction
+	 * */
 	private String defaultMainNarrative;
 
+	/*
+	 * Describes the transaction
+	 * */
 	private String description;
 
+	/*
+	 * [0|1|2]For future use. 
+	 * 0 - Transaction can be used both in background(System) or Dialog(user)
+	 * 1 - Dialog only
+	 * 2 - System only
+	 * */
 	private short dialogFlag;
 
+	/*
+	 * For future use.
+	 * */
 	private String drCommCalcMethod;
 
+	/*
+	 * When set, the transaction shall be posted without checking LimitFlag or PassFlag of the account. 
+	 * i.e can post even to blocked/disabled/overdrawn accounts. 
+	 * */
 	private boolean forcePost;
 
+	/*
+	 * For future use.
+	 * */
 	private short narrativeFlag;
 
+	/*
+	 * Transaction type short code; used by narrative formatter
+	 * */
 	private String shortCode;
 
+	/*
+	 * [S|] S- the transaction will appear in the statement
+	 * */
 	private String statFlag;
 
+	/*
+	 * Account to suspend a credit transaction.
+	 * */
 	private Long suspenseCrAccount;
 
+	/*
+	 * Account to suspend a debit transaction.
+	 * */
 	private Long suspenseDrAccount;
 
+	/*
+	 * Identifies the table to be used by either Tiered or Lookup computation methods.
+	 * */
 	private Long tieredTableId;
 
+	/*
+	 * For future use.
+	 * */
 	private short txnClass;
 
+	/*
+	 * [0|1|2] For future use. Used to draw the screen for dialog use. 
+	 *  0 - Draw a Single Entry View
+	 *  2 - Draw a Double Entry View
+	 *  3 - Draw a Multi Entry View
+	 * */
 	private short txnTypeView;
 
+	/*
+	 * The number of days amount remains uncleared.  The value should be positive.  
+	Added to the postdate to get valuedate
+	 * */
 	private short valueDateOffset;
 
 	public TransactionType() {

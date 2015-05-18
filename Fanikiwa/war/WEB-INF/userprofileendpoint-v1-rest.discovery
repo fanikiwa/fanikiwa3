@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9cDeKuatVQVyHIF1Mv2a8jREyys\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/RAHb4hPqx-AP4ojLZ9FDt96YvKQ\"",
  "discoveryVersion": "v1",
  "id": "userprofileendpoint:v1",
  "name": "userprofileendpoint",
@@ -89,6 +89,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
   "Userprofile": {
    "id": "Userprofile",
    "type": "object",
@@ -97,7 +116,21 @@
      "type": "string",
      "format": "date-time"
     },
+    "expiryDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastLoginDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "pwd": {
+     "type": "string"
+    },
+    "role": {
+     "type": "string"
+    },
+    "status": {
      "type": "string"
     },
     "telephone": {
@@ -105,8 +138,15 @@
     },
     "userId": {
      "type": "string"
+    },
+    "userType": {
+     "type": "string"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -131,7 +171,22 @@
     "pwd"
    ],
    "response": {
-    "$ref": "Userprofile"
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "createUserprofile": {
+   "id": "userprofileendpoint.createUserprofile",
+   "path": "createUserprofile",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "Userprofile",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -216,7 +271,7 @@
     "pwd"
    ],
    "response": {
-    "$ref": "Userprofile"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -236,20 +291,44 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveUser": {
+   "id": "userprofileendpoint.retrieveUser",
+   "path": "retrieveUser/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateUserprofile": {
    "id": "userprofileendpoint.updateUserprofile",
-   "path": "userprofile",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Userprofile",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Userprofile"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -281,6 +360,27 @@
      ],
      "response": {
       "$ref": "Userprofile"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "userExists": {
+     "id": "userprofileendpoint.userprofileEndpoint.userExists",
+     "path": "UserExists/{userId}",
+     "httpMethod": "POST",
+     "parameters": {
+      "userId": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "userId"
+     ],
+     "response": {
+      "$ref": "RequestResult"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"

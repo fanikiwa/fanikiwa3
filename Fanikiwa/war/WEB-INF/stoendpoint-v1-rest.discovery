@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/gRYPkIzbmYDWTjVYaXHSPeiWwUQ\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/lmkvvO-MiDyvID-Q-cLckVfa9JA\"",
  "discoveryVersion": "v1",
  "id": "stoendpoint:v1",
  "name": "stoendpoint",
@@ -85,6 +85,25 @@
      }
     },
     "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
      "type": "string"
     }
    }
@@ -214,6 +233,10 @@
      "format": "double"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -291,6 +314,28 @@
    "parameterOrder": [
     "id"
    ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveSTO": {
+   "id": "stoendpoint.retrieveSTO",
+   "path": "retrieveSTO/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]

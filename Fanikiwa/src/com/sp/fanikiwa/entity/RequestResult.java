@@ -7,7 +7,7 @@ import com.googlecode.objectify.annotation.Id;
 public class RequestResult {
 	@Id Long id;
 	
-	private boolean Result;
+	private boolean success;
 	private String ResultMessage;
 	private Object clientToken; 
 	
@@ -19,11 +19,11 @@ public class RequestResult {
 		this.id = id;
 	}
 	
-	public boolean isResult() {
-		return Result;
+	public boolean isSuccess() {
+		return success;
 	}
-	public void setResult(boolean result) {
-		Result = result;
+	public void setSuccess(boolean result) {
+		success = result;
 	}
 	public String getResultMessage() {
 		return ResultMessage;

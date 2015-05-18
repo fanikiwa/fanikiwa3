@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/fqeTWblbnvgZBDDjV0PCtv79I4Q\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Gn7yCPnGGImPyvfEKB-C5PMJXBU\"",
  "discoveryVersion": "v1",
  "id": "settingsendpoint:v1",
  "name": "settingsendpoint",
@@ -87,6 +87,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
   "Settings": {
    "id": "Settings",
    "type": "object",
@@ -105,6 +124,10 @@
      "type": "string"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -138,7 +161,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Settings"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -174,6 +197,27 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "settingsendpoint.retrieveSettingsByKey": {
+   "id": "settingsendpoint.retrieveSettingsByKey",
+   "parameters": {
+    "key": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "key"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -189,7 +233,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Settings"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

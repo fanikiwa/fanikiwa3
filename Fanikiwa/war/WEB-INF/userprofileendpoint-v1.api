@@ -52,6 +52,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "userprofileendpoint.removeUserprofile" : {
+      "path" : "userprofile/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.removeUserprofile",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "userprofileendpoint.insertUserprofile" : {
       "path" : "userprofile",
       "httpMethod" : "POST",
@@ -60,6 +81,59 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.insertUserprofile",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "userprofileendpoint.getUserprofileByUserID" : {
+      "path" : "userprofile/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.getUserprofileByUserID",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "userprofileendpoint.updateUserprofile" : {
+      "path" : "requestresult",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.updateUserprofile",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "userprofileendpoint.createUserprofile" : {
+      "path" : "createUserprofile",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.createUserprofile",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -83,27 +157,6 @@
             "required" : true
           },
           "pwd" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userprofileendpoint.userprofileEndpoint.userExists" : {
-      "path" : "UserExists/{userId}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists",
-      "request" : {
-        "parameters" : {
-          "userId" : {
             "type" : "string",
             "required" : true
           }
@@ -139,27 +192,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.retrieveUser" : {
-      "path" : "retrieveUser/{id}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.retrieveUser",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "userprofileendpoint.userprofileEndpoint.loginByPhone" : {
       "path" : "LoginByPhone/{telephone}/{pwd}",
       "httpMethod" : "POST",
@@ -185,17 +217,17 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.removeUserprofile" : {
-      "path" : "userprofile/{id}",
-      "httpMethod" : "DELETE",
+    "userprofileendpoint.userprofileEndpoint.userExists" : {
+      "path" : "UserExists/{userId}",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.removeUserprofile",
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists",
       "request" : {
         "parameters" : {
-          "id" : {
+          "userId" : {
             "type" : "string",
             "required" : true
           }
@@ -206,46 +238,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.createUserprofile" : {
-      "path" : "createUserprofile",
+    "userprofileendpoint.retrieveUser" : {
+      "path" : "retrieveUser/{id}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.createUserprofile",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userprofileendpoint.updateUserprofile" : {
-      "path" : "requestresult",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.updateUserprofile",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userprofileendpoint.getUserprofileByUserID" : {
-      "path" : "userprofile/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.getUserprofileByUserID",
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.retrieveUser",
       "request" : {
         "parameters" : {
           "id" : {
@@ -270,11 +270,11 @@
             "type" : "string",
             "format" : "int64"
           },
+          "success" : {
+            "type" : "boolean"
+          },
           "clientToken" : {
             "$ref" : "_any"
-          },
-          "result" : {
-            "type" : "boolean"
           },
           "resultMessage" : {
             "type" : "string"
@@ -343,6 +343,11 @@
           "$ref" : "RequestResult"
         }
       },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.removeUserprofile" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.UserprofileEndpoint.insertUserprofile" : {
         "request" : {
           "$ref" : "Userprofile"
@@ -351,32 +356,15 @@
           "$ref" : "Userprofile"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.Login" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Userprofile"
-        }
-      },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.retrieveUser" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.LoginByPhone" : {
+      "com.sp.fanikiwa.api.UserprofileEndpoint.getUserprofileByUserID" : {
         "response" : {
           "$ref" : "Userprofile"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.removeUserprofile" : {
+      "com.sp.fanikiwa.api.UserprofileEndpoint.updateUserprofile" : {
+        "request" : {
+          "$ref" : "Userprofile"
+        },
         "response" : {
           "$ref" : "RequestResult"
         }
@@ -389,17 +377,29 @@
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.updateUserprofile" : {
-        "request" : {
-          "$ref" : "Userprofile"
-        },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.Login" : {
         "response" : {
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.getUserprofileByUserID" : {
+      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Userprofile"
+        }
+      },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.LoginByPhone" : {
         "response" : {
           "$ref" : "Userprofile"
+        }
+      },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.UserExists" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.retrieveUser" : {
+        "response" : {
+          "$ref" : "RequestResult"
         }
       }
     }

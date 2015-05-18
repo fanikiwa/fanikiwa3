@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/jhP55XG-5Zr-YSFTcJqM-k0Fhaw\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/ejXF6m4mL66A7ZvPhrf8fTZD5zI\"",
  "discoveryVersion": "v1",
  "id": "loanendpoint:v1",
  "name": "loanendpoint",
@@ -108,6 +108,10 @@
      "type": "number",
      "format": "double"
     },
+    "borrowerId": {
+     "type": "string",
+     "format": "int64"
+    },
     "createdDate": {
      "type": "string",
      "format": "date-time"
@@ -152,13 +156,13 @@
      "type": "string",
      "format": "date-time"
     },
+    "lenderId": {
+     "type": "string",
+     "format": "int64"
+    },
     "maturityDate": {
      "type": "string",
      "format": "date-time"
-    },
-    "memberId": {
-     "type": "string",
-     "format": "int64"
     },
     "nextIntAccrualDate": {
      "type": "string",
@@ -178,6 +182,10 @@
     "term": {
      "type": "integer",
      "format": "int32"
+    },
+    "transactionType": {
+     "type": "string",
+     "format": "int64"
     }
    }
   }

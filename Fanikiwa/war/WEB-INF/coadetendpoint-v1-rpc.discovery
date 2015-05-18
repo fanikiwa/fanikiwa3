@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/dDeWaQsA-4BHUTQeSeXXHlSQJd4\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Wa7XAbEprRohUWouNFDMnZdDuHk\"",
  "discoveryVersion": "v1",
  "id": "coadetendpoint:v1",
  "name": "coadetendpoint",
@@ -126,29 +126,32 @@
      "type": "string"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "result": {
+     "type": "boolean"
+    },
+    "resultMessage": {
+     "type": "string"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
-  "coadetendpoint.getCoadetByID": {
-   "id": "coadetendpoint.getCoadetByID",
-   "allowGet": true,
-   "parameters": {
-    "id": {
-     "type": "string",
-     "required": true,
-     "format": "int64"
-    }
-   },
-   "parameterOrder": [
-    "id"
-   ],
-   "returns": {
-    "$ref": "Coadet"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "coadetendpoint.insertCoadet": {
    "id": "coadetendpoint.insertCoadet",
    "parameters": {
@@ -160,7 +163,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Coadet"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -170,6 +173,11 @@
    "id": "coadetendpoint.listCoadet",
    "allowGet": true,
    "parameters": {
+    "coaid": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
     "count": {
      "type": "integer",
      "format": "int32"
@@ -178,6 +186,9 @@
      "type": "string"
     }
    },
+   "parameterOrder": [
+    "coaid"
+   ],
    "returns": {
     "$ref": "CollectionResponse_Coadet"
    },
@@ -197,6 +208,65 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "coadetendpoint.retrieveCoadet": {
+   "id": "coadetendpoint.retrieveCoadet",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "coadetendpoint.selectCoadet": {
+   "id": "coadetendpoint.selectCoadet",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    }
+   },
+   "returns": {
+    "$ref": "CollectionResponse_Coadet"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "coadetendpoint.selectCoadetByID": {
+   "id": "coadetendpoint.selectCoadetByID",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "Coadet"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -212,7 +282,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Coadet"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

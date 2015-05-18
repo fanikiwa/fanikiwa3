@@ -18,7 +18,7 @@ import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.Enums.OffereeIdType;
 import com.sp.fanikiwa.Enums.PostingCheckFlag;
 import com.sp.fanikiwa.business.AcceptOfferComponent;
-import com.sp.fanikiwa.business.MakeOfferComponent;
+
 import com.sp.fanikiwa.business.MakeOffer.EmailOfferee;
 import com.sp.fanikiwa.business.MakeOffer.GroupOfferee;
 import com.sp.fanikiwa.business.MakeOffer.MemberOfferee;
@@ -39,7 +39,7 @@ import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.MailUtil;
-import com.sp.utils.OfferUtil;
+
 import com.sp.utils.PeerLendingUtil;
 import com.sp.utils.StringExtension;
 
@@ -55,6 +55,7 @@ import javax.inject.Named;
 public class OfferEndpoint {
 
 	final int MAXRETRIES = 3;
+	final double MINIMUM_OFFER_AMOUNT = 1000.00;
 
 	public OfferEndpoint() {
 
@@ -213,10 +214,11 @@ public class OfferEndpoint {
 	public Offer getOfferByID(@Named("id") Long id) {
 		return findRecord(id);
 	}
+
 	@ApiMethod(name = "selectOffer")
 	public RequestResult selectOffer(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Offer offer = findRecord(id);
@@ -227,11 +229,12 @@ public class OfferEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
 	}
+
 	/**
 	 * This method is used for updating an existing entity. If the entity does
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
@@ -263,61 +266,39 @@ public class OfferEndpoint {
 	@ApiMethod(name = "removeOffer")
 	public RequestResult removeOffer(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
-
 		try {
-			
-
 			Offer offer = findRecord(id);
-			Member member = offer.getMember();
 			if (offer == null) {
 				throw new NotFoundException("Record does not exist");
 			}
-			
 
-			OfferUtil.SetOfferStatus(offer, OfferStatus.Deleting);
-			
-			
-			if (offer.getStatus().equals("Processing")) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat.format(
-						"Cannot delete Offer [{0}], Status is Processing. ",
-						offer.getId().toString()));
+			re = ValidateOfferForDeleting(offer);
+			if (!re.isSuccess())
 				return re;
-			}
-			if (offer.getStatus().equals("Closed")) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat.format(
-						"Cannot delete Offer [{0}], Status is Closed. ",
-						offer.getId().toString()));
-				return re;
-			}
-			if (offer.getStatus().equals("Deleting")) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat.format(
-						"Cannot delete Offer [{0}], Status is Deleting. ",
-						offer.getId().toString()));
-				return re;
-			}
-			
-			//1.Unblock funds
-			if(offer.getOfferType().toUpperCase().equals("L"))
-			{
+
+			Member member = offer.getMember();
+			PeerLendingUtil.SetOfferStatus(offer, OfferStatus.Deleting);
+
+			// 1.Unblock funds
+			if (offer.getOfferType().toUpperCase().equals("L")) {
 				AccountEndpoint aep = new AccountEndpoint();
 				Account lenderCurr = member.getCurrentAccount();
 				aep.UnBlockFunds(lenderCurr, offer.getAmount());
 			}
-			
-			//remove the recepients
 
-			//remove the offer
+			// remove the recepients
+			OfferReceipientEndpoint orep = new OfferReceipientEndpoint();
+			orep.DeleteOfferReciepients(offer.getId());
+
+			// remove the offer
 			ofy().delete().entity(offer).now();
 			re.setResultMessage("Offer deleted.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -352,8 +333,15 @@ public class OfferEndpoint {
 	@ApiMethod(name = "saveOffer")
 	public RequestResult saveOffer(final OfferDTO offerDto) {
 		final RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
+
+		RequestResult ore = ValidateOffer(offerDto);
+
+		if (!ore.isSuccess()) // the offer is not valid
+		{
+			return ore;
+		}
 
 		Offer offer = ofy().transactNew(MAXRETRIES, new Work<Offer>() {
 			public Offer run() {
@@ -366,20 +354,13 @@ public class OfferEndpoint {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					re.setResult(false);
+					re.setSuccess(false);
 					re.setResultMessage(e.getMessage().toString());
 				}
 				return offer;
 			}
 		});
 		return re;
-	}
-
-	@ApiMethod(name = "createLendOffer")
-	public RequestResult CreateLendOffer(final OfferDTO offerDto)
-			throws Exception {
-		MakeOfferComponent moc = new MakeOfferComponent();
-		return moc.MakeOffer(offerDto);
 	}
 
 	private Offer createOfferFromDTO(OfferDTO offerDto) throws Exception {
@@ -536,7 +517,7 @@ public class OfferEndpoint {
 	public RequestResult AcceptOffer(@Named("id") Long id,
 			@Named("email") String email) throws Exception {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 
@@ -563,7 +544,7 @@ public class OfferEndpoint {
 			}
 
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -573,7 +554,7 @@ public class OfferEndpoint {
 	public RequestResult AcceptPartialBorrowOffer(@Named("id") Long id,
 			@Named("email") String email) throws Exception {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 
@@ -595,9 +576,69 @@ public class OfferEndpoint {
 							.toString());
 
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
 	}
+
+	/* Private region */
+	private RequestResult ValidateOffer(OfferDTO offerDto) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		if (offerDto.getAmount() < MINIMUM_OFFER_AMOUNT) {
+			re.setSuccess(false);
+			re.setResultMessage("Offer amount is less than minimum amount of KES["
+					+ MINIMUM_OFFER_AMOUNT + "]");
+			return re;
+		}
+		if (offerDto.getTerm() < 0) {
+			re.setSuccess(false);
+			re.setResultMessage("Term[" + offerDto.getTerm()
+					+ "] cannot be less than zero");
+			return re;
+		}
+		if (offerDto.getInterest() < 0) {
+			re.setSuccess(false);
+			re.setResultMessage("Interest rate[" + offerDto.getInterest()
+					+ "] cannot be less than zero");
+			return re;
+		}
+
+		return re;
+	}
+
+	private RequestResult ValidateOfferForDeleting(Offer offer) {
+
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		if (offer.getStatus().equals("Processing")) {
+			re.setSuccess(false);
+			re.setResultMessage(MessageFormat.format(
+					"Cannot delete Offer [{0}], Status is Processing. ", offer
+							.getId().toString()));
+			return re;
+		}
+		if (offer.getStatus().equals("Closed")) {
+			re.setSuccess(false);
+			re.setResultMessage(MessageFormat.format(
+					"Cannot delete Offer [{0}], Status is Closed. ", offer
+							.getId().toString()));
+			return re;
+		}
+		if (offer.getStatus().equals("Deleting")) {
+			re.setSuccess(false);
+			re.setResultMessage(MessageFormat.format(
+					"Cannot delete Offer [{0}], Status is Deleting. ", offer
+							.getId().toString()));
+			return re;
+		}
+
+		return re;
+	}
+
 }

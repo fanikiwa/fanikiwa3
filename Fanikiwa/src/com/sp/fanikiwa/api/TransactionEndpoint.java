@@ -54,8 +54,8 @@ public class TransactionEndpoint {
 
 			Query<Transaction> query = ofy().load().type(Transaction.class)
 					.order("postDate")
-					.filter("postDate >=",edate)
-					.filter("postDate <=",sdate)
+					.filter("postDate >=",sdate)
+					.filter("postDate <=",edate)
 					.filter("account",account);
 			return listTransactionByQuery(query, cursorString, count);
 

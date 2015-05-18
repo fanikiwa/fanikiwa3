@@ -80,7 +80,7 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "insertAccountType")
 	public RequestResult insertAccountType(AccountType AccountType) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (AccountType.getId() != null) {
@@ -94,7 +94,7 @@ public class AccountTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -108,7 +108,7 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "retrieveAccountType")
 	public RequestResult retrieveAccountType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			AccountType accountType = findRecord(id);
@@ -119,7 +119,7 @@ public class AccountTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -135,7 +135,7 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "updateAccountType")
 	public RequestResult updateAccountType(AccountType AccountType) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (findRecord(AccountType.getId()) == null) {
@@ -147,7 +147,7 @@ public class AccountTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -162,7 +162,7 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "removeAccountType")
 	public RequestResult removeAccountType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			AccountType accounttype = findRecord(id);
@@ -174,7 +174,7 @@ public class AccountTypeEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

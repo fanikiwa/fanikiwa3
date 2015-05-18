@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/2esYTO65hDUmN_wWhhcZM3-1jio\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/48NM9l9pMl4XIww77Pzil0tHUv8\"",
  "discoveryVersion": "v1",
  "id": "transactionendpoint:v1",
  "name": "transactionendpoint",
@@ -119,8 +119,16 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
+    },
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
     "interestAccrualInterval": {
      "type": "string"
@@ -159,8 +167,7 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "maturityDate": {
      "type": "string",
@@ -175,8 +182,7 @@
      "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -609,9 +615,15 @@
    "methods": {
     "getMiniStatement": {
      "id": "transactionendpoint.transactionEndpoint.getMiniStatement",
-     "path": "GetMiniStatement",
+     "path": "GetMiniStatement/{accountId}",
      "httpMethod": "POST",
      "parameters": {
+      "accountId": {
+       "type": "string",
+       "required": true,
+       "format": "int64",
+       "location": "path"
+      },
       "count": {
        "type": "integer",
        "format": "int32",
@@ -622,10 +634,9 @@
        "location": "query"
       }
      },
-     "request": {
-      "$ref": "Account",
-      "parameterName": "resource"
-     },
+     "parameterOrder": [
+      "accountId"
+     ],
      "response": {
       "$ref": "CollectionResponse_Transaction"
      },

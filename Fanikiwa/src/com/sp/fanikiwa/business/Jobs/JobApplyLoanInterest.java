@@ -81,7 +81,7 @@ public class JobApplyLoanInterest implements IJobItem {
 
 		// step 2. post the transactions.
 		RequestResult res = TransactionPost.Post(txns);
-		if (res.isResult()) {
+		if (res.isSuccess()) {
 
 			// step 3. Set varaiables
 			LoanEndpoint lep = new LoanEndpoint();

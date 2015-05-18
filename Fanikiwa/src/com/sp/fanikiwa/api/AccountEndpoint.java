@@ -26,6 +26,7 @@ import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
+import com.sp.fanikiwa.entity.WithdrawalMessage;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
@@ -170,7 +171,7 @@ public class AccountEndpoint {
 	@ApiMethod(name = "retrieveAccount")
 	public RequestResult retrieveAccount(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		try {
@@ -182,7 +183,7 @@ public class AccountEndpoint {
 			re.setClientToken(accountDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -201,7 +202,7 @@ public class AccountEndpoint {
 	@ApiMethod(name = "createAccount")
 	public RequestResult createAccount(AccountDTO accountDto) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		try {
@@ -210,7 +211,7 @@ public class AccountEndpoint {
 			// save it
 			Account insertedAcc = this.insertAccount(accountFromDTO);
 			if (insertedAcc.getAccountID() == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Creating Account.");
 				return re;
 			}
@@ -218,7 +219,7 @@ public class AccountEndpoint {
 					+ insertedAcc.getAccountID());
 		} catch (Exception e) {
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -344,7 +345,7 @@ public class AccountEndpoint {
 	@ApiMethod(name = "editAccount")
 	public RequestResult editAccount(AccountDTO accountDTO) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		try {
@@ -358,7 +359,7 @@ public class AccountEndpoint {
 			// update it
 			ofy().save().entities(accountFromDTO).now();
 			if (accountFromDTO.getAccountID() == null) {
-				re.setResult(false);
+				re.setSuccess(false);
 				re.setResultMessage("Error Updating Account.");
 				return re;
 			}
@@ -366,7 +367,7 @@ public class AccountEndpoint {
 					+ accountFromDTO.getAccountID());
 		} catch (Exception e) {
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -425,7 +426,7 @@ public class AccountEndpoint {
 	@ApiMethod(name = "closeAccount")
 	public RequestResult CloseAccount(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 
 		try {
@@ -443,7 +444,7 @@ public class AccountEndpoint {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -514,7 +515,7 @@ public class AccountEndpoint {
 					res.setResultMessage("Successful");
 					for (Transaction transaction : txns) {
 						res = Post(transaction, flags);
-						if (!res.isResult())
+						if (!res.isSuccess())
 							return res; // get out if you ever get a false
 										// situation
 					}
@@ -522,7 +523,7 @@ public class AccountEndpoint {
 					return res;
 				}
 			});
-			if (!res2.isResult())
+			if (!res2.isSuccess())
 				return res2; // get out if you ever get a false situation
 		}
 
@@ -538,13 +539,13 @@ public class AccountEndpoint {
 
 				RequestResult res = new RequestResult();
 				res.setResultMessage("Successful");
-				res.setResult(true);
+				res.setSuccess(true);
 
 				res = Post(doubleEntry.getDr(), flags);
-				if (!res.isResult())
+				if (!res.isSuccess())
 					return res;
 				res = Post(doubleEntry.getCr(), flags);
-				if (!res.isResult())
+				if (!res.isSuccess())
 					return res;
 
 				return res;
@@ -562,12 +563,12 @@ public class AccountEndpoint {
 				res.setResultMessage("Successful");
 				try {
 					postAtomic(transaction, flags);
-					res.setResult(true);
+					res.setSuccess(true);
 					return res;
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					res.setResultMessage(e.getStackTrace().toString());
-					res.setResult(false);
+					res.setSuccess(false);
 					return res;
 				}
 			}
@@ -654,18 +655,17 @@ public class AccountEndpoint {
 			sdate = DateExtension.addMonths(edate, (months * -1));
 		}
 
-		TransactionEndpoint tep = new TransactionEndpoint();
 		List<StatementModel> records = new ArrayList<StatementModel>();
 
 		Account account = findRecord(accountID);
-		CollectionResponse<Transaction> txnCB = tep.GetStatement(sdate, edate,
-				account, cursorString, count);
+		
 
 		StatementModel first = new StatementModel();
 		first.setPostDate(sdate);
 		first.setTransactionID(-1L);
 		first.setNarrative("BALANCE B/F");
 
+		TransactionEndpoint tep = new TransactionEndpoint();
 		double amount = SumTransactionsBeforeDate(tep
 				.GetTransactionsBeforeDate(sdate, account, cursorString, count)
 				.getItems());
@@ -683,6 +683,9 @@ public class AccountEndpoint {
 
 		// go through the transactins and compute running balance
 		double bal = amount;
+
+		CollectionResponse<Transaction> txnCB = tep.GetStatement(sdate, edate,
+				account, cursorString, count);
 		for (Transaction txn : txnCB.getItems()) {
 			StatementModel txnv = new StatementModel();
 			txnv.setPostDate(txn.getPostDate());
@@ -1003,36 +1006,27 @@ public class AccountEndpoint {
 		return isProofed;
 	}
 
-	@ApiMethod(name = "memberWithdraw")
-	public RequestResult MemberWithdraw(@Named("email") String email,
-			@Named("amount") double amount) {
+	@ApiMethod(name = "withdraw")
+	public RequestResult Withdraw(WithdrawalMessage wm) {
 
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 
-			Member member = ofy().transactionless().load().type(Member.class)
-					.filter("email", email).first().now();
-
-			// 1.does member current account contain enough money to complete
-			// the transaction.
-			double availablebalance = GLUtil.GetAvailableBalance(member
-					.getCurrentAccount());
-			double commission = 100.0;
-			double neededbalance = availablebalance + commission;
-			if (availablebalance < neededbalance) {
-				re.setResult(false);
-				re.setResultMessage(MessageFormat
-						.format("You do not have enough money to make a withdaw of {0}.<br/> Available balance is {1}",
-								amount, availablebalance));
-				return re;
-			}
-			WithdrawalComponent wc = new WithdrawalComponent();
-			re.setResultMessage(wc.MemberWithdraw(member, amount));
+			/*
+			 * 1. save WithdrawalMessage
+			 * 2. get the saved message and pass it to WithdrawalComponent.Withdraw
+			 * */
+			
+			WithdrawalMessageEndpoint wep = new WithdrawalMessageEndpoint();
+			WithdrawalMessage returnedWm = wep.insertWithdrawalMessage(wm);
+			
+			WithdrawalComponent wcom = new WithdrawalComponent();
+			return wcom.Withdraw(returnedWm);
 
 		} catch (Exception e) {
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

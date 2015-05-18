@@ -83,7 +83,7 @@ public class CoaEndpoint {
 	@ApiMethod(name = "retrieveCoa")
 	public RequestResult retrieveCoa(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coa coa = findRecord(id);
@@ -94,7 +94,7 @@ public class CoaEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -113,7 +113,7 @@ public class CoaEndpoint {
 	@ApiMethod(name = "insertCoa")
 	public RequestResult insertCoa(Coa coa) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (coa.getId() != null) {
@@ -127,7 +127,7 @@ public class CoaEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -146,7 +146,7 @@ public class CoaEndpoint {
 	@ApiMethod(name = "updateCoa")
 	public RequestResult updateCoa(Coa Coa) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coa coa = findRecord(Coa.getId());
@@ -159,7 +159,7 @@ public class CoaEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -176,7 +176,7 @@ public class CoaEndpoint {
 	@ApiMethod(name = "removeCoa")
 	public RequestResult removeCoa(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Coa record = findRecord(id);
@@ -188,7 +188,7 @@ public class CoaEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;

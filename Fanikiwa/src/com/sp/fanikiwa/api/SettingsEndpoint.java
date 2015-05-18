@@ -80,7 +80,7 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "insertSettings")
 	public RequestResult insertSettings(Settings Settings) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			if (Settings.getProperty() != null) {
@@ -94,7 +94,7 @@ public class SettingsEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -109,7 +109,7 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "retrieveSettingsByKey")
 	public RequestResult retrieveSettingsByKey(@Named("key") String property) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Settings setting = findRecord(property);
@@ -120,7 +120,7 @@ public class SettingsEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -139,7 +139,7 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "updateSettings")
 	public RequestResult updateSettings(Settings Settings) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Settings record = findRecord(Settings.getProperty());
@@ -152,7 +152,7 @@ public class SettingsEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
@@ -169,7 +169,7 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "removeSettings")
 	public RequestResult removeSettings(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setResult(true);
+		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
 			Settings setting = findRecord(id);
@@ -181,7 +181,7 @@ public class SettingsEndpoint {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			re.setResult(false);
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
