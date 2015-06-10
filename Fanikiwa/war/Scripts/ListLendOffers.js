@@ -14,7 +14,10 @@ fanikiwa.offerendpoint.listlendoffers.LoadOffers = function() {
 
 	$('.page-title').html('Private Lend Offers');
 	$('#listOffersResult').html('loading...');
-
+	$('#apiResults').html('');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
+	
 	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveLendOffers({
@@ -30,10 +33,23 @@ fanikiwa.offerendpoint.listlendoffers.LoadOffers = function() {
 					} else {
 						buildTable(resp);
 					}
+				} else {
+					console.log('Error: ' + resp.error.message);
+					$('#errormessage').html(
+							'operation failed! Error...<br/>'
+									+ resp.error.message.toString());
+					$('#successmessage').html('');
+					$('#apiResults').html('');
 				}
 
-			}, function(reason) {
+			},
+			function(reason) {
 				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
 			});
 };
 
@@ -66,12 +82,22 @@ function buildTable(response) {
 	populateOffers(response);
 
 	$("#listOffersResult").html(offerTable);
+
+	$('#listOffersTable').DataTable(
+			{
+				"aLengthMenu" : [ [ 5, 10, 20, 50, 100, -1 ],
+						[ 5, 10, 20, 50, 100, "All" ] ],
+				"iDisplayLength" : 5
+			});
+	
 }
 
 function populateOffers(resp) {
 
 	if (!resp.code) {
 		resp.items = resp.items || [];
+
+		$(".page-title").append("  [" + resp.result.items.length + "] ");
 
 		offerTable += '<table id="listOffersTable">';
 		offerTable += "<thead>";
@@ -82,8 +108,7 @@ function populateOffers(resp) {
 		offerTable += "<th>Interest</th>";
 		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
-		offerTable += "<th>Expiry Date</th>";
-		offerTable += "<th>Status</th>";
+		offerTable += "<th>Expiry Date</th>"; 
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "</tr>";
@@ -97,19 +122,16 @@ function populateOffers(resp) {
 				offerTable += '<tr>';
 				offerTable += '<td>' + resp.result.items[i].description
 						+ '</td>';
-				offerTable += '<td style="text-align:right">'
+				offerTable += '<td>'
 						+ resp.result.items[i].amount.formatMoney(2) + '</td>';
-				offerTable += '<td style="text-align:right">'
-						+ resp.result.items[i].term + '</td>';
-				offerTable += '<td style="text-align:right">'
-						+ resp.result.items[i].interest + '</td>';
+				offerTable += '<td>' + resp.result.items[i].term + '</td>';
+				offerTable += '<td>' + resp.result.items[i].interest + '</td>';
 				offerTable += '<td>' + resp.result.items[i].privateOffer
 						+ '</td>';
 				offerTable += '<td>' + resp.result.items[i].partialPay
 						+ '</td>';
 				offerTable += '<td>'
-						+ formatDate(resp.result.items[i].expiryDate) + '</td>';
-				offerTable += '<td>' + resp.result.items[i].status + '</td>';
+						+ formatDate(resp.result.items[i].expiryDate) + '</td>'; 
 				offerTable += '<td><a href="#" onclick="Accept('
 						+ resp.result.items[i].id + ')">Accept</a> </td>';
 				offerTable += '<td><a href="#" onclick="OfferDetails('
@@ -144,7 +166,7 @@ function Accept(id) {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -217,7 +239,13 @@ fanikiwa.offerendpoint.listlendoffers.LoadPublicLendOffers = function() {
 					}
 				}
 
-			}, function(reason) {
+			},
+			function(reason) {
 				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
 			});
 };

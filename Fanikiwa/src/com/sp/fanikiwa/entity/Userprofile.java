@@ -21,6 +21,11 @@ public class Userprofile {
 	private String status; // Open, Active, Closed, Disabled
 	private String userType; // Admin, Member, FrontEndUser, BackEndUser, System
 	private String role;
+	
+	private String token;
+	private Date activatedDate;
+	private Date activationTokenExpiryDate;
+	private String activationMethod;
 
 	public Userprofile() {
 	}
@@ -95,6 +100,38 @@ public class Userprofile {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Date getActivatedDate() {
+		return activatedDate;
+	}
+
+	public void setActivatedDate(Date activatedDate) {
+		this.activatedDate = activatedDate;
+	}
+
+	public String getActivationMethod() {
+		return activationMethod;
+	}
+
+	public void setActivationMethod(String activationMethod) {
+		this.activationMethod = activationMethod;
+	}
+
+	public Date getActivationTokenExpiryDate() {
+		return activationTokenExpiryDate;
+	}
+
+	public void setActivationTokenExpiryDate(Date activationTokenExpiryDate) {
+		this.activationTokenExpiryDate = activationTokenExpiryDate;
 	}
 
 }

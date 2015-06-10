@@ -62,6 +62,9 @@ function decrementDateByMonth(oldDate, offset, offsetType) {
 function decrementDateByYear(oldDate, offset, offsetType) {
 	return formatDateForControl(AddDate(oldDate, offset, offsetType));
 }
+function offsetDate(oldDate, offset, offsetType) {
+	return formatDateForControl(AddDate(oldDate, offset, offsetType));
+}
 function AddDate(oldDate, offset, offsetType) {
 	var year = parseInt(oldDate.getFullYear());
 	var month = parseInt(oldDate.getMonth());

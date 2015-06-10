@@ -360,7 +360,7 @@ public class JobProcessSTO_OLD implements IJobItem {
         	            GLUtil.GetAccount(sto.getCommissionAccount()),
         	            Amount,
         	            forcePost,
-        	            "Y",
+        	            true,
         	            "SYS",
         	            "SYS",
         	            "STO Comm");

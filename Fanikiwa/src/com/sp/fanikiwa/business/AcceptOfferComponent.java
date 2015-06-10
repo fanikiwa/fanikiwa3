@@ -33,10 +33,12 @@ import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.SimulatePostStatus;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
+import com.sp.fanikiwa.pdf.ContractPDF;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
 import com.sp.utils.LoanUtil;
+import com.sp.utils.MailUtil;
 import com.sp.utils.PeerLendingUtil;
 
 public class AcceptOfferComponent {
@@ -57,49 +59,48 @@ public class AcceptOfferComponent {
 
 	public Loan AcceptBorrowOffer(Member lender, Offer aBorrowOffer)
 			throws Exception {
-		// /TODO realize accept offer usecase
+		// realize accept offer usecase
 		Loan loan = null;
 
 		ValidateOffer(aBorrowOffer, lender);
 		PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Processing);
-		try
-		{
+		try {
 
-		// get the borrower from the offer
-		MemberEndpoint mDAC = new MemberEndpoint();
-		Member borrower = aBorrowOffer.getMember();
-		if (borrower.getMemberId() == lender.getMemberId()) {
-			// Before throwing the error, revert status to open
-			throw new ForbiddenException("Cannot accept self offers");
-		}
-
-		// Check ability to pay
-		List<Transaction> txns = LoanTransactions(lender, borrower,
-				aBorrowOffer);
-		if (txns.size() < 4) {
-			// Before throwing the error, revert status to open
-			throw new ForbiddenException("Loan Transactions not well formed");
-		}
-
-		BatchSimulateStatus bss = TransactionPost.SimulatePost(txns,
-				PostingCheckFlag.CheckLimitAndPassFlag);
-		boolean canPost = bss.CanPost();
-		if (!canPost) {
-			String msg = "";
-			for (SimulatePostStatus s : bss.SimulateStatus) {
-				for (Exception e : s.Errors) {
-					msg += e.getMessage() + "\n";
-				}
+			// get the borrower from the offer
+			MemberEndpoint mDAC = new MemberEndpoint();
+			Member borrower = aBorrowOffer.getMember();
+			if (borrower.getMemberId() == lender.getMemberId()) {
+				// Before throwing the error, revert status to open
+				throw new ForbiddenException("Cannot accept self offers");
 			}
-			throw new Exception("Simulation Error: \n" + msg);
-		}
 
-		// create loan
-		loan = CreateLoan(borrower, lender, aBorrowOffer);
-		PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
+			// Check ability to pay
+			List<Transaction> txns = LoanTransactions(lender, borrower,
+					aBorrowOffer);
+			if (txns.size() < 4) {
+				// Before throwing the error, revert status to open
+				throw new ForbiddenException(
+						"Loan Transactions not well formed");
+			}
 
-		}catch(Exception e)
-		{
+			BatchSimulateStatus bss = TransactionPost.SimulatePost(txns,
+					PostingCheckFlag.CheckLimitAndPassFlag);
+			boolean canPost = bss.CanPost();
+			if (!canPost) {
+				String msg = "";
+				for (SimulatePostStatus s : bss.SimulateStatus) {
+					for (Exception e : s.Errors) {
+						msg += e.getMessage() + "\n";
+					}
+				}
+				throw new Exception("Simulation Error: \n" + msg);
+			}
+
+			// create loan
+			loan = CreateLoan(borrower, lender, aBorrowOffer);
+			PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Closed);
+
+		} catch (Exception e) {
 			PeerLendingUtil.SetOfferStatus(aBorrowOffer, OfferStatus.Open);
 			throw e;
 		}
@@ -113,7 +114,7 @@ public class AcceptOfferComponent {
 
 	public Loan AcceptLendOffer(Member borrower, Offer aLendOffer)
 			throws Exception {
-		// /TODO realize accept offer usecase
+		// realize accept offer usecase
 		Loan loan = null;
 
 		ValidateOffer(aLendOffer, borrower);
@@ -190,14 +191,23 @@ public class AcceptOfferComponent {
 			throws NotFoundException, ConflictException {
 		/*
 		 * 1. The system blocks the ‘lend offer’ so that other potential
-		 * borrowers do not accept the offer 2. The system establishes the loan
-		 * in the loan book 3. The system logs the loan repayment schedule in
-		 * the diary 4. The systems creates electronic loan contract 5. The
-		 * AccountingSystem posts the loan transaction with its attendant
-		 * commission 6. The system closes the ‘lend offer’ //these two are done
-		 * by messaging component 7. The MessagingSystem sends the electronic
-		 * loan contract 8. The MessagingSystem informs both the lender and
-		 * borrower of the successful transaction
+		 * borrowers do not accept the offer
+		 * 
+		 * 2. The system establishes the loan in the loan book
+		 * 
+		 * 3. The system logs the loan repayment schedule in the diary
+		 * 
+		 * 4. The systems creates electronic loan contract
+		 * 
+		 * 5. The AccountingSystem posts the loan transaction with its attendant
+		 * commission
+		 * 
+		 * 6. The system closes the ‘lend offer’
+		 * 
+		 * 7. The MessagingSystem sends the electronic loan contract
+		 * 
+		 * 8. The MessagingSystem informs both the lender and borrower of the
+		 * successful transaction
 		 */
 
 		// STEP 1 Establish Loan
@@ -209,6 +219,12 @@ public class AcceptOfferComponent {
 		// SETP 3 Post loan transation
 		TransactionPost.Post(LoanTransactions(lender, borrower, offer));
 
+		String msg = "Fanikiwa Loan established. Amount:" + loan.getAmount()
+				+ " Interest: " + loan.getInterestRate() + " Term: "
+				+ loan.getTerm();
+		MailUtil.sendEmailWithPDF(borrower.getEmail(), "Fanikiwa Contract",
+				msg, "FanikiwaContract.PDF", ContractPDF.class);
+
 		return loan;
 	}
 
@@ -219,7 +235,7 @@ public class AcceptOfferComponent {
 	// <param name="offer">A offer value.</param>
 	public Loan AcceptPartialBorrowOffer(Member lender, Offer partialoffer)
 			throws ForbiddenException, NotFoundException, ConflictException {
-		// /TODO realize accept offer usecase
+		// realize accept offer usecase
 		Loan loan;
 
 		// Get offer
@@ -250,8 +266,6 @@ public class AcceptOfferComponent {
 		return loan;
 	}
 
-	
-
 	public Loan EstablishLoan(Member lender, Member borrower, Offer offer)
 			throws NotFoundException, ConflictException {
 		LoanEndpoint loanepC = new LoanEndpoint();
@@ -259,9 +273,6 @@ public class AcceptOfferComponent {
 		Loan loan = new Loan();
 
 		// fill up loan details from offer details
-		InterestComponent ic = new InterestComponent();
-		double intr = ic.ComputeSimpleInterest(offer.getAmount(),
-				offer.getTerm(), (double) offer.getInterest());
 		loan.setTerm(offer.getTerm());
 		loan.setAmount(offer.getAmount());
 		// loan.setInterest(offer.getInterest());
@@ -271,8 +282,6 @@ public class AcceptOfferComponent {
 		loan.setLenderId(lender.getMemberId());
 		loan.setOfferId(offer.getId());
 		loan.setPartialPay(offer.getPartialPay());
-		loan.setAccruedInterest(intr);// compute accrued interest
-
 		loan.setInterestAccrualInterval(Config
 				.GetString("DEFAULT_INT_ACCRUAL_INTERVAL"));
 		loan.setInterestApplicationMethod(Config
@@ -282,18 +291,20 @@ public class AcceptOfferComponent {
 		loan.setInterestComputationTerm(Config
 				.GetString("DEFAULT_INT_COMPUTATION_TERM"));
 		loan.setInterestRate(offer.getInterest());
+		loan.setInterestRateSusp(offer.getInterest()
+				+ Config.GetDouble("PENALTY_INTEREST_MARGIN"));
 		loan.setIntPayingAccount(borrower.getCurrentAccount().getAccountID());
 		loan.setIntPaidAccount(lender.getCurrentAccount().getAccountID());
 		// loan.setLastIntAppDate(new Date());
 		loan.setNextIntAppDate(LoanUtil.GetNextIntApplicationDate(loan,
 				new Date()));
 
-		// loan.setLastIntAccrualDate(lastIntAccrualDate);
-		loan.setNextIntAccrualDate(LoanUtil.GetNextIntAccrualDate(loan,
-				new Date()));
-		
-		//ESTABLISHLOANTRANSACTIONTYPE
+		// Accrue interest immediately
+		loan.setLastIntAccrualDate(new Date());
+
+		// ESTABLISHLOANTRANSACTIONTYPE
 		loan.setTransactionType(Config.GetLong("ESTABLISHLOANTRANSACTIONTYPE"));
+		loan.setStatus("Open");
 
 		// Now create the loan in the loan book
 		return loanepC.insertLoan(loan);
@@ -380,7 +391,7 @@ public class AcceptOfferComponent {
 		// create all transactions
 		List<Transaction> txns = new ArrayList<Transaction>();
 		InterestComponent ic = new InterestComponent();
-		
+
 		// establish loan with attendant commission
 		TransactionType tt = Config
 				.GetTransactionType("ESTABLISHLOANTRANSACTIONTYPE");
@@ -396,24 +407,26 @@ public class AcceptOfferComponent {
 		// the loan transaction also unblocks blocked funds
 		GenericTransaction ltxn = new GenericTransaction(tt, "LES", new Date(),
 				borrower.getLoanAccount(), lender.getInvestmentAccount(),
-				offer.getAmount(), false, "Y", Authorizer, userID, offer
+				offer.getAmount(), false, true, Authorizer, userID, offer
 						.getId().toString());
-		// Accrue interest
-		//Default interest is Simple and only computation method for this version
-		double interest = ic.ComputeSimpleInterest(offer.getAmount(),
-						offer.getTerm(), (double) offer.getInterest());
-		
-
-		GenericTransaction inttxn = new GenericTransaction(intt, "INT",
-				new Date(), borrower.getinterestExpAccount(),
-				lender.getinterestIncAccount(), interest, false, "Y",
-				Authorizer, userID, offer.getId().toString());
 		// Txn 1
 		txns.addAll(ltxn.GetTransactionsIncludingCommission(
 				new NarrativeFormat(tt), new NarrativeFormat(tt)));
-		// Txn 2
-		txns.addAll(inttxn.GetTransactionsIncludingCommission(
-				new NarrativeFormat(tt), new NarrativeFormat(tt)));
+
+		// Accrue interest
+		// Default interest is Simple and only computation method for this
+		// version
+		// /TODO Rethink interest accrual
+		/*
+		 * double interest = ic.ComputeSimpleInterest(offer.getAmount(),
+		 * offer.getTerm(), (double) offer.getInterest()); GenericTransaction
+		 * inttxn = new GenericTransaction(intt, "INT", new Date(),
+		 * borrower.getinterestExpAccount(), lender.getinterestIncAccount(),
+		 * interest, false, "Y", Authorizer, userID, offer.getId().toString());
+		 * 
+		 * // Txn 2 txns.addAll(inttxn.GetTransactionsIncludingCommission( new
+		 * NarrativeFormat(tt), new NarrativeFormat(tt)));
+		 */
 
 		// Disburse Amount
 		TransactionType Distt = Config
@@ -424,7 +437,7 @@ public class AcceptOfferComponent {
 
 		GenericTransaction Distxn = new GenericTransaction(Distt, "DIS",
 				new Date(), lender.getCurrentAccount(),
-				borrower.getCurrentAccount(), offer.getAmount(), false, "Y",
+				borrower.getCurrentAccount(), offer.getAmount(), false, true,
 				Authorizer, userID, offer.getId().toString());
 		// Txn 3
 		txns.addAll(Distxn.GetTransactionsIncludingCommission(

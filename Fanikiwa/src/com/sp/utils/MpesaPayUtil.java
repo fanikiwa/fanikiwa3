@@ -17,6 +17,7 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,8 +28,10 @@ import javax.net.ssl.TrustManagerFactory;
 
 
 
+
 import com.sp.utils.CryptoUtil;
 import com.sp.fanikiwa.business.DiaryComponent;
+
 
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64; - NOT SUPPORTED ON GAE
 import org.apache.commons.codec.binary.Base64;
@@ -44,8 +47,10 @@ public class MpesaPayUtil {
 	final static String SPID = "1000150"; 
 	final static String SERVICE_ID = "10001502";
 	
-	public static boolean PostToMpesaTest(double Amount, String MobileNo)
+	public static boolean PostToMpesaMock(double Amount, String MobileNo)
 	{
+		String msg = "Posted to Mpesa Mock MobileNo["+MobileNo+"] and Amount["+Amount+"]";
+		log.info(msg);
 		return true;
 	}
 	public static void PostToMpesa(double Amount, String MobileNo)
@@ -111,7 +116,7 @@ public class MpesaPayUtil {
 			myCertPassword = new String(Base64.encodeBase64String(cipherText));
 		} catch (Exception e) {
 			System.out.println(e);
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage(),e);
 		}
 		String send = "<soap:Envelope xmlns:mrns0=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:req=\"http://api-v1.gen.mm.vodafone.com/mminterface/request\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">"
 				+ "<soap:Header>"

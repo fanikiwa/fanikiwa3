@@ -17,20 +17,30 @@ fanikiwa.accountendpoint.ministatement.LoadStatement = function() {
 	var accountID = sessionStorage.getItem('ministatementaccountid');
 
 	gapi.client.accountendpoint.miniStatement({
-		'accountID' : accountID
-	}).execute(function(resp) {
-		console.log('response =>> ' + resp);
-		if (!resp.code) {
-			if (resp.result.items == undefined || resp.result.items == null) {
-				$('#listAccountsResult').html('You have no Transactions...');
-			} else {
-				buildTable(resp);
-			}
-		}
+		'accountID' : accountID,
+		'count' : 5
+	}).execute(
+			function(resp) {
+				console.log('response =>> ' + resp);
+				if (!resp.code) {
+					if (resp.result.items == undefined
+							|| resp.result.items == null) {
+						$('#listAccountsResult').html(
+								'You have no Transactions...');
+					} else {
+						buildTable(resp);
+					}
+				}
 
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+			},
+			function(reason) {
+				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
+			});
 };
 
 /**
@@ -62,12 +72,24 @@ function buildTable(response) {
 	populateAccounts(response);
 
 	$("#listAccountsResult").html(accountsTable);
+
+	$('#listAccountsTable').DataTable(
+			{
+				"aLengthMenu" : [ [ 5, 10, 20, 50, 100, -1 ],
+						[ 5, 10, 20, 50, 100, "All" ] ],
+				"iDisplayLength" : 5
+			});
+	
 }
 
 function populateAccounts(resp) {
 
 	if (!resp.code) {
 		resp.items = resp.items || [];
+
+		$(".page-title").html(
+				" Mini Statement Details.<br/>Transactions ["
+						+ resp.result.items.length + "] ");
 
 		accountsTable += '<table id="listAccountsTable">';
 		accountsTable += "<thead>";
@@ -86,11 +108,11 @@ function populateAccounts(resp) {
 			accountsTable += '<td>' + formatDate(resp.result.items[i].postDate)
 					+ '</td>';
 			accountsTable += '<td>' + resp.result.items[i].narrative + '</td>';
-			accountsTable += '<td style="text-align:right">'
-					+ resp.result.items[i].debit.formatMoney(2) + '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>' + resp.result.items[i].debit.formatMoney(2)
+					+ '</td>';
+			accountsTable += '<td>'
 					+ resp.result.items[i].credit.formatMoney(2) + '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ resp.result.items[i].balance.formatMoney(2) + '</td>';
 			accountsTable += "</tr>";
 		}
@@ -100,3 +122,23 @@ function populateAccounts(resp) {
 
 	}
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Statement.html" style="cursor: pointer;">Statement</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Withdraw.html" style="cursor: pointer;">Withdraw</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/MyInvestMentsList.html" style="cursor: pointer;">My investments</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

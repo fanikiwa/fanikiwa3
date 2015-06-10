@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Q5_Bn4bMl-kh1LaxUdmwFDroSEY\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wFuTec9IVrS0dY3AXexeCV0Gzvc\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",
@@ -399,6 +399,90 @@
     }
    }
   },
+  "MemberDTO": {
+   "id": "MemberDTO",
+   "type": "object",
+   "properties": {
+    "currentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "customer": {
+     "type": "string",
+     "format": "int64"
+    },
+    "dateActivated": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateJoined": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateOfBirth": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "email": {
+     "type": "string"
+    },
+    "gender": {
+     "type": "string"
+    },
+    "informBy": {
+     "type": "string"
+    },
+    "interestExpAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestIncAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "investmentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "loanAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "maxRecordsToDisplay": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "memberId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "nationalID": {
+     "type": "string"
+    },
+    "otherNames": {
+     "type": "string"
+    },
+    "photo": {
+     "type": "string"
+    },
+    "pwd": {
+     "type": "string"
+    },
+    "refferedBy": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "status": {
+     "type": "string"
+    },
+    "surname": {
+     "type": "string"
+    },
+    "telephone": {
+     "type": "string"
+    }
+   }
+  },
   "Organization": {
    "id": "Organization",
    "type": "object",
@@ -429,11 +513,11 @@
      "type": "string",
      "format": "int64"
     },
-    "result": {
-     "type": "boolean"
-    },
     "resultMessage": {
      "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },
@@ -484,13 +568,17 @@
   "memberendpoint.deRegister": {
    "id": "memberendpoint.deRegister",
    "parameters": {
-    "resource": {
-     "$ref": "Member"
+    "email": {
+     "type": "string",
+     "required": true
     }
    },
    "parameterOrder": [
-    "resource"
+    "email"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -651,11 +739,46 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "memberendpoint.obtainMemberByEmail": {
+   "id": "memberendpoint.obtainMemberByEmail",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "memberendpoint.register": {
    "id": "memberendpoint.register",
    "parameters": {
     "resource": {
      "$ref": "UserDTO"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "memberendpoint.registerViaPhone": {
+   "id": "memberendpoint.registerViaPhone",
+   "parameters": {
+    "resource": {
+     "$ref": "MemberDTO"
     }
    },
    "parameterOrder": [
@@ -687,6 +810,32 @@
   "memberendpoint.retrieveMember": {
    "id": "memberendpoint.retrieveMember",
    "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "memberendpoint.selectAccountsByMemberID": {
+   "id": "memberendpoint.selectAccountsByMemberID",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
     "id": {
      "type": "string",
      "required": true,

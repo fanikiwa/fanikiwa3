@@ -19,5 +19,10 @@ function CreateMainMenu() {
 }
 
 $(document).ready(function() {
-	CreateMainMenu();
+	var loggedinuser = JSON.parse(sessionStorage.getItem('loggedinuser'));
+	if (loggedinuser === null || loggedinuser === undefined) {
+
+	} else {
+		CreateMainMenu();
+	}
 });

@@ -14,14 +14,22 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.gson.JsonPrimitive;
 import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.ActivationDTO;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Userprofile;
+import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
+import com.sp.utils.PasswordHash;
+import com.sp.utils.SessionIdentifierGenerator;
+import com.sp.utils.TokenUtil;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
@@ -183,10 +191,15 @@ public class UserprofileEndpoint {
 	public Userprofile insertUserprofile(Userprofile userprofile)
 			throws NotFoundException, ConflictException {
 		if (userprofile.getUserId() != null) {
-			if (findRecord(userprofile.getUserId()) != null) {
+			if (findRecord(userprofile.getUserId().toLowerCase()) != null) {
 				throw new ConflictException("Object already exists");
 			}
 		}
+		userprofile.setUserId(userprofile.getUserId().toLowerCase()); // set all
+																		// email
+																		// ids
+																		// to
+																		// lower
 		ofy().save().entities(userprofile).now();
 		return userprofile;
 	}
@@ -214,24 +227,116 @@ public class UserprofileEndpoint {
 		return re;
 	}
 
+	@ApiMethod(name = "activate")
+	public RequestResult activate(ActivationDTO activateDTO) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
+
+		activateDTO.setActivatedDate(new Date());
+
+		try {
+			Userprofile user = null;
+			user = findRecord(activateDTO.getEmail());
+
+			if (user == null) {
+				re.setSuccess(false);
+				re.setResultMessage("User[" + activateDTO.getEmail()
+						+ "] does not exist");
+				return re;
+			}
+
+			if (user.getToken() == null) {
+				re.setSuccess(false);
+				re.setResultMessage("User token not valid: Token is null ");
+				return re;
+			}
+
+			if (DateExtension.DateExpired(user.getActivationTokenExpiryDate(),
+					new Date())) {
+				re.setSuccess(false);
+				re.setResultMessage("User token not valid: Expired; Please regenerate new token and use it within "
+						+ Config.GetInt("TOKENEXPIRYDURATION", 30)
+						+ " minutes ");
+				return re;
+			}
+
+			if (!user.getToken().equals(activateDTO.getToken())) {
+				re.setSuccess(false);
+				re.setResultMessage("User token not valid: Illegal token used ");
+				return re;
+			} else {
+				user.setActivatedDate(activateDTO.getActivatedDate());
+				user.setActivationMethod(activateDTO.getActivationMethod());
+				user.setStatus("A"); // Activated
+				ofy().save().entities(user).now();
+
+				// update member
+				MemberEndpoint mep = new MemberEndpoint();
+				RequestResult re2 = mep.activate(activateDTO);
+
+				if (re2.isSuccess()) {
+					re.setSuccess(true);
+					re.setResultMessage("User successfuly activated ");
+					return re;
+				} else
+					return re;
+			}
+
+		} catch (Exception e) {
+			re.setSuccess(false);
+			re.setResultMessage(e.toString());
+		}
+		return re;
+	}
+
+	@ApiMethod(name = "requestToken")
+	public RequestResult requestToken(ActivationDTO activateDTO) {
+		RequestResult re = new RequestResult();
+
+		try {
+			Userprofile user = null;
+			user = findRecord(activateDTO.getEmail());
+			if (user == null) {
+				re.setSuccess(false);
+				re.setResultMessage("User cannot be null");
+			}
+			// set activation token
+			TokenUtil.SetUserToken( user,new Date());
+		
+			ofy().save().entities(user).now();
+			TokenUtil.SendToken(activateDTO.getActivationMethod(), user, user.getToken());
+			
+			re.setSuccess(true);
+			re.setResultMessage("Success");
+			return re;
+		} catch (Exception e) {
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+			return re;
+		}
+
+	}
+
 	@ApiMethod(name = "changePassword")
 	public RequestResult changePassword(@Named("userId") String userId,
 			@Named("pwd") String pwd) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+
 		try {
 			Userprofile user = null;
 			user = findRecord(userId);
 			user.setPwd(pwd);
 
 			updateUserprofile(user);
-			re.setResultMessage("Password Changed...");
+			re.setSuccess(true);
+			re.setResultMessage("Success");
+			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
+			return re;
 		}
-		return re;
 	}
 
 	@ApiMethod(name = "login")
@@ -249,16 +354,25 @@ public class UserprofileEndpoint {
 					+ " ] does not exist!");
 			return re;
 		}
-		if (AuthenticateUser(user, pwd)) {
+		boolean authenticated = AuthenticateUser(user, pwd);
+		boolean activated = Activated(user);
+		if (authenticated && activated) {
 			re.setSuccess(true);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			re.setResultMessage("created date:"
 					+ sdf.format(user.getCreateDate()));
 			re.setClientToken(user);
 			return re;
-		} else {
+		} else if (authenticated) {
+			re.setClientToken("authenticated");
 			re.setSuccess(false);
-			re.setResultMessage("User Exists but Password is incorrect.");
+			re.setResultMessage("Authenticated but not authorized.");
+			return re;
+		} else if (activated) {
+			re.setClientToken("activated");
+			re.setSuccess(false);
+			re.setResultMessage("Check your login credentials.");
+			return re;
 		}
 		return re;
 	}
@@ -281,12 +395,30 @@ public class UserprofileEndpoint {
 	}
 
 	private boolean AuthenticateUser(Userprofile user, String pwd) {
-		if (user != null) {
-			if (user.getPwd().equals(pwd)) {
-				return true;
-			}
+		if (user == null)
+			return false;
+		try {
+			return PasswordHash.validatePassword(pwd, user.getPwd());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
-		return false;
+
+	}
+
+	private boolean Activated(Userprofile user) {
+		if (user == null)
+			return false;
+
+		// check active
+		if (!user.getStatus().equals("A"))
+			return false;
+
+		// check other conditions
+
+		return true;
+
 	}
 
 	private Userprofile findRecord(String id) {

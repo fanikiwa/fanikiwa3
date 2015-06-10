@@ -14,6 +14,9 @@ fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 
 	$('.page-title').html('Private Borow Offers');
 	$('#listOffersResult').html('loading...');
+	$('#apiResults').html('');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
@@ -30,10 +33,22 @@ fanikiwa.offerendpoint.listborrowoffers.LoadOffers = function() {
 					} else {
 						buildTable(resp);
 					}
+				} else {
+					console.log('Error: ' + resp.error.message);
+					$('#errormessage').html(
+							'operation failed! Error...<br/>'
+									+ resp.error.message.toString());
+					$('#successmessage').html('');
+					$('#apiResults').html('');
 				}
-
-			}, function(reason) {
+			},
+			function(reason) {
 				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
 			});
 };
 
@@ -66,12 +81,22 @@ function buildTable(response) {
 	populateOffers(response);
 
 	$("#listOffersResult").html(offerTable);
+
+	$('#listOffersTable').DataTable(
+			{
+				"aLengthMenu" : [ [ 5, 10, 20, 50, 100, -1 ],
+						[ 5, 10, 20, 50, 100, "All" ] ],
+				"iDisplayLength" : 5
+			});
+
 }
 
 function populateOffers(resp) {
 
 	if (!resp.code) {
 		resp.items = resp.items || [];
+
+		$(".page-title").append("  [" + resp.result.items.length + "] ");
 
 		offerTable += '<table id="listOffersTable">';
 		offerTable += "<thead>";
@@ -83,7 +108,6 @@ function populateOffers(resp) {
 		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
 		offerTable += "<th>Expiry Date</th>";
-		offerTable += "<th>Status</th>";
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
@@ -93,17 +117,18 @@ function populateOffers(resp) {
 
 		for (var i = 0; i < resp.result.items.length; i++) {
 			if (resp.result.items[i] != null) {
+
 				var expiryDate = new Date(resp.result.items[i].expiryDate);
 				var today = new Date();
 				if (resp.result.items[i].status == 'Open' && expiryDate > today) {
 					offerTable += '<tr>';
 					offerTable += '<td>' + resp.result.items[i].description
 							+ '</td>';
-					offerTable += '<td style="text-align:right">'
+					offerTable += '<td>'
 							+ resp.result.items[i].amount.formatMoney(2)
 							+ '</td>';
-					offerTable += '<td style="text-align:right">' + resp.result.items[i].term + '</td>';
-					offerTable += '<td style="text-align:right">' + resp.result.items[i].interest
+					offerTable += '<td>' + resp.result.items[i].term + '</td>';
+					offerTable += '<td>' + resp.result.items[i].interest
 							+ '</td>';
 					offerTable += '<td>' + resp.result.items[i].privateOffer
 							+ '</td>';
@@ -112,23 +137,23 @@ function populateOffers(resp) {
 					offerTable += '<td>'
 							+ formatDate(resp.result.items[i].expiryDate)
 							+ '</td>';
-					offerTable += '<td>' + resp.result.items[i].status
-							+ '</td>';
+					offerTable += '<td><a href="#" onclick="OfferDetails('
+							+ resp.result.items[i].id + ')">Details</a> </td>';
 					var canAccept = (sessionStorage.getItem('canAccept') == null ? true
 							: sessionStorage.getItem('canAccept'));
 					if (canAccept) {
 						offerTable += '<td><a href="#" onclick="Accept('
 								+ resp.result.items[i].id
 								+ ')">Accept</a> </td>';
-					}
+					} else
+						offerTable += '<td></td>';
+
 					if (resp.result.items[i].partialPay == true) {
 						offerTable += '<td><a href="#" onclick="PartialAccept('
 								+ resp.result.items[i].id
 								+ ')">Partial Accept</a> </td>';
-						offerTable += '<td><a href="#" onclick="OfferDetails('
-								+ resp.result.items[i].id
-								+ ')">Details</a> </td>';
-					}
+					} else
+						offerTable += '<td></td>';
 					offerTable += "</tr>";
 				}
 			}
@@ -160,7 +185,7 @@ function Accept(id) {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -206,7 +231,7 @@ function PartialAccept(id) {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -279,7 +304,13 @@ fanikiwa.offerendpoint.listborrowoffers.LoadPublicBorrowOffers = function() {
 					}
 				}
 
-			}, function(reason) {
+			},
+			function(reason) {
 				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
 			});
 };

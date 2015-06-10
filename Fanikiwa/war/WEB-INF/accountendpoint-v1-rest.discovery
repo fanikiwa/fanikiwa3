@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/hYUJYqgVQFdaH1C9uaEPoNjvyW0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/0eVsExQBTw79i1aYzACJd7e0gaU\"",
  "discoveryVersion": "v1",
  "id": "accountendpoint:v1",
  "name": "accountendpoint",
@@ -592,11 +592,11 @@
      "type": "string",
      "format": "int64"
     },
-    "result": {
-     "type": "boolean"
-    },
     "resultMessage": {
      "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },
@@ -917,6 +917,22 @@
     }
    }
   },
+  "WithdrawalDTO": {
+   "id": "WithdrawalDTO",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "email": {
+     "type": "string"
+    },
+    "remissionMethod": {
+     "type": "string"
+    }
+   }
+  },
   "_any": {
    "id": "_any",
    "type": "any"
@@ -1154,34 +1170,6 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "memberWithdraw": {
-   "id": "accountendpoint.memberWithdraw",
-   "path": "MemberWithdraw/{email}/{amount}",
-   "httpMethod": "POST",
-   "parameters": {
-    "amount": {
-     "type": "number",
-     "required": true,
-     "format": "double",
-     "location": "path"
-    },
-    "email": {
-     "type": "string",
-     "required": true,
-     "location": "path"
-    }
-   },
-   "parameterOrder": [
-    "email",
-    "amount"
-   ],
-   "response": {
-    "$ref": "RequestResult"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "miniStatement": {
    "id": "accountendpoint.miniStatement",
    "path": "GetMiniStatement/{accountID}",
@@ -1318,6 +1306,78 @@
    "path": "retrieveAccount/{id}",
    "httpMethod": "POST",
    "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveStatementAdmin": {
+   "id": "accountendpoint.retrieveStatementAdmin",
+   "path": "retrieveStatementAdmin/{accountID}",
+   "httpMethod": "POST",
+   "parameters": {
+    "accountID": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    },
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "edate": {
+     "type": "string",
+     "format": "date-time",
+     "location": "query"
+    },
+    "sdate": {
+     "type": "string",
+     "format": "date-time",
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "accountID"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "searchAccountByID": {
+   "id": "accountendpoint.searchAccountByID",
+   "path": "searchAccountByID/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
     "id": {
      "type": "string",
      "required": true,
@@ -1547,6 +1607,21 @@
    },
    "response": {
     "$ref": "Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "withdraw": {
+   "id": "accountendpoint.withdraw",
+   "path": "Withdraw",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "WithdrawalDTO",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

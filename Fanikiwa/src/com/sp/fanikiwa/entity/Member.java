@@ -218,19 +218,19 @@ public class Member {
 		this.currentAccount = Ref.create(currentAccount);
 	}
 
-	public Account getinterestExpAccount() {
+	public Account getInterestExpAccount() {
 		return this.interestExpAccount.get();
 	}
 
-	public void setinterestExpAccount(Account interestExpAccount) {
+	public void setInterestExpAccount(Account interestExpAccount) {
 		this.interestExpAccount = Ref.create(interestExpAccount);
 	}
 
-	public Account getinterestIncAccount() {
+	public Account getInterestIncAccount() {
 		return this.interestIncAccount.get();
 	}
 
-	public void setinterestIncAccount(Account interestIncAccount) {
+	public void setInterestIncAccount(Account interestIncAccount) {
 		this.interestIncAccount = Ref.create(interestIncAccount);
 	}
 

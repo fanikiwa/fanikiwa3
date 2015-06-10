@@ -88,9 +88,9 @@ public class TransactionFactory {
             //3. Get the transaction type
             
             GenericTransaction gt = new GenericTransaction(tt, tt.getShortCode(),
-            	PostDate,
+            	PostDate,  
+            	MainAcc,
                 ContraAcc,
-                MainAcc,
                 Amount,
                 tt.getForcePost(),
                 tt.getStatFlag(),
@@ -191,13 +191,14 @@ public class TransactionFactory {
              "SYS");
         }
 	
+
 	public static List<Transaction> Withdraw(Long AccountId,
             double Amount,
             String Narr,
-            String reference) throws Exception
+            String reference, String AccountSymbol, String TransactionTypeSymbol) throws Exception
         {
-            Account ContraAcc = Config.GetAccount("CASHACCOUNT");
-            TransactionType tt = Config.GetTransactionType("CASHWITHDRAWALTRANSACTIONTYPE");
+            Account ContraAcc = Config.GetAccount(AccountSymbol);
+            TransactionType tt = Config.GetTransactionType(TransactionTypeSymbol);
             
             //Dr Acc
             AccountEndpoint aep = new AccountEndpoint();

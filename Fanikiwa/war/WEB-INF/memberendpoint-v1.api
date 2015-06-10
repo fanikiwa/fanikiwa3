@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "memberendpoint.memberEndpoint.activate" : {
+      "path" : "activate",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.activate",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "memberendpoint.register" : {
       "path" : "Register",
       "httpMethod" : "POST",
@@ -38,6 +54,195 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.getMemberByEmailWeb" : {
+      "path" : "GetMemberByEmailWeb/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByEmailWeb",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.obtainMemberByEmail" : {
+      "path" : "obtainMemberByEmail/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.obtainMemberByEmail",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.txnlessGetMemberByEmail" : {
+      "path" : "txnlessGetMemberByEmail/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.txnlessGetMemberByEmail",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.getMemberByTelephone" : {
+      "path" : "GetMemberByTelephone/{telephone}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByTelephone",
+      "request" : {
+        "parameters" : {
+          "telephone" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.getMemberByNationalID" : {
+      "path" : "member/nationalid",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.getMemberByNationalID",
+      "request" : {
+        "parameters" : {
+          "nationalId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.selectMemberAccounts" : {
+      "path" : "account",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountMobile",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.listMemberAccountWeb" : {
+      "path" : "account/{email}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountWeb",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "memberendpoint.selectAccountsByMemberID" : {
+      "path" : "selectAccountsByMemberID/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.selectAccountsByMemberID",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -169,19 +374,24 @@
       }
     },
     "memberendpoint.deRegister" : {
-      "path" : "DeRegister",
+      "path" : "deRegister/{email}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.DeRegister",
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.deRegister",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "memberendpoint.isEmailValid" : {
@@ -205,130 +415,16 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "memberendpoint.getMemberByEmailWeb" : {
-      "path" : "GetMemberByEmailWeb/{email}",
+    "memberendpoint.selectDtoMembers" : {
+      "path" : "selectDtoMembers",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByEmailWeb",
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.selectDtoMembers",
       "request" : {
         "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.txnlessGetMemberByEmail" : {
-      "path" : "txnlessGetMemberByEmail/{email}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.txnlessGetMemberByEmail",
-      "request" : {
-        "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.getMemberByTelephone" : {
-      "path" : "GetMemberByTelephone/{telephone}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByTelephone",
-      "request" : {
-        "parameters" : {
-          "telephone" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.getMemberByNationalID" : {
-      "path" : "member/nationalid",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.getMemberByNationalID",
-      "request" : {
-        "parameters" : {
-          "nationalId" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.selectMemberAccounts" : {
-      "path" : "account",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountMobile",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.listMemberAccountWeb" : {
-      "path" : "account/{email}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountWeb",
-      "request" : {
-        "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          },
           "cursor" : {
             "type" : "string",
             "required" : false
@@ -347,6 +443,51 @@
   },
   "descriptor" : {
     "schemas" : {
+      "ActivationDTO" : {
+        "id" : "ActivationDTO",
+        "type" : "object",
+        "properties" : {
+          "activatedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "telno" : {
+            "type" : "string"
+          },
+          "activationMethod" : {
+            "type" : "string"
+          },
+          "token" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
+      },
       "UserDTO" : {
         "id" : "UserDTO",
         "type" : "object",
@@ -382,43 +523,8 @@
           },
           "userType" : {
             "type" : "string"
-          }
-        }
-      },
-      "RequestResult" : {
-        "id" : "RequestResult",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
           },
-          "success" : {
-            "type" : "boolean"
-          },
-          "clientToken" : {
-            "$ref" : "_any"
-          },
-          "resultMessage" : {
-            "type" : "string"
-          }
-        }
-      },
-      "_any" : {
-        "id" : "_any",
-        "type" : "any"
-      },
-      "CollectionResponse_Member" : {
-        "id" : "CollectionResponse_Member",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Member"
-            }
-          },
-          "nextPageToken" : {
+          "registrationMethod" : {
             "type" : "string"
           }
         }
@@ -741,13 +847,176 @@
             "type" : "string"
           }
         }
+      },
+      "CollectionResponse_Member" : {
+        "id" : "CollectionResponse_Member",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Member"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionResponse_MemberDTO" : {
+        "id" : "CollectionResponse_MemberDTO",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "MemberDTO"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MemberDTO" : {
+        "id" : "MemberDTO",
+        "type" : "object",
+        "properties" : {
+          "memberId" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "dateActivated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "dateJoined" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          },
+          "informBy" : {
+            "type" : "string"
+          },
+          "maxRecordsToDisplay" : {
+            "type" : "integer"
+          },
+          "nationalID" : {
+            "type" : "string"
+          },
+          "otherNames" : {
+            "type" : "string"
+          },
+          "photo" : {
+            "type" : "string"
+          },
+          "pwd" : {
+            "type" : "string"
+          },
+          "refferedBy" : {
+            "type" : "integer"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "telephone" : {
+            "type" : "string"
+          },
+          "investmentAccount" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "loanAccount" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "currentAccount" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "interestIncAccount" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "interestExpAccount" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "customer" : {
+            "type" : "string",
+            "format" : "int64"
+          }
+        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.MemberEndpoint.activate" : {
+        "request" : {
+          "$ref" : "ActivationDTO"
+        },
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.MemberEndpoint.Register" : {
         "request" : {
           "$ref" : "UserDTO"
         },
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByEmailWeb" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.obtainMemberByEmail" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.txnlessGetMemberByEmail" : {
+        "response" : {
+          "$ref" : "Member"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByTelephone" : {
+        "response" : {
+          "$ref" : "Member"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.getMemberByNationalID" : {
+        "response" : {
+          "$ref" : "Member"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountMobile" : {
+        "request" : {
+          "$ref" : "Member"
+        },
+        "response" : {
+          "$ref" : "CollectionResponse_Account"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountWeb" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Account"
+        }
+      },
+      "com.sp.fanikiwa.api.MemberEndpoint.selectAccountsByMemberID" : {
         "response" : {
           "$ref" : "RequestResult"
         }
@@ -782,9 +1051,9 @@
           "$ref" : "Member"
         }
       },
-      "com.sp.fanikiwa.api.MemberEndpoint.DeRegister" : {
-        "request" : {
-          "$ref" : "Member"
+      "com.sp.fanikiwa.api.MemberEndpoint.deRegister" : {
+        "response" : {
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.MemberEndpoint.isEmailValid" : {
@@ -792,37 +1061,9 @@
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByEmailWeb" : {
+      "com.sp.fanikiwa.api.MemberEndpoint.selectDtoMembers" : {
         "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.txnlessGetMemberByEmail" : {
-        "response" : {
-          "$ref" : "Member"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByTelephone" : {
-        "response" : {
-          "$ref" : "Member"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.getMemberByNationalID" : {
-        "response" : {
-          "$ref" : "Member"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountMobile" : {
-        "request" : {
-          "$ref" : "Member"
-        },
-        "response" : {
-          "$ref" : "CollectionResponse_Account"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.listMemberAccountWeb" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Account"
+          "$ref" : "CollectionResponse_MemberDTO"
         }
       }
     }

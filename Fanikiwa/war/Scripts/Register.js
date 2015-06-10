@@ -89,6 +89,9 @@ fanikiwa.memberendpoint.register = function() {
 	userDTO.surname = _Surname;
 	userDTO.telephone = _Telephone;
 	userDTO.userType = 'Member';
+	userDTO.status = 'New';
+	userDTO.role = userDTO.userType;
+	userDTO.registrationMethod = 'Web';
 
 	gapi.client.memberendpoint
 			.register(userDTO)
@@ -96,16 +99,16 @@ fanikiwa.memberendpoint.register = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
-										'operation failed! Error...<br/>'
+										'Operation failed! Error...<br/>'
 												+ resp.result.resultMessage
 														.toString());
 								$('#successmessage').html('');
 								$('#apiResults').html('');
 							} else {
 								$('#successmessage').html(
-										'operation successful... <br/>'
+										'Operation successful... <br/>'
 												+ resp.result.resultMessage
 														.toString());
 								$('#errormessage').html('');
@@ -119,7 +122,7 @@ fanikiwa.memberendpoint.register = function() {
 						} else {
 							console.log('Error: ' + resp.error.message);
 							$('#errormessage').html(
-									'operation failed! Error...<br/>'
+									'Operation failed! Error...<br/>'
 											+ resp.error.message.toString());
 							$('#successmessage').html('');
 							$('#apiResults').html('');
@@ -129,7 +132,7 @@ fanikiwa.memberendpoint.register = function() {
 					function(reason) {
 						console.log('Error: ' + reason.result.error.message);
 						$('#errormessage').html(
-								'operation failed! Error...<br/>'
+								'Operation failed! Error...<br/>'
 										+ reason.result.error.message
 												.toString());
 						$('#successmessage').html('');
@@ -186,7 +189,7 @@ fanikiwa.memberendpoint.isEmailValid = function(email) {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage

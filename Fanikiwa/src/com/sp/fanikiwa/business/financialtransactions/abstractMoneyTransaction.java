@@ -26,7 +26,7 @@ public abstract class abstractMoneyTransaction {
 	public Date ValueDate;
 	public Date RecordDate;
 	public boolean ForcePostFlag;
-	public String StatementFlag;
+	public boolean StatementFlag;
 	public String Authorizer;
 	public String UserID;
 	public String Reference;
@@ -46,7 +46,7 @@ public abstract class abstractMoneyTransaction {
 
 	public abstractMoneyTransaction(TransactionType ttype, String shortCode,
 			Date postDate, Account drAccount, Account crAccount, double amount,
-			boolean forcePost, String statFlag, String authorizer, String user,
+			boolean forcePost, boolean statFlag, String authorizer, String user,
 			String reference) {
 		if (ttype == null)
 			throw new NullPointerException("Transaction type cannot be null");

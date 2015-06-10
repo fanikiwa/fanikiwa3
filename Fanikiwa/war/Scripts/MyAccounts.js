@@ -28,7 +28,12 @@ fanikiwa.memberendpoint.myaccounts.LoadAccounts = function() {
 		}
 
 	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
+		console.log('Error: ' + reason.result.error.message); 
+		$('#errormessage').html(
+				'operation failed! Error...<br/>'
+						+ reason.result.error.message);
+		$('#successmessage').html('');
+		$('#apiResults').html('');
 	});
 };
 
@@ -62,6 +67,14 @@ function buildTable(response) {
 
 	$("#listAccountsResult").html(accountsTable);
 
+	$('#listAccountsTable').DataTable(
+			{
+				"aLengthMenu" : [ [ 5, 10, 20, 50, 100, -1 ],
+						[ 5, 10, 20, 50, 100, "All" ] ],
+				"iDisplayLength" : 5,
+				"order": [[ 1, "asc" ]]
+			});
+	 
 }
 
 function populateAccounts(resp) {
@@ -87,18 +100,18 @@ function populateAccounts(resp) {
 			var availbal = resp.result.items[i].clearedBalance
 					- resp.result.items[i].limit;
 			accountsTable += '<tr>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ resp.result.items[i].accountID + '</td>';
 			accountsTable += '<td>' + resp.result.items[i].accountName
 					+ '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ resp.result.items[i].bookBalance.formatMoney(2) + '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ resp.result.items[i].clearedBalance.formatMoney(2)
 					+ '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ resp.result.items[i].limit.formatMoney(2) + '</td>';
-			accountsTable += '<td style="text-align:right">'
+			accountsTable += '<td>'
 					+ availbal.formatMoney(2) + '</td>';
 
 			accountsTable += '<td><a href="#" onclick="MiniStatement('
@@ -128,7 +141,7 @@ function CreateSubMenu() {
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
 	SubMenu
-			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyInvestments.html" style="cursor: pointer;">My investments</a></div></div></li>');
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/MyInvestMentsList.html" style="cursor: pointer;">My investments</a></div></div></li>');
 	SubMenu.push('</ul></div>');
 
 	$("#SubMenu").html(SubMenu.join(" "));

@@ -31,8 +31,14 @@ fanikiwa.lendinggroupendpoint.lendinggroups.LoadLendingGroups = function() {
 					}
 				}
 
-			}, function(reason) {
+			},
+			function(reason) {
 				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
 			});
 };
 
@@ -122,6 +128,12 @@ function CreateSubMenu() {
 	SubMenu.push('<div class="nav"><ul class="menu">');
 	SubMenu
 			.push('<li><div class="floatleft"><div><a href="/Views/LendingGroups/Create.html" >Create</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/LendingGroups/List.html" style="cursor: pointer;">My groups</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/ChangePassword.html" style="cursor: pointer;">Change Password</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/DeRegister.html" style="cursor: pointer;">Deregister</a></div></div></li>');
 	SubMenu.push('</ul></div>');
 
 	$("#SubMenu").html(SubMenu.join(" "));

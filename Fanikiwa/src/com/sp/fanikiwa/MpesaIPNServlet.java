@@ -8,12 +8,16 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.mortbay.log.Log;
 
 import com.google.gson.Gson;
 import com.sp.fanikiwa.Enums.FanikiwaMessageType;
@@ -33,6 +37,8 @@ import com.sp.utils.DateExtension;
 import com.sp.utils.HttpUtil;
 
 public class MpesaIPNServlet extends HttpServlet {
+	private static final Logger log = Logger.getLogger(MpesaIPNServlet.class
+			.getName());
 
 	// final String SAFARICOM_SERVER_NAME = "172.29.229.171";
 	// final Integer SAFARICOM_SERVER_PORT = 8080;
@@ -56,8 +62,9 @@ public class MpesaIPNServlet extends HttpServlet {
 		try {
 			ProcessIPNNotification(req, resp);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE,e.getMessage(),e);
+		} catch(Exception e){
+			log.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 
@@ -68,8 +75,9 @@ public class MpesaIPNServlet extends HttpServlet {
 			ProcessIPNNotification(req, resp);
 			resp.getWriter().println("Processed.");
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE,e.getMessage(),e);
+		} catch(Exception e){
+			log.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 
@@ -77,14 +85,22 @@ public class MpesaIPNServlet extends HttpServlet {
 			HttpServletResponse response) throws ParseException, IOException {
 
 		try {
+			//1. Log the request
+			String uri = request.getScheme() + "://" +
+		             request.getServerName() + 
+		             ("http".equals(request.getScheme()) && request.getServerPort() == 80 || "https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort() ) +
+		             request.getRequestURI() +
+		            (request.getQueryString() != null ? "?" + request.getQueryString() : "");
+			log.info(uri);
+			
 
-			// 1. Verify message is actually from MPESA
+			// 2. Verify message is actually from MPESA
 			// if (isMessageFromSafaricom(request)) {
 			if (isMessageFromSafaricomMock(request)) {
 
 				// 2. Get message
 				MpesaIPNMessage msg = GetMpeasaIPNMessageFromRequest(request);
-				response.getWriter().println("STEP 1: Message sucessfully parsed");
+				log.log(Level.INFO,"STEP 1: Message sucessfully parsed");
 
 				// 3. Save message
 				MpesaIPNMessageEndpoint mep = new MpesaIPNMessageEndpoint();
@@ -92,7 +108,7 @@ public class MpesaIPNServlet extends HttpServlet {
 				// make sure no duplicate safcomid
 				MpesaIPNMessage exists = mep.isMpesaIPNMessageExists(msg);
 				mep.insertMpesaIPNMessage(msg); //system will check duplicates
-				response.getWriter().println("STEP 2: Message sucessfully saved in DB");
+				log.log(Level.INFO,"STEP 2: Message sucessfully saved in DB");
 
 				// 4. Process Message by forwarding this to MpesaProcessServelet
 				RequestDispatcher rd = request.getRequestDispatcher("/MpesaProcessServeletCron");
@@ -100,13 +116,11 @@ public class MpesaIPNServlet extends HttpServlet {
 
 			} else {
 				// This is an impostor; Log the message for audit purposes
-				response.getWriter().println("Source Url not recognized.");
+				log.log(Level.SEVERE,"Source Url not recognized.");
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			response.getWriter().println("An error occurred:\n ");
-			response.getWriter().println(e.getMessage());
+			log.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 

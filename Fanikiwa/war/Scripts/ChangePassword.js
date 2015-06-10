@@ -39,7 +39,7 @@ fanikiwa.userprofile.changePassword = function() {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp.result.result == false) { 
+							if (resp.result.success == false) { 
 								sessionStorage.isuserauthenticatedinchangepassword = false;
 							} else { 
 								sessionStorage.isuserauthenticatedinchangepassword = true;
@@ -101,7 +101,7 @@ fanikiwa.userprofile.changePassword = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -132,6 +132,11 @@ fanikiwa.userprofile.changePassword = function() {
 
 					}, function(reason) {
 						console.log('Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message);
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 
 };
@@ -192,7 +197,7 @@ fanikiwa.userprofile.login = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -234,18 +239,26 @@ fanikiwa.userprofile.login = function() {
 					});
 
 };
-
-function DisplayException(errormsg) {
-
-	errormsg += "</ul>";
-
-	$("#error-display-div").html(errormsg);
-	$("#error-display-div").removeClass('displaynone');
-	$("#error-display-div").addClass('displayblock');
-	$("#error-display-div").show();
-}
-
+ 
 function ClearException() {
 	$('#errorList').remove();
 	$('#error-display-div').empty();
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/LendingGroups/List.html" style="cursor: pointer;">My groups</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/ChangePassword.html" style="cursor: pointer;">Change Password</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/DeRegister.html" style="cursor: pointer;">Deregister</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

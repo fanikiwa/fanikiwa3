@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/hYUJYqgVQFdaH1C9uaEPoNjvyW0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/0eVsExQBTw79i1aYzACJd7e0gaU\"",
  "discoveryVersion": "v1",
  "id": "accountendpoint:v1",
  "name": "accountendpoint",
@@ -590,11 +590,11 @@
      "type": "string",
      "format": "int64"
     },
-    "result": {
-     "type": "boolean"
-    },
     "resultMessage": {
      "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },
@@ -915,6 +915,22 @@
     }
    }
   },
+  "WithdrawalDTO": {
+   "id": "WithdrawalDTO",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "email": {
+     "type": "string"
+    },
+    "remissionMethod": {
+     "type": "string"
+    }
+   }
+  },
   "_any": {
    "id": "_any",
    "type": "any"
@@ -1188,30 +1204,6 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "accountendpoint.memberWithdraw": {
-   "id": "accountendpoint.memberWithdraw",
-   "parameters": {
-    "amount": {
-     "type": "number",
-     "required": true,
-     "format": "double"
-    },
-    "email": {
-     "type": "string",
-     "required": true
-    }
-   },
-   "parameterOrder": [
-    "email",
-    "amount"
-   ],
-   "returns": {
-    "$ref": "RequestResult"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "accountendpoint.miniStatement": {
    "id": "accountendpoint.miniStatement",
    "parameters": {
@@ -1329,6 +1321,66 @@
   "accountendpoint.retrieveAccount": {
    "id": "accountendpoint.retrieveAccount",
    "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "accountendpoint.retrieveStatementAdmin": {
+   "id": "accountendpoint.retrieveStatementAdmin",
+   "parameters": {
+    "accountID": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "edate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "sdate": {
+     "type": "string",
+     "format": "date-time"
+    }
+   },
+   "parameterOrder": [
+    "accountID"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "accountendpoint.searchAccountByID": {
+   "id": "accountendpoint.searchAccountByID",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
     "id": {
      "type": "string",
      "required": true,
@@ -1536,6 +1588,23 @@
    ],
    "returns": {
     "$ref": "Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "accountendpoint.withdraw": {
+   "id": "accountendpoint.withdraw",
+   "parameters": {
+    "resource": {
+     "$ref": "WithdrawalDTO"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

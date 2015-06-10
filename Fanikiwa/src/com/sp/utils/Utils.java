@@ -8,7 +8,6 @@ import java.security.SecureRandom;
 
 public class Utils {
 
-        static Random random = new Random();
         public static String GetRandomHexNumber(int digits)
         {
             return String.valueOf(generateRandom(12));

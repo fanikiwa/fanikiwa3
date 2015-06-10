@@ -13,7 +13,9 @@ import com.googlecode.objectify.cmd.Query;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
+import com.sp.fanikiwa.entity.ValueDatedTransactionDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,8 +152,97 @@ public class ValueDatedTransactionEndpoint {
 	}
 	
 
+
 	private ValueDatedTransaction findRecord(Long id) {
 		return ofy().load().type(ValueDatedTransaction.class).id(id).now();
+	}
+
+	@ApiMethod(name = "retrieveTransaction")
+	public RequestResult retrieveTransaction(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		try {
+			ValueDatedTransaction transaction = findRecord(id);
+			if (transaction == null) {
+				throw new NotFoundException("Transaction does not exist");
+			}
+			ValueDatedTransactionDTO transactionDTO = createDTOFromTransaction(transaction);
+			re.setClientToken(transactionDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	private ValueDatedTransactionDTO createDTOFromTransaction(ValueDatedTransaction transaction)
+			throws Exception {
+		// Construct dto
+		ValueDatedTransactionDTO transactionDto = new ValueDatedTransactionDTO();
+		transactionDto.setTransactionID(transaction.getTransactionID());
+		transactionDto.setAccount(transaction.getAccount().getAccountID());
+		transactionDto.setAmount(transaction.getAmount());
+		transactionDto.setAuthorizer(transaction.getAuthorizer());
+		transactionDto.setContraReference(transaction.getContraReference());
+		transactionDto.setForcePostFlag(transaction.getForcePostFlag());
+		transactionDto.setNarrative(transaction.getNarrative());
+		transactionDto.setPostDate(transaction.getPostDate());
+		transactionDto.setRecordDate(transaction.getRecordDate());
+		transactionDto.setReference(transaction.getReference());
+		transactionDto.setStatementFlag(transaction.getStatementFlag());
+		transactionDto.setTransactionID(transaction.getTransactionID());
+		transactionDto.setTransactionType(transaction.getTransactionType()
+				.getTransactionTypeID());
+		transactionDto.setUserID(transaction.getUserID());
+		transactionDto.setValueDate(transaction.getValueDate());
+		return transactionDto;
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectDtoTransactions")
+	public CollectionResponse<ValueDatedTransactionDTO> selectDtoTransactions(
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+
+		Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class);
+		return selectDtoTransactionByQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<ValueDatedTransactionDTO> selectDtoTransactionByQuery(
+			Query<ValueDatedTransaction> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
+		}
+
+		List<ValueDatedTransactionDTO> records = new ArrayList<ValueDatedTransactionDTO>();
+		QueryResultIterator<ValueDatedTransaction> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			ValueDatedTransactionDTO dto = createDTOFromTransaction(iterator.next());
+			records.add(dto);
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<ValueDatedTransactionDTO> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
 	}
 
 }

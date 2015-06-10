@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Q5_Bn4bMl-kh1LaxUdmwFDroSEY\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wFuTec9IVrS0dY3AXexeCV0Gzvc\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",
@@ -401,6 +401,90 @@
     }
    }
   },
+  "MemberDTO": {
+   "id": "MemberDTO",
+   "type": "object",
+   "properties": {
+    "currentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "customer": {
+     "type": "string",
+     "format": "int64"
+    },
+    "dateActivated": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateJoined": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateOfBirth": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "email": {
+     "type": "string"
+    },
+    "gender": {
+     "type": "string"
+    },
+    "informBy": {
+     "type": "string"
+    },
+    "interestExpAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestIncAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "investmentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "loanAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "maxRecordsToDisplay": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "memberId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "nationalID": {
+     "type": "string"
+    },
+    "otherNames": {
+     "type": "string"
+    },
+    "photo": {
+     "type": "string"
+    },
+    "pwd": {
+     "type": "string"
+    },
+    "refferedBy": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "status": {
+     "type": "string"
+    },
+    "surname": {
+     "type": "string"
+    },
+    "telephone": {
+     "type": "string"
+    }
+   }
+  },
   "Organization": {
    "id": "Organization",
    "type": "object",
@@ -431,11 +515,11 @@
      "type": "string",
      "format": "int64"
     },
-    "result": {
-     "type": "boolean"
-    },
     "resultMessage": {
      "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },
@@ -485,11 +569,20 @@
  "methods": {
   "deRegister": {
    "id": "memberendpoint.deRegister",
-   "path": "DeRegister",
+   "path": "deRegister/{email}",
    "httpMethod": "POST",
-   "request": {
-    "$ref": "Member",
-    "parameterName": "resource"
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -674,12 +767,48 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "obtainMemberByEmail": {
+   "id": "memberendpoint.obtainMemberByEmail",
+   "path": "obtainMemberByEmail/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "register": {
    "id": "memberendpoint.register",
    "path": "Register",
    "httpMethod": "POST",
    "request": {
     "$ref": "UserDTO",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "registerViaPhone": {
+   "id": "memberendpoint.registerViaPhone",
+   "path": "RegisterViaPhone",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "MemberDTO",
     "parameterName": "resource"
    },
    "response": {
@@ -713,6 +842,37 @@
    "path": "retrieveMember/{id}",
    "httpMethod": "POST",
    "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectAccountsByMemberID": {
+   "id": "memberendpoint.selectAccountsByMemberID",
+   "path": "selectAccountsByMemberID/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
     "id": {
      "type": "string",
      "required": true,

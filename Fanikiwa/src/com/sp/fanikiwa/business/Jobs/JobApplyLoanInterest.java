@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import com.google.api.server.spi.response.NotFoundException;
 import com.sp.fanikiwa.api.LoanEndpoint;
 import com.sp.fanikiwa.business.InterestComponent;
+import com.sp.fanikiwa.business.LoanComponent;
 import com.sp.fanikiwa.business.financialtransactions.GenericTransaction;
 import com.sp.fanikiwa.business.financialtransactions.NarrativeFormat;
 import com.sp.fanikiwa.business.financialtransactions.TransactionPost;
@@ -44,7 +45,7 @@ public class JobApplyLoanInterest implements IJobItem {
 	String userID = "SYS";
 	String Authorizer = "Auth";
 	private static final Logger log = Logger
-			.getLogger(JobAccrueLoanInterest.class.getName());
+			.getLogger(JobApplyLoanInterest.class.getName());
 
 	@Override
 	public void Run(Date d) {
@@ -72,7 +73,8 @@ public class JobApplyLoanInterest implements IJobItem {
 				if (EnableLog)
 					log.info(msg);
 
-				RequestResult re =ProcessLoanInterestApplication(loan, d);
+				LoanComponent lc = new LoanComponent();
+				RequestResult re =lc.ApplyAccruedInterest(loan, d);
 				if (EnableLog)
 					log.info("Processing Accrual [" + loan.getId()
 							+ "] completed. \n"+
@@ -88,63 +90,6 @@ public class JobApplyLoanInterest implements IJobItem {
 
 	}
 
-	private RequestResult ProcessLoanInterestApplication(Loan loan, Date date)
-			throws NotFoundException {
-
-		// step 1. create loan application transactions.
-		List<Transaction> txns = LoanInterestApplicationTransactions(loan);
-
-		// step 2. post the transactions.
-		RequestResult re = GLUtil.Simulate(txns);
-		if (re.isSuccess()) {
-			RequestResult res = TransactionPost.Post(txns);
-			if (res.isSuccess()) {
-
-				// step 3. Set varaiables
-				LoanEndpoint lep = new LoanEndpoint();
-				
-				//Zerolize Accrual Interest.
-				loan.setAccruedInterest(0);
-				loan.setLastIntAppDate(date);
-				loan.setNextIntAppDate(LoanUtil.GetNextIntApplicationDate(loan, date));
-				
-				//Update now
-				lep.updateLoan(loan);
-				
-				re.setSuccess(true);
-				re.setResultMessage("Successful");
-				return re;
-			}
-			return res;
-		}
-		
-		return re;
-	}
-
-	private List<Transaction> LoanInterestApplicationTransactions(Loan loan) {
-		// Use this for all general ledger methods that does not post
-
-		// create all transactions
-		List<Transaction> txns = new ArrayList<Transaction>();
-
-		TransactionType intt = Config
-				.GetTransactionType("INTERESTTRANSACTIONTYPE");
-		if (intt == null)
-			throw new NullPointerException("Transaction type cannot be null");
-
-		Account paidAccount = GLUtil.GetAccount(loan.getIntPaidAccount());
-		Account payingAccount = GLUtil.GetAccount(loan.getIntPayingAccount());
-
-		// Accrue interest
-		GenericTransaction inttxn = new GenericTransaction(intt, "INT",
-				new Date(), payingAccount, paidAccount,
-				loan.getAccruedInterest(), false, "Y", Authorizer, userID, loan
-						.getId().toString());
-
-		txns.addAll(inttxn.GetTransactionsIncludingCommission(
-				new NarrativeFormat(intt), new NarrativeFormat(intt)));
-
-		return txns;
-	}
+	
 
 }

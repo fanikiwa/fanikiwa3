@@ -1,11 +1,4 @@
-<!-- Indices written at Mon, 18 May 2015 13:16:54 EAT -->
+<!-- Indices written at Wed, 10 Jun 2015 18:54:44 EAT -->
 
-<datastore-indexes>
+<datastore-indexes/>
 
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Transaction" ancestor="false" source="auto">
-        <property name="account" direction="asc"/>
-        <property name="postDate" direction="asc"/>
-    </datastore-index>
-
-</datastore-indexes>

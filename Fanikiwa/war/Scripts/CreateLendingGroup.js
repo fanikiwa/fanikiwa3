@@ -59,7 +59,7 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
@@ -86,7 +86,12 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 						}
 
 					}, function(reason) {
-						console.log('Error: ' + reason.result.error.message);
+						console.log('Error: ' + reason.result.error.message); 
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message);
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 };
 

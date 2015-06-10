@@ -13,6 +13,14 @@ public class DateExtension {
 	private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
 	
 	//maths
+	public static Date addMinutes(Date date, int minutes)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, minutes);
+        return cal.getTime();
+    }
+	
 	public static Date addDays(Date date, int days)
     {
         Calendar cal = Calendar.getInstance();
@@ -98,4 +106,8 @@ public class DateExtension {
 		 daysdiff = (int) diffDays;
 		return daysdiff;
 		 }
+	public static boolean DateExpired(Date start, Date end)
+	{
+		return end.after(start); //i.e start > end
+	}
 }

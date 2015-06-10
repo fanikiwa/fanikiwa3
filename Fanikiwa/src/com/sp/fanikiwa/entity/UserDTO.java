@@ -16,6 +16,7 @@ public class UserDTO {
 	private Date dateJoined = new Date();
 	private String informBy = "EMAIL";
 	private String userType;
+	private String registrationMethod;
 
 	public String getEmail() {
 		return email;
@@ -95,6 +96,14 @@ public class UserDTO {
 
 	public void setInformBy(String informBy) {
 		this.informBy = informBy;
+	}
+
+	public String getRegistrationMethod() {
+		return registrationMethod;
+	}
+
+	public void setRegistrationMethod(String registrationMethod) {
+		this.registrationMethod = registrationMethod;
 	}
 
 }

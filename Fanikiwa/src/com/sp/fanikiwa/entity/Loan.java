@@ -29,31 +29,34 @@ public class Loan {
 
 	private int term;
 
-	private double AccruedInterest;
+	private double accruedInterest; //for the period
+	private double accruedInterestToDate;
 	private double interestRate;
 
 	// penalty interest rates
 	private double interestRateSusp;
+	private double interestRatePenalty;
 
 	private double accruedIntInSusp;
-	
-	/* Interest Accrual
-	 Permissible values are - D, M, Y or 1 time. 
-	 This field will determine how interest is accrued in the account.
+
+	/*
+	 * Interest Accrual Permissible values are - D, M, Y or 1 time. This field
+	 * will determine how interest is accrued in the account.
 	 */
 	@Index
-	private String interestAccrualInterval; 
+	private String interestAccrualInterval;
 	@Index
 	private Date lastIntAccrualDate;
 	@Index
 	private Date nextIntAccrualDate;
+
 	private boolean accrueInSusp;
-	/* Interest Computation
-	 Used in interest computation formular. 
-	 Permissible values are -S simple; C compound
+	/*
+	 * Interest Computation Used in interest computation formular. Permissible
+	 * values are -S simple; C compound
 	 */
 	@Index
-	private String interestComputationMethod; 
+	private String interestComputationMethod;
 	@Index
 	private String interestComputationTerm; // Used in int computation formula.
 											// Permissible values are - D1,
@@ -72,6 +75,15 @@ public class Loan {
 	private Long intPayingAccount;
 	private Long intPaidAccount;
 	private Long transactionType;
+	private String status;
+
+	// Payment history
+	private int noOfPrincipalDefaults;
+	private int noOfInterestDefaults;
+	private int noOfPricipalPaymentsMade;
+	private int noOfInterestPaymentsMade;
+	private double amountPrincipalDefaulted;
+	private double amountPrincipalPaid;
 
 	public Loan() {
 	}
@@ -149,11 +161,11 @@ public class Loan {
 	}
 
 	public double getAccruedInterest() {
-		return AccruedInterest;
+		return accruedInterest;
 	}
 
 	public void setAccruedInterest(double accruedInterest) {
-		AccruedInterest = accruedInterest;
+		accruedInterest = accruedInterest;
 	}
 
 	public double getInterestRate() {
@@ -274,5 +286,77 @@ public class Loan {
 
 	public void setTransactionType(Long transactionType) {
 		this.transactionType = transactionType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getNoOfPrincipalDefaults() {
+		return noOfPrincipalDefaults;
+	}
+
+	public void setNoOfPrincipalDefaults(int noOfPrincipalDefaults) {
+		this.noOfPrincipalDefaults = noOfPrincipalDefaults;
+	}
+
+	public int getNoOfInterestDefaults() {
+		return noOfInterestDefaults;
+	}
+
+	public void setNoOfInterestDefaults(int noOfInterestDefaults) {
+		this.noOfInterestDefaults = noOfInterestDefaults;
+	}
+
+	public int getNoOfPricipalPaymentsMade() {
+		return noOfPricipalPaymentsMade;
+	}
+
+	public void setNoOfPricipalPaymentsMade(int noOfPricipalPaymentsMade) {
+		this.noOfPricipalPaymentsMade = noOfPricipalPaymentsMade;
+	}
+
+	public int getNoOfInterestPaymentsMade() {
+		return noOfInterestPaymentsMade;
+	}
+
+	public void setNoOfInterestPaymentsMade(int noOfInterestPaymentsMade) {
+		this.noOfInterestPaymentsMade = noOfInterestPaymentsMade;
+	}
+
+	public double getAccruedInterestToDate() {
+		return accruedInterestToDate;
+	}
+
+	public void setAccruedInterestToDate(double accruedInterestToDate) {
+		this.accruedInterestToDate = accruedInterestToDate;
+	}
+
+	public double getInterestRatePenalty() {
+		return interestRatePenalty;
+	}
+
+	public void setInterestRatePenalty(double interestRatePenalty) {
+		this.interestRatePenalty = interestRatePenalty;
+	}
+
+	public double getAmountPrincipalDefaulted() {
+		return amountPrincipalDefaulted;
+	}
+
+	public void setAmountPrincipalDefaulted(double amountPrincipalDefaulted) {
+		this.amountPrincipalDefaulted = amountPrincipalDefaulted;
+	}
+
+	public double getAmountPrincipalPaid() {
+		return amountPrincipalPaid;
+	}
+
+	public void setAmountPrincipalPaid(double amountPrincipalPaid) {
+		this.amountPrincipalPaid = amountPrincipalPaid;
 	}
 }

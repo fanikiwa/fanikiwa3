@@ -12,9 +12,15 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.business.LoanComponent;
+import com.sp.fanikiwa.entity.Installment;
 import com.sp.fanikiwa.entity.Loan;
+import com.sp.fanikiwa.entity.LoanDTO;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer;
+import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.utils.DateExtension;
+import com.sp.utils.PeerLendingUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,6 +121,22 @@ public class LoanEndpoint {
 	public Loan getLoanByID(@Named("id") Long id) {
 		return findRecord(id);
 	}
+	
+	@ApiMethod(name = "prepayLoan")
+	public RequestResult prepayLoan(@Named("id") Long id, @Named("amount") Double Amount) throws Exception {
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Not successful");
+		Loan loan = findRecord(id);
+		if(loan == null)
+		{
+			re.setResultMessage("Loan is null");
+			return re;
+		}
+		
+		LoanComponent lc = new LoanComponent();
+		return lc.PrepayLoan(loan, Amount, new Date());
+	}
 
 	/**
 	 * This method is used for updating an existing entity. If the entity does
@@ -205,4 +227,251 @@ public class LoanEndpoint {
 		return listLoanByQuery(query, null, null);
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectDtoLoans")
+	public CollectionResponse<LoanDTO> selectDtoLoans(
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+
+		Query<Loan> query = ofy().load().type(Loan.class);
+		return selectDtoLoanByQuery(query, cursorString, count);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectDtoMyLoans")
+	public CollectionResponse<LoanDTO> selectDtoMyLoans(
+			@Named("email") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("borrowerId", member.getMemberId());
+		return selectDtoLoanByQuery(query, cursorString, count);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectDtoMyInvestments")
+	public CollectionResponse<LoanDTO> selectDtoMyInvestments(
+			@Named("email") String email,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+
+		Query<Loan> query = ofy().load().type(Loan.class)
+				.filter("lenderId", member.getMemberId());
+		return selectDtoLoanByQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<LoanDTO> selectDtoLoanByQuery(Query<Loan> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws Exception {
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
+		}
+
+		List<LoanDTO> records = new ArrayList<LoanDTO>();
+		QueryResultIterator<Loan> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			LoanDTO dto = createDTOFromLoan(iterator.next());
+			records.add(dto);
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<LoanDTO> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
+	}
+
+	private Loan createLoanFromDTO(LoanDTO loanDto) throws Exception {
+
+		Loan loan = new Loan();
+		loan.setId(loanDto.getId());
+		loan.setAmount(loanDto.getAmount());
+		loan.setCreatedDate(loanDto.getCreatedDate());
+		loan.setMaturityDate(loanDto.getMaturityDate());
+		loan.setBorrowerId(loanDto.getBorrowerId());
+		loan.setLenderId(loanDto.getLenderId());
+		loan.setOfferId(loanDto.getOfferId());
+		loan.setPartialPay(loanDto.isPartialPay());
+		loan.setTerm(loanDto.getTerm());
+		loan.setAccruedInterest(loanDto.getAccruedInterest());
+		loan.setInterestRate(loanDto.getInterestRate());
+		loan.setInterestRateSusp(loanDto.getInterestRateSusp());
+		loan.setAccruedIntInSusp(loanDto.getAccruedIntInSusp());
+		loan.setInterestAccrualInterval(loanDto.getInterestAccrualInterval());
+		// loan.setLastIntAccrualDate(loanDto.getLastIntAccrualDate());
+		loan.setNextIntAccrualDate(loanDto.getNextIntAccrualDate());
+		loan.setAccrueInSusp(loanDto.isAccrueInSusp());
+		loan.setInterestComputationMethod(loanDto
+				.getInterestComputationMethod());
+		loan.setInterestComputationTerm(loanDto.getInterestComputationTerm());
+		loan.setInterestApplicationMethod(loanDto
+				.getInterestApplicationMethod());
+		// loan.setLastIntAppDate(loanDto.getLastIntAppDate());
+		loan.setNextIntAppDate(loanDto.getNextIntAppDate());
+		loan.setIntPayingAccount(loanDto.getIntPayingAccount());
+		loan.setIntPaidAccount(loanDto.getIntPaidAccount());
+		loan.setTransactionType(loanDto.getTransactionType());
+
+		return loan;
+	}
+
+	private LoanDTO createDTOFromLoan(Loan loan) throws Exception {
+
+		LoanDTO loanDto = new LoanDTO();
+		loanDto.setId(loan.getId());
+		loanDto.setAmount(loan.getAmount());
+		loanDto.setCreatedDate(loan.getCreatedDate());
+		loanDto.setMaturityDate(loan.getMaturityDate());
+		loanDto.setBorrowerId(loan.getBorrowerId());
+		loanDto.setLenderId(loan.getLenderId());
+		loanDto.setBorrower(PeerLendingUtil.GetMember(loan.getBorrowerId())
+				.getSurname());
+		loanDto.setLender(PeerLendingUtil.GetMember(loan.getLenderId())
+				.getSurname());
+		loanDto.setOfferId(loan.getOfferId());
+		loanDto.setPartialPay(loan.isPartialPay());
+		loanDto.setTerm(loan.getTerm());
+		loanDto.setAccruedInterest(loan.getAccruedInterest());
+		loanDto.setInterestRate(loan.getInterestRate());
+		loanDto.setInterestRateSusp(loan.getInterestRateSusp());
+		loanDto.setAccruedIntInSusp(loan.getAccruedIntInSusp());
+		loanDto.setInterestAccrualInterval(loan.getInterestAccrualInterval());
+		loanDto.setLastIntAccrualDate(loan.getLastIntAccrualDate());
+		loanDto.setNextIntAccrualDate(loan.getNextIntAccrualDate());
+		loanDto.setAccrueInSusp(loan.isAccrueInSusp());
+		loanDto.setInterestComputationMethod(loan
+				.getInterestComputationMethod());
+		loanDto.setInterestComputationTerm(loan.getInterestComputationTerm());
+		loanDto.setInterestApplicationMethod(loan
+				.getInterestApplicationMethod());
+		loanDto.setLastIntAppDate(loan.getLastIntAppDate());
+		loanDto.setNextIntAppDate(loan.getNextIntAppDate());
+		loanDto.setIntPayingAccount(loan.getIntPayingAccount());
+		loanDto.setIntPaidAccount(loan.getIntPaidAccount());
+		loanDto.setTransactionType(loan.getTransactionType());
+
+		return loanDto;
+	}
+
+	@ApiMethod(name = "editLoan")
+	public RequestResult editLoan(LoanDTO loanDTO) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Success");
+		try {
+			// create loan from dto
+			Loan loanFromDTO = createLoanFromDTO(loanDTO);
+			// check if loan actually exists
+			Loan loanExists = findRecord(loanFromDTO.getId());
+			if (loanExists == null) {
+				throw new NotFoundException("Account does not exist");
+			}
+			if (loanFromDTO.getLastIntAccrualDate() == null) {
+				loanFromDTO.setLastIntAccrualDate(loanExists
+						.getLastIntAccrualDate());
+			}
+			if (loanFromDTO.getLastIntAppDate() == null) {
+				loanFromDTO.setLastIntAppDate(loanExists.getLastIntAppDate());
+			}
+			ofy().save().entity(loanFromDTO).now();
+			re.setSuccess(true);
+			re.setResultMessage("Loan Updated.<br/>Id = " + loanFromDTO.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	@ApiMethod(name = "loanRepaymentSchedule")
+	public RequestResult LoanRepaymentSchedule(@Named("id") Long id,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
+		try {
+			Loan loan = findRecord(id);
+			if (loan == null) {
+				throw new NotFoundException("Loan does not exist");
+			}
+			List<Installment> installments = new ArrayList<Installment>();
+			int term = loan.getTerm();
+			double instamount = loan.getAmount();
+			double balance = loan.getAmount();
+			if (term > 0) {
+				instamount = (double) loan.getAmount()
+						/ (double) loan.getTerm();
+			}
+
+			for (int i = 0; i < (term + 1); i++) {
+				Installment inst = new Installment();
+				inst.setRepaymentDate(DateExtension.addMonths(
+						loan.getCreatedDate(), i));
+
+				inst.setAmount(instamount);
+				inst.setBalance(balance);
+
+				balance -= instamount;
+
+				installments.add(inst);
+			}
+			re.setSuccess(true);
+			re.setResultMessage("Successful");
+			re.setClientToken(CollectionResponse.<Installment> builder()
+					.setItems(installments).setNextPageToken(cursorString)
+					.build());
+			return re;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	@ApiMethod(name = "retrieveLoan")
+	public RequestResult retrieveLoan(@Named("id") Long id) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Success");
+		try {
+			Loan loan = findRecord(id);
+			if (loan == null) {
+				throw new NotFoundException("Loan does not exist");
+			}
+			re.setSuccess(true);
+			re.setClientToken(loan);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+	
 }

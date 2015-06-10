@@ -14,6 +14,10 @@ import com.googlecode.objectify.cmd.Query;
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.Informdb; 
+import com.sp.fanikiwa.entity.RequestResult;
+import com.sp.fanikiwa.pdf.ContractPDF;
+import com.sp.fanikiwa.pdf.TestPDF;
+import com.sp.utils.MailUtil;
 
 import java.util.ArrayList;
 import java.util.List; 
@@ -147,4 +151,26 @@ public class InformdbEndpoint {
 		return ofy().load().type(Informdb.class).id(id).now();
 	}
 
+	@ApiMethod(name = "sendMail")
+	public RequestResult sendMail(@Named("to") String to,
+			@Named("subject") String subject, @Named("body") String body)
+			throws NotFoundException {
+
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		try {
+//			MailUtil.sendEmailWithPDF(to, subject,body, "Test.PDF", TestPDF.class);
+			MailUtil.sendEmailWithPDF(to, subject,body, "FanikiwaContract.PDF", ContractPDF.class);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+
+	}
 }

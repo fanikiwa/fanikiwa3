@@ -3,7 +3,7 @@
   <cron>
     <url>/FanikiwaDiary</url>
     <description>Process Diary every 12:00 midnight</description>
-    <schedule>every day 12:00</schedule>
+    <schedule>every day 00:00</schedule>
   </cron> 
   <cron>
     <url>/MpesaProcessServeletCron</url>

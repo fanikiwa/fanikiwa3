@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/offerreceipientendpoint/v1/20150516124220/java/1.18.0-rc/sp.com-offerreceipientendpoint-v1-20150516124220-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-offerreceipientendpoint-v1-20150516124220-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/offerreceipientendpoint/v1/20150530060803/java/1.18.0-rc/sp.com-offerreceipientendpoint-v1-20150530060803-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-offerreceipientendpoint-v1-20150530060803-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-05-16 12:42"
+      "timestamp": "2015-05-30 06:08"
     }, 
     {
-      "path": "sp.com-offerreceipientendpoint-v1-20150516124220-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-offerreceipientendpoint-v1-20150530060803-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "offerreceipientendpoint:v1", 
-  "revision": 20150516124220
+  "revision": 20150530060803
 }

@@ -147,7 +147,7 @@ public class SMSProcessorComponent {
 
 		Commands.put("H", new FCommand("Help",
 				"H|Help - Help command\nUsage: H*<Command>"
-						+ "\nCommands are [" + String.join(",", cmds)
+						+ "\nCommands are [" + StringExtension.join(cmds,",")
 						+ "]\nE.g. Send H*R for help on registration "));
 	}
 
@@ -379,7 +379,7 @@ public class SMSProcessorComponent {
 		return MessageFormat
 				.format("Balance for [{0}]: {1}\nBook balance = {2}\nAvailable balance = {3}",
 
-				account.getAccountID(), account.getAccountName(),
+				account.getAccountID().toString(), account.getAccountName(),
 						account.getBookBalance(), account.getClearedBalance()
 								- account.getLimit());
 	}
@@ -465,23 +465,26 @@ public class SMSProcessorComponent {
 	}
 
 	private UserDTO SMSToMember(RegisterMessage message) {
-		UserDTO member = new UserDTO();
-		member.setEmail(message.Email.toLowerCase());
-		member.setPwd(message.Pwd);
-		member.setNationalID(message.NationalID);
-		member.setStatus("A");
-		member.setDateActivated(new Date());
-		member.setDateJoined(new Date());
-		member.setInformBy("SMS");
-		member.setTelephone(message.SenderTelno);
-		member.setPwd(message.Pwd);
+		UserDTO userDTO = new UserDTO();
+		userDTO.setEmail(message.Email.toLowerCase());
+		userDTO.setPwd(message.Pwd);
+		userDTO.setNationalID(message.NationalID);
+		userDTO.setStatus("New");//A - Active; NA- Not Active
+		userDTO.setDateActivated(new Date());
+		userDTO.setDateJoined(new Date());
+		userDTO.setInformBy("SMS");
+		userDTO.setTelephone(message.SenderTelno);
+		userDTO.setPwd(message.Pwd);
+		userDTO.setUserType("Member");
+		userDTO.setRegistrationMethod("SMS");
+
 		// member.DateOfBirth = DateTime.MinValue;
 
 		String delimiters = "\\@"; // | delimeted
-		String[] emailParams = member.getEmail().split(delimiters);
+		String[] emailParams = userDTO.getEmail().split(delimiters);
 		String surname = emailParams[0];
-		member.setSurname(surname);
-		return member;
+		userDTO.setSurname(surname);
+		return userDTO;
 	}
 
 	private String ProcessRegisterMessage(RegisterMessage message)
@@ -536,7 +539,7 @@ public class SMSProcessorComponent {
 			} else
 				return "Member registration was not successful";
 		} else {
-			return "Member is already registered";
+			return "Member is already registered. Telno|Email|NationalID already registered";
 		}
 	}
 

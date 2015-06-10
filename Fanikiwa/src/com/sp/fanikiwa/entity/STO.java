@@ -71,7 +71,7 @@ public class STO {
 	private int feesFlag;
 
  
-	private Long loanId;
+	@Index private Long loanId;
 
  
 	private Date nextPayDate;

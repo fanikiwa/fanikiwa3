@@ -31,17 +31,16 @@
 		<servlet-name>MpesaIPNTestServlet</servlet-name>
 		<url-pattern>/MpesaTest</url-pattern>
 	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>APITestServlet</servlet-name>
-		<url-pattern>/APITestServlet</url-pattern>
-	</servlet-mapping>
-
+ 
 	<servlet>
 		<servlet-name>APITestServlet</servlet-name>
 		<servlet-class>com.sp.fanikiwa.APITestServlet</servlet-class>
 	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>APITestServlet</servlet-name>
+		<url-pattern>/APITestServlet</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>Fanikiwa</servlet-name>
@@ -72,6 +71,16 @@
 	<servlet-mapping>
 		<servlet-name>FanikiwaDiary</servlet-name>
 		<url-pattern>/FanikiwaDiary</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ActivateFanikiwaAccount</servlet-name>
+		<servlet-class>com.sp.fanikiwa.ActivationServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ActivateFanikiwaAccount</servlet-name>
+		<url-pattern>/Activate</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -112,23 +121,5 @@
 	<welcome-file-list>
 		<welcome-file>Views/Account/Login.html</welcome-file>
 	</welcome-file-list>
-
-<!-- 	<security-constraint> -->
-<!-- 		<web-resource-collection> -->
-<!-- 			<url-pattern>/Mpesa</url-pattern> -->
-<!-- 		</web-resource-collection> -->
-<!-- 		<auth-constraint> -->
-<!-- 			<role-name>admin</role-name> -->
-<!-- 		</auth-constraint> -->
-<!-- 	</security-constraint> -->
-
-<!-- 	<security-constraint> -->
-<!-- 		<web-resource-collection> -->
-<!-- 			<url-pattern>/FanikiwaDiary</url-pattern> -->
-<!-- 		</web-resource-collection> -->
-<!-- 		<auth-constraint> -->
-<!-- 			<role-name>admin</role-name> -->
-<!-- 		</auth-constraint> -->
-<!-- 	</security-constraint> -->
-
+ 
 </web-app>

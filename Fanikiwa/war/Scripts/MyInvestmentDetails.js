@@ -14,20 +14,30 @@ fanikiwa.loanendpoint.loandetail.LoadLoanDetails = function() {
 	var id = sessionStorage.getItem('myinvestmentdetailsid');
 	gapi.client.loanendpoint.getLoanByID({
 		'id' : id
-	}).execute(function(resp) {
-		console.log('response =>> ' + resp);
-		if (!resp.code) {
-			if (resp == false || resp.result.id == undefined) {
-				$('#apiResults').html('failed to load loan details...');
-			} else {
-				$('#apiResults').html('');
-				fanikiwa.loanendpoint.loandetail.populateLoanDetails(resp);
-			}
-		}
+	})
+			.execute(
+					function(resp) {
+						console.log('response =>> ' + resp);
+						if (!resp.code) {
+							if (resp == false || resp.result.id == undefined) {
+								$('#apiResults').html(
+										'failed to load loan details...');
+							} else {
+								$('#apiResults').html('');
+								fanikiwa.loanendpoint.loandetail
+										.populateLoanDetails(resp);
+							}
+						}
 
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+					},
+					function(reason) {
+						console.log('Error: ' + reason.result.error.message);
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message);
+						$('#successmessage').html('');
+						$('#apiResults').html('');
+					});
 };
 
 /**
@@ -83,3 +93,23 @@ fanikiwa.loanendpoint.loandetail.populateLoanDetails = function(resp) {
 	$("#dtpnextIntAppDate").val(
 			formatDateForControl(resp.result.nextIntAppDate));
 }
+
+function CreateSubMenu() {
+	var SubMenu = [];
+	SubMenu.push('<div class="nav"><ul class="menu">');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Statement.html" style="cursor: pointer;">Statement</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Account/Withdraw.html" style="cursor: pointer;">Withdraw</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My loans</a></div></div></li>');
+	SubMenu
+			.push('<li><div class="floatleft"><div><a href="/Views/Loans/MyInvestMentsList.html" style="cursor: pointer;">My investments</a></div></div></li>');
+	SubMenu.push('</ul></div>');
+
+	$("#SubMenu").html(SubMenu.join(" "));
+}
+
+$(document).ready(function() {
+	CreateSubMenu();
+});

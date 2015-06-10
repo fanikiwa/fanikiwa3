@@ -26,10 +26,12 @@ import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
+import com.sp.fanikiwa.entity.WithdrawalDTO;
 import com.sp.fanikiwa.entity.WithdrawalMessage;
 import com.sp.utils.Config;
 import com.sp.utils.DateExtension;
 import com.sp.utils.GLUtil;
+import com.sp.utils.PeerLendingUtil;
 import com.sp.utils.StringExtension;
 import com.sp.utils.Utils;
 import com.google.api.server.spi.config.Api;
@@ -60,6 +62,7 @@ import javax.inject.Named;
 public class AccountEndpoint {
 
 	final int GAE_TRANSACTION_LIMIT = 5;
+	final double MIN_WITHDRAW_AMOUNT = 100.00;
 
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP
@@ -166,6 +169,30 @@ public class AccountEndpoint {
 	@ApiMethod(name = "getAccount")
 	public Account getAccount(@Named("id") Long id) {
 		return findRecord(id);
+	}
+
+	@ApiMethod(name = "searchAccountByID")
+	public RequestResult searchAccountByID(@Named("id") Long id,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+		try {
+			Account account = findRecord(id);
+			if (account == null) {
+				throw new NotFoundException("Account does not exist");
+			}
+			List<Account> accounts = new ArrayList<Account>();
+			accounts.add(account);
+			re.setClientToken(CollectionResponse.<Account> builder()
+					.setItems(accounts).setNextPageToken(cursorString).build());
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
 	}
 
 	@ApiMethod(name = "retrieveAccount")
@@ -658,7 +685,6 @@ public class AccountEndpoint {
 		List<StatementModel> records = new ArrayList<StatementModel>();
 
 		Account account = findRecord(accountID);
-		
 
 		StatementModel first = new StatementModel();
 		first.setPostDate(sdate);
@@ -805,14 +831,15 @@ public class AccountEndpoint {
 		SimulatePostStatus result = new SimulatePostStatus();
 
 		if (transaction == null) {
-			result.Errors.add(new NotFoundException("Validating posting failed: Transaction is null"));
+			result.Errors.add(new NotFoundException(
+					"Validating posting failed: Transaction is null"));
 			return result;
 		}
 		// Step 1 - See if we can post into this account by looking at lock and
 		// limit flags.
 		double AmountAvailableOnUncleared = account.getBookBalance()
 				- account.getLimit();
-		double AmountAvailableAfterTxn = account.getClearedBalance()
+		double AmountAvailableAfterTxn = (account.getClearedBalance() - account.getLimit())
 				+ transaction.getAmount();
 
 		// get account status
@@ -835,7 +862,9 @@ public class AccountEndpoint {
 
 		// start checking
 		if (account.getClosed()) {
-			result.Errors.add(new NotFoundException("ValidatePost failed! Account ["+account.getAccountName()+"] is closed"));
+			result.Errors.add(new NotFoundException(
+					"ValidatePost failed! Account [" + account.getAccountName()
+							+ "] is closed"));
 			return result;
 		}
 
@@ -852,8 +881,9 @@ public class AccountEndpoint {
 						.add(new IllegalArgumentException(
 								MessageFormat
 										.format("Posting to account [{0}] prohibited.\nAccount lock status =[{1}]",
-												account.getAccountID().toString(),
-												lockstatus.toString())));
+												account.getAccountID()
+														.toString(), lockstatus
+														.toString())));
 			}
 			return result;
 
@@ -865,7 +895,8 @@ public class AccountEndpoint {
 						.add(new IllegalArgumentException(
 								MessageFormat
 										.format("Posting to account [{0}] prohibited! Insufficient funds]",
-												account.getAccountID().toString(),
+												account.getAccountID()
+														.toString(),
 												_TransactionType
 														.getTransactionTypeID(),
 												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
@@ -880,8 +911,9 @@ public class AccountEndpoint {
 						.add(new IllegalArgumentException(
 								MessageFormat
 										.format("Posting to account [{0}] prohibited! \nAccount lock status =[{1}]]",
-												account.getAccountID().toString(),
-												lockstatus.toString())));
+												account.getAccountID()
+														.toString(), lockstatus
+														.toString())));
 			}
 
 			if (!CheckLimitFlag(limistatus, AmountAvailableAfterTxn,
@@ -891,7 +923,8 @@ public class AccountEndpoint {
 						.add(new IllegalArgumentException(
 								MessageFormat
 										.format("Posting to account [{0}] prohibited! Insufficient funds], limit status =[{2}]",
-												account.getAccountID().toString(),
+												account.getAccountID()
+														.toString(),
 												_TransactionType
 														.getTransactionTypeID(),
 												limistatus.toString()// Enum.GetName(typeof(AccountStatus),
@@ -952,7 +985,8 @@ public class AccountEndpoint {
 			throw new NotFoundException(
 					MessageFormat
 							.format("Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
-									account.getAccountID().toString(), lockstatus.toString()));
+									account.getAccountID().toString(),
+									lockstatus.toString()));
 
 		// check 2 - Limit status
 		if ((limistatus == AccountLimitStatus.AllLimitsProhibited)
@@ -961,7 +995,8 @@ public class AccountEndpoint {
 			throw new NotFoundException(
 					MessageFormat
 							.format("Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
-									account.getAccountID().toString(), limistatus.toString()));
+									account.getAccountID().toString(),
+									limistatus.toString()));
 
 		if (limistatus == AccountLimitStatus.LimitsAllowed
 				&& AvailableBalanceAfterApplyingLimit < 0)
@@ -1007,7 +1042,7 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "withdraw")
-	public RequestResult Withdraw(WithdrawalMessage wm) {
+	public RequestResult Withdraw(WithdrawalDTO withdrawalDTO) {
 
 		RequestResult re = new RequestResult();
 		re.setSuccess(true);
@@ -1015,20 +1050,63 @@ public class AccountEndpoint {
 		try {
 
 			/*
-			 * 1. save WithdrawalMessage
-			 * 2. get the saved message and pass it to WithdrawalComponent.Withdraw
-			 * */
+			 * 1. save WithdrawalMessage 2. get the saved message and pass it to
+			 * WithdrawalComponent.Withdraw
+			 */
+			//Check
 			
+			if(withdrawalDTO.getAmount() < MIN_WITHDRAW_AMOUNT)
+			{
+				re.setSuccess(false);
+				re.setResultMessage("Amount["+withdrawalDTO.getAmount()+"] cannot be less than MIN WITHDRAW AMOUNT["+MIN_WITHDRAW_AMOUNT+"]");
+				return re;
+			}
+
+			WithdrawalMessage wm = new WithdrawalMessage();
+			Member member = PeerLendingUtil.GetMember(withdrawalDTO.getEmail());
+			wm.setAccountId(member.getCurrentAccount().getAccountID());
+			wm.setMemberId(member.getMemberId());
+			wm.setAmount(withdrawalDTO.getAmount());
+			wm.setRemissionMethod(withdrawalDTO.getRemissionMethod());
+			wm.setStatus("New");
+
 			WithdrawalMessageEndpoint wep = new WithdrawalMessageEndpoint();
 			WithdrawalMessage returnedWm = wep.insertWithdrawalMessage(wm);
-			
+
 			WithdrawalComponent wcom = new WithdrawalComponent();
 			return wcom.Withdraw(returnedWm);
 
 		} catch (Exception e) {
 			re.setSuccess(false);
+			re.setResultMessage(e.toString());
+		}
+		return re;
+	}
+
+	@ApiMethod(name = "retrieveStatementAdmin")
+	public RequestResult retrieveStatementAdmin(
+			@Named("accountID") Long accountID,
+			@Nullable @Named("sdate") Date sdate,
+			@Nullable @Named("edate") Date edate,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		try {
+			Account account = findRecord(accountID);
+			if (account == null) {
+				throw new NotFoundException("Account does not exist.");
+			}
+			re.setClientToken(GetStatement(accountID, sdate, edate,
+					cursorString, count));
+		} catch (Exception e) {
+			e.printStackTrace();
+			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
 	}
+
 }

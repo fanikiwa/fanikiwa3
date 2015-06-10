@@ -12,24 +12,41 @@ fanikiwa.offerendpoint.listmyoffers = fanikiwa.offerendpoint.listmyoffers || {};
 fanikiwa.offerendpoint.listmyoffers.LoadOffers = function() {
 
 	$('#listOffersResult').html('loading...');
+	$('#apiResults').html('');
+	$('#successmessage').html('');
+	$('#errormessage').html('');
 
 	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
 
 	gapi.client.offerendpoint.retrieveMyOffers({
 		'email' : email
-	}).execute(function(resp) {
-		console.log('response =>> ' + resp);
-		if (!resp.code) {
-			if (resp.result.items == undefined || resp.result.items == null) {
-				$('#listOffersResult').html('You have no Offers...');
-			} else {
-				buildTable(resp);
-			}
-		}
-
-	}, function(reason) {
-		console.log('Error: ' + reason.result.error.message);
-	});
+	}).execute(
+			function(resp) {
+				console.log('response =>> ' + resp);
+				if (!resp.code) {
+					if (resp.result.items == undefined
+							|| resp.result.items == null) {
+						$('#listOffersResult').html('You have no Offers...');
+					} else {
+						buildTable(resp);
+					}
+				} else {
+					console.log('Error: ' + resp.error.message);
+					$('#errormessage').html(
+							'operation failed! Error...<br/>'
+									+ resp.error.message.toString());
+					$('#successmessage').html('');
+					$('#apiResults').html('');
+				}
+			},
+			function(reason) {
+				console.log('Error: ' + reason.result.error.message);
+				$('#errormessage').html(
+						'operation failed! Error...<br/>'
+								+ reason.result.error.message);
+				$('#successmessage').html('');
+				$('#apiResults').html('');
+			});
 };
 
 /**
@@ -61,12 +78,22 @@ function buildTable(response) {
 	populateOffers(response);
 
 	$("#listOffersResult").html(offerTable);
+
+	$('#listOffersTable').DataTable(
+			{
+				"aLengthMenu" : [ [ 5, 10, 20, 50, 100, -1 ],
+						[ 5, 10, 20, 50, 100, "All" ] ],
+				"iDisplayLength" : 5
+			});
+
 }
 
 function populateOffers(resp) {
 
 	if (!resp.code) {
 		resp.items = resp.items || [];
+
+		$(".page-title").append("  [" + resp.result.items.length + "] ");
 
 		offerTable += '<table id="listOffersTable">';
 		offerTable += "<thead>";
@@ -78,7 +105,7 @@ function populateOffers(resp) {
 		offerTable += "<th>Private Offer</th>";
 		offerTable += "<th>Partial Pay</th>";
 		offerTable += "<th>Offer Type</th>";
-		offerTable += "<th>Status</th>";
+		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "<th></th>";
 		offerTable += "</tr>";
@@ -86,26 +113,31 @@ function populateOffers(resp) {
 		offerTable += "<tbody>";
 
 		for (var i = 0; i < resp.result.items.length; i++) {
-			offerTable += '<tr>';
-			offerTable += '<td>' + resp.result.items[i].description + '</td>';
-			offerTable += '<td style="text-align:right">'
-					+ resp.result.items[i].amount.formatMoney(2) + '</td>';
-			offerTable += '<td style="text-align:right">'
-					+ resp.result.items[i].term + '</td>';
-			offerTable += '<td style="text-align:right">'
-					+ resp.result.items[i].interest + '</td>';
-			offerTable += '<td>' + resp.result.items[i].privateOffer + '</td>';
-			offerTable += '<td>' + resp.result.items[i].partialPay + '</td>';
-			if (resp.result.items[i].offerType == 'L')
-				offerTable += '<td>' + 'Lend' + '</td>';
-			else
-				offerTable += '<td>' + 'Borrow' + '</td>';
-			offerTable += '<td>' + resp.result.items[i].status + '</td>';
-			offerTable += '<td><a href="#" onclick="Delete('
-					+ resp.result.items[i].id + ')">Delete</a> </td>';
-			offerTable += '<td><a href="#" onclick="Details('
-					+ resp.result.items[i].id + ')">Details</a> </td>';
-			offerTable += "</tr>";
+			if (resp.result.items[i].status == 'Open') {
+				offerTable += '<tr>';
+				offerTable += '<td>' + resp.result.items[i].description
+						+ '</td>';
+				offerTable += '<td>'
+						+ resp.result.items[i].amount.formatMoney(2) + '</td>';
+				offerTable += '<td>' + resp.result.items[i].term + '</td>';
+				offerTable += '<td>' + resp.result.items[i].interest + '</td>';
+				offerTable += '<td>' + resp.result.items[i].privateOffer
+						+ '</td>';
+				offerTable += '<td>' + resp.result.items[i].partialPay
+						+ '</td>';
+				if (resp.result.items[i].offerType == 'L')
+					offerTable += '<td>' + 'Lend' + '</td>';
+				else
+					offerTable += '<td>' + 'Borrow' + '</td>';
+				offerTable += '<td><a href="#" onclick="Delete('
+						+ resp.result.items[i].id + ')">Delete</a> </td>';
+				offerTable += '<td><a href="#" onclick="Details('
+						+ resp.result.items[i].id + ')">Details</a> </td>';
+				offerTable += '<td><a href="#" onclick="AddRecepients('
+						+ resp.result.items[i].id
+						+ ')">Add Recepients</a> </td>';
+				offerTable += "</tr>";
+			}
 		}
 
 		offerTable += "</tbody>";
@@ -119,7 +151,45 @@ function Details(id) {
 	window.location.href = "/Views/Offers/Details.html";
 }
 
+function AddRecepients(id) {
+
+}
+
 function Delete(id) {
+	// Define the Dialog and its properties.
+	$("#div-delete-dialog").dialog({
+		autoOpen : false,
+		modal : true,
+		title : "Confirm Delete",
+		resizable : true,
+		draggable : true,
+		closeOnEscape : true,
+		buttons : {
+			"Yes" : function() {
+				$(this).dialog('close');
+				callback(true, id);
+			},
+			"No" : function() {
+				$(this).dialog('close');
+				callback(false, id);
+			}
+		}
+	});
+
+	$("#div-delete-dialog").html(
+			"Are you sure you want to delete Offer [ " + id + " ]");
+	$("#div-delete-dialog").dialog("open");
+}
+
+function callback(value, id) {
+	if (value) {
+		DeleteNow(id);
+	} else {
+		return;
+	}
+}
+
+function DeleteNow(id) {
 
 	$('#apiResults').html('processing...');
 	$('#successmessage').html('');
@@ -132,7 +202,7 @@ function Delete(id) {
 			.execute(
 					function(resp) {
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage

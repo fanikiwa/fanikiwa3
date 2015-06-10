@@ -20,22 +20,31 @@ From the base formula, A = P(1 + rt) derived from A = P + I and I = Prt so A = P
     {
         return ComputeSimpleInterest("Y", amount, term, rate);
     }
-    public double ComputeSimpleInterest(String period, double amount, int term, double rate) 
+    public double ComputeSimpleInterest(String period, double amount, int termInDays, double rate) 
     {
+    	double termInYears360 = termInDays / 360.0;//turn term into years
+    	double termInYears365 = termInDays / 365.0;
+    	
         if (period.toUpperCase().equals("D"))
-            return amount * term * 30.0 * (rate / 100.0);
+            return amount * termInYears360 * (rate / 100.0); 
 
         if(period.toUpperCase().equals("D360"))
-            return amount * (term * 30.0 / 360.0) * (rate / 100.0);
+        	  return amount * termInYears360 * (rate / 100.0); 
 
         if (period.toUpperCase().equals("D365"))
-            return amount * (term * 30.0 / 365.0) * (rate / 100.0);
+            return amount * termInYears365 * (rate / 100.0);
 
         if(period.toUpperCase().equals("M"))
-            return amount * term * (rate / 100.0);
+            return amount * termInYears360 * 30 * (rate / 100.0);
+        if(period.toUpperCase().equals("M30"))
+            return amount * termInYears360 * 30 * (rate / 100.0);
+        if(period.toUpperCase().equals("M360"))
+            return amount * termInYears360 * 30 * (rate / 100.0);
+        if(period.toUpperCase().equals("M365"))
+            return amount * termInYears365 * 30 * (rate / 100.0);
             
         //Yearly == defaulut
-        double t = (float)term / 12;
+        double t = termInYears360;
         double r =  (float)rate / 100;
         double intr = amount * t * r;
         return intr;

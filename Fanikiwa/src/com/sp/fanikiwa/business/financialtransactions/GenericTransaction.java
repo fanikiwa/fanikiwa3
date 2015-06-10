@@ -9,7 +9,7 @@ public class GenericTransaction extends abstractMoneyTransaction {
 
 	public GenericTransaction(TransactionType TType, String shortCode,
 			Date postDate, Account drAccount, Account crAccount, double amount,
-			boolean forcePost, String statFlag, String authorizer, String user,
+			boolean forcePost, boolean statFlag, String authorizer, String user,
 			String reference) {
 
 		super(TType, shortCode, postDate, drAccount, crAccount, amount,

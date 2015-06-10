@@ -58,13 +58,30 @@ fanikiwa.userprofile.ui.login = function() {
 					function(resp) {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
-							if (resp.result.result == false) {
+							if (resp.result.success == false) {
+								
+								if (resp.result.clientToken == undefined
+										|| resp.result.clientToken == null) {
 								$('#errormessage').html(
 										'operation failed! Error...<br/>'
 												+ resp.result.resultMessage
 														.toString());
 								$('#successmessage').html('');
 								$('#apiResults').html('');
+								}else
+									{
+									if (resp.result.clientToken == 'authenticated')
+									{
+										window
+												.setTimeout(
+														'window.location.href = "/Views/Account/Activation.html";',
+														1000);
+									
+									}else
+										{
+										
+										}
+									}
 							} else {
 								$('#successmessage').html(
 										'operation successful... <br/>'
@@ -74,10 +91,19 @@ fanikiwa.userprofile.ui.login = function() {
 								$('#apiResults').html('');
 								sessionStorage.setItem('loggedinuser', JSON
 										.stringify(resp.result.clientToken));
-								window
-										.setTimeout(
-												'window.location.href = "/Views/Offers/ListMyOffers.html";',
-												1000);
+								var status = JSON.parse(sessionStorage
+										.getItem('loggedinuser')).status;
+								if (status == 'New') {
+									window
+											.setTimeout(
+													'window.location.href = "/Views/Account/Activation.html";',
+													1000);
+								} else {
+									window
+											.setTimeout(
+													'window.location.href = "/Views/Offers/ListMyOffers.html";',
+													1000);
+								}
 							}
 						} else {
 							$('#errormessage')
@@ -88,7 +114,12 @@ fanikiwa.userprofile.ui.login = function() {
 						}
 
 					}, function(reason) {
-						console.log('Error: ' + reason.result.error.message);
+						console.log('Error: ' + reason.result.error.message); 
+						$('#errormessage').html(
+								'operation failed! Error...<br/>'
+										+ reason.result.error.message);
+						$('#successmessage').html('');
+						$('#apiResults').html('');
 					});
 
 };

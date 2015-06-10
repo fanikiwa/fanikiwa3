@@ -88,6 +88,10 @@ public class SettingsEndpoint {
 					throw new ConflictException("Object already exists");
 				}
 			}
+			Settings.setProperty(Settings.getProperty().trim());
+			Settings.setValue(Settings.getValue().trim());
+			Settings.setGroupName(Settings.getGroupName().trim());
+			
 			ofy().save().entities(Settings).now();
 			re.setResultMessage("Setting Created.<br/>Id = "
 					+ Settings.getProperty());
@@ -146,6 +150,11 @@ public class SettingsEndpoint {
 			if (record == null) {
 				throw new NotFoundException("Record does not exist");
 			}
+			
+			Settings.setProperty(Settings.getProperty().trim());
+			Settings.setValue(Settings.getValue().trim());
+			Settings.setGroupName(Settings.getGroupName().trim());
+			
 			ofy().save().entities(Settings).now();
 			re.setResultMessage("Setting Updated.<br/>Id = "
 					+ Settings.getProperty());

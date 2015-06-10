@@ -30,7 +30,7 @@ public class ValueDatedTransaction {
 
 	private String reference;
 
-	private String statementFlag;
+	private boolean statementFlag;
 
 	private String userID;
 
@@ -119,11 +119,11 @@ public class ValueDatedTransaction {
 		this.reference = reference;
 	}
 
-	public String getStatementFlag() {
+	public boolean getStatementFlag() {
 		return this.statementFlag;
 	}
 
-	public void setStatementFlag(String statementFlag) {
+	public void setStatementFlag(boolean statementFlag) {
 		this.statementFlag = statementFlag;
 	}
 

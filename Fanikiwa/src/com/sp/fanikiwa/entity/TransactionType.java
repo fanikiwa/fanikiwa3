@@ -183,7 +183,7 @@ public class TransactionType {
 	/*
 	 * [S|] S- the transaction will appear in the statement
 	 * */
-	private String statFlag;
+	private boolean statFlag;
 
 	/*
 	 * Account to suspend a credit transaction.
@@ -463,11 +463,11 @@ public class TransactionType {
 		this.shortCode = shortCode;
 	}
 
-	public String getStatFlag() {
+	public boolean getStatFlag() {
 		return this.statFlag;
 	}
 
-	public void setStatFlag(String statFlag) {
+	public void setStatFlag(boolean statFlag) {
 		this.statFlag = statFlag;
 	}
 

@@ -31,7 +31,7 @@ public class Transaction {
 
 	private String reference;
 
-	private String statementFlag;
+	private boolean statementFlag;
 
 	private String userID;
 
@@ -120,11 +120,11 @@ public class Transaction {
 		this.reference = reference;
 	}
 
-	public String getStatementFlag() {
+	public boolean getStatementFlag() {
 		return this.statementFlag;
 	}
 
-	public void setStatementFlag(String statementFlag) {
+	public void setStatementFlag(boolean statementFlag) {
 		this.statementFlag = statementFlag;
 	}
 

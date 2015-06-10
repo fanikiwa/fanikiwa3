@@ -14,11 +14,17 @@ import com.googlecode.objectify.cmd.Query;
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.AccountDTO;
+import com.sp.fanikiwa.entity.AccountType;
+import com.sp.fanikiwa.entity.Customer;
+import com.sp.fanikiwa.entity.CustomerDTO;
 import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.Userprofile;
+import com.sp.utils.GLUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -90,7 +96,7 @@ public class TransactionTypeEndpoint {
 		try {
 			TransactionType transactionType = findRecord(id);
 			if (transactionType == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("TransactionType does not exist");
 			}
 			re.setClientToken(transactionType);
 		} catch (Exception e) {
@@ -123,12 +129,82 @@ public class TransactionTypeEndpoint {
 		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
-			if (findRecord(transactionType.getTransactionTypeID()) != null) {
-				throw new ConflictException("Object already exists");
+			if (transactionType.getTransactionTypeID() != null) {
+				if (findRecord(transactionType.getTransactionTypeID()) != null) {
+					throw new ConflictException("TransactionType already exists");
+				}
+			}
+			if (transactionType.getShortCode() != null) {
+				if (findRecord(transactionType.getShortCode()) != null) {
+					throw new ConflictException("Short Code already exists");
+				}
+			}
+			RequestResult validator = ValidateTransactionType(transactionType);
+			if (!validator.isSuccess()) {
+				return validator;
 			}
 			ofy().save().entities(transactionType).now();
 			re.setResultMessage("Transaction Type Created.<br/>Id = "
 					+ transactionType.getTransactionTypeID());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
+		}
+		return re;
+	}
+
+	private RequestResult ValidateTransactionType(
+			TransactionType transactionType) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(true);
+		re.setResultMessage("Success");
+
+		try {
+			if (transactionType.getSuspenseDrAccount() != null) {
+				if (GLUtil
+						.AccountExists(transactionType.getSuspenseDrAccount())) {
+					throw new NotFoundException(
+							"Suspense Debit Account does not exist");
+				}
+			}
+			if (transactionType.getSuspenseCrAccount() != null) {
+				if (GLUtil
+						.AccountExists(transactionType.getSuspenseCrAccount())) {
+					throw new NotFoundException(
+							"Suspense Credit Account does not exist");
+				}
+			}
+			if (transactionType.getCommissionDrAccount() != null) {
+				if (GLUtil.AccountExists(transactionType
+						.getCommissionDrAccount())) {
+					throw new NotFoundException(
+							"Commission Debit Account does not exist");
+				}
+			}
+			if (transactionType.getCommissionCrAccount() != null) {
+				if (GLUtil.AccountExists(transactionType
+						.getCommissionCrAccount())) {
+					throw new NotFoundException(
+							"Commission Credit Account does not exist");
+				}
+			}
+			if (transactionType.getDefaultMainAccount() != null) {
+				if (GLUtil.AccountExists(transactionType
+						.getDefaultMainAccount())) {
+					throw new NotFoundException(
+							"Default Main Account does not exist");
+				}
+			}
+			if (transactionType.getDefaultContraAccount() != null) {
+				if (GLUtil.AccountExists(transactionType
+						.getDefaultContraAccount())) {
+					throw new NotFoundException(
+							"Default Contra Account does not exist");
+				}
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,10 +230,15 @@ public class TransactionTypeEndpoint {
 		re.setSuccess(true);
 		re.setResultMessage("Success");
 		try {
-			TransactionType record = findRecord(transactionType
+			TransactionType transactionTypeexists = findRecord(transactionType
 					.getTransactionTypeID());
-			if (record == null) {
-				throw new NotFoundException("Record does not exist");
+			if (transactionTypeexists == null) {
+				throw new NotFoundException("TransactionType does not exist");
+			}
+			transactionTypeexists = PopulateTransactionTypeForUpdate(transactionType);
+			RequestResult validator = ValidateTransactionType(transactionTypeexists);
+			if (!validator.isSuccess()) {
+				return validator;
 			}
 			ofy().save().entities(transactionType).now();
 			re.setResultMessage("Transaction Type Updated.<br/>Id = "
@@ -169,6 +250,66 @@ public class TransactionTypeEndpoint {
 			re.setResultMessage(e.getMessage().toString());
 		}
 		return re;
+	}
+
+	private TransactionType PopulateTransactionTypeForUpdate(
+			TransactionType txnType) {
+
+		TransactionType transactionType = new TransactionType();
+
+		transactionType.setTransactionTypeID(transactionType
+				.getTransactionTypeID());
+		transactionType.setAbsolute(txnType.getAbsolute());
+		transactionType.setAmountExpression(txnType.getAmountExpression());
+		transactionType.setCanSuspend(txnType.getCanSuspend());
+		transactionType.setChargeCommission(txnType.getChargeCommission());
+		transactionType.setChargeCommissionToTransaction(txnType
+				.getChargeCommissionToTransaction());
+		transactionType.setChargeWho(txnType.getChargeWho());
+		transactionType.setCommComputationMethod(txnType
+				.getCommComputationMethod());
+		transactionType.setCommissionAmount(txnType.getCommissionAmount());
+		transactionType.setCommissionAmountExpression(txnType
+				.getCommissionAmountExpression());
+		transactionType.setCommissionContraNarrative(txnType
+				.getCommissionContraNarrative());
+		transactionType
+				.setCommissionCrAccount(txnType.getCommissionCrAccount());
+		transactionType
+				.setCommissionDrAccount(txnType.getCommissionDrAccount());
+		transactionType.setCommissionDrAnotherAccount(txnType
+				.getCommissionDrAnotherAccount());
+		transactionType.setCommissionMainNarrative(txnType
+				.getCommissionMainNarrative());
+		transactionType.setCommissionNarrativeFlag(txnType
+				.getCommissionNarrativeFlag());
+		transactionType.setCommissionTransactionType(txnType
+				.getCommissionTransactionType());
+		transactionType.setCrCommCalcMethod(txnType.getCrCommCalcMethod());
+		transactionType.setDebitCredit(txnType.getDebitCredit());
+		transactionType.setDefaultAmount(txnType.getDefaultAmount());
+		transactionType.setDefaultContraAccount(txnType
+				.getDefaultContraAccount());
+		transactionType.setDefaultContraNarrative(txnType
+				.getDefaultContraNarrative());
+		transactionType.setDefaultMainAccount(txnType.getDefaultMainAccount());
+		transactionType.setDefaultMainNarrative(txnType
+				.getDefaultMainNarrative());
+		transactionType.setDescription(txnType.getDescription());
+		transactionType.setDialogFlag(txnType.getDialogFlag());
+		transactionType.setDrCommCalcMethod(txnType.getDrCommCalcMethod());
+		transactionType.setForcePost(txnType.getForcePost());
+		transactionType.setNarrativeFlag(txnType.getNarrativeFlag());
+		transactionType.setShortCode(txnType.getShortCode());
+		transactionType.setStatFlag(txnType.getStatFlag());
+		transactionType.setSuspenseCrAccount(txnType.getSuspenseCrAccount());
+		transactionType.setSuspenseDrAccount(txnType.getSuspenseDrAccount());
+		transactionType.setTieredTableId(txnType.getTieredTableId());
+		transactionType.setTxnClass(txnType.getTxnClass());
+		transactionType.setTxnTypeView(txnType.getTxnTypeView());
+		transactionType.setValueDateOffset(txnType.getValueDateOffset());
+
+		return transactionType;
 	}
 
 	/**
@@ -187,7 +328,7 @@ public class TransactionTypeEndpoint {
 		try {
 			TransactionType transactiontype = findRecord(id);
 			if (transactiontype == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("TransactionType does not exist");
 			}
 			ofy().delete().entity(transactiontype).now();
 			re.setResultMessage("Transaction Type Removed");
@@ -202,6 +343,11 @@ public class TransactionTypeEndpoint {
 
 	private TransactionType findRecord(Long id) {
 		return ofy().load().type(TransactionType.class).id(id).now();
+	}
+
+	private TransactionType findRecord(String shortcode) {
+		return ofy().load().type(TransactionType.class)
+				.filter("shortCode", shortcode).first().now();
 	}
 
 }

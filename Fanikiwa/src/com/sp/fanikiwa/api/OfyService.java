@@ -30,6 +30,7 @@ import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.Userprofile;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
+import com.sp.fanikiwa.entity.WithdrawalMessage;
 
 /**
  * Objectify service wrapper so we can statically register our persistence
@@ -67,6 +68,7 @@ public class OfyService {
 		ObjectifyService.register(MpesaTestIPNMessage.class);
 		ObjectifyService.register(Lendinggroupmember.class);
 		ObjectifyService.register(Lendinggroup.class);
+		ObjectifyService.register(WithdrawalMessage.class);
 	}
 
 	public static Objectify ofy() {

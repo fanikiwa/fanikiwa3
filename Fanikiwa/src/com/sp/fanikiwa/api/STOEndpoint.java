@@ -56,6 +56,31 @@ public class STOEndpoint {
 		
 	}
 	
+
+	public CollectionResponse<STO> getSTOByLoanId(@Named("loanid") Long loanid) {
+		Query<STO> query = ofy().load().type(STO.class)
+				.filter("loanId", loanid);
+		return getSTOByQuery(query,null, null);
+		
+	}
+	public RequestResult deleteSTOByLoanId(@Named("loanid") Long loanid) {
+		RequestResult re = new RequestResult();
+		for(STO s : getSTOByLoanId(loanid).getItems() )
+		{
+			try {
+				this.removeSTO(s.getId());
+			} catch (NotFoundException e) {
+				re.setSuccess(false);
+				re.setResultMessage("Not Successful: " + e.getMessage());
+			}
+		}
+		
+		
+		re.setSuccess(true);
+		re.setResultMessage("Successful");
+		return re;
+		
+	}
 		private CollectionResponse<STO> getSTOByQuery(Query<STO> query,
 		@Nullable @Named("cursor") String cursorString,
 		@Nullable @Named("count") Integer count)

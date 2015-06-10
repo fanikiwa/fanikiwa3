@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/KlNhk7_B-wZ54-5YG4pqP7fzeDU\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/I8M5WTg5c2he1VkxuSKS2iCYtdY\"",
  "discoveryVersion": "v1",
  "id": "accounttypeendpoint:v1",
  "name": "accounttypeendpoint",
@@ -114,11 +114,11 @@
      "type": "string",
      "format": "int64"
     },
-    "result": {
-     "type": "boolean"
-    },
     "resultMessage": {
      "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },

@@ -10,10 +10,10 @@ public class NarrativeFormat
 
     TransactionType TType;
 
-    private String DrNarrativeFommatter = "{ShortCode}";
-    private String CrNarrativeFommatter = "{ShortCode}";
-    private String DrNarrativeCommissionFommatter = "{ShortCode} Comm";
-    private String CrNarrativeCommissionFommatter = "{ShortCode} Comm{DebitAccount}";
+    private String DrNarrativeFommatter = "${ShortCode}";
+    private String CrNarrativeFommatter = "${ShortCode}";
+    private String DrNarrativeCommissionFommatter = "${ShortCode} Comm";
+    private String CrNarrativeCommissionFommatter = "${ShortCode} Comm ${DebitAccount}";
 
 
     public NarrativeFormat(TransactionType TransactionType) throws NullPointerException

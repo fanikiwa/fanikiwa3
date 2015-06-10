@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/accounttypeendpoint/v1/20150516121031/java/1.18.0-rc/sp.com-accounttypeendpoint-v1-20150516121031-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-accounttypeendpoint-v1-20150516121031-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/accounttypeendpoint/v1/20150530053620/java/1.18.0-rc/sp.com-accounttypeendpoint-v1-20150530053620-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-accounttypeendpoint-v1-20150530053620-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-05-16 12:10"
+      "timestamp": "2015-05-30 05:36"
     }, 
     {
-      "path": "sp.com-accounttypeendpoint-v1-20150516121031-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-accounttypeendpoint-v1-20150530053620-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "accounttypeendpoint:v1", 
-  "revision": 20150516121031
+  "revision": 20150530053620
 }
