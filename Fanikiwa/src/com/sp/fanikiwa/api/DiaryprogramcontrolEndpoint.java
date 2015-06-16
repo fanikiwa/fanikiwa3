@@ -88,7 +88,7 @@ public class DiaryprogramcontrolEndpoint {
 		// that it is already present
 		if (Diaryprogramcontrol.getId() != null) {
 			if (findRecord(Diaryprogramcontrol.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("DiaryProgramControl already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -108,7 +108,7 @@ public class DiaryprogramcontrolEndpoint {
 	@ApiMethod(name = "updateDiaryprogramcontrol")
 	public Diaryprogramcontrol updateDiaryprogramcontrol(Diaryprogramcontrol Diaryprogramcontrol) throws NotFoundException {
 		if (findRecord(Diaryprogramcontrol.getId()) == null) {
-			throw new NotFoundException("Diaryprogramcontrol Record does not exist");
+			throw new NotFoundException("Diaryprogramcontrol does not exist");
 		}
 		ofy().save().entity(Diaryprogramcontrol).now();
 		return Diaryprogramcontrol;
@@ -124,7 +124,8 @@ public class DiaryprogramcontrolEndpoint {
 	public void removeDiaryprogramcontrol(@Named("id") Long id) throws NotFoundException {
 		Diaryprogramcontrol record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Diaryprogramcontrol Record does not exist");
+			throw new NotFoundException("Diaryprogramcontrol [ " + id
+						+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

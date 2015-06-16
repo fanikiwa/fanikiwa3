@@ -96,7 +96,7 @@ public class TransactionModelEndpoint {
 			StatementModel transactionModel) throws ConflictException {
 		if (transactionModel.getTransactionID() != null) {
 			if (findRecord(transactionModel.getTransactionID()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Transaction Model already exists");
 			}
 		}
 		ofy().save().entities(transactionModel).now();
@@ -117,7 +117,7 @@ public class TransactionModelEndpoint {
 			StatementModel transactionModel) throws NotFoundException {
 		StatementModel record = findRecord(transactionModel.getTransactionID());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction Model does not exist");
 		}
 		ofy().save().entities(transactionModel).now();
 		return transactionModel;
@@ -134,7 +134,7 @@ public class TransactionModelEndpoint {
 	public void removeTransactionModel(@Named("id") Long id) throws NotFoundException {
 		StatementModel record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction Model does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

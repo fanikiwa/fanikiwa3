@@ -22,7 +22,6 @@ public class JobProcessSTO implements IJobItem {
 
 	@Override
 	public void Run(Date d) {
-		// TODO Auto-generated method stub
 		if (EnableLog)
 			log.info("Processing STO for [" + d + "] started");
 		ProcessSTO(d);

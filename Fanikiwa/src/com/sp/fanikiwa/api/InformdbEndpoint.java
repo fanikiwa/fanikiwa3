@@ -95,7 +95,7 @@ public class InformdbEndpoint {
 	public Informdb insertInformdb(Informdb informdb) throws NotFoundException, ConflictException {
 		if (informdb.getId() != null) {
 			if (findRecord(informdb.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Messsage already exists");
 			}
 		}
 		ofy().save().entities(informdb).now();
@@ -115,7 +115,7 @@ public class InformdbEndpoint {
 	public Informdb updateInformdb(Informdb informdb) throws NotFoundException {
 		Informdb record = findRecord(informdb.getId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Message does not exist");
 		}
 		ofy().save().entities(informdb).now();
 		return informdb;
@@ -132,7 +132,8 @@ public class InformdbEndpoint {
 	public void removeInformdb(@Named("id") Long id) throws NotFoundException  {
 		Informdb record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Message [ " + id
+						+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -157,13 +158,15 @@ public class InformdbEndpoint {
 			throws NotFoundException {
 
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 //			MailUtil.sendEmailWithPDF(to, subject,body, "Test.PDF", TestPDF.class);
 			MailUtil.sendEmailWithPDF(to, subject,body, "FanikiwaContract.PDF", ContractPDF.class);
-
+			re.setSuccess(true);
+			re.setResultMessage("Successful");
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

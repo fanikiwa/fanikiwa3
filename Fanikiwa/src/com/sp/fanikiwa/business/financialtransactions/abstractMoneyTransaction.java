@@ -114,6 +114,7 @@ public abstract class abstractMoneyTransaction {
 
 	public Transaction getDebitTransaction() {
 
+		if(Amount == 0) return null;
 		Transaction txn = new Transaction();
 		txn.setAccount(DebitAccount);
 		txn.setAmount(Amount * -1);
@@ -132,6 +133,8 @@ public abstract class abstractMoneyTransaction {
 	}
 
 	public Transaction getCreditTransaction() {
+		if(Amount == 0) return null;
+		
 		Transaction txn = new Transaction();
 		txn.setAccount(CreditAccount);
 		txn.setAmount(Amount);
@@ -214,7 +217,10 @@ public abstract class abstractMoneyTransaction {
 	public Transaction GetTransaction(Transaction txn, String Fommatter,
 			boolean format) {
 		if (format)
+		{
+			if(txn!=null)
 			txn.setNarrative(StringExtension.format(Fommatter, this));
+		}
 		return txn;
 	}
 

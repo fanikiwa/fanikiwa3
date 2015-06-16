@@ -1,7 +1,8 @@
 package com.sp.fanikiwa.business;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -17,15 +18,14 @@ import com.sp.fanikiwa.business.Jobs.IJobItem;
 import com.sp.utils.DateExtension;
 
 public class DiaryComponent {
-	private static final HashMap<String, IJobItem>items = new HashMap<String, IJobItem>();
+	private static final LinkedHashMap<String, IJobItem>items = new LinkedHashMap<String, IJobItem>();
 
 	static{
 
-		DiaryComponent.register("STO", new JobProcessSTO());
-		DiaryComponent.register("VALUEDATED", new  JobClearValueDatedItems());
-//		DiaryComponent.register("INTACCR", new JobAccrueAccountInterest()); //for future
-		DiaryComponent.register("INTAPP", new  JobAccrueLoanInterest());
-		DiaryComponent.register("INTAPP", new  JobApplyLoanInterest());
+		DiaryComponent.register("01STO", new JobProcessSTO());
+		DiaryComponent.register("02VALUEDATED", new  JobClearValueDatedItems());
+		DiaryComponent.register("03INTACR", new  JobAccrueLoanInterest());
+		DiaryComponent.register("04INTAPP", new  JobApplyLoanInterest());
 	}
 	
 	boolean EnableLog = true;
@@ -34,6 +34,7 @@ public class DiaryComponent {
 
     public void RunDiary(Date date)
     {
+    	log.info("Running diary for["+date+"]");
         try {
         DiaryprogramcontrolEndpoint dDac = new DiaryprogramcontrolEndpoint();
         Collection<Diaryprogramcontrol> controlRec =  dDac.listDiaryprogramcontrol(null, null).getItems();
@@ -49,7 +50,8 @@ public class DiaryComponent {
         	dp = controlRec.iterator().next(); }
 
         Date lastRun = dp.getLastRun();
-        for (Date i = dp.getLastRun(); i.after(date) ; i = DateExtension.addDays(i,1))
+        log.info("Last run date["+date+"]");
+        for (Date i = dp.getLastRun(); i.before(date) ; i = DateExtension.addDays(i,1))
         {
             if (EnableLog) log.info("Processing started for [" + i + "]");
 

@@ -87,7 +87,7 @@ public class TieredtableEndpoint {
 		// that it is already present
 		if (Tieredtable.getId() != null) {
 			if (findRecord(Tieredtable.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Tiered Table already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -108,7 +108,7 @@ public class TieredtableEndpoint {
 	public Tieredtable updateTieredtable(Tieredtable Tieredtable)
 			throws NotFoundException {
 		if (findRecord(Tieredtable.getId()) == null) {
-			throw new NotFoundException("Tieredtable Record does not exist");
+			throw new NotFoundException("Tieredtable does not exist");
 		}
 		ofy().save().entity(Tieredtable).now();
 		return Tieredtable;
@@ -125,15 +125,16 @@ public class TieredtableEndpoint {
 			throws NotFoundException {
 		Tieredtable record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Tieredtable Record does not exist");
+			throw new NotFoundException("Tieredtable [ " + id
+					+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
- 
+
 	private Tieredtable findRecord(Long id) {
-		return ofy().load().type(Tieredtable.class).id(id).now(); 
+		return ofy().load().type(Tieredtable.class).id(id).now();
 	}
-	
+
 	public Collection<Tieredtable> getTieredTableId(
 			@Named("tableid") Long tieredTableId) {
 		Query<Tieredtable> query = ofy().load().type(Tieredtable.class)
@@ -141,7 +142,7 @@ public class TieredtableEndpoint {
 		return listTieredtableFromQuery(query, null, null).getItems();
 	}
 
-	@ApiMethod(name = "getTieredtableById") 
+	@ApiMethod(name = "getTieredtableById")
 	public Tieredtable getTieredtableById(@Named("id") Long id) {
 		return findRecord(id);
 	}

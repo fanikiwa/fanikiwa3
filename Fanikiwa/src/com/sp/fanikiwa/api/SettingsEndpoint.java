@@ -80,12 +80,12 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "insertSettings")
 	public RequestResult insertSettings(Settings Settings) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (Settings.getProperty() != null) {
 				if (findRecord(Settings.getProperty()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ConflictException("Setting already exists");
 				}
 			}
 			Settings.setProperty(Settings.getProperty().trim());
@@ -93,6 +93,7 @@ public class SettingsEndpoint {
 			Settings.setGroupName(Settings.getGroupName().trim());
 			
 			ofy().save().entities(Settings).now();
+			re.setSuccess(true);
 			re.setResultMessage("Setting Created.<br/>Id = "
 					+ Settings.getProperty());
 		} catch (Exception e) {
@@ -113,14 +114,16 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "retrieveSettingsByKey")
 	public RequestResult retrieveSettingsByKey(@Named("key") String property) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Successful");
 		try {
 			Settings setting = findRecord(property);
 			if (setting == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Setting does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(setting);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,12 +146,12 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "updateSettings")
 	public RequestResult updateSettings(Settings Settings) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Settings record = findRecord(Settings.getProperty());
 			if (record == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Setting does not exist");
 			}
 			
 			Settings.setProperty(Settings.getProperty().trim());
@@ -156,8 +159,10 @@ public class SettingsEndpoint {
 			Settings.setGroupName(Settings.getGroupName().trim());
 			
 			ofy().save().entities(Settings).now();
+			re.setSuccess(true);
 			re.setResultMessage("Setting Updated.<br/>Id = "
 					+ Settings.getProperty());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,15 +183,17 @@ public class SettingsEndpoint {
 	@ApiMethod(name = "removeSettings")
 	public RequestResult removeSettings(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Settings setting = findRecord(id);
 			if (setting == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Setting does not exist");
 			}
 			ofy().delete().entity(setting).now();
+			re.setSuccess(true);
 			re.setResultMessage("Setting Removed");
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

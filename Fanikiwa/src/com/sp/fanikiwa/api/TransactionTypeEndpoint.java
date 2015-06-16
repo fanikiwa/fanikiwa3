@@ -91,14 +91,17 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "retrieveTransactionType")
 	public RequestResult retrieveTransactionType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			TransactionType transactionType = findRecord(id);
 			if (transactionType == null) {
-				throw new NotFoundException("TransactionType does not exist");
+				throw new NotFoundException("TransactionType [ " + id
+						+ " ] does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(transactionType);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,12 +129,13 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "insertTransactionType")
 	public RequestResult insertTransactionType(TransactionType transactionType) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (transactionType.getTransactionTypeID() != null) {
 				if (findRecord(transactionType.getTransactionTypeID()) != null) {
-					throw new ConflictException("TransactionType already exists");
+					throw new ConflictException(
+							"TransactionType already exists");
 				}
 			}
 			if (transactionType.getShortCode() != null) {
@@ -146,6 +150,8 @@ public class TransactionTypeEndpoint {
 			ofy().save().entities(transactionType).now();
 			re.setResultMessage("Transaction Type Created.<br/>Id = "
 					+ transactionType.getTransactionTypeID());
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,7 +165,7 @@ public class TransactionTypeEndpoint {
 			TransactionType transactionType) {
 		RequestResult re = new RequestResult();
 		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setResultMessage("Successful");
 
 		try {
 			if (transactionType.getSuspenseDrAccount() != null) {
@@ -227,8 +233,8 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "updateTransactionType")
 	public RequestResult updateTransactionType(TransactionType transactionType) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			TransactionType transactionTypeexists = findRecord(transactionType
 					.getTransactionTypeID());
@@ -243,6 +249,8 @@ public class TransactionTypeEndpoint {
 			ofy().save().entities(transactionType).now();
 			re.setResultMessage("Transaction Type Updated.<br/>Id = "
 					+ transactionType.getTransactionTypeID());
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -323,15 +331,18 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "removeTransactionType")
 	public RequestResult removeTransactionType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			TransactionType transactiontype = findRecord(id);
 			if (transactiontype == null) {
-				throw new NotFoundException("TransactionType does not exist");
+				throw new NotFoundException("TransactionType [ " + id
+						+ " ] does not exist");
 			}
 			ofy().delete().entity(transactiontype).now();
 			re.setResultMessage("Transaction Type Removed");
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

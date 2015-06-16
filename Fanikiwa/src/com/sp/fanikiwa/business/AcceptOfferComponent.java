@@ -283,13 +283,13 @@ public class AcceptOfferComponent {
 		loan.setOfferId(offer.getId());
 		loan.setPartialPay(offer.getPartialPay());
 		loan.setInterestAccrualInterval(Config
-				.GetString("DEFAULT_INT_ACCRUAL_INTERVAL"));
+				.GetString("DEFAULT_INT_ACCRUAL_INTERVAL")); // D, D1, D360, D365, M, M30, Y
 		loan.setInterestApplicationMethod(Config
 				.GetString("DEFAULT_INT_APPLICATION_METHOD"));
 		loan.setInterestComputationMethod(Config
-				.GetString("DEFAULT_INT_COMPUTATION_METHOD"));
+				.GetString("DEFAULT_INT_COMPUTATION_METHOD"));//S, C
 		loan.setInterestComputationTerm(Config
-				.GetString("DEFAULT_INT_COMPUTATION_TERM"));
+				.GetString("DEFAULT_INT_COMPUTATION_TERM")); // D, D1, D360, D365, M, M30, Y
 		loan.setInterestRate(offer.getInterest());
 		loan.setInterestRateSusp(offer.getInterest()
 				+ Config.GetDouble("PENALTY_INTEREST_MARGIN"));
@@ -300,7 +300,8 @@ public class AcceptOfferComponent {
 				new Date()));
 
 		// Accrue interest immediately
-		loan.setLastIntAccrualDate(new Date());
+		//loan.setLastIntAccrualDate(new Date());
+		loan.setNextIntAccrualDate(new Date());
 
 		// ESTABLISHLOANTRANSACTIONTYPE
 		loan.setTransactionType(Config.GetLong("ESTABLISHLOANTRANSACTIONTYPE"));

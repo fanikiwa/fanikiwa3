@@ -100,14 +100,17 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "retrieveUser")
 	public RequestResult retrieveUser(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Userprofile user = findRecord(id);
 			if (user == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("User [ " + id
+						+ " ]  does not exist");
 			}
 			re.setClientToken(user);
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,15 +133,17 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "updateUserprofile")
 	public RequestResult updateUserprofile(Userprofile Userprofile) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Userprofile user = findRecord(Userprofile.getUserId());
 			if (user == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("User does not exist");
 			}
 			ofy().save().entities(Userprofile).now();
+			re.setSuccess(true);
 			re.setResultMessage("User Updated.<br/>Id = " + user.getUserId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,15 +164,18 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "removeUserprofile")
 	public RequestResult removeUserprofile(@Named("id") String id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Userprofile user = findRecord(id);
 			if (user == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("User [ " + id
+						+ " ]  does not exist");
 			}
 			ofy().delete().entity(user).now();
 			re.setResultMessage("Setting Removed");
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,7 +200,7 @@ public class UserprofileEndpoint {
 			throws NotFoundException, ConflictException {
 		if (userprofile.getUserId() != null) {
 			if (findRecord(userprofile.getUserId().toLowerCase()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("User already exists");
 			}
 		}
 		userprofile.setUserId(userprofile.getUserId().toLowerCase()); // set all
@@ -207,17 +215,20 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "createUserprofile")
 	public RequestResult createUserprofile(Userprofile userprofile) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (userprofile.getUserId() != null) {
 				if (findRecord(userprofile.getUserId()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ConflictException("User["
+							+ userprofile.getUserId() + "] already exists");
 				}
 			}
 			ofy().save().entities(userprofile).now();
 			re.setResultMessage("User Created.<br/>Id = "
 					+ userprofile.getUserId());
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -293,22 +304,26 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "requestToken")
 	public RequestResult requestToken(ActivationDTO activateDTO) {
 		RequestResult re = new RequestResult();
-
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Userprofile user = null;
 			user = findRecord(activateDTO.getEmail());
 			if (user == null) {
 				re.setSuccess(false);
 				re.setResultMessage("User cannot be null");
+				return re;
 			}
 			// set activation token
-			TokenUtil.SetUserToken( user,new Date());
-		
+			TokenUtil.SetUserToken(user, new Date());
+
 			ofy().save().entities(user).now();
-			TokenUtil.SendToken(activateDTO.getActivationMethod(), user, user.getToken());
-			
+			TokenUtil.SendToken(activateDTO.getActivationMethod(), user,
+					user.getToken());
+
 			re.setSuccess(true);
-			re.setResultMessage("Success");
+			re.setResultMessage("Token Sent to " + user.getUserId()
+					+ "<br/>Check your email.");
 			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
@@ -322,7 +337,8 @@ public class UserprofileEndpoint {
 	public RequestResult changePassword(@Named("userId") String userId,
 			@Named("pwd") String pwd) {
 		RequestResult re = new RequestResult();
-
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Userprofile user = null;
 			user = findRecord(userId);
@@ -330,7 +346,7 @@ public class UserprofileEndpoint {
 
 			updateUserprofile(user);
 			re.setSuccess(true);
-			re.setResultMessage("Success");
+			re.setResultMessage("Password Changed.");
 			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
@@ -340,12 +356,14 @@ public class UserprofileEndpoint {
 	}
 
 	@ApiMethod(name = "login")
-	public RequestResult Login(@Named("userId") String userId,
-			@Named("pwd") String pwd) {
+	public RequestResult Login(@Named("userId") String userID,
+			@Named("pwd") String PWD) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
+		String pwd = PWD.trim();
+		String userId = userID.trim().toLowerCase();
 		Userprofile user = null;
 		user = findRecord(userId);
 		if (user == null) {
@@ -379,8 +397,8 @@ public class UserprofileEndpoint {
 
 	public RequestResult UserExists(@Named("userId") String userId) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		Userprofile user = null;
 		user = findRecord(userId);
@@ -390,6 +408,7 @@ public class UserprofileEndpoint {
 					+ " ] does not exist!");
 			return re;
 		}
+		re.setSuccess(true);
 		re.setClientToken(user);
 		return re;
 	}

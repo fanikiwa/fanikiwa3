@@ -132,7 +132,7 @@ public class TieredDetEndpoint {
 		// that it is already present
 		if (TieredDet.getId() != null) {
 			if (findRecord(TieredDet.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("TieredDet already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -153,7 +153,7 @@ public class TieredDetEndpoint {
 	public TieredDet updateTieredDet(TieredDet TieredDet)
 			throws NotFoundException {
 		if (findRecord(TieredDet.getId()) == null) {
-			throw new NotFoundException("TieredDet Record does not exist");
+			throw new NotFoundException("TieredDet does not exist");
 		}
 		ofy().save().entity(TieredDet).now();
 		return TieredDet;
@@ -169,7 +169,7 @@ public class TieredDetEndpoint {
 	public void removeTieredDet(@Named("id") Long id) throws NotFoundException {
 		TieredDet record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("TieredDet Record does not exist");
+			throw new NotFoundException("TieredDet does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

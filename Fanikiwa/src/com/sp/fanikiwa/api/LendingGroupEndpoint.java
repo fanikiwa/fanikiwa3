@@ -3,6 +3,7 @@ package com.sp.fanikiwa.api;
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class LendingGroupEndpoint {
 				.filter("creator", member);
 		return listLendinggroupsByQuery(query, cursorString, count);
 	}
-	
+
 	public CollectionResponse<Lendinggroup> retrieveSubgroups(
 			@Named("groupname") String groupname,
 			@Nullable @Named("cursor") String cursorString,
@@ -106,6 +107,7 @@ public class LendingGroupEndpoint {
 		return CollectionResponse.<Lendinggroup> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
 	}
+
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
 	 * method.
@@ -134,7 +136,7 @@ public class LendingGroupEndpoint {
 			throws NotFoundException {
 		Lendinggroup record = findRecord(Lendinggroup.getGroupName());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Group does not exist");
 		}
 		ofy().save().entities(Lendinggroup).now();
 		return Lendinggroup;
@@ -149,13 +151,37 @@ public class LendingGroupEndpoint {
 	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeLendinggroup")
-	public void removeLendinggroup(@Named("id") String id)
-			throws NotFoundException {
-		Lendinggroup record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+	public RequestResult removeLendinggroup(@Named("id") String id) {
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
+
+		try {
+			Lendinggroup record = findRecord(id);
+			if (record == null) {
+				throw new NotFoundException("Lending Group does not exist");
+			}
+			if (record.getGroupName().equals("ROOT")) {
+				throw new Exception(
+						"You are not allowed to delete ROOT Lending Group.");
+			}
+			Collection<Lendinggroup> subgroups = this.retrieveSubgroups(id,
+					null, null).getItems();
+			if (subgroups.size() > 0) {
+				throw new Exception("This Group has [ " + subgroups.size()
+						+ " ] sub group(s). Delete sub group(s) first.");
+			}
+			ofy().delete().entity(record).now();
+			re.setSuccess(true);
+			re.setResultMessage("Lending Group Removed.");
+			return re;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			re.setSuccess(false);
+			re.setResultMessage(e.getMessage().toString());
 		}
-		ofy().delete().entity(record).now();
+		return re;
 	}
 
 	private Lendinggroup findRecord(String id) {
@@ -177,7 +203,7 @@ public class LendingGroupEndpoint {
 			throws NotFoundException, ConflictException {
 		if (Lendinggroup.getGroupName() != null) {
 			if (findRecord(Lendinggroup.getGroupName()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Group already exists");
 			}
 		}
 		ofy().save().entities(Lendinggroup).now();
@@ -187,8 +213,8 @@ public class LendingGroupEndpoint {
 	@ApiMethod(name = "saveLendinggroup")
 	public RequestResult saveLendinggroup(final LendingGroupDTO lendingGroupDTO) {
 		final RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		Lendinggroup group = ofy().transactNew(MAXRETRIES,
 				new Work<Lendinggroup>() {
@@ -197,6 +223,7 @@ public class LendingGroupEndpoint {
 						Lendinggroup group = null;
 						try {
 							group = createLendinggroupDTO(lendingGroupDTO);
+							re.setSuccess(true);
 							re.setResultMessage("Group Created.");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
@@ -219,7 +246,6 @@ public class LendingGroupEndpoint {
 		group.setLastModified(new Date());
 		group.setParentGroup(lendingGroupDTO.getParentGroup());
 
-		
 		Member member = ofy().transactionless().load().type(Member.class)
 				.filter("email", lendingGroupDTO.getCreatorEmail()).first()
 				.now();
@@ -240,7 +266,7 @@ public class LendingGroupEndpoint {
 		group.setCreatedOn(new Date());
 		group.setLastModified(new Date());
 		group.setCreator(member);
-		group.setParentGroup("ROOT"); //ROOT Has no parent
+		group.setParentGroup("ROOT"); // ROOT Has no parent
 
 		// save it
 		Lendinggroup savedgroup = this.insertLendinggroup(group);

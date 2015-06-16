@@ -88,7 +88,7 @@ public class QuoteEndpoint {
 		// that it is already present
 		if (quote.getId() != null) {
 			if (findRecord(quote.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Quote already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -108,7 +108,7 @@ public class QuoteEndpoint {
 	@ApiMethod(name = "updateQuote")
 	public Quote updateQuote(Quote quote) throws NotFoundException {
 		if (findRecord(quote.getId()) == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Quote does not exist");
 		}
 		ofy().save().entity(quote).now();
 		return quote;
@@ -124,7 +124,7 @@ public class QuoteEndpoint {
 	public void removeQuote(@Named("id") Long id) throws NotFoundException {
 		Quote record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Quote does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

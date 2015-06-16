@@ -63,7 +63,7 @@ public class ActivationServlet  extends HttpServlet {
 			
 			if(re.isSuccess())
 			{
-				response.sendRedirect("login.html");
+				response.sendRedirect("/Views/Account/Login.html");
 //				RequestDispatcher rd = request.getRequestDispatcher("/");
 //				rd.forward(request,response);
 			}

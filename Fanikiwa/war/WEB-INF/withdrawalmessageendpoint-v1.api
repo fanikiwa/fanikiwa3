@@ -161,15 +161,12 @@
           "status" : {
             "type" : "string"
           },
+          "remissionMethod" : {
+            "type" : "string"
+          },
           "accountId" : {
             "type" : "string",
             "format" : "int64"
-          },
-          "remarks" : {
-            "type" : "string"
-          },
-          "remissionMethod" : {
-            "type" : "string"
           },
           "memberId" : {
             "type" : "string",
@@ -177,6 +174,9 @@
           },
           "amount" : {
             "type" : "number"
+          },
+          "remarks" : {
+            "type" : "string"
           }
         }
       },

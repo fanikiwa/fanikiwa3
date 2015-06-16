@@ -218,14 +218,17 @@ public class OfferEndpoint {
 	@ApiMethod(name = "selectOffer")
 	public RequestResult selectOffer(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Offer offer = findRecord(id);
 			if (offer == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Offer [ " + id
+						+ " ]  does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(offer);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,7 +252,7 @@ public class OfferEndpoint {
 	public Offer updateOffer(Offer Offer) throws NotFoundException {
 		Offer record = findRecord(Offer.getId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Offer does not exist");
 		}
 		ofy().save().entities(Offer).now();
 		return Offer;
@@ -266,12 +269,13 @@ public class OfferEndpoint {
 	@ApiMethod(name = "removeOffer")
 	public RequestResult removeOffer(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Offer offer = findRecord(id);
 			if (offer == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Offer [ " + id
+						+ " ]  does not exist");
 			}
 
 			re = ValidateOfferForDeleting(offer);
@@ -294,8 +298,9 @@ public class OfferEndpoint {
 
 			// remove the offer
 			ofy().delete().entity(offer).now();
+			re.setSuccess(true);
 			re.setResultMessage("Offer deleted.");
-
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
@@ -323,7 +328,7 @@ public class OfferEndpoint {
 			ConflictException {
 		if (offer.getId() != null) {
 			if (findRecord(offer.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Offer already exists");
 			}
 		}
 		ofy().save().entities(offer).now();
@@ -333,8 +338,8 @@ public class OfferEndpoint {
 	@ApiMethod(name = "saveOffer")
 	public RequestResult saveOffer(final OfferDTO offerDto) {
 		final RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		RequestResult ore = ValidateOffer(offerDto);
 
@@ -349,6 +354,7 @@ public class OfferEndpoint {
 				Offer offer = null;
 				try {
 					offer = createOfferFromDTO(offerDto);
+					re.setSuccess(true);
 					re.setResultMessage("Offer Id = "
 							+ offer.getId().toString());
 				} catch (Exception e) {
@@ -517,8 +523,8 @@ public class OfferEndpoint {
 	public RequestResult AcceptOffer(@Named("id") Long id,
 			@Named("email") String email) throws Exception {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 
 			AcceptOfferComponent aoc = new AcceptOfferComponent();
@@ -535,12 +541,16 @@ public class OfferEndpoint {
 			}
 
 			if (offer.getOfferType().toUpperCase().equals("L")) {
+				re.setSuccess(true);
 				re.setResultMessage("Loan Id = "
 						+ aoc.AcceptLendOffer(member, offer).getId().toString());
+				return re;
 			} else {
+				re.setSuccess(true);
 				re.setResultMessage("Loan Id = "
 						+ aoc.AcceptBorrowOffer(member, offer).getId()
 								.toString());
+				return re;
 			}
 
 		} catch (Exception e) {
@@ -554,8 +564,8 @@ public class OfferEndpoint {
 	public RequestResult AcceptPartialBorrowOffer(@Named("id") Long id,
 			@Named("email") String email) throws Exception {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 
 			AcceptOfferComponent aoc = new AcceptOfferComponent();
@@ -570,10 +580,11 @@ public class OfferEndpoint {
 			if (member == null) {
 				throw new NotFoundException("Member does not exist");
 			}
-
+			re.setSuccess(true);
 			re.setResultMessage("Loan Id = "
 					+ aoc.AcceptPartialBorrowOffer(member, offer).getId()
 							.toString());
+			return re;
 
 		} catch (Exception e) {
 			re.setSuccess(false);
@@ -586,7 +597,7 @@ public class OfferEndpoint {
 	private RequestResult ValidateOffer(OfferDTO offerDto) {
 		RequestResult re = new RequestResult();
 		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setResultMessage("Successful");
 
 		if (offerDto.getAmount() < MINIMUM_OFFER_AMOUNT) {
 			re.setSuccess(false);
@@ -614,7 +625,7 @@ public class OfferEndpoint {
 
 		RequestResult re = new RequestResult();
 		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setResultMessage("Successful");
 
 		if (offer.getStatus().equals("Processing")) {
 			re.setSuccess(false);

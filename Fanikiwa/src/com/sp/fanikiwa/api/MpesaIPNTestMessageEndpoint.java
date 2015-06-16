@@ -71,7 +71,7 @@ public class MpesaIPNTestMessageEndpoint {
 		// that it is already present
 		if (mpesaIPNMessage.getId() != null) {
 			if (findRecord(mpesaIPNMessage.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Message already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -92,7 +92,7 @@ public class MpesaIPNTestMessageEndpoint {
 	@ApiMethod(name = "updateMpesaTestIPNMessage")
 	public MpesaTestIPNMessage updateMpesaTestIPNMessage(MpesaTestIPNMessage mpesaIPNMessage) throws NotFoundException {
 		if (findRecord(mpesaIPNMessage.getId()) == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Message does not exist");
 		}
 		ofy().save().entity(mpesaIPNMessage).now();
 		return mpesaIPNMessage;
@@ -109,7 +109,8 @@ public class MpesaIPNTestMessageEndpoint {
 	public void removeMpesaTestIPNMessage(@Named("id") Long id) throws NotFoundException {
 		MpesaTestIPNMessage record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Message  [ " + id
+						+ " ] does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

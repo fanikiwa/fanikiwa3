@@ -26,7 +26,7 @@ public class DiaryServlet extends HttpServlet {
 		RunDiary( req,  resp);
 	}
 	
-	private void RunDiary(HttpServletRequest req, HttpServletResponse resp)
+	private void RunDiary(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		String datestr = req.getParameter("RunDate");
 		Date RunDate = new Date();
@@ -40,8 +40,11 @@ public class DiaryServlet extends HttpServlet {
 			}
 		}
 		
+		resp.getWriter().println("Starting diary run Date["+RunDate.toString()+"]");
 		
 		DiaryComponent dc = new DiaryComponent();
 		dc.RunDiary(RunDate);
+		resp.getWriter().println("Diary completed running");
+		
 	}
 }

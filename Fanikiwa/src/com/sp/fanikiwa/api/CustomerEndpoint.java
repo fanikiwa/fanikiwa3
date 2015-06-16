@@ -91,7 +91,7 @@ public class CustomerEndpoint {
 	public Customer insertCustomer(Customer customer) throws NotFoundException, ConflictException {
 		if (customer.getCustomerId() != null) {
 			if (findRecord(customer.getCustomerId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Customer already exists");
 			}
 		}
 		ofy().save().entities(customer).now();
@@ -111,7 +111,7 @@ public class CustomerEndpoint {
 	public Customer updateCustomer(Customer customer) throws NotFoundException {
 		Customer record = findRecord(customer.getCustomerId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Customer does not exist");
 		}
 		ofy().save().entities(customer).now();
 		return customer;
@@ -128,21 +128,12 @@ public class CustomerEndpoint {
 	public void removeCustomer(@Named("id") Long id) throws NotFoundException  {
 		Customer record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Customer [ " + id
+						+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
-
-	private boolean containsCustomer(Customer customer) {
-		boolean contains = true;
-
-			Customer item = findRecord(customer.getCustomerId());
-			if (item == null) {
-				contains = false;
-			}
-		return contains;
-	}
-
+ 
 	private Customer findRecord(Long id) {
 		return ofy().load().type(Customer.class).id(id).now();
 	}

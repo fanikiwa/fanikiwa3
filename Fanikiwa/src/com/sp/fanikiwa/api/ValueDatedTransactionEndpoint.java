@@ -29,11 +29,11 @@ import javax.inject.Named;
 public class ValueDatedTransactionEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listValueDatedTransaction")
@@ -41,52 +41,58 @@ public class ValueDatedTransactionEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-			Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class);
-			return listValueDatedTransactionByQuery(query,cursorString,count);
+		Query<ValueDatedTransaction> query = ofy().load().type(
+				ValueDatedTransaction.class);
+		return listValueDatedTransactionByQuery(query, cursorString, count);
 	}
-	public Collection<ValueDatedTransaction> SelectByValueDate(@Named("date") Date date) {
 
-			Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class)
-					.filter("ValueDate", date);
-			return listValueDatedTransactionByQuery(query,null,null).getItems();
+	public Collection<ValueDatedTransaction> SelectByValueDate(
+			@Named("date") Date date) {
+
+		Query<ValueDatedTransaction> query = ofy().load()
+				.type(ValueDatedTransaction.class).filter("ValueDate", date);
+		return listValueDatedTransactionByQuery(query, null, null).getItems();
 	}
+
 	private CollectionResponse<ValueDatedTransaction> listValueDatedTransactionByQuery(
-					Query<ValueDatedTransaction> query,
-					@Nullable @Named("cursor") String cursorString,
-					@Nullable @Named("count") Integer count) {
-			if (count != null)
-				query.limit(count);
-			if (cursorString != null && cursorString != "") {
-				query = query.startAt(Cursor.fromWebSafeString(cursorString));
-			}
-
-			List<ValueDatedTransaction> records = new ArrayList<ValueDatedTransaction>();
-			QueryResultIterator<ValueDatedTransaction> iterator = query.iterator();
-			int num = 0;
-			while (iterator.hasNext()) {
-				records.add(iterator.next());
-				if (count != null) {
-					num++;
-					if (num == count)
-						break;
-				}
-			}
-
-			// Find the next cursor
-			if (cursorString != null && cursorString != "") {
-				Cursor cursor = iterator.getCursor();
-				if (cursor != null) {
-					cursorString = cursor.toWebSafeString();
-				}
-			}
-			return CollectionResponse.<ValueDatedTransaction> builder().setItems(records)
-					.setNextPageToken(cursorString).build();
+			Query<ValueDatedTransaction> query,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
 		}
 
+		List<ValueDatedTransaction> records = new ArrayList<ValueDatedTransaction>();
+		QueryResultIterator<ValueDatedTransaction> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			records.add(iterator.next());
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<ValueDatedTransaction> builder()
+				.setItems(records).setNextPageToken(cursorString).build();
+	}
+
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getValueDatedTransaction")
@@ -95,20 +101,22 @@ public class ValueDatedTransactionEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param valuedatedtransaction the entity to be inserted.
+	 * @param valuedatedtransaction
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertValueDatedTransaction")
 	public ValueDatedTransaction insertValueDatedTransaction(
-			ValueDatedTransaction valuedatedtransaction) throws ConflictException {
+			ValueDatedTransaction valuedatedtransaction)
+			throws ConflictException {
 		if (valuedatedtransaction.getTransactionID() != null) {
 			if (findRecord(valuedatedtransaction.getTransactionID()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Transaction already exists");
 			}
 		}
 		ofy().save().entities(valuedatedtransaction).now();
@@ -116,42 +124,46 @@ public class ValueDatedTransactionEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param valuedatedtransaction the entity to be updated.
+	 * @param valuedatedtransaction
+	 *            the entity to be updated.
 	 * @return The updated entity.
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateValueDatedTransaction")
 	public ValueDatedTransaction updateValueDatedTransaction(
-			ValueDatedTransaction valuedatedtransaction) throws NotFoundException {
-		ValueDatedTransaction record = findRecord(valuedatedtransaction.getTransactionID());
+			ValueDatedTransaction valuedatedtransaction)
+			throws NotFoundException {
+		ValueDatedTransaction record = findRecord(valuedatedtransaction
+				.getTransactionID());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction does not exist");
 		}
 		ofy().save().entities(valuedatedtransaction).now();
 		return valuedatedtransaction;
 	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
-	 * @throws NotFoundException 
+	 * @param id
+	 *            the primary key of the entity to be deleted.
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeValueDatedTransaction")
-	public void removeValueDatedTransaction(@Named("id") Long id) throws NotFoundException {
+	public void removeValueDatedTransaction(@Named("id") Long id)
+			throws NotFoundException {
 		ValueDatedTransaction record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction [ " + id
+					+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
-	
-
 
 	private ValueDatedTransaction findRecord(Long id) {
 		return ofy().load().type(ValueDatedTransaction.class).id(id).now();
@@ -160,16 +172,19 @@ public class ValueDatedTransactionEndpoint {
 	@ApiMethod(name = "retrieveTransaction")
 	public RequestResult retrieveTransaction(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 			ValueDatedTransaction transaction = findRecord(id);
 			if (transaction == null) {
-				throw new NotFoundException("Transaction does not exist");
+				throw new NotFoundException("Transaction [ " + id
+						+ " ]  does not exist");
 			}
 			ValueDatedTransactionDTO transactionDTO = createDTOFromTransaction(transaction);
 			re.setClientToken(transactionDTO);
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
@@ -178,8 +193,8 @@ public class ValueDatedTransactionEndpoint {
 		return re;
 	}
 
-	private ValueDatedTransactionDTO createDTOFromTransaction(ValueDatedTransaction transaction)
-			throws Exception {
+	private ValueDatedTransactionDTO createDTOFromTransaction(
+			ValueDatedTransaction transaction) throws Exception {
 		// Construct dto
 		ValueDatedTransactionDTO transactionDto = new ValueDatedTransactionDTO();
 		transactionDto.setTransactionID(transaction.getTransactionID());
@@ -207,7 +222,8 @@ public class ValueDatedTransactionEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) throws Exception {
 
-		Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class);
+		Query<ValueDatedTransaction> query = ofy().load().type(
+				ValueDatedTransaction.class);
 		return selectDtoTransactionByQuery(query, cursorString, count);
 	}
 
@@ -225,7 +241,8 @@ public class ValueDatedTransactionEndpoint {
 		QueryResultIterator<ValueDatedTransaction> iterator = query.iterator();
 		int num = 0;
 		while (iterator.hasNext()) {
-			ValueDatedTransactionDTO dto = createDTOFromTransaction(iterator.next());
+			ValueDatedTransactionDTO dto = createDTOFromTransaction(iterator
+					.next());
 			records.add(dto);
 			if (count != null) {
 				num++;
@@ -241,8 +258,8 @@ public class ValueDatedTransactionEndpoint {
 				cursorString = cursor.toWebSafeString();
 			}
 		}
-		return CollectionResponse.<ValueDatedTransactionDTO> builder().setItems(records)
-				.setNextPageToken(cursorString).build();
+		return CollectionResponse.<ValueDatedTransactionDTO> builder()
+				.setItems(records).setNextPageToken(cursorString).build();
 	}
 
 }

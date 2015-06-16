@@ -23,7 +23,6 @@ import com.sp.fanikiwa.entity.RequestResult;
 @Api(name = "withdrawalmessageendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class WithdrawalMessageEndpoint {
 
-
 	/**
 	 * Return a collection of quotes
 	 *
@@ -37,7 +36,8 @@ public class WithdrawalMessageEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Query<WithdrawalMessage> query = ofy().load().type(WithdrawalMessage.class);
+		Query<WithdrawalMessage> query = ofy().load().type(
+				WithdrawalMessage.class);
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -63,8 +63,8 @@ public class WithdrawalMessageEndpoint {
 				cursorString = cursor.toWebSafeString();
 			}
 		}
-		return CollectionResponse.<WithdrawalMessage> builder().setItems(records)
-				.setNextPageToken(cursorString).build();
+		return CollectionResponse.<WithdrawalMessage> builder()
+				.setItems(records).setNextPageToken(cursorString).build();
 	}
 
 	/**
@@ -73,16 +73,18 @@ public class WithdrawalMessageEndpoint {
 	 * @param WithdrawalMessage
 	 *            The object to be added.
 	 * @return The object to be added.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertWithdrawalMessage")
-	public WithdrawalMessage insertWithdrawalMessage(WithdrawalMessage wm) throws ConflictException {
-			if (wm.getId() != null) {
-				if (findRecord(wm.getId()) != null) {
-					throw new ConflictException("Object already exists");
-				}
+	public WithdrawalMessage insertWithdrawalMessage(WithdrawalMessage wm)
+			throws ConflictException {
+		if (wm.getId() != null) {
+			if (findRecord(wm.getId()) != null) {
+				throw new ConflictException("Message already exists");
 			}
-			 ofy().save().entity(wm).now(); //.now() is synchronous and generated id on wm
+		}
+		ofy().save().entity(wm).now(); // .now() is synchronous and generated id
+										// on wm
 
 		return wm;
 	}
@@ -95,14 +97,17 @@ public class WithdrawalMessageEndpoint {
 	@ApiMethod(name = "retrieveWithdrawalMessage")
 	public RequestResult retrieveWithdrawalMessage(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			WithdrawalMessage accountType = findRecord(id);
 			if (accountType == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Message [ " + id
+						+ " ]  does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(accountType);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,17 +125,20 @@ public class WithdrawalMessageEndpoint {
 	 * @return The object to be updated.
 	 */
 	@ApiMethod(name = "updateWithdrawalMessage")
-	public RequestResult updateWithdrawalMessage(WithdrawalMessage WithdrawalMessage) {
+	public RequestResult updateWithdrawalMessage(
+			WithdrawalMessage WithdrawalMessage) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (findRecord(WithdrawalMessage.getId()) == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Messsage does not exist");
 			}
 			ofy().save().entity(WithdrawalMessage).now();
 			re.setResultMessage("Account Type Updated.<br/>Id = "
 					+ WithdrawalMessage.getId());
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,15 +157,18 @@ public class WithdrawalMessageEndpoint {
 	@ApiMethod(name = "removeWithdrawalMessage")
 	public RequestResult removeWithdrawalMessage(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			WithdrawalMessage accounttype = findRecord(id);
 			if (accounttype == null) {
-				throw new NotFoundException("WithdrawalMessage Record does not exist");
+				throw new NotFoundException("Message [ " + id
+						+ " ]  does not exist");
 			}
 			ofy().delete().entity(accounttype).now();
-			re.setResultMessage("Account Type Deleted.");
+			re.setResultMessage("Message Deleted.");
+			re.setSuccess(true);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

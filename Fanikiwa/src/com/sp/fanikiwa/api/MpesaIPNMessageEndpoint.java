@@ -71,7 +71,7 @@ public class MpesaIPNMessageEndpoint {
 		// that it is already present
 		if (mpesaIPNMessage.getMpesa_code() != null) {
 			if (findRecord(mpesaIPNMessage.getMpesa_code()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Message already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -92,7 +92,7 @@ public class MpesaIPNMessageEndpoint {
 	@ApiMethod(name = "updateMpesaIPNMessage")
 	public MpesaIPNMessage updateMpesaIPNMessage(MpesaIPNMessage mpesaIPNMessage) throws NotFoundException {
 		if (findRecord(mpesaIPNMessage.getMpesa_code()) == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Message does not exist");
 		}
 		ofy().save().entity(mpesaIPNMessage).now();
 		return mpesaIPNMessage;
@@ -109,7 +109,7 @@ public class MpesaIPNMessageEndpoint {
 	public void removeMpesaIPNMessage(@Named("id") String id) throws NotFoundException {
 		MpesaIPNMessage record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Message does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -170,11 +170,6 @@ public class MpesaIPNMessageEndpoint {
 				.setNextPageToken(cursorString).build();
 	}
 
-	
-	
-	
-	
-	
-	
+	 
 	
 }

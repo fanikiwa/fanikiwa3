@@ -27,17 +27,26 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "userprofileendpoint.activate" : {
-      "path" : "activate",
+    "userprofileendpoint.login" : {
+      "path" : "Login/{userId}/{pwd}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.activate",
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.Login",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "userId" : {
+            "type" : "string",
+            "required" : true
+          },
+          "pwd" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -68,26 +77,17 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.login" : {
-      "path" : "Login/{userId}/{pwd}",
+    "userprofileendpoint.activate" : {
+      "path" : "activate",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.Login",
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.activate",
       "request" : {
-        "parameters" : {
-          "userId" : {
-            "type" : "string",
-            "required" : true
-          },
-          "pwd" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -294,28 +294,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "ActivationDTO" : {
-        "id" : "ActivationDTO",
-        "type" : "object",
-        "properties" : {
-          "activatedDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "telno" : {
-            "type" : "string"
-          },
-          "activationMethod" : {
-            "type" : "string"
-          },
-          "token" : {
-            "type" : "string"
-          }
-        }
-      },
       "RequestResult" : {
         "id" : "RequestResult",
         "type" : "object",
@@ -338,6 +316,28 @@
       "_any" : {
         "id" : "_any",
         "type" : "any"
+      },
+      "ActivationDTO" : {
+        "id" : "ActivationDTO",
+        "type" : "object",
+        "properties" : {
+          "activatedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "telno" : {
+            "type" : "string"
+          },
+          "activationMethod" : {
+            "type" : "string"
+          },
+          "token" : {
+            "type" : "string"
+          }
+        }
       },
       "Userprofile" : {
         "id" : "Userprofile",
@@ -406,10 +406,7 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.UserprofileEndpoint.activate" : {
-        "request" : {
-          "$ref" : "ActivationDTO"
-        },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.Login" : {
         "response" : {
           "$ref" : "RequestResult"
         }
@@ -419,7 +416,10 @@
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.Login" : {
+      "com.sp.fanikiwa.api.UserprofileEndpoint.activate" : {
+        "request" : {
+          "$ref" : "ActivationDTO"
+        },
         "response" : {
           "$ref" : "RequestResult"
         }

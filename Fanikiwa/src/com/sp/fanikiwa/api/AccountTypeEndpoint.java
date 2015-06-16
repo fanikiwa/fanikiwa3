@@ -80,17 +80,20 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "insertAccountType")
 	public RequestResult insertAccountType(AccountType AccountType) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (AccountType.getId() != null) {
 				if (findRecord(AccountType.getId()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ConflictException("AccountType "
+							+ AccountType.getDescription() + "already exists");
 				}
 			}
 			ofy().save().entity(AccountType).now();
+			re.setSuccess(true);
 			re.setResultMessage("Account Type Created.<br/>Id = "
 					+ AccountType.getId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,14 +111,18 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "retrieveAccountType")
 	public RequestResult retrieveAccountType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			AccountType accountType = findRecord(id);
 			if (accountType == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("AccountType [ " + id
+						+ " ] does not exist");
 			}
+			re.setSuccess(true);
+			re.setResultMessage("Successful");
 			re.setClientToken(accountType);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,15 +142,17 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "updateAccountType")
 	public RequestResult updateAccountType(AccountType AccountType) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (findRecord(AccountType.getId()) == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("AccountType does not exist");
 			}
 			ofy().save().entity(AccountType).now();
+			re.setSuccess(true);
 			re.setResultMessage("Account Type Updated.<br/>Id = "
 					+ AccountType.getId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,15 +171,18 @@ public class AccountTypeEndpoint {
 	@ApiMethod(name = "removeAccountType")
 	public RequestResult removeAccountType(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			AccountType accounttype = findRecord(id);
 			if (accounttype == null) {
-				throw new NotFoundException("AccountType Record does not exist");
+				throw new NotFoundException("AccountType [ " + id
+						+ " ] does not exist");
 			}
 			ofy().delete().entity(accounttype).now();
+			re.setSuccess(true); 
 			re.setResultMessage("Account Type Deleted.");
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

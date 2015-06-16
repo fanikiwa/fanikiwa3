@@ -116,7 +116,7 @@ public class LendingGroupMemberEndpoint {
 			Lendinggroupmember Lendinggroupmember) throws NotFoundException {
 		Lendinggroupmember record = findRecord(Lendinggroupmember.getId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Group does not exist");
 		}
 		ofy().save().entities(Lendinggroupmember).now();
 		return Lendinggroupmember;
@@ -135,7 +135,8 @@ public class LendingGroupMemberEndpoint {
 			throws NotFoundException {
 		Lendinggroupmember record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Group [ " + id
+						+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -160,7 +161,7 @@ public class LendingGroupMemberEndpoint {
 			ConflictException {
 		if (Lendinggroupmember.getId() != null) {
 			if (findRecord(Lendinggroupmember.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Group already exists");
 			}
 		}
 		ofy().save().entities(Lendinggroupmember).now();

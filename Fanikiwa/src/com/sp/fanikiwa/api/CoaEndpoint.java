@@ -83,14 +83,17 @@ public class CoaEndpoint {
 	@ApiMethod(name = "retrieveCoa")
 	public RequestResult retrieveCoa(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coa coa = findRecord(id);
 			if (coa == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coa [ " + id
+						+ " ] does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(coa);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,17 +116,19 @@ public class CoaEndpoint {
 	@ApiMethod(name = "insertCoa")
 	public RequestResult insertCoa(Coa coa) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Successful");
 		try {
 			if (coa.getId() != null) {
 				if (findRecord(coa.getId()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ConflictException("Coa already exists");
 				}
 			}
 			ofy().save().entities(coa).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Created.<br/>Id = "
 					+ coa.getId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,16 +151,18 @@ public class CoaEndpoint {
 	@ApiMethod(name = "updateCoa")
 	public RequestResult updateCoa(Coa Coa) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coa coa = findRecord(Coa.getId());
 			if (coa == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coa does not exist");
 			}
 			ofy().save().entities(Coa).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Updated.<br/>Id = "
 					+ coa.getId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,15 +183,18 @@ public class CoaEndpoint {
 	@ApiMethod(name = "removeCoa")
 	public RequestResult removeCoa(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coa record = findRecord(id);
 			if (record == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coa [ " + id
+						+ " ] does not exist");
 			}
 			ofy().delete().entity(record).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Removed");
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

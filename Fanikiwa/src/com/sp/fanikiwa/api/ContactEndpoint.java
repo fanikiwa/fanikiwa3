@@ -25,11 +25,11 @@ import javax.inject.Named;
 public class ContactEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listContact")
@@ -68,9 +68,11 @@ public class ContactEndpoint {
 	}
 
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getContact")
@@ -79,19 +81,21 @@ public class ContactEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param contact the entity to be inserted.
+	 * @param contact
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertContact")
-	public Contact insertContact(Contact contact) throws NotFoundException, ConflictException {
+	public Contact insertContact(Contact contact) throws NotFoundException,
+			ConflictException {
 		if (contact.getContactId() != null) {
 			if (findRecord(contact.getContactId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Contact already exists");
 			}
 		}
 		ofy().save().entities(contact).now();
@@ -99,40 +103,42 @@ public class ContactEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param contact the entity to be updated.
+	 * @param contact
+	 *            the entity to be updated.
 	 * @return The updated entity.
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateContact")
 	public Contact updateContact(Contact contact) throws NotFoundException {
 		Contact record = findRecord(contact.getContactId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Contact does not exist");
 		}
 		ofy().save().entities(contact).now();
 		return contact;
 	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
-	 * @throws NotFoundException 
+	 * @param id
+	 *            the primary key of the entity to be deleted.
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeContact")
-	public void removeContact(@Named("id") Long id) throws NotFoundException  {
+	public void removeContact(@Named("id") Long id) throws NotFoundException {
 		Contact record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Contact  [ " + id
+					+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
- 
 
 	private Contact findRecord(Long id) {
 		return ofy().load().type(Contact.class).id(id).now();

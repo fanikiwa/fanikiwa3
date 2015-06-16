@@ -127,7 +127,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "lendinggroupendpoint.lendingGroupEndpoint.insertLendinggroup" : {
@@ -561,29 +561,6 @@
           }
         }
       },
-      "LendingGroupDTO" : {
-        "id" : "LendingGroupDTO",
-        "type" : "object",
-        "properties" : {
-          "groupName" : {
-            "type" : "string"
-          },
-          "createdOn" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "creatorEmail" : {
-            "type" : "string"
-          },
-          "lastModified" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "parentGroup" : {
-            "type" : "string"
-          }
-        }
-      },
       "RequestResult" : {
         "id" : "RequestResult",
         "type" : "object",
@@ -606,6 +583,29 @@
       "_any" : {
         "id" : "_any",
         "type" : "any"
+      },
+      "LendingGroupDTO" : {
+        "id" : "LendingGroupDTO",
+        "type" : "object",
+        "properties" : {
+          "groupName" : {
+            "type" : "string"
+          },
+          "createdOn" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "creatorEmail" : {
+            "type" : "string"
+          },
+          "lastModified" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "parentGroup" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
@@ -636,6 +636,9 @@
         }
       },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.removeLendinggroup" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
       },
       "com.sp.fanikiwa.api.LendingGroupEndpoint.insertLendinggroup" : {
         "request" : {

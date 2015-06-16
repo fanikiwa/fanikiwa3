@@ -16,7 +16,7 @@ public class LoanUtil {
 	public static int AccrualTermToInt(String term, Date date) {
 		if (StringExtension.isNullOrEmpty(term))
 			return 1;
-		switch (term.toUpperCase()) // D1, D360, D365, M1, M30, Y
+		switch (term.toUpperCase()) // D, D1, D360, D365, M, M30, Y
 		{
 		case "D":
 			return 1; //accrue daily
@@ -53,7 +53,7 @@ public class LoanUtil {
 
 	public static Date GetNextIntApplicationDate(Loan loan, Date date) {
 		String term = loan.getInterestComputationTerm();
-		switch (term.toUpperCase()) // D1, D360, D365, M1, M30, Y
+		switch (term.toUpperCase()) // D, D1, D360, D365, M, M30, Y
 		{
 		case "D":
 			return DateExtension.addDays(date, 1);

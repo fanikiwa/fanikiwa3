@@ -176,15 +176,17 @@ public class AccountEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Account account = findRecord(id);
 			if (account == null) {
-				throw new NotFoundException("Account does not exist");
+				throw new NotFoundException("Account [ " + id
+						+ " ] does not exist");
 			}
 			List<Account> accounts = new ArrayList<Account>();
 			accounts.add(account);
+			re.setSuccess(true);
 			re.setClientToken(CollectionResponse.<Account> builder()
 					.setItems(accounts).setNextPageToken(cursorString).build());
 		} catch (Exception e) {
@@ -198,16 +200,19 @@ public class AccountEndpoint {
 	@ApiMethod(name = "retrieveAccount")
 	public RequestResult retrieveAccount(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 			Account account = findRecord(id);
 			if (account == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Account [ " + id
+						+ " ] does not exist");
 			}
 			AccountDTO accountDTO = createDTOFromAccount(account);
+			re.setSuccess(true);
 			re.setClientToken(accountDTO);
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
@@ -229,8 +234,8 @@ public class AccountEndpoint {
 	@ApiMethod(name = "createAccount")
 	public RequestResult createAccount(AccountDTO accountDto) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 			// create account from dto
@@ -242,8 +247,10 @@ public class AccountEndpoint {
 				re.setResultMessage("Error Creating Account.");
 				return re;
 			}
+			re.setSuccess(true);
 			re.setResultMessage("Account Created.<br/>Id = "
 					+ insertedAcc.getAccountID());
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
@@ -342,7 +349,8 @@ public class AccountEndpoint {
 	public Account insertAccount(Account Account) throws ConflictException {
 		if (Account.getAccountID() != null) {
 			if (findRecord(Account.getAccountID()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Account [ " + Account.getAccountID()
+						+ " ] already exists");
 			}
 		}
 		ofy().save().entities(Account).now();
@@ -363,7 +371,7 @@ public class AccountEndpoint {
 	public Account updateAccount(Account Account) throws NotFoundException {
 		Account record = findRecord(Account.getAccountID());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Account does not exist");
 		}
 		ofy().save().entities(Account).now();
 		return Account;
@@ -372,8 +380,8 @@ public class AccountEndpoint {
 	@ApiMethod(name = "editAccount")
 	public RequestResult editAccount(AccountDTO accountDTO) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 			// create account from dto
@@ -381,7 +389,7 @@ public class AccountEndpoint {
 			// check if account actually exists
 			Account accountExists = findRecord(accountFromDTO.getAccountID());
 			if (accountExists == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Account does not exist");
 			}
 			// update it
 			ofy().save().entities(accountFromDTO).now();
@@ -390,8 +398,10 @@ public class AccountEndpoint {
 				re.setResultMessage("Error Updating Account.");
 				return re;
 			}
+			re.setSuccess(true);
 			re.setResultMessage("Account Updated.<br/>Id = "
 					+ accountFromDTO.getAccountID());
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
@@ -412,7 +422,7 @@ public class AccountEndpoint {
 	public void removeAccount(@Named("id") Long id) throws NotFoundException {
 		Account record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Account does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -453,8 +463,8 @@ public class AccountEndpoint {
 	@ApiMethod(name = "closeAccount")
 	public RequestResult CloseAccount(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful.");
 
 		try {
 
@@ -468,6 +478,9 @@ public class AccountEndpoint {
 			}
 			acc.setClosed(true);
 			this.updateAccount(acc);
+			re.setSuccess(true);
+			re.setResultMessage("Account Closed.");
+			return re;
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -534,12 +547,15 @@ public class AccountEndpoint {
 				multiEntry.getTransactions(), GAE_TRANSACTION_LIMIT);
 
 		RequestResult res2 = new RequestResult();
+		res2.setSuccess(false);
+		res2.setResultMessage("Not Successful");
 		for (final List<Transaction> txns : choppedtxns) {
 
 			res2 = ofy().transact(new Work<RequestResult>() {
 				public RequestResult run() {
 					RequestResult res = new RequestResult();
 					res.setResultMessage("Successful");
+					res.setSuccess(false);
 					for (Transaction transaction : txns) {
 						res = Post(transaction, flags);
 						if (!res.isSuccess())
@@ -554,6 +570,8 @@ public class AccountEndpoint {
 				return res2; // get out if you ever get a false situation
 		}
 
+		res2.setSuccess(true);
+		res2.setResultMessage("Post Successful");
 		return res2;
 	}
 
@@ -561,12 +579,14 @@ public class AccountEndpoint {
 	public RequestResult DoubleEntryPost(final DoubleEntry doubleEntry,
 			@Named("flags") final PostingCheckFlag flags) {
 		RequestResult res2 = new RequestResult();
+		res2.setResultMessage("Not Successful");
+		res2.setSuccess(false);
 		res2 = ofy().transact(new Work<RequestResult>() {
 			public RequestResult run() {
 
 				RequestResult res = new RequestResult();
-				res.setResultMessage("Successful");
-				res.setSuccess(true);
+				res.setResultMessage("Not Successful");
+				res.setSuccess(false);
 
 				res = Post(doubleEntry.getDr(), flags);
 				if (!res.isSuccess())
@@ -587,9 +607,11 @@ public class AccountEndpoint {
 		RequestResult res = ofy().transact(new Work<RequestResult>() {
 			public RequestResult run() {
 				RequestResult res = new RequestResult();
-				res.setResultMessage("Successful");
+				res.setResultMessage("Not Successful");
+				res.setSuccess(false);
 				try {
 					postAtomic(transaction, flags);
+					res.setResultMessage("Post Successful");
 					res.setSuccess(true);
 					return res;
 				} catch (Exception e) {
@@ -839,8 +861,8 @@ public class AccountEndpoint {
 		// limit flags.
 		double AmountAvailableOnUncleared = account.getBookBalance()
 				- account.getLimit();
-		double AmountAvailableAfterTxn = (account.getClearedBalance() - account.getLimit())
-				+ transaction.getAmount();
+		double AmountAvailableAfterTxn = (account.getClearedBalance() - account
+				.getLimit()) + transaction.getAmount();
 
 		// get account status
 		AccountLimitStatus limistatus = AccountLimitStatus.valueOf(account
@@ -880,7 +902,7 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Posting to account [{0}] prohibited.\nAccount lock status =[{1}]",
+										.format("Posting to account [{0}] prohibited.\nAccount locked",
 												account.getAccountID()
 														.toString(), lockstatus
 														.toString())));
@@ -910,7 +932,7 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Posting to account [{0}] prohibited! \nAccount lock status =[{1}]]",
+										.format("Posting to account [{0}] prohibited! \nAccount locked",
 												account.getAccountID()
 														.toString(), lockstatus
 														.toString())));
@@ -922,7 +944,7 @@ public class AccountEndpoint {
 				result.Errors
 						.add(new IllegalArgumentException(
 								MessageFormat
-										.format("Posting to account [{0}] prohibited! Insufficient funds], limit status =[{2}]",
+										.format("Posting to account [{0}] prohibited! Insufficient funds",
 												account.getAccountID()
 														.toString(),
 												_TransactionType
@@ -994,7 +1016,7 @@ public class AccountEndpoint {
 				|| (limistatus == AccountLimitStatus.LimitForAdvanceProhibited && limit < 0))
 			throw new NotFoundException(
 					MessageFormat
-							.format("Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
+							.format("Cannot mark limit to account [{0}].\nMarking limits prohibited",
 									account.getAccountID().toString(),
 									limistatus.toString()));
 
@@ -1002,7 +1024,7 @@ public class AccountEndpoint {
 				&& AvailableBalanceAfterApplyingLimit < 0)
 			throw new NotFoundException(
 					MessageFormat
-							.format("Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
+							.format("Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] ",
 									amount, account.getAccountID().toString(),
 									AvailableBalanceAfterApplyingLimit));
 
@@ -1045,20 +1067,21 @@ public class AccountEndpoint {
 	public RequestResult Withdraw(WithdrawalDTO withdrawalDTO) {
 
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful.");
 		try {
 
 			/*
 			 * 1. save WithdrawalMessage 2. get the saved message and pass it to
 			 * WithdrawalComponent.Withdraw
 			 */
-			//Check
-			
-			if(withdrawalDTO.getAmount() < MIN_WITHDRAW_AMOUNT)
-			{
+			// Check
+
+			if (withdrawalDTO.getAmount() < MIN_WITHDRAW_AMOUNT) {
 				re.setSuccess(false);
-				re.setResultMessage("Amount["+withdrawalDTO.getAmount()+"] cannot be less than MIN WITHDRAW AMOUNT["+MIN_WITHDRAW_AMOUNT+"]");
+				re.setResultMessage("Amount[" + withdrawalDTO.getAmount()
+						+ "] cannot be less than MIN WITHDRAW AMOUNT["
+						+ MIN_WITHDRAW_AMOUNT + "]");
 				return re;
 			}
 
@@ -1091,16 +1114,19 @@ public class AccountEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 			Account account = findRecord(accountID);
 			if (account == null) {
 				throw new NotFoundException("Account does not exist.");
 			}
+			re.setSuccess(true);
+			re.setResultMessage("Successful");
 			re.setClientToken(GetStatement(accountID, sdate, edate,
 					cursorString, count));
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);

@@ -59,29 +59,32 @@ fanikiwa.userprofile.ui.login = function() {
 						console.log('response =>> ' + resp);
 						if (!resp.code) {
 							if (resp.result.success == false) {
-								
+
 								if (resp.result.clientToken == undefined
 										|| resp.result.clientToken == null) {
-								$('#errormessage').html(
-										'operation failed! Error...<br/>'
-												+ resp.result.resultMessage
-														.toString());
-								$('#successmessage').html('');
-								$('#apiResults').html('');
-								}else
-									{
-									if (resp.result.clientToken == 'authenticated')
-									{
+									$('#errormessage').html(
+											'operation failed! Error...<br/>'
+													+ resp.result.resultMessage
+															.toString());
+									$('#successmessage').html('');
+									$('#apiResults').html('');
+								} else {
+									if (resp.result.clientToken == 'authenticated') {
 										window
 												.setTimeout(
 														'window.location.href = "/Views/Account/Activation.html";',
 														1000);
-									
-									}else
-										{
-										
-										}
+
+									} else {
+										$('#errormessage')
+												.html(
+														'operation failed! Error...<br/>'
+																+ resp.result.resultMessage
+																		.toString());
+										$('#successmessage').html('');
+										$('#apiResults').html('');
 									}
+								}
 							} else {
 								$('#successmessage').html(
 										'operation successful... <br/>'
@@ -113,8 +116,9 @@ fanikiwa.userprofile.ui.login = function() {
 							$('#apiResults').html('');
 						}
 
-					}, function(reason) {
-						console.log('Error: ' + reason.result.error.message); 
+					},
+					function(reason) {
+						console.log('Error: ' + reason.result.error.message);
 						$('#errormessage').html(
 								'operation failed! Error...<br/>'
 										+ reason.result.error.message);
@@ -157,16 +161,6 @@ fanikiwa.userprofile.ui.init = function(apiRoot) {
 	gapi.client.load('userprofileendpoint', 'v1', callback, apiRoot);
 
 };
-
-function DisplayException(errormsg) {
-
-	errormsg += "</ul>";
-
-	$("#error-display-div").html(errormsg);
-	$("#error-display-div").removeClass('displaynone');
-	$("#error-display-div").addClass('displayblock');
-	$("#error-display-div").show();
-}
 
 function ClearException() {
 	$('#errorList').remove();

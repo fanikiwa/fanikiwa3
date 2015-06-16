@@ -104,14 +104,17 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "retrieveCoadet")
 	public RequestResult retrieveCoadet(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coadet coadet = findRecord(id);
 			if (coadet == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coadet " + id + " does not exist");
 			}
+			re.setSuccess(true);
+			re.setResultMessage("Successful");
 			re.setClientToken(coadet);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,17 +137,19 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "insertCoadet")
 	public RequestResult insertCoadet(Coadet coadet) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			if (coadet.getId() != null) {
 				if (findRecord(coadet.getId()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ConflictException("Coadet already exists");
 				}
 			}
 			ofy().save().entities(coadet).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Detail Created.<br/>Id = "
 					+ coadet.getId());
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -167,14 +172,15 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "updateCoadet")
 	public RequestResult updateCoadet(Coadet Coadet) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coadet coadet = findRecord(Coadet.getId());
 			if (coadet == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coadet does not exist");
 			}
 			ofy().save().entities(Coadet).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Detail Updated.<br/>Id = "
 					+ coadet.getId());
 		} catch (Exception e) {
@@ -197,15 +203,18 @@ public class CoadetEndpoint {
 	@ApiMethod(name = "removeCoadet")
 	public RequestResult removeCoadet(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Coadet coadet = findRecord(id);
 			if (coadet == null) {
-				throw new NotFoundException("Record does not exist");
+				throw new NotFoundException("Coadet [ " + id
+						+ " ] does not exist");
 			}
 			ofy().delete().entity(coadet).now();
+			re.setSuccess(true);
 			re.setResultMessage("Chart Of Account Detail Removed");
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

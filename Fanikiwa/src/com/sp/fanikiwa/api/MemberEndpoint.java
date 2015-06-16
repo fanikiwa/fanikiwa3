@@ -52,8 +52,8 @@ import javax.inject.Named;
 
 @Api(name = "memberendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class MemberEndpoint {
-	
-	private static final int TOKENEXPIRYDURATION = 30; //Half an hour
+
+	private static final int TOKENEXPIRYDURATION = 30; // Half an hour
 	private static final Logger log = Logger.getLogger(MemberEndpoint.class
 			.getName());
 
@@ -144,8 +144,8 @@ public class MemberEndpoint {
 	@ApiMethod(name = "updateMember")
 	public RequestResult updateMember(Member member) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 
 			Member existingmember = findRecord(member.getMemberId());
@@ -180,6 +180,7 @@ public class MemberEndpoint {
 			existingmember.setTelephone(existingmember.getTelephone());
 
 			ofy().save().entities(existingmember).now();
+			re.setSuccess(true);
 			re.setResultMessage(MessageFormat
 					.format("Details:<br/>Member Id: {0}, <br/>Current Account Id: {1}, <br/>Loan Account Id: {2}, <br/>Investment Account Id: {3}, <br/>Interest Income Account Id: {4}, <br/>Interest Expense Account Id: {5}",
 							existingmember.getMemberId().toString(),
@@ -193,11 +194,12 @@ public class MemberEndpoint {
 									.toString(), existingmember
 									.getInterestExpAccount().getAccountID()
 									.toString()));
+			return re;
 
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -237,8 +239,8 @@ public class MemberEndpoint {
 	@ApiMethod(name = "getMemberByEmailWeb")
 	public RequestResult GetMemberByEmailWeb(@Named("email") String email) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Member member = ofy().load().type(Member.class)
 					.filter("email", email).first().now();
@@ -247,11 +249,13 @@ public class MemberEndpoint {
 				re.setResultMessage("Member does not exist");
 				return re;
 			}
+			re.setSuccess(true);
 			re.setClientToken(member);
+			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -259,8 +263,8 @@ public class MemberEndpoint {
 	@ApiMethod(name = "retrieveMember")
 	public RequestResult retrieveMember(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Member member = findRecord(id);
 			if (member == null) {
@@ -269,11 +273,13 @@ public class MemberEndpoint {
 				return re;
 			}
 			MemberDTO memberDto = createDTOFromMember(member);
+			re.setSuccess(false);
 			re.setClientToken(memberDto);
+			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -281,8 +287,8 @@ public class MemberEndpoint {
 	@ApiMethod(name = "obtainMemberByEmail")
 	public RequestResult obtainMemberByEmail(@Named("email") String email) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Member member = ofy().load().type(Member.class)
 					.filter("email", email).first().now();
@@ -292,11 +298,13 @@ public class MemberEndpoint {
 				return re;
 			}
 			MemberDTO memberDto = createDTOFromMember(member);
+			re.setSuccess(false);
 			re.setClientToken(memberDto);
+			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -314,12 +322,15 @@ public class MemberEndpoint {
 	}
 
 	public RequestResult activate(ActivationDTO activateDTO) {
-		RequestResult re = new RequestResult();		
-		Member member= txnlessGetMemberByEmail(activateDTO.getEmail());
-		if(member == null)
-		{
+		RequestResult re = new RequestResult();
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
+
+		Member member = txnlessGetMemberByEmail(activateDTO.getEmail());
+		if (member == null) {
 			re.setSuccess(false);
-			re.setResultMessage("Not Successful: Member with email["+activateDTO.getEmail()+"] is null");
+			re.setResultMessage("Not Successful: Member with email["
+					+ activateDTO.getEmail() + "] is null");
 		}
 		member.setStatus("A");
 		member.setDateActivated(activateDTO.getActivatedDate());
@@ -331,7 +342,7 @@ public class MemberEndpoint {
 	}
 
 	@ApiMethod(name = "register")
-	public RequestResult Register(UserDTO userDTO){
+	public RequestResult Register(UserDTO userDTO) {
 		String userType = userDTO.getUserType();
 
 		RequestResult re = new RequestResult();
@@ -339,7 +350,7 @@ public class MemberEndpoint {
 		re.setResultMessage("Not Successful");
 
 		Userprofile userReturned = null;
-		
+
 		// STEP 1: Create the user
 		UserprofileEndpoint upep = new UserprofileEndpoint();
 		if (!upep.UserExists(userDTO.getEmail()).isSuccess()) {
@@ -347,25 +358,24 @@ public class MemberEndpoint {
 			user.setCreateDate(new Date());
 			String HashedPwd;
 
-				try {
-					HashedPwd = PasswordHash.createHash(userDTO.getPwd());
-					user.setPwd(HashedPwd); // think of encrypting
-				} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
-					// TODO Auto-generated catch block
-					re.setSuccess(false);
-					re.setResultMessage("Error Creating User! " + e1.getMessage());
-					return re;
-				}
+			try {
+				HashedPwd = PasswordHash.createHash(userDTO.getPwd());
+				user.setPwd(HashedPwd); // think of encrypting
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
+				// TODO Auto-generated catch block
+				re.setSuccess(false);
+				re.setResultMessage("Error Creating User! " + e1.getMessage());
+				return re;
+			}
 
-			
 			user.setUserId(userDTO.getEmail());
 			user.setTelephone(userDTO.getTelephone());
 			user.setUserType(userType);
 			user.setStatus(userDTO.getStatus());
-			
-			//set activation token
-			TokenUtil.SetUserToken( user,user.getCreateDate());
-			
+
+			// set activation token
+			TokenUtil.SetUserToken(user, user.getCreateDate());
+
 			try {
 				userReturned = upep.insertUserprofile(user);
 				if (userReturned == null) {
@@ -376,13 +386,12 @@ public class MemberEndpoint {
 			} catch (NotFoundException | ConflictException e) {
 				re.setSuccess(false);
 				re.setResultMessage(e.getMessage());
-				log.log(Level.SEVERE,e.getMessage(),e);
+				log.log(Level.SEVERE, e.getMessage(), e);
 				return re;
 			}
 		}
 		// Continue only if you are creating a member user
-		if (!userType.equals(UserType.Member.name()))
-		{
+		if (!userType.equals(UserType.Member.name())) {
 			re.setSuccess(true);
 			re.setResultMessage("Non member registration successfull");
 			return re;
@@ -395,14 +404,16 @@ public class MemberEndpoint {
 					.filter("email", userDTO.getEmail()).first().now();
 			if (emailexists != null) {
 				re.setSuccess(false);
-				re.setResultMessage("Email is already Registered in Fanikiwa!");
+				re.setResultMessage("Email  [ " + userDTO.getEmail()
+						+ " ] is already Registered in Fanikiwa!");
 				return re;
 			}
 			Member telephoneexists = ofy().load().type(Member.class)
 					.filter("telephone", userDTO.getTelephone()).first().now();
 			if (telephoneexists != null) {
 				re.setSuccess(false);
-				re.setResultMessage("Telephone is already Registered in Fanikiwa!");
+				re.setResultMessage("Telephone [ " + userDTO.getTelephone()
+						+ " ]  is already Registered in Fanikiwa!");
 				return re;
 			}
 
@@ -585,25 +596,26 @@ public class MemberEndpoint {
 
 			re.setSuccess(true);
 			re.setResultMessage("Registration successful. See email/sms for details on how to activate your account");
-//			re.setResultMessage(MessageFormat
-//					.format("Registration Details:Member Id: {0}, Current Account Id: {1}, Loan Account Id: {2}, Investment Account Id: {3}, Interest Income Account Id: {4}, Interest Expense Account Id: {5}",
-//							newMember.getMemberId().toString(), newMember
-//									.getCurrentAccount().getAccountID()
-//									.toString(), newMember.getLoanAccount()
-//									.getAccountID().toString(), newMember
-//									.getInvestmentAccount().getAccountID()
-//									.toString(), newMember
-//									.getinterestIncAccount().getAccountID()
-//									.toString(), newMember
-//									.getinterestExpAccount().getAccountID()
-//									.toString()));
-			//send activation token
-			TokenUtil.SendToken(userDTO.getRegistrationMethod(), userReturned, userReturned.getToken());
+			// re.setResultMessage(MessageFormat
+			// .format("Registration Details:Member Id: {0}, Current Account Id: {1}, Loan Account Id: {2}, Investment Account Id: {3}, Interest Income Account Id: {4}, Interest Expense Account Id: {5}",
+			// newMember.getMemberId().toString(), newMember
+			// .getCurrentAccount().getAccountID()
+			// .toString(), newMember.getLoanAccount()
+			// .getAccountID().toString(), newMember
+			// .getInvestmentAccount().getAccountID()
+			// .toString(), newMember
+			// .getinterestIncAccount().getAccountID()
+			// .toString(), newMember
+			// .getinterestExpAccount().getAccountID()
+			// .toString()));
+			// send activation token
+			TokenUtil.SendToken(userDTO.getRegistrationMethod(), userReturned,
+					userReturned.getToken());
 			return re;
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 			return re;
 		}
 
@@ -612,8 +624,8 @@ public class MemberEndpoint {
 	@ApiMethod(name = "deRegister")
 	public RequestResult deRegister(@Named("email") String email) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Member member = GetMemberByEmail(email);
 			if (member == null) {
@@ -630,12 +642,13 @@ public class MemberEndpoint {
 			// 1. delete all offers
 			// 2. delete offerrecepients
 			// 3. reverse loans
+			re.setSuccess(true);
 			re.setResultMessage("Deregistration successful.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -678,19 +691,20 @@ public class MemberEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 		try {
 			Member member = getMemberByID(id);
 			if (member == null) {
 				throw new NotFoundException("Member does not exist");
 			}
+			re.setSuccess(true);
 			re.setClientToken(listAccountByQuery(member, cursorString, count));
 		} catch (Exception e) {
 			e.printStackTrace();
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -714,8 +728,8 @@ public class MemberEndpoint {
 	public RequestResult isEmailValid(@Named("email") String email) {
 
 		RequestResult re = new RequestResult();
-		re.setSuccess(true);
-		re.setResultMessage("Success");
+		re.setSuccess(false);
+		re.setResultMessage("Not Successful");
 
 		try {
 
@@ -734,7 +748,7 @@ public class MemberEndpoint {
 		} catch (Exception e) {
 			re.setSuccess(false);
 			re.setResultMessage(e.getMessage().toString());
-			log.log(Level.SEVERE,e.getMessage(),e);
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return re;
 	}
@@ -845,7 +859,5 @@ public class MemberEndpoint {
 
 		return member;
 	}
- 
-
 
 }

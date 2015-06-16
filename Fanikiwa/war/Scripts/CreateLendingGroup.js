@@ -45,13 +45,13 @@ fanikiwa.lendinggroupendpoint.createlendinggroup = function() {
 	$('#errormessage').html('');
 
 	var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
-	var parentGroupId = sessionStorage.getItem('lendinggroupparentid');
+	var parentGroup = sessionStorage.getItem('lendinggroupparentid');
 
 	// Build the Request Object
 	var lendingGroupDTO = {};
 	lendingGroupDTO.groupName = _groupName;
 	lendingGroupDTO.creatorEmail = email;
-	lendingGroupDTO.parentGroupId = parentGroupId;
+	lendingGroupDTO.parentGroup = parentGroup;
 
 	gapi.client.lendinggroupendpoint
 			.saveLendinggroup(lendingGroupDTO)

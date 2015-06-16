@@ -32,8 +32,6 @@ public class TokenUtil {
 			String body = sb.toString();
 		
 			MailUtil.sendMail(user.getUserId(), "Registration ["+token+"]", body);
-			
-			
 		} 
 		else if (sendMethod.equals("SMS")) 
 		{

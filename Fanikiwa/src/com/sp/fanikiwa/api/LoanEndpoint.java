@@ -121,19 +121,21 @@ public class LoanEndpoint {
 	public Loan getLoanByID(@Named("id") Long id) {
 		return findRecord(id);
 	}
-	
+
 	@ApiMethod(name = "prepayLoan")
-	public RequestResult prepayLoan(@Named("id") Long id, @Named("amount") Double Amount) throws Exception {
+	public RequestResult prepayLoan(@Named("id") Long id,
+			@Named("amount") Double Amount) throws Exception {
 		RequestResult re = new RequestResult();
 		re.setSuccess(false);
 		re.setResultMessage("Not successful");
+
 		Loan loan = findRecord(id);
-		if(loan == null)
-		{
+		if (loan == null) {
 			re.setResultMessage("Loan is null");
+			re.setSuccess(true);
 			return re;
 		}
-		
+
 		LoanComponent lc = new LoanComponent();
 		return lc.PrepayLoan(loan, Amount, new Date());
 	}
@@ -152,7 +154,7 @@ public class LoanEndpoint {
 	public Loan updateLoan(Loan Loan) throws NotFoundException {
 		Loan record = findRecord(Loan.getId());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Loan does not exist");
 		}
 		ofy().save().entities(Loan).now();
 		return Loan;
@@ -178,7 +180,7 @@ public class LoanEndpoint {
 	public void removeLoan(@Named("id") Long id) throws NotFoundException {
 		Loan record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Loan [ " + id + " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -202,7 +204,7 @@ public class LoanEndpoint {
 			ConflictException {
 		if (loan.getId() != null) {
 			if (findRecord(loan.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Loan already exists");
 			}
 		}
 		ofy().save().entities(loan).now();
@@ -222,8 +224,8 @@ public class LoanEndpoint {
 			@Named("date") Date date) {
 		Query<Loan> query = ofy().load().type(Loan.class)
 				.filter("nextIntAppDate <=", date);
-//		.filter("nextIntAppDate >=",Loan.getLastIntAppDate())
-//		.filter("nextIntAppDate <=",date)
+		// .filter("nextIntAppDate >=",Loan.getLastIntAppDate())
+		// .filter("nextIntAppDate <=",date)
 		return listLoanByQuery(query, null, null);
 	}
 
@@ -376,7 +378,7 @@ public class LoanEndpoint {
 	public RequestResult editLoan(LoanDTO loanDTO) {
 		RequestResult re = new RequestResult();
 		re.setSuccess(false);
-		re.setResultMessage("Success");
+		re.setResultMessage("Successful");
 		try {
 			// create loan from dto
 			Loan loanFromDTO = createLoanFromDTO(loanDTO);
@@ -415,7 +417,8 @@ public class LoanEndpoint {
 		try {
 			Loan loan = findRecord(id);
 			if (loan == null) {
-				throw new NotFoundException("Loan does not exist");
+				throw new NotFoundException("Loan  [ " + id
+						+ " ] does not exist");
 			}
 			List<Installment> installments = new ArrayList<Installment>();
 			int term = loan.getTerm();
@@ -457,14 +460,16 @@ public class LoanEndpoint {
 	public RequestResult retrieveLoan(@Named("id") Long id) {
 		RequestResult re = new RequestResult();
 		re.setSuccess(false);
-		re.setResultMessage("Success");
+		re.setResultMessage("Successful");
 		try {
 			Loan loan = findRecord(id);
 			if (loan == null) {
-				throw new NotFoundException("Loan does not exist");
+				throw new NotFoundException("Loan [ " + id
+						+ " ]  does not exist");
 			}
 			re.setSuccess(true);
 			re.setClientToken(loan);
+			return re;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -473,5 +478,5 @@ public class LoanEndpoint {
 		}
 		return re;
 	}
-	
+
 }

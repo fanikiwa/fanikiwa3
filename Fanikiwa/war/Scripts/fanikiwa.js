@@ -95,14 +95,23 @@ function AddDate(oldDate, offset, offsetType) {
 	return newDate;
 }
 
-$(document).ready(function() {
-	var loggedinuser = JSON.parse(sessionStorage.getItem('loggedinuser'));
-	if (loggedinuser != null || loggedinuser != undefined) {
-		var email = JSON.parse(sessionStorage.getItem('loggedinuser')).userId;
-		$('#lnkloggedinuser').text(email);
-	}
-	setTime();
-});
+$(document)
+		.ready(
+				function() {
+
+					var androiddownloadlink = document
+							.getElementById('androiddownloadlink');
+					androiddownloadlink.href = "https://drive.google.com/file/d/0B1JNqpwoA-Q5S0ZSQlk3b1BsRG8/view?usp=sharing";
+
+					var loggedinuser = JSON.parse(sessionStorage
+							.getItem('loggedinuser'));
+					if (loggedinuser != null || loggedinuser != undefined) {
+						var email = JSON.parse(sessionStorage
+								.getItem('loggedinuser')).userId;
+						$('#lnkloggedinuser').text(email);
+					}
+					setTime();
+				});
 
 function setTime() {
 	var today = new Date();
@@ -133,4 +142,8 @@ function checkTime(i) {
 	}
 	; // add zero in front of numbers < 10
 	return i;
+}
+
+function isNumber(n) {
+	  return $.isNumeric(n);
 }
