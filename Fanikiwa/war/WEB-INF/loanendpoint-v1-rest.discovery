@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/MiFCF_Kh8aegYMFMmeyklFGbHfc\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wjB9nAvL3uZ2qzNsRoARjR0ZJ9Q\"",
  "discoveryVersion": "v1",
  "id": "loanendpoint:v1",
  "name": "loanendpoint",
@@ -89,10 +89,32 @@
     }
    }
   },
+  "CollectionResponse_LoanDTO": {
+   "id": "CollectionResponse_LoanDTO",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "LoanDTO"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "Loan": {
    "id": "Loan",
    "type": "object",
    "properties": {
+    "accrueInSusp": {
+     "type": "boolean"
+    },
+    "accruedIntInSusp": {
+     "type": "number",
+     "format": "double"
+    },
     "accruedInterest": {
      "type": "number",
      "format": "double"
@@ -100,6 +122,10 @@
     "amount": {
      "type": "number",
      "format": "double"
+    },
+    "borrowerId": {
+     "type": "string",
+     "format": "int64"
     },
     "createdDate": {
      "type": "string",
@@ -109,17 +135,57 @@
      "type": "string",
      "format": "int64"
     },
-    "interest": {
+    "intPaidAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "intPayingAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestAccrualInterval": {
+     "type": "string"
+    },
+    "interestApplicationMethod": {
+     "type": "string"
+    },
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
+    },
+    "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lenderId": {
+     "type": "string",
+     "format": "int64"
     },
     "maturityDate": {
      "type": "string",
      "format": "date-time"
     },
-    "memberId": {
+    "nextIntAccrualDate": {
      "type": "string",
-     "format": "int64"
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "offerId": {
      "type": "string",
@@ -131,6 +197,116 @@
     "term": {
      "type": "integer",
      "format": "int32"
+    },
+    "transactionType": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  },
+  "LoanDTO": {
+   "id": "LoanDTO",
+   "type": "object",
+   "properties": {
+    "accrueInSusp": {
+     "type": "boolean"
+    },
+    "accruedIntInSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "accruedInterest": {
+     "type": "number",
+     "format": "double"
+    },
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "borrower": {
+     "type": "string"
+    },
+    "borrowerId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "createdDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "intPaidAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "intPayingAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestAccrualInterval": {
+     "type": "string"
+    },
+    "interestApplicationMethod": {
+     "type": "string"
+    },
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
+    },
+    "interestRate": {
+     "type": "number",
+     "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lender": {
+     "type": "string"
+    },
+    "lenderId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "offerId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "partialPay": {
+     "type": "boolean"
+    },
+    "term": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "transactionType": {
+     "type": "string",
+     "format": "int64"
     }
    }
   }
@@ -195,6 +371,50 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "nextIntAccrualLoanByDate": {
+   "id": "loanendpoint.nextIntAccrualLoanByDate",
+   "path": "NextIntAccrualLoanByDate/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "nextIntAppLoanByDate": {
+   "id": "loanendpoint.nextIntAppLoanByDate",
+   "path": "NextIntAppLoanByDate/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "removeLoan": {
    "id": "loanendpoint.removeLoan",
    "path": "loan/{id}",
@@ -214,10 +434,107 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "selectDtoLoans": {
+   "id": "loanendpoint.selectDtoLoans",
+   "path": "selectDtoLoans",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_LoanDTO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectMyInvestments": {
+   "id": "loanendpoint.selectMyInvestments",
+   "path": "selectMyInvestments/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectMyLoans": {
+   "id": "loanendpoint.selectMyLoans",
+   "path": "selectMyLoans/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "updateLoan": {
    "id": "loanendpoint.updateLoan",
    "path": "loan",
    "httpMethod": "PUT",
+   "request": {
+    "$ref": "Loan",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "Loan"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "zerolizeAccruedIntLoan": {
+   "id": "loanendpoint.zerolizeAccruedIntLoan",
+   "path": "zerolizeAccruedIntLoan",
+   "httpMethod": "POST",
    "request": {
     "$ref": "Loan",
     "parameterName": "resource"

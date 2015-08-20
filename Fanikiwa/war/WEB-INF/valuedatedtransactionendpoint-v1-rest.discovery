@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/AvoRJxmirR4BXswHWxIYTIiir88\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/TfHKxO-vxdsRYshKwUAgZBww0XI\"",
  "discoveryVersion": "v1",
  "id": "valuedatedtransactionendpoint:v1",
  "name": "valuedatedtransactionendpoint",
@@ -91,23 +91,14 @@
     "accounttype": {
      "$ref": "AccountType"
     },
+    "accrueInSusp": {
+     "type": "boolean"
+    },
     "accruedInt": {
      "type": "number",
      "format": "double"
     },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
+    "accruedIntInSusp": {
      "type": "number",
      "format": "double"
     },
@@ -128,28 +119,44 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
     },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
+    "interestAccrualInterval": {
+     "type": "string"
     },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
+    "interestApplicationMethod": {
+     "type": "string"
     },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
     },
     "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "limit": {
      "type": "number",
@@ -160,12 +167,22 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -412,7 +429,7 @@
      "type": "string"
     },
     "statFlag": {
-     "type": "string"
+     "type": "boolean"
     },
     "suspenseCrAccount": {
      "type": "string",
@@ -479,7 +496,7 @@
      "type": "string"
     },
     "statementFlag": {
-     "type": "string"
+     "type": "boolean"
     },
     "transactionID": {
      "type": "string",

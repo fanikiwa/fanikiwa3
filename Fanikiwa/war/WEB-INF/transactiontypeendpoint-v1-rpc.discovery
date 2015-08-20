@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/X3I8DpAOJMlGoPLJ9UkZ226I27I\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/OFlGne0UZ_YgUYMwDCwTNz7XGnk\"",
  "discoveryVersion": "v1",
  "id": "transactiontypeendpoint:v1",
  "name": "transactiontypeendpoint",
@@ -84,6 +84,25 @@
     },
     "nextPageToken": {
      "type": "string"
+    }
+   }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   },
@@ -189,7 +208,7 @@
      "type": "string"
     },
     "statFlag": {
-     "type": "string"
+     "type": "boolean"
     },
     "suspenseCrAccount": {
      "type": "string",
@@ -220,6 +239,10 @@
      "format": "int32"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -254,7 +277,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "TransactionType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -291,6 +314,28 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "transactiontypeendpoint.retrieveTransactionType": {
+   "id": "transactiontypeendpoint.retrieveTransactionType",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -306,7 +351,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "TransactionType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

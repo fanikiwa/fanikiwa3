@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/zH-CprHRNZZi-WNGiRm5q32Hy2Y\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/QY6glLb1cwlIx80a6YeMLv4GuWg\"",
  "discoveryVersion": "v1",
  "id": "customerendpoint:v1",
  "name": "customerendpoint",
@@ -138,6 +138,58 @@
     }
    }
   },
+  "CustomerDTO": {
+   "id": "CustomerDTO",
+   "type": "object",
+   "properties": {
+    "address": {
+     "type": "string"
+    },
+    "billToAddress": {
+     "type": "string"
+    },
+    "billToEmail": {
+     "type": "string"
+    },
+    "billToName": {
+     "type": "string"
+    },
+    "billToTelephone": {
+     "type": "string"
+    },
+    "branch": {
+     "type": "string"
+    },
+    "createdDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "customerId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "customerNo": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "memberId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "name": {
+     "type": "string"
+    },
+    "organization": {
+     "type": "string",
+     "format": "int64"
+    },
+    "telephone": {
+     "type": "string"
+    }
+   }
+  },
   "Organization": {
    "id": "Organization",
    "type": "object",
@@ -156,9 +208,66 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "customerendpoint.createCustomer": {
+   "id": "customerendpoint.createCustomer",
+   "parameters": {
+    "resource": {
+     "$ref": "CustomerDTO"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "customerendpoint.editCustomer": {
+   "id": "customerendpoint.editCustomer",
+   "parameters": {
+    "resource": {
+     "$ref": "CustomerDTO"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "customerendpoint.getCustomer": {
    "id": "customerendpoint.getCustomer",
    "allowGet": true,
@@ -227,6 +336,28 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "customerendpoint.retrieveCustomer": {
+   "id": "customerendpoint.retrieveCustomer",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]

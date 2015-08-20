@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "offerreceipientendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -27,6 +27,77 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "offerreceipientendpoint.offerReceipientEndpoint.pulgeOfferandReceipient" : {
+      "path" : "PulgeOfferandReceipient/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.PulgeOfferandReceipient",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerreceipientendpoint.listOfferReceipient" : {
+      "path" : "offer/{memberId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient",
+      "request" : {
+        "parameters" : {
+          "memberId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerreceipientendpoint.offerReceipientEndpoint.deleteOfferReciepients" : {
+      "path" : "DeleteOfferReciepients/{offerId}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.DeleteOfferReciepients",
+      "request" : {
+        "parameters" : {
+          "offerId" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "offerreceipientendpoint.insertOfferReceipient" : {
       "path" : "offerreceipient",
       "httpMethod" : "POST",
@@ -43,16 +114,20 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerreceipientendpoint.listOfferReceipient" : {
-      "path" : "offerreceipient",
+    "offerreceipientendpoint.offerReceipientEndpoint.getOfferReceipients" : {
+      "path" : "collectionresponse_offerreceipient/{offerId}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient",
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipients",
       "request" : {
         "parameters" : {
+          "offerId" : {
+            "type" : "int64",
+            "required" : true
+          },
           "cursor" : {
             "type" : "string",
             "required" : false
@@ -60,6 +135,27 @@
           "count" : {
             "type" : "int32",
             "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerreceipientendpoint.removeOfferReceipient" : {
+      "path" : "offerreceipient/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -105,27 +201,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerreceipientendpoint.removeOfferReceipient" : {
-      "path" : "offerreceipient/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "offerreceipientendpoint.isOfferAvaiable" : {
       "path" : "isOfferAvaiable",
       "httpMethod" : "POST",
@@ -145,19 +220,86 @@
   },
   "descriptor" : {
     "schemas" : {
-      "OfferReceipient" : {
-        "id" : "OfferReceipient",
+      "RequestResult" : {
+        "id" : "RequestResult",
         "type" : "object",
         "properties" : {
-          "offerReceipientId" : {
+          "id" : {
             "type" : "string",
             "format" : "int64"
           },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
+      },
+      "CollectionResponse_Offer" : {
+        "id" : "CollectionResponse_Offer",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Offer"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Offer" : {
+        "id" : "Offer",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "type" : "number"
+          },
+          "term" : {
+            "type" : "integer"
+          },
+          "interest" : {
+            "type" : "number"
+          },
+          "privateOffer" : {
+            "type" : "boolean"
+          },
+          "createdDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expiryDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "offerType" : {
+            "type" : "string"
+          },
+          "partialPay" : {
+            "type" : "boolean"
+          },
+          "status" : {
+            "type" : "string"
+          },
           "member" : {
             "$ref" : "Member"
-          },
-          "offer" : {
-            "$ref" : "Offer"
           }
         }
       },
@@ -226,12 +368,6 @@
           "currentAccount" : {
             "$ref" : "Account"
           },
-          "interestIncAccount" : {
-            "$ref" : "Account"
-          },
-          "interestExpAccount" : {
-            "$ref" : "Account"
-          },
           "customer" : {
             "$ref" : "Customer"
           }
@@ -254,17 +390,16 @@
           "accruedInt" : {
             "type" : "number"
           },
-          "bal30" : {
+          "accruedIntInSusp" : {
             "type" : "number"
           },
-          "bal60" : {
-            "type" : "number"
+          "maturityDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "bal90" : {
-            "type" : "number"
-          },
-          "balOver90" : {
-            "type" : "number"
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
           "bookBalance" : {
             "type" : "number"
@@ -281,16 +416,7 @@
           "interestRate" : {
             "type" : "number"
           },
-          "intRate30" : {
-            "type" : "number"
-          },
-          "intRate60" : {
-            "type" : "number"
-          },
-          "intRate90" : {
-            "type" : "number"
-          },
-          "intRateOver90" : {
+          "interestRateSusp" : {
             "type" : "number"
           },
           "limit" : {
@@ -300,10 +426,45 @@
             "type" : "integer"
           },
           "limitFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "passFlag" : {
-            "type" : "integer"
+            "type" : "string"
+          },
+          "interestAccrualInterval" : {
+            "type" : "string"
+          },
+          "lastIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "accrueInSusp" : {
+            "type" : "boolean"
+          },
+          "interestComputationMethod" : {
+            "type" : "string"
+          },
+          "interestComputationTerm" : {
+            "type" : "string"
+          },
+          "interestApplicationMethod" : {
+            "type" : "string"
+          },
+          "lastIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "intPayAccount" : {
+            "type" : "string",
+            "format" : "int64"
           },
           "customer" : {
             "$ref" : "Customer"
@@ -360,6 +521,9 @@
             "type" : "string"
           },
           "telephone" : {
+            "type" : "string"
+          },
+          "status" : {
             "type" : "string"
           },
           "organization" : {
@@ -440,48 +604,19 @@
           }
         }
       },
-      "Offer" : {
-        "id" : "Offer",
+      "OfferReceipient" : {
+        "id" : "OfferReceipient",
         "type" : "object",
         "properties" : {
-          "id" : {
+          "offerReceipientId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "description" : {
-            "type" : "string"
-          },
-          "amount" : {
-            "type" : "number"
-          },
-          "term" : {
-            "type" : "integer"
-          },
-          "interest" : {
-            "type" : "number"
-          },
-          "publicOffer" : {
-            "type" : "boolean"
-          },
-          "createdDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "expiryDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "offerType" : {
-            "type" : "string"
-          },
-          "partialPay" : {
-            "type" : "boolean"
-          },
-          "status" : {
-            "type" : "string"
-          },
           "member" : {
             "$ref" : "Member"
+          },
+          "offer" : {
+            "$ref" : "Offer"
           }
         }
       },
@@ -502,6 +637,21 @@
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.PulgeOfferandReceipient" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Offer"
+        }
+      },
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.DeleteOfferReciepients" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.OfferReceipientEndpoint.insertOfferReceipient" : {
         "request" : {
           "$ref" : "OfferReceipient"
@@ -510,9 +660,14 @@
           "$ref" : "OfferReceipient"
         }
       },
-      "com.sp.fanikiwa.api.OfferReceipientEndpoint.listOfferReceipient" : {
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipients" : {
         "response" : {
           "$ref" : "CollectionResponse_OfferReceipient"
+        }
+      },
+      "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient" : {
+        "response" : {
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.OfferReceipientEndpoint.getOfferReceipient" : {
@@ -527,8 +682,6 @@
         "response" : {
           "$ref" : "OfferReceipient"
         }
-      },
-      "com.sp.fanikiwa.api.OfferReceipientEndpoint.removeOfferReceipient" : {
       },
       "com.sp.fanikiwa.api.OfferReceipientEndpoint.isOfferAvaiable" : {
         "request" : {

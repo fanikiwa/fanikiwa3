@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/tieredtableendpoint/v1/20150413064437/java/1.18.0-rc/sp.com-tieredtableendpoint-v1-20150413064437-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-tieredtableendpoint-v1-20150413064437-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/tieredtableendpoint/v1/20150704075159/java/1.18.0-rc/sp.com-tieredtableendpoint-v1-20150704075159-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-tieredtableendpoint-v1-20150704075159-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-04-13 06:44"
+      "timestamp": "2015-07-04 07:52"
     }, 
     {
-      "path": "sp.com-tieredtableendpoint-v1-20150413064437-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-tieredtableendpoint-v1-20150704075159-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "tieredtableendpoint:v1", 
-  "revision": 20150413064437
+  "revision": 20150704075159
 }

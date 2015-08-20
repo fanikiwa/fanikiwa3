@@ -24,40 +24,43 @@ import com.sp.utils.DateDeserializer;
 import com.sp.utils.DateSerializer;
 
 public class MpesaComponent {
- 
-	public void ProcessMessage(MpesaIPNMessage mpesaIPNMessage) throws Exception {
-  
-			MpesaDepositMessage message = MakeMpesaDepositMessageFromRequest(mpesaIPNMessage);
-		    String narr = "Deposit started...";
-				 
-			List<Transaction> txns = TransactionFactory.MpesaDeposit(
-					message.AccountId, message.Amount, narr,
-					message.Mpesaref);
-			TransactionPost.Post(txns);
-			narr = message.CustomerTelno + " deposited on "
-					+ message.MessageDate.toString();		
-			 
+
+	public String ProcessMessage(MpesaIPNMessage mpesaIPNMessage)
+			throws Exception {
+
+		MpesaDepositMessage message = MakeMpesaDepositMessageFromRequest(mpesaIPNMessage);
+		String msg = "Deposit started...";
+		String narr = mpesaIPNMessage.getMpesa_code() + " from "
+				+ mpesaIPNMessage.getMpesa_msisdn();
+
+		List<Transaction> txns = TransactionFactory.MpesaDeposit(
+				message.AccountId, message.Amount, narr, message.Mpesaref);
+		TransactionPost.Post(txns);
+		msg += message.CustomerTelno + " deposited on "
+				+ message.MessageDate.toString();
+		return msg;
 	}
-	
-	private MpesaDepositMessage MakeMpesaDepositMessageFromRequest(MpesaIPNMessage mpesaIPNMessage) throws ParseException{
-		
-		MpesaDepositMessage msg = new MpesaDepositMessage();  
-		
+
+	private MpesaDepositMessage MakeMpesaDepositMessageFromRequest(
+			MpesaIPNMessage mpesaIPNMessage) throws ParseException {
+
+		MpesaDepositMessage msg = new MpesaDepositMessage();
+
 		msg.setCustomerTelno(mpesaIPNMessage.getMpesa_msisdn());
 		msg.setAccountId(Long.parseLong(mpesaIPNMessage.getMpesa_acc()));
 		msg.setAmount(mpesaIPNMessage.getMpesa_amt());
-		msg.setMpesaref(mpesaIPNMessage.getMpesa_code()); 
+		msg.setMpesaref(mpesaIPNMessage.getMpesa_code());
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		msg.setSentDate(sdf.parse(mpesaIPNMessage.getMpesa_trx_date()));
-//		msg.setMpesaBal(mpesaIPNMessage.Bal);
-//		msg.setMemberId(fmessage.MemberId); 
+		// msg.setMpesaBal(mpesaIPNMessage.Bal);
+		// msg.setMemberId(fmessage.MemberId);
 		msg.setSenderTelno(mpesaIPNMessage.getMpesa_msisdn());
 		msg.setMessageDate(new Date());
 		msg.setFanikiwaMessageType(FanikiwaMessageType.MpesaDepositMessage);
-		msg.setBody(mpesaIPNMessage.getText()); 
+		msg.setBody(mpesaIPNMessage.getText());
 		msg.setStatus("NEW");
-		 
+
 		return msg;
 	}
-	
+
 }

@@ -1,0 +1,379 @@
+{
+ "kind": "discovery#restDescription",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/C4ADr1nQvjhSzauHmcjWv756zhk\"",
+ "discoveryVersion": "v1",
+ "id": "stoendpoint:v1",
+ "name": "stoendpoint",
+ "version": "v1",
+ "description": "This is an API",
+ "ownerDomain": "sp.com",
+ "ownerName": "sp.com",
+ "packagePath": "fanikiwa.entity",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rest",
+ "baseUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/stoendpoint/v1/",
+ "basePath": "/_ah/api/stoendpoint/v1/",
+ "rootUrl": "https://1-dot-fanikiwaweb.appspot.com/_ah/api/",
+ "servicePath": "stoendpoint/v1/",
+ "batchPath": "batch",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "CollectionResponse_STO": {
+   "id": "CollectionResponse_STO",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "STO"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "STO": {
+   "id": "STO",
+   "type": "object",
+   "properties": {
+    "amountDefaulted": {
+     "type": "number",
+     "format": "double"
+    },
+    "amountPaid": {
+     "type": "number",
+     "format": "double"
+    },
+    "chargeCommFlag": {
+     "type": "boolean"
+    },
+    "chargeWho": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "commFreqFlag": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "commSourceFlag": {
+     "type": "string"
+    },
+    "commissionAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "commissionAmount": {
+     "type": "number",
+     "format": "double"
+    },
+    "commissionPaidFlag": {
+     "type": "boolean"
+    },
+    "crAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "crTxnType": {
+     "type": "string",
+     "format": "int64"
+    },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "drAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "drTxnType": {
+     "type": "string",
+     "format": "int64"
+    },
+    "endDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "feesFlag": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestAmount": {
+     "type": "number",
+     "format": "double"
+    },
+    "interval": {
+     "type": "string"
+    },
+    "limitFlag": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "loanId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "nextPayDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "noOfDefaults": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "noOfPayments": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "noOfPaymentsMade": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "partialPay": {
+     "type": "boolean"
+    },
+    "payAmount": {
+     "type": "number",
+     "format": "double"
+    },
+    "startDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "stoaccType": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "stotype": {
+     "type": "string"
+    },
+    "totalToPay": {
+     "type": "number",
+     "format": "double"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
+  }
+ },
+ "methods": {
+  "getSTOByID": {
+   "id": "stoendpoint.getSTOByID",
+   "path": "sto/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "STO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "insertSTO": {
+   "id": "stoendpoint.insertSTO",
+   "path": "sto",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "STO",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "STO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "listSTO": {
+   "id": "stoendpoint.listSTO",
+   "path": "sto",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_STO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "removeSTO": {
+   "id": "stoendpoint.removeSTO",
+   "path": "sto/{id}",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveSTO": {
+   "id": "stoendpoint.retrieveSTO",
+   "path": "retrieveSTO/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectSTOByDateFrom": {
+   "id": "stoendpoint.selectSTOByDateFrom",
+   "path": "SelectSTOByDateFrom/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_STO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "updateSTO": {
+   "id": "stoendpoint.updateSTO",
+   "path": "sto",
+   "httpMethod": "PUT",
+   "request": {
+    "$ref": "STO",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "STO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}

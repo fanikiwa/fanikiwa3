@@ -22,8 +22,6 @@ public abstract class Message implements Serializable {
 	// / </summary>
 	private Date messageDate;
 
-	
-	
 	public Object getBody() {
 		return body;
 	}

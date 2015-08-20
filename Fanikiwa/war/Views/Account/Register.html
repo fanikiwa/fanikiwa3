@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -7,12 +7,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Fanikiwa - Peer-to-Peer Lending</title>
+<title>Register | Fanikiwa - Peer-to-Peer Lending</title>
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
-<script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-<script src="/Scripts/fanikiwa.js" type="text/javascript"></script>
+<script src="/Scripts/fanikiwa.js"></script>
+<script src="/Scripts/Register.js"></script>
 
 
 </head>
@@ -31,13 +31,12 @@
 
 			<div class="float-right">
 				<section id="login">
-				<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
-					style="cursor: pointer;" href="#" onclick="ManageProfile()"
-					title="Manage Profile"></a> <a id="lnklogoff"
-					style="cursor: pointer;" href="#" onclick="LogOff()"
-					title="Log Off">Log off</a> </text>
-			  </section>
+					<text> Welcome To Fanikiwa</text>
+				</section>
 			</div>
+
+
+
 
 
 
@@ -45,7 +44,6 @@
 
 
 	</header>
-
 
 
 
@@ -71,35 +69,39 @@
 						<div class="pad">
 
 							<div>
-								<label for="txtEmail">Email</label> <input id="txtEmail"
-									autocomplete="autocomplete"	placeholder="Email" autofocus="autofocus" type="text"></input>
+								<label for="txtemail">Email(user@domain.com)</label> <input
+									id="txtemail" autocomplete placeholder="Email(user@domain.com)"
+									autofocus type="text"></input>
 							</div>
 
 							<div>
-								<label for="txtPassword">Password</label> <input
-								autocomplete="autocomplete"	id="txtPassword" placeholder="Password" type="password"></input>
+								<label for="txtpassword">Password</label> <input
+									id="txtpassword" autocomplete placeholder="Password"
+									type="password"></input>
 							</div>
 
 							<div>
-								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									autocomplete="autocomplete"	placeholder="Surname" type="text"></input>
+								<label for="txtsurname">Surname</label> <input id="txtsurname"
+									autocomplete placeholder="Surname" type="text"></input>
 							</div>
 
 							<div>
-								<label for="txtTelephone">Telephone</label> <input
-								autocomplete="autocomplete"	id="txtTelephone" placeholder="Telephone" type="tel"></input>
+								<label for="txttelephone">Telephone</label> <input
+									id="txttelephone" autocomplete placeholder="Telephone"
+									type="tel"></input>
 							</div>
-
 
 						</div>
 					</article>
 
 
 					<div style="float: left; clear: both">
-				      <input type="submit" value="Register" id="btnRegister" />
-					   Already Registered Click 
-					   <a id="btnLogin" href="/Views/Account/Login.html" style="cursor: pointer;">Here </a>
-					  To Login
+						<input id="btnRegister" type="submit"
+							value="Loading please wait..."
+							style="cursor: wait; background-color: grey; color: red;"
+							disabled /> Already Registered Click <a id="btnLogin"
+							href="/Views/Account/Login.html" style="cursor: pointer;">Here
+						</a> To Login
 					</div>
 
 
@@ -108,6 +110,9 @@
 
 			</form>
 
+			<div id="apiResults" style="float: left; clear: both"></div>
+			<div id="successmessage" style="float: left; clear: both"></div>
+			<div id="errormessage" style="float: left; clear: both"></div>
 
 		</section>
 
@@ -122,27 +127,26 @@
 
 		<hr />
 
-		<div class="content-wrapper">
-			<div class="float-left"></div>
+		<div id="div-mpesapaybill">
+			<span id="mpesapaybill">Mpesa Paybill Number</span> <span
+				id="mpesapaybillnumber">882600</span>
 		</div>
 
+		<div id="div-copyright">
+			<span id="copyright">Copyright &copy;</span> <span id="footerdate"></span>
+			<span id="companyname"> Software Providers Limited.</span> <span
+				id="rightsreserved">All Rights Reserved.</span>
+		</div>
 
-		<div class="content-wrapper clearboth">
-			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy;  
-					Software Providers Limited. All Rights Reserved.</p>
+		<div id="div-androiddownload">
+			<img id="android" src="/Images/android.png"
+				alt="Fanikiwa in your pocket!" /> <span id="pocket">Fanikiwa
+				in your pocket!</span> <span id="ourapp">Get our app and invest on
+				the go.</span><span id="freedownload">Free download now</span>
+			<div id="androiddownload">
+				<a id="androiddownloadlink" target="_blank" href="#"> </a>
 			</div>
 		</div>
-
-
-		<div class="content-wrapper clearboth">
-			<div>
-
-				 
-
-			</div>
-		</div>
-
 
 	</footer>
 
@@ -150,126 +154,10 @@
 
 
 	<script type="text/javascript">
-
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-
-	var errormsg='';
-	errormsg +=   '<ul id="errorList">' ;
-      // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-      var ROOT ='http://localhost:8888/_ah/api';   
-      function init() {
-       
-       	try {
-       	  
-        // Parameters are APIName,APIVersion,CallBack function,API Root
-        gapi.client.load('memberendpoint', 'v1', null, ROOT);
-          
-        document.getElementById('btnRegister').onclick = function() {
-	    Register();
-        	  } 
-        } catch(exception) {  
-            console.log("Error : " + exception);
-            errormsg += '<li>' + exception   + '</li>';
-            DisplayException(errormsg); 
-     }
-  }
-         
-
-        // function that will execute the Register call
-        function Register() {
-
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free = true;
-            
-        	// Validate the entries
-        	var _Email = document.getElementById('txtEmail').value;
-        	var _Pwd = document.getElementById('txtPassword').value;
-        	var _Surname = document.getElementById('txtSurname').value; 
-        	var _Telephone = document.getElementById('txtTelephone').value;
-        	
-        	 if(_Email.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Email cannot be null "   + '</li>'; 
-            	 error_free = false; 
-        	 }
-        	 if(_Pwd.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Password cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 if(_Surname.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Surname cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 if(_Telephone.length == 0)
-        	 {        		 
-        		 errormsg += '<li>' + " Telephone cannot be null "   + '</li>'; 
-            	 error_free = false;  
-        	 }
-        	 
-        	 if (!error_free){
-    	         errormsg += "</ul>";
-    	    	 $("#error-display-div").html(errormsg); 
-    	         $("#error-display-div").removeClass('displaynone');
-    	         $("#error-display-div").addClass('displayblock');
-    	         $("#error-display-div").show();  
-    	         return;
-             }
-            else{
-    	        ClearException(); 
-             }
-        	 
-        	// Build the Request Object
-        	var memberDTO = {};
-        	memberDTO.email = _Email;
-        	memberDTO.pwd = _Pwd;
-        	memberDTO.surname = _Surname; 
-        	memberDTO.telephone = _Telephone; 
-        	
-        	gapi.client.memberendpoint.register(memberDTO).execute(function(resp) {
-        		 console.log(resp);
-        		if (!resp.code) {
-        			
-	        		alert("Registration Successfull MemberId : " + resp.memberId );
-	        		window.location.href = "/Views/Account/Login.html";
-        		
-        		}        		  
-        		else {
-        			console.log(resp.code + " : " + resp.message); 
-        			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-        			DisplayException(errormsg);
-        		} 
-        	}); 
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-        		errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg);
-           }
-        }
-        
-        function DisplayException(errormsg) {
-        	 
-   		 errormsg += "</ul>";
-   		 
-    	 $("#error-display-div").html(errormsg); 
-         $("#error-display-div").removeClass('displaynone');
-         $("#error-display-div").addClass('displayblock');
-         $("#error-display-div").show();  
-   	    }
-
-	   	function ClearException() {
-	   		$('#errorList').remove();
-	   		$('#error-display-div').empty();
-	   	}
-   	
-    </script>
+		function init() {
+			fanikiwa.memberendpoint.register.init(GETROOT());
+		}
+	</script>
 
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

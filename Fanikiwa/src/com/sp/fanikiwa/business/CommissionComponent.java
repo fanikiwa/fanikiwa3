@@ -328,7 +328,7 @@ public class CommissionComponent {
 			return null;
 
 		switch (TT.getCommComputationMethod()) {
-		case "L": // tiered
+		case "L": // Lookup
 			LookupRule lrule = new LookupRule();
 			if (TT.getTieredTableId() == 0)
 				throw new IllegalArgumentException(
@@ -368,7 +368,7 @@ public class CommissionComponent {
 		List<LookupRow> lr = new ArrayList<LookupRow>();
 
 		TieredDetEndpoint tep = new TieredDetEndpoint();
-		Collection<TieredDet> trd = tep.getTieredTableId(TT.getTieredTableId());
+		Collection<TieredDet> trd = tep.getTieredtableId(TT.getTieredTableId());
 		for (TieredDet t : trd) {
 			LookupRow lookupTable = new LookupRow();
 			lookupTable.Id = t.getId();
@@ -394,8 +394,8 @@ public class CommissionComponent {
 		// compute commission if _sto.ChargeCommFlag==true &&
 		// !_sto.CommissionPaidFlag
 		if (_sto.getChargeCommFlag() && !_sto.getCommissionPaidFlag()) {
-			STOCommSourceFlag stoflag = STOCommSourceFlag.values()[_sto
-					.getCommSourceFlag()];
+			STOCommSourceFlag stoflag = STOCommSourceFlag.valueOf(_sto
+					.getCommSourceFlag());
 
 			switch (stoflag) {
 			case NoCommission:

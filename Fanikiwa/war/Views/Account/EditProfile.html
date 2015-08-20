@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -7,12 +7,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Fanikiwa - Peer-to-Peer Lending</title>
+<title>Edit Profile | Fanikiwa - Peer-to-Peer Lending</title>
 <link href="/Images/Dollar.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
 <script src="/Scripts/jquery-2.0.3.js" type="text/javascript"></script>
+<script src="/Scripts/MainMenu.js"></script>
+<script src="/Scripts/fanikiwa.js"></script>
 <script src="/Scripts/CustomScripts.js" type="text/javascript"></script>
-
+<script src="/Scripts/EditProfile.js"></script>
 
 </head>
 
@@ -38,249 +40,13 @@
 				</section>
 			</div>
 
-
-
-			<div id="nav">
-				<ul id="menu">
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitIndexForm" style="cursor: pointer;"
-									href="/Views/Home/Index.html">Home</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListLendOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListLendOffers.html">Get A loan</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListBorrowOffersForm" style="cursor: pointer;"
-									href="/Views/Offers/ListBorrowOffers.html">Make An
-									Investment</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitListMyOffersForm"
-									href="/Views/Offers/ListMyOffers.html" style="cursor: pointer;">My
-									Offers</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-
-
-					<li id="subMenuMyProfile">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitEditProfileSubForm"
-									href="/Views/Account/EditProfile.html" style="cursor: pointer;">My
-									Profile</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuMyAccounts">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyAccountsForm"
-									href="/Views/Account/MyAccounts.html" style="cursor: pointer;">My
-									Accounts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyInvestMentsForm"
-									href="/Views/Offers/ListMyInvestments.html"
-									style="cursor: pointer;">My InvestMents</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuMyLoans">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitMyLoansForm"
-									href="/Views/Loans/ListMyLoans.html" style="cursor: pointer;">My
-									Loans</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuOfferGroups">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitGetMyMailingGroupsForm"
-									href="/Views/MailingGroups/MailingGroups.html"
-									style="cursor: pointer;">My Offer Groups</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuScores">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitOfferScoresForm"
-									href="/Views/Account/ManageProfile.html"
-									style="cursor: pointer;">My Offer Scores</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuChangePassword">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitChangePasswordForm"
-									href="/Views/Account/_ChangePasswordPartial.html"
-									style="cursor: pointer;">Change Password</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li id="subMenuDeRegister">
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitDeRegisterForm"
-									href="/Views/Account/DeRegister.html" style="cursor: pointer;">DeRegister</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitHelpForm" href="/Views/Home/Help.html"
-									style="cursor: pointer;">Help</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactUsForm"
-									href="/Views/Contact/ContactUs.html" style="cursor: pointer;">Contact
-									Us</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitContactsForm" href="/Views/Home/Contact.html"
-									style="cursor: pointer;">Contacts</a>
-							</div>
-
-						</div>
-
-					</li>
-
-					<li>
-
-						<div class="floatleft">
-
-							<div>
-								<a id="btnSubmitAboutForm" href="/Views/Home/About.html"
-									style="cursor: pointer;">About</a>
-							</div>
-
-						</div>
-
-					</li>
-
-
-
-				</ul>
-			</div>
-
+			<div id="MainMenu"></div>
+			<div id="SubMenu"></div>
 
 		</div>
 
 
 	</header>
-
 
 
 
@@ -297,99 +63,172 @@
 				<h2 class="page-title">Edit Profile</h2>
 			</hgroup>
 
-			<form action="javascript:void(0);">
+			<div style="float: left; clear: both">
+				<input id="btnUpdate" type="submit" value="Loading please wait..."
+					style="cursor: wait; background-color: grey; color: red;" disabled
+					form="form-editprofile" /> <input type="button" value="Back"
+					onclick="window.history.go(-1); return false;" />
+			</div>
 
-				<fieldset>
-					<legend>Edit Profile</legend>
+			<div id="apiResults" style="float: left; clear: both"></div>
+			<div id="successmessage" style="float: left; clear: both"></div>
+			<div id="errormessage" style="float: left; clear: both"></div>
 
-					<article class="col1">
-						<div class="pad">
+			<div style="float: left; clear: both">
 
-							<div>
-								<label for="txtEmail">Email</label> <input id="txtEmail"
-							 autocomplete="autocomplete" placeholder="Email" autofocus="autofocus" type="text"></input>
+				<form id="form-editprofile" action="javascript:void(0);">
+
+					<fieldset>
+						<legend>Edit Profile</legend>
+
+						<article class="col1">
+							<div class="pad">
+
+								<div>
+									<label for="txtsurname">Surname</label> <input id="txtsurname"
+										placeholder="Surname" type="text"></input>
+								</div>
+
+								<div>
+									<label for="txtotherNames">OtherNames</label> <input
+										id="txtotherNames" placeholder="OtherNames" type="text"></input>
+								</div>
+
+								<div>
+									<label for="txtnationalID">National ID</label> <input
+										id="txtnationalID" placeholder="National ID" type="text"></input>
+								</div>
+
+								<div>
+									<label for="txtmemberId">Member Id</label> <input
+										id="txtmemberId" placeholder="member Id" type="number" min="0"
+										autofocus disabled></input>
+								</div>
+
+								<div>
+									<label for="txtemail">Email</label> <input id="txtemail"
+										placeholder="Email" type="text" disabled></input>
+								</div>
+
+								<div>
+									<label for="txttelephone">Telephone</label> <input
+										id="txttelephone" placeholder="Telephone" type="text" disabled></input>
+								</div>
+
+								<div>
+									<label for="txtinvestmentAccount">Investment Account ID</label>
+									<input id="txtinvestmentAccount"
+										placeholder="Investment Account ID" type="number" min="0"
+										disabled></input>
+								</div>
+
+								<div>
+									<label for="txtloanAccount">Loan Account ID</label> <input
+										id="txtloanAccount" placeholder="Loan Account ID"
+										type="number" min="0" disabled></input>
+								</div>
+
+								<div>
+									<label for="txtcurrentAccount">Current Account ID</label> <input
+										id="txtcurrentAccount" placeholder="Current Account ID"
+										type="number" min="0" disabled></input>
+								</div>
+
+								<div class="displaynone">
+									<label for="txtinterestIncAccount">Interest Income
+										Account ID</label> <input id="txtinterestIncAccount"
+										placeholder="Interest Income Account ID" type="number" min="0"
+										disabled></input>
+								</div>
+
+								<div class="displaynone">
+									<label for="txtinterestExpAccount">Interest Expense
+										Account ID</label> <input id="txtinterestExpAccount"
+										placeholder="Interest Expense Account ID" type="number"
+										min="0" disabled></input>
+								</div>
+
+								<div>
+									<label for="txtcustomer">Customer ID</label> <input
+										id="txtcustomer" placeholder="Customer ID" type="number"
+										min="0" disabled></input>
+								</div>
+
 							</div>
+						</article>
 
-							<div>
-								<label for="txtSurname">Surname</label> <input id="txtSurname"
-									autocomplete="autocomplete" placeholder="Surname" type="text"></input>
+						<article class="col2">
+							<div class="pad">
+
+								<div>
+									<label for="dtpdateOfBirth">Date Of Birth</label> <input
+										id="dtpdateOfBirth" placeholder="Date Of Birth" type="date"></input>
+								</div>
+
+								<div>
+									<label for="cbogender">Gender</label> <select id="cbogender"
+										style="width: 50%;">
+										<option value="" selected="selected">(Select Gender)</option>
+									</select>
+								</div>
+
+								<div>
+									<label for="cboinformBy">InformBy</label> <select
+										id="cboinformBy" style="width: 50%;">
+										<option value="" selected="selected">(Select
+											InformBy)</option>
+									</select>
+								</div>
+
+								<div>
+									<label for="txtrefferedBy">Reffered By</label> <input
+										id="txtrefferedBy" placeholder="Reffered By" type="number"
+										min="0"></input>
+								</div>
+
+								<div>
+									<label for="txtmaxRecordsToDisplay">Max Records To
+										Display</label> <input id="txtmaxRecordsToDisplay"
+										placeholder="Max Records To Display" type="number" min="0"></input>
+								</div>
+
+								<div>
+									<label for="txtphoto">Photo</label> <input id="txtphoto"
+										placeholder="Photo" type="text"></input>
+								</div>
+
+								<div>
+									<label for="dtpdateActivated">Date Activated</label> <input
+										id="dtpdateActivated" placeholder="Date Activated" type="date"
+										disabled></input>
+								</div>
+
+								<div>
+									<label for="dtpdateJoined">Date Joined</label> <input
+										id="dtpdateJoined" placeholder="Date Joined" type="date"
+										disabled></input>
+								</div>
+
+								<div>
+									<label for="cbostatus">Status</label> <select id="cbostatus"
+										style="width: 50%;" disabled>
+										<option value="" selected="selected">(Select Status)</option>
+									</select>
+								</div>
+
 							</div>
+						</article>
 
-							<div>
-								<label for="txtOtherNames">OtherNames</label> <input
-								autocomplete="autocomplete" id="txtOtherNames" placeholder="OtherNames" type="text"></input>
-							</div>
-
-							<div>
-								<label for="txtTelephone">Telephone</label> <input
-								autocomplete="autocomplete" id="txtTelephone" placeholder="Telephone" type="tel"></input>
-							</div>
-
-							<div>
-								<label for="txtNationalID">NationalID</label> <input
-								autocomplete="autocomplete" id="txtNationalID" placeholder="NationalID" type="text"></input>
-							</div>
+					</fieldset>
 
 
-						</div>
-					</article>
+				</form>
 
-					<article class="col2">
-						<div class="pad">
-
-							<div>
-								<label for="dtpDateOfBirth">Date Of Birth</label> <input
-									id="dtpDateOfBirth" placeholder="Date Of Birth" type="date"></input>
-							</div>
-
-							<div>
-								<label for="txtRefferedBy">RefferedBy</label> <input
-									id="txtRefferedBy" placeholder="RefferedBy" type="number" min="0"></input>
-							</div>
-
-
-							<div>
-								<label for="txtMaxRecordsToDisplay">MaxRecordsToDisplay</label>
-								<input id="txtMaxRecordsToDisplay" placeholder="MaxRecordsToDisplay" type="number" min="0"></input>
-							</div>
-
-							<div>
-								<label for="cboGender">Gender</label> <select name="Gender"
-									id="cboGender">
-									<option value="M">Male</option>
-									<option value="F">Female</option>
-								</select>
-							</div>
-
-							<div>
-								<label for="cboInformBy">InformBy</label> <select
-									name="InformBy" id="cboInformBy">
-									<option value="Email">Email</option>
-									<option value="Sms">Sms</option>
-								</select>
-							</div>
-
-
-						</div>
-					</article>
-
-					<div style="float: left; clear: both">
-					<input type="submit" value="Update" id="btnUpdate"
-						style="float: left; clear: both" /> <input type="submit"
-						value="Clear" id="btnClear" onclick="Clear()" />
-				</div>
-
-				</fieldset>
-
-
-			</form>
-
+			</div>
 
 		</section>
 
-
 	</div>
-
 
 
 
@@ -398,248 +237,36 @@
 
 		<hr />
 
-
-		<div class="content-wrapper clearboth">
-			<div class="float-left">
-				<p style="font-size: 15px">Copyright &copy; 
-					Software Providers Limited. All Rights Reserved.</p>
-			</div>
+		<div id="div-mpesapaybill">
+			<span id="mpesapaybill">Mpesa Paybill Number</span> <span
+				id="mpesapaybillnumber">882600</span>
 		</div>
 
-
-		<div class="content-wrapper clearboth">
-			<div>
- 
-			</div>
+		<div id="div-copyright">
+			<span id="copyright">Copyright &copy;</span> <span id="footerdate"></span>
+			<span id="companyname"> Software Providers Limited.</span> <span
+				id="rightsreserved">All Rights Reserved.</span>
 		</div>
 
+		<div id="div-androiddownload">
+			<img id="android" src="/Images/android.png"
+				alt="Fanikiwa in your pocket!" /> <span id="pocket">Fanikiwa
+				in your pocket!</span> <span id="ourapp">Get our app and invest on
+				the go.</span><span id="freedownload">Free download now</span>
+			<div id="androiddownload">
+				<a id="androiddownloadlink" target="_blank" href="#"> </a>
+			</div>
+		</div>
 
 	</footer>
 
 
 
-
 	<script type="text/javascript">
-
-    if (localStorage.getItem("loggedinuser") === null) {
-     window.location.href = "/Views/Account/Login.html";
-	 }
-	 
-		 // Get loggedin user from the local storage
-		 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
-
-		 	var errormsg='';
-		 	errormsg +=   '<ul id="errorList">' ;
-		       // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
-		       var ROOT ='http://localhost:8888/_ah/api';   
-		       function init() {
-		        
-		        	try {
-		        	  
-		    // Parameters are APIName,APIVersion,CallBack function,API Root
-		    gapi.client.load('memberendpoint', 'v1', null, ROOT);
-	         
-		    // wire the submit button
-		    document.getElementById('btnUpdate').onclick = function() {
-		    UpdateProfile();
-            }
-            
-            InitializeControls();
-            
-	        	} catch(exception) {  
-	                console.log("Error : " + exception);
-	                errormsg += '<li>' + exception   + '</li>';
-	                DisplayException(errormsg); 
-	         }
-          }
-         
-         // function that will execute the getMemberByEmail call
-         function  getMemberByEmail(email)
-         {
-     
-        	try {
-			     // make the api call
-			     gapi.client.memberendpoint.getMemberByEmail(email).execute(function(resp) {
-			     if (!resp.code) {       			 
-	       		    return resp;       		
-	       		}       		  
-	       		else {
-	       			console.log(resp.code + " : " + resp.message); 
-	    			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-	    			DisplayException(errormsg);
-	       		}
-		       	});
-	       	
-	       	} catch(exception) { 
-	       		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-	      }
-		}	
-		
-        // function that will execute the UpdateProfile call
-        function UpdateProfile() {
-
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free=true;
-            
-        	// retrieve the entries
-        	var _Email = document.getElementById('txtEmail').value;
-        	var _Surname = document.getElementById('txtSurname').value;
-        	var _OtherNames = document.getElementById('txtOtherNames').value;
-        	var _Telephone = document.getElementById('txtTelephone').value;
-        	var _NationalID = document.getElementById('txtNationalID').value;
-        	var _DateOfBirth = document.getElementById('dtpDateOfBirth').value; 
-        	var _RefferedBy = document.getElementById('txtRefferedBy').value;
-        	var _MaxRecordsToDisplay = document.getElementById('txtMaxRecordsToDisplay').value;
-        	var _Gender = document.getElementById('cboGender').value;
-        	var _InformBy = document.getElementById('cboInformBy').value;
-        	
-        	if(_Surname.length == 0)
-          	 {        		 
-               errormsg += '<li>' + " Surname cannot be null "   + '</li>'; 
-              	error_free = false;   
-          	 }
-          	 if(_OtherNames.length == 0)
-          	 {        		 
-          		errormsg += '<li>' + " OtherNames cannot be null "   + '</li>'; 
-              	error_free = false; 
-          	 }
-          	if(_Telephone.length == 0)
-         	 {        		 
-         		errormsg += '<li>' + " Telephone cannot be null "   + '</li>'; 
-             	error_free = false; 
-         	 }
-          	if(_NationalID.length == 0)
-        	 {        		 
-        		errormsg += '<li>' + " NationalID cannot be null "   + '</li>'; 
-            	error_free = false; 
-        	 }
-          	  
-          	 if (!error_free){
-    	         errormsg += "</ul>";
-    	    	 $("#error-display-div").html(errormsg); 
-    	         $("#error-display-div").removeClass('displaynone');
-    	         $("#error-display-div").addClass('displayblock');
-    	         $("#error-display-div").show();  
-    	         return;
-             }
-            else{
-    	        ClearException(); 
-             }
-          	  
-        	// Build the Request Object
-        	var member = {};
-        	member.email = _Email;
-        	member.surname = _Surname;
-        	member.otherNames = _OtherNames;
-        	member.telephone = _Telephone;
-        	member.nationalID = _NationalID;
-        	member.dateOfBirth = _DateOfBirth; 
-        	member.refferedBy = _RefferedBy;
-        	member.maxRecordsToDisplay = _MaxRecordsToDisplay;
-        	member.gender = _Gender;
-        	member.informBy = _InformBy;
-        	
-        	// make the api call
-        	gapi.client.memberendpoint.updateMember(member).execute(function(resp) {
-        		 console.log(resp);
-        		if (!resp.code) {
-        		 	 
-        		window.location.href = "/Views/Shared/Successful.html";
-        		
-        		} 
-        		else {
-        			console.log(resp.code + " : " + resp.message); 
-        			errormsg += '<li>' + resp.code + " : " + resp.message   + '</li>';
-        			DisplayException(errormsg);
-        		} 
-        	});        	
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-	      }
-        }
-        
-        // function that will execute the InitializeControls call
-        function InitializeControls() {
-
-           	try {
-           	
-            errormsg='';
-            ClearException(); 
-            errormsg +=   '<ul id="errorList">' ;
-            var error_free=true;
-            
-        	// retrieve email from local storage
-        	var email = localStorage.getItem('loggedinuser')  
-        	// make the api call
-            var member = getMemberByEmail({'email': email});
-        
-             // populate controls
-             document.getElementById('txtEmail').value = member.email;
-        	 document.getElementById('txtSurname').value = member.surname;
-        	 document.getElementById('txtOtherNames').value = member.otherNames;
-        	 document.getElementById('txtTelephone').value = member.telephone;
-        	 document.getElementById('txtNationalID').value = member.nationalID;
-        	 document.getElementById('dtpDateOfBirth').value = member.dateOfBirth; 
-        	 document.getElementById('txtRefferedBy').value = member.refferedBy;
-        	 document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;
-             document.getElementById('cboGender').value = member.gender;
-        	 document.getElementById('cboInformBy').value = member.informBy;
-        	
-        	} catch(exception) { 
-        		console.log("Error : " + exception);
-                errormsg += '<li>' + exception   + '</li>';
-                DisplayException(errormsg); 
-	      }
-        }
-        
-        function Clear(){
- 	       $("#txtEmail").val("");
- 	       $("#txtSurname").val("");
- 	       $("#txtOtherNames").val("");
- 	       $("#txtTelephone").val("");
-	       $("#txtNationalID").val("");
-	       $("#dtpDateOfBirth").val("");
-	       $("#txtRefferedBy").val("");
- 	       $("#txtMaxRecordsToDisplay").val("");
- 	       $("#cboGender").val("-1");
- 	       $("#cboInformBy").val("-1"); 
-        }
-        
-            function LogOff() { 
-	         	localStorage.removeItem("loggedinuser");
-	            window.location.href = "/Views/Account/Login.html";  
-         	}
-         	
-         	function ManageProfile() { 
-         		window.location.href = "/Views/Account/EditProfile.html";  
-            }
-         	
-         	 
-            function DisplayException(errormsg) {
-           	 
-    	      	errormsg += "</ul>";
-    	      		 
-    	       	 $("#error-display-div").html(errormsg); 
-    	         $("#error-display-div").removeClass('displaynone');
-    	         $("#error-display-div").addClass('displayblock');
-    	         $("#error-display-div").show();  
-          	  }
-
-	   	   	function ClearException() {
-	   	   		$('#errorList').remove();
-	   	   		$('#error-display-div').empty();
-	   	   	}
-       	   	
-    </script>
-
+		function init() {
+			fanikiwa.memberendpoint.profile.init(GETROOT());
+		}
+	</script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
 

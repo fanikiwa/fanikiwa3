@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9K-lJvvoP6puOGE1Jg_SX1aQG7o\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/PeH5XgB1IHBpdv1SSbK9OM-0s1Y\"",
  "discoveryVersion": "v1",
  "id": "userprofileendpoint:v1",
  "name": "userprofileendpoint",
@@ -87,6 +87,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
   "Userprofile": {
    "id": "Userprofile",
    "type": "object",
@@ -95,7 +114,21 @@
      "type": "string",
      "format": "date-time"
     },
+    "expiryDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastLoginDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "pwd": {
+     "type": "string"
+    },
+    "role": {
+     "type": "string"
+    },
+    "status": {
      "type": "string"
     },
     "telephone": {
@@ -103,11 +136,58 @@
     },
     "userId": {
      "type": "string"
+    },
+    "userType": {
+     "type": "string"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "userprofileendpoint.changePassword": {
+   "id": "userprofileendpoint.changePassword",
+   "parameters": {
+    "pwd": {
+     "type": "string",
+     "required": true
+    },
+    "userId": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "userId",
+    "pwd"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "userprofileendpoint.createUserprofile": {
+   "id": "userprofileendpoint.createUserprofile",
+   "parameters": {
+    "resource": {
+     "$ref": "Userprofile"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "userprofileendpoint.getUserprofileByUserID": {
    "id": "userprofileendpoint.getUserprofileByUserID",
    "allowGet": true,
@@ -180,7 +260,7 @@
     "pwd"
    ],
    "returns": {
-    "$ref": "Userprofile"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -197,6 +277,27 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "userprofileendpoint.retrieveUser": {
+   "id": "userprofileendpoint.retrieveUser",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -212,7 +313,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Userprofile"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -236,6 +337,24 @@
    ],
    "returns": {
     "$ref": "Userprofile"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "userprofileendpoint.userprofileEndpoint.userExists": {
+   "id": "userprofileendpoint.userprofileEndpoint.userExists",
+   "parameters": {
+    "userId": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "userId"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

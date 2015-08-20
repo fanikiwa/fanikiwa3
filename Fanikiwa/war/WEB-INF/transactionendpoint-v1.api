@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "transactionendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -27,14 +27,14 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "transactionendpoint.transactionEndpoint.getTransactionsBeforeDate" : {
-      "path" : "GetTransactionsBeforeDate/{sdate}",
+    "transactionendpoint.transactionEndpoint.selectByAccountDateRange" : {
+      "path" : "SelectByAccountDateRange/{sdate}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.GetTransactionsBeforeDate",
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.SelectByAccountDateRange",
       "request" : {
         "parameters" : {
           "sdate" : {
@@ -50,22 +50,6 @@
             "required" : false
           }
         },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "transactionendpoint.insertTransaction" : {
-      "path" : "transaction",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.insertTransaction",
-      "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -110,14 +94,14 @@
         "body" : "empty"
       }
     },
-    "transactionendpoint.transactionEndpoint.getMiniStatement" : {
-      "path" : "GetMiniStatement",
+    "transactionendpoint.transactionEndpoint.getAccountTransactions" : {
+      "path" : "GetAccountTransactions",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.GetMiniStatement",
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.GetAccountTransactions",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -131,6 +115,35 @@
         },
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "transactionendpoint.transactionEndpoint.getMiniStatement" : {
+      "path" : "GetMiniStatement/{accountId}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.GetMiniStatement",
+      "request" : {
+        "parameters" : {
+          "accountId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -215,6 +228,73 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "transactionendpoint.deleteAccountTransactions" : {
+      "path" : "accounttransactions/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.deleteAccountTransactions",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "transactionendpoint.insertTransaction" : {
+      "path" : "transaction",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.insertTransaction",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "transactionendpoint.transactionEndpoint.getTransactionsBeforeDate" : {
+      "path" : "GetTransactionsBeforeDate/{sdate}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TransactionEndpoint.GetTransactionsBeforeDate",
+      "request" : {
+        "parameters" : {
+          "sdate" : {
+            "type" : "datetime",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
@@ -236,17 +316,16 @@
           "accruedInt" : {
             "type" : "number"
           },
-          "bal30" : {
+          "accruedIntInSusp" : {
             "type" : "number"
           },
-          "bal60" : {
-            "type" : "number"
+          "maturityDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "bal90" : {
-            "type" : "number"
-          },
-          "balOver90" : {
-            "type" : "number"
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
           "bookBalance" : {
             "type" : "number"
@@ -263,16 +342,7 @@
           "interestRate" : {
             "type" : "number"
           },
-          "intRate30" : {
-            "type" : "number"
-          },
-          "intRate60" : {
-            "type" : "number"
-          },
-          "intRate90" : {
-            "type" : "number"
-          },
-          "intRateOver90" : {
+          "interestRateSusp" : {
             "type" : "number"
           },
           "limit" : {
@@ -282,10 +352,45 @@
             "type" : "integer"
           },
           "limitFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "passFlag" : {
-            "type" : "integer"
+            "type" : "string"
+          },
+          "interestAccrualInterval" : {
+            "type" : "string"
+          },
+          "lastIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "accrueInSusp" : {
+            "type" : "boolean"
+          },
+          "interestComputationMethod" : {
+            "type" : "string"
+          },
+          "interestComputationTerm" : {
+            "type" : "string"
+          },
+          "interestApplicationMethod" : {
+            "type" : "string"
+          },
+          "lastIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "intPayAccount" : {
+            "type" : "string",
+            "format" : "int64"
           },
           "customer" : {
             "$ref" : "Customer"
@@ -342,6 +447,9 @@
             "type" : "string"
           },
           "telephone" : {
+            "type" : "string"
+          },
+          "status" : {
             "type" : "string"
           },
           "organization" : {
@@ -472,7 +580,7 @@
             "type" : "string"
           },
           "statementFlag" : {
-            "type" : "string"
+            "type" : "boolean"
           },
           "userID" : {
             "type" : "string"
@@ -590,7 +698,7 @@
             "type" : "string"
           },
           "statFlag" : {
-            "type" : "string"
+            "type" : "boolean"
           },
           "suspenseCrAccount" : {
             "type" : "string",
@@ -614,23 +722,38 @@
             "type" : "integer"
           }
         }
+      },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.TransactionEndpoint.GetTransactionsBeforeDate" : {
+      "com.sp.fanikiwa.api.TransactionEndpoint.SelectByAccountDateRange" : {
         "request" : {
           "$ref" : "Account"
         },
         "response" : {
           "$ref" : "CollectionResponse_Transaction"
-        }
-      },
-      "com.sp.fanikiwa.api.TransactionEndpoint.insertTransaction" : {
-        "request" : {
-          "$ref" : "Transaction"
-        },
-        "response" : {
-          "$ref" : "Transaction"
         }
       },
       "com.sp.fanikiwa.api.TransactionEndpoint.updateTransaction" : {
@@ -643,10 +766,15 @@
       },
       "com.sp.fanikiwa.api.TransactionEndpoint.removeTransaction" : {
       },
-      "com.sp.fanikiwa.api.TransactionEndpoint.GetMiniStatement" : {
+      "com.sp.fanikiwa.api.TransactionEndpoint.GetAccountTransactions" : {
         "request" : {
           "$ref" : "Account"
         },
+        "response" : {
+          "$ref" : "CollectionResponse_Transaction"
+        }
+      },
+      "com.sp.fanikiwa.api.TransactionEndpoint.GetMiniStatement" : {
         "response" : {
           "$ref" : "CollectionResponse_Transaction"
         }
@@ -667,6 +795,27 @@
       "com.sp.fanikiwa.api.TransactionEndpoint.getTransaction" : {
         "response" : {
           "$ref" : "Transaction"
+        }
+      },
+      "com.sp.fanikiwa.api.TransactionEndpoint.deleteAccountTransactions" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.TransactionEndpoint.insertTransaction" : {
+        "request" : {
+          "$ref" : "Transaction"
+        },
+        "response" : {
+          "$ref" : "Transaction"
+        }
+      },
+      "com.sp.fanikiwa.api.TransactionEndpoint.GetTransactionsBeforeDate" : {
+        "request" : {
+          "$ref" : "Account"
+        },
+        "response" : {
+          "$ref" : "CollectionResponse_Transaction"
         }
       }
     }

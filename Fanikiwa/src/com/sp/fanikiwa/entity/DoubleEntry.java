@@ -1,6 +1,7 @@
 package com.sp.fanikiwa.entity;
 
 public class DoubleEntry {
+
 	private Transaction dr;
 	private Transaction cr;
 

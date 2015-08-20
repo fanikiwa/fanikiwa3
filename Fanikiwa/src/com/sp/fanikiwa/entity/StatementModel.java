@@ -1,4 +1,4 @@
- package com.sp.fanikiwa.entity;
+package com.sp.fanikiwa.entity;
 
 import java.util.Date;
 
@@ -10,19 +10,19 @@ import com.googlecode.objectify.annotation.Index;
 public class StatementModel {
 	@Id
 	Long TransactionID;
- 
+
 	private Date PostDate;
- 
+
 	private String Narrative;
- 
+
 	private double Debit;
- 
+
 	private double Credit;
- 
+
 	private double Balance;
- 
+
 	private double Amount;
- 
+
 	private String ContraReference;
 
 	public StatementModel() {

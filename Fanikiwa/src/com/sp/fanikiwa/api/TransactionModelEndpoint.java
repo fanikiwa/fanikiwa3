@@ -11,10 +11,10 @@ import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
-import com.googlecode.objectify.cmd.Query; 
-import com.sp.fanikiwa.entity.StatementModel; 
+import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.entity.StatementModel;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -22,18 +22,16 @@ import javax.inject.Named;
 @Api(name = "transactionmodelendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class TransactionModelEndpoint {
 
-
 	public TransactionModelEndpoint() {
 
 	}
-	
-	
+
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listTransactionModel")
@@ -41,40 +39,42 @@ public class TransactionModelEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-			Query<StatementModel> query = ofy().load().type(StatementModel.class);
-			if (count != null)
-				query.limit(count);
-			if (cursorString != null && cursorString != "") {
-				query = query.startAt(Cursor.fromWebSafeString(cursorString));
-			}
-
-			List<StatementModel> records = new ArrayList<StatementModel>();
-			QueryResultIterator<StatementModel> iterator = query.iterator();
-			int num = 0;
-			while (iterator.hasNext()) {
-				records.add(iterator.next());
-				if (count != null) {
-					num++;
-					if (num == count)
-						break;
-				}
-			}
-
-			// Find the next cursor
-			if (cursorString != null && cursorString != "") {
-				Cursor cursor = iterator.getCursor();
-				if (cursor != null) {
-					cursorString = cursor.toWebSafeString();
-				}
-			}
-			return CollectionResponse.<StatementModel> builder().setItems(records)
-					.setNextPageToken(cursorString).build();
+		Query<StatementModel> query = ofy().load().type(StatementModel.class);
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
 		}
 
+		List<StatementModel> records = new ArrayList<StatementModel>();
+		QueryResultIterator<StatementModel> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			records.add(iterator.next());
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<StatementModel> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
+	}
+
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getTransactionModel")
@@ -83,20 +83,21 @@ public class TransactionModelEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param StatementModel the entity to be inserted.
+	 * @param StatementModel
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertTransactionModel")
-	public StatementModel insertTransactionModel(
-			StatementModel transactionModel) throws ConflictException {
+	public StatementModel insertTransactionModel(StatementModel transactionModel)
+			throws ConflictException {
 		if (transactionModel.getTransactionID() != null) {
 			if (findRecord(transactionModel.getTransactionID()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Transaction Model already exists");
 			}
 		}
 		ofy().save().entities(transactionModel).now();
@@ -104,41 +105,43 @@ public class TransactionModelEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param StatementModel the entity to be updated.
+	 * @param StatementModel
+	 *            the entity to be updated.
 	 * @return The updated entity.
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateTransactionModel")
-	public StatementModel updateTransactionModel(
-			StatementModel transactionModel) throws NotFoundException {
+	public StatementModel updateTransactionModel(StatementModel transactionModel)
+			throws NotFoundException {
 		StatementModel record = findRecord(transactionModel.getTransactionID());
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction Model does not exist");
 		}
 		ofy().save().entities(transactionModel).now();
 		return transactionModel;
 	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
-	 * @throws NotFoundException 
+	 * @param id
+	 *            the primary key of the entity to be deleted.
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeTransactionModel")
-	public void removeTransactionModel(@Named("id") Long id) throws NotFoundException {
+	public void removeTransactionModel(@Named("id") Long id)
+			throws NotFoundException {
 		StatementModel record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Record does not exist");
+			throw new NotFoundException("Transaction Model does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
-	
 
 	private StatementModel findRecord(Long id) {
 		return ofy().load().type(StatementModel.class).id(id).now();

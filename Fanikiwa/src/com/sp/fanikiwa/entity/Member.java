@@ -13,52 +13,53 @@ public class Member {
 
 	@Id
 	Long memberId;
- 
+
 	private Date dateActivated;
- 
+
 	private Date dateJoined;
- 
+
 	private Date dateOfBirth;
 	@Index
 	private String email;
- 
+
 	private String gender;
- 
+
 	private String informBy;
 
 	private int maxRecordsToDisplay;
 	@Index
 	private String nationalID;
- 
+
 	private String otherNames;
 
 	private String photo;
 	@Index
 	private String pwd;
- 
+
 	private int refferedBy;
 	@Index
 	private String status;
- 
+
 	private String surname;
 	@Index
 	private String telephone;
 
-	// FK 
+	// FK
 	@Load
 	Ref<Account> investmentAccount;
- 
+
 	@Load
 	Ref<Account> loanAccount;
- 
+
 	@Load
 	Ref<Account> currentAccount;
- 
-	@Load
-	Ref<Account> interestIncAccount;
- 
-	@Load
-	Ref<Account> interestExpAccount;
+	//
+	// @Load
+	// Ref<Account> interestIncAccount;
+	//
+	// @Load
+	// Ref<Account> interestExpAccount;
+
 	@Load
 	Ref<Customer> customer;
 
@@ -66,7 +67,7 @@ public class Member {
 	}
 
 	public Long getMemberId() {
-		return this.memberId;
+		return memberId;
 	}
 
 	public void setMemberId(Long memberId) {
@@ -74,7 +75,7 @@ public class Member {
 	}
 
 	public Date getDateActivated() {
-		return this.dateActivated;
+		return dateActivated;
 	}
 
 	public void setDateActivated(Date dateActivated) {
@@ -82,7 +83,7 @@ public class Member {
 	}
 
 	public Date getDateJoined() {
-		return this.dateJoined;
+		return dateJoined;
 	}
 
 	public void setDateJoined(Date dateJoined) {
@@ -90,7 +91,7 @@ public class Member {
 	}
 
 	public Date getDateOfBirth() {
-		return this.dateOfBirth;
+		return dateOfBirth;
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
@@ -98,7 +99,7 @@ public class Member {
 	}
 
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
 	public void setEmail(String email) {
@@ -106,7 +107,7 @@ public class Member {
 	}
 
 	public String getGender() {
-		return this.gender;
+		return gender;
 	}
 
 	public void setGender(String gender) {
@@ -114,7 +115,7 @@ public class Member {
 	}
 
 	public String getInformBy() {
-		return this.informBy;
+		return informBy;
 	}
 
 	public void setInformBy(String informBy) {
@@ -122,7 +123,7 @@ public class Member {
 	}
 
 	public int getMaxRecordsToDisplay() {
-		return this.maxRecordsToDisplay;
+		return maxRecordsToDisplay;
 	}
 
 	public void setMaxRecordsToDisplay(int maxRecordsToDisplay) {
@@ -130,7 +131,7 @@ public class Member {
 	}
 
 	public String getNationalID() {
-		return this.nationalID;
+		return nationalID;
 	}
 
 	public void setNationalID(String nationalID) {
@@ -138,7 +139,7 @@ public class Member {
 	}
 
 	public String getOtherNames() {
-		return this.otherNames;
+		return otherNames;
 	}
 
 	public void setOtherNames(String otherNames) {
@@ -146,7 +147,7 @@ public class Member {
 	}
 
 	public String getPhoto() {
-		return this.photo;
+		return photo;
 	}
 
 	public void setPhoto(String photo) {
@@ -154,7 +155,7 @@ public class Member {
 	}
 
 	public String getPwd() {
-		return this.pwd;
+		return pwd;
 	}
 
 	public void setPwd(String pwd) {
@@ -162,7 +163,7 @@ public class Member {
 	}
 
 	public int getRefferedBy() {
-		return this.refferedBy;
+		return refferedBy;
 	}
 
 	public void setRefferedBy(int refferedBy) {
@@ -170,7 +171,7 @@ public class Member {
 	}
 
 	public String getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(String status) {
@@ -178,7 +179,7 @@ public class Member {
 	}
 
 	public String getSurname() {
-		return this.surname;
+		return surname;
 	}
 
 	public void setSurname(String surname) {
@@ -186,14 +187,13 @@ public class Member {
 	}
 
 	public String getTelephone() {
-		return this.telephone;
+		return telephone;
 	}
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
-	// FK
 	public Account getInvestmentAccount() {
 		return this.investmentAccount.get();
 	}
@@ -217,22 +217,22 @@ public class Member {
 	public void setCurrentAccount(Account currentAccount) {
 		this.currentAccount = Ref.create(currentAccount);
 	}
-	
-	public Account getinterestExpAccount() {
-		return this.interestExpAccount.get();
-	}
 
-	public void setinterestExpAccount(Account interestExpAccount) {
-		this.interestExpAccount = Ref.create(interestExpAccount);
-	}
-	
-	public Account getinterestIncAccount() {
-		return this.interestIncAccount.get();
-	}
-
-	public void setinterestIncAccount(Account interestIncAccount) {
-		this.interestIncAccount = Ref.create(interestIncAccount);
-	}
+	// public Account getInterestExpAccount() {
+	// return this.interestExpAccount.get();
+	// }
+	//
+	// public void setInterestExpAccount(Account interestExpAccount) {
+	// this.interestExpAccount = Ref.create(interestExpAccount);
+	// }
+	//
+	// public Account getInterestIncAccount() {
+	// return this.interestIncAccount.get();
+	// }
+	//
+	// public void setInterestIncAccount(Account interestIncAccount) {
+	// this.interestIncAccount = Ref.create(interestIncAccount);
+	// }
 
 	public Customer getCustomer() {
 		return this.customer.get();

@@ -17,63 +17,63 @@ public class Fanikiwamessage {
 
 	@Id
 	Long id;
- 
+
 	private String accountId;
- 
+
 	private double amount;
- 
+
 	private String BE_AccLabel;
- 
+
 	private String body;
- 
+
 	private String command;
- 
+
 	private String CP_ConfirmPassword;
- 
+
 	private String CP_NewPassword;
- 
+
 	private String customerTelno;
- 
+
 	private String email;
- 
+
 	private Date endDate;
- 
+
 	private String exception;
- 
+
 	private String HM_Param;
- 
+
 	private int memberId;
- 
+
 	private Date messageDate;
- 
+
 	private int messageType;
- 
+
 	private double MO_Interest;
- 
+
 	private int MO_Term;
- 
+
 	private double mpesaBal;
- 
+
 	private String mpesaRef;
- 
+
 	private Date mpesaSentDate;
- 
+
 	private String nationalID;
- 
+
 	private String notificationMethod;
- 
+
 	private int offerId;
- 
+
 	private String pwd;
- 
+
 	private String senderTelno;
- 
+
 	private Date ST_EndDate;
- 
+
 	private Date ST_StartDate;
- 
+
 	private Date startDate;
- 
+
 	private String status;
 
 	public Fanikiwamessage() {

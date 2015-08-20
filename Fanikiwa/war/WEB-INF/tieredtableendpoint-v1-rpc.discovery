@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/uLjMgKe5zX__aJaD22Fo34kfjBI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/r3r4txXzSvc_EtdX0oKNX6MNBEE\"",
  "discoveryVersion": "v1",
  "id": "tieredtableendpoint:v1",
  "name": "tieredtableendpoint",
@@ -87,6 +87,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
   "Tieredtable": {
    "id": "Tieredtable",
    "type": "object",
@@ -111,9 +130,33 @@
      }
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "tieredtableendpoint.getTieredtableById": {
+   "id": "tieredtableendpoint.getTieredtableById",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "Tieredtable"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "tieredtableendpoint.insertTieredtable": {
    "id": "tieredtableendpoint.insertTieredtable",
    "parameters": {
@@ -125,7 +168,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Tieredtable"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -162,6 +205,28 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "tieredtableendpoint.retrieveTieredtable": {
+   "id": "tieredtableendpoint.retrieveTieredtable",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -197,7 +262,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "Tieredtable"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

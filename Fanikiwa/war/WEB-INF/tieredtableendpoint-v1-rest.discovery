@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/uLjMgKe5zX__aJaD22Fo34kfjBI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/r3r4txXzSvc_EtdX0oKNX6MNBEE\"",
  "discoveryVersion": "v1",
  "id": "tieredtableendpoint:v1",
  "name": "tieredtableendpoint",
@@ -89,6 +89,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
   "Tieredtable": {
    "id": "Tieredtable",
    "type": "object",
@@ -113,19 +132,45 @@
      }
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "getTieredtableById": {
+   "id": "tieredtableendpoint.getTieredtableById",
+   "path": "tieredtable/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "Tieredtable"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "insertTieredtable": {
    "id": "tieredtableendpoint.insertTieredtable",
-   "path": "tieredtable",
+   "path": "requestresult",
    "httpMethod": "POST",
    "request": {
     "$ref": "Tieredtable",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Tieredtable"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -168,20 +213,45 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveTieredtable": {
+   "id": "tieredtableendpoint.retrieveTieredtable",
+   "path": "retrieveTieredtable/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateTieredtable": {
    "id": "tieredtableendpoint.updateTieredtable",
-   "path": "tieredtable",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Tieredtable",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Tieredtable"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

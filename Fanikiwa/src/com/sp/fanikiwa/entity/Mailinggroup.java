@@ -17,15 +17,15 @@ public class Mailinggroup {
 
 	@Id
 	Long groupId;
- 
+
 	private Date createdOn;
- 
+
 	private int creator;
- 
+
 	private Date lastModified;
- 
+
 	private int parentGroupId;
- 
+
 	private String shortCode;
 
 	public Mailinggroup() {

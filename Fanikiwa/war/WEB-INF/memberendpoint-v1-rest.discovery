@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5VqYGZxN4i2yWkf-cXZATaYhzgE\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/LoRXCCX5C115Ns_IIApEIp4HWCE\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",
@@ -91,23 +91,14 @@
     "accounttype": {
      "$ref": "AccountType"
     },
+    "accrueInSusp": {
+     "type": "boolean"
+    },
     "accruedInt": {
      "type": "number",
      "format": "double"
     },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
+    "accruedIntInSusp": {
      "type": "number",
      "format": "double"
     },
@@ -128,28 +119,44 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
     },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
+    "interestAccrualInterval": {
+     "type": "string"
     },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
+    "interestApplicationMethod": {
+     "type": "string"
     },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
     },
     "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "limit": {
      "type": "number",
@@ -160,12 +167,22 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -225,6 +242,21 @@
     }
    }
   },
+  "CollectionResponse_Account": {
+   "id": "CollectionResponse_Account",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Account"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "CollectionResponse_Member": {
    "id": "CollectionResponse_Member",
    "type": "object",
@@ -233,6 +265,21 @@
      "type": "array",
      "items": {
       "$ref": "Member"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "CollectionResponse_MemberDTO": {
+   "id": "CollectionResponse_MemberDTO",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "MemberDTO"
      }
     },
     "nextPageToken": {
@@ -351,9 +398,6 @@
     "photo": {
      "type": "string"
     },
-    "pwd": {
-     "type": "string"
-    },
     "refferedBy": {
      "type": "integer",
      "format": "int32"
@@ -373,6 +417,14 @@
    "id": "MemberDTO",
    "type": "object",
    "properties": {
+    "currentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "customer": {
+     "type": "string",
+     "format": "int64"
+    },
     "dateActivated": {
      "type": "string",
      "format": "date-time"
@@ -381,17 +433,55 @@
      "type": "string",
      "format": "date-time"
     },
+    "dateOfBirth": {
+     "type": "string",
+     "format": "date-time"
+    },
     "email": {
+     "type": "string"
+    },
+    "gender": {
      "type": "string"
     },
     "informBy": {
      "type": "string"
     },
+    "interestExpAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "interestIncAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "investmentAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "loanAccount": {
+     "type": "string",
+     "format": "int64"
+    },
+    "maxRecordsToDisplay": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "memberId": {
+     "type": "string",
+     "format": "int64"
+    },
     "nationalID": {
      "type": "string"
     },
-    "pwd": {
+    "otherNames": {
      "type": "string"
+    },
+    "photo": {
+     "type": "string"
+    },
+    "refferedBy": {
+     "type": "integer",
+     "format": "int32"
     },
     "status": {
      "type": "string"
@@ -422,16 +512,86 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "UserDTO": {
+   "id": "UserDTO",
+   "type": "object",
+   "properties": {
+    "dateActivated": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateJoined": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "email": {
+     "type": "string"
+    },
+    "informBy": {
+     "type": "string"
+    },
+    "nationalID": {
+     "type": "string"
+    },
+    "pwd": {
+     "type": "string"
+    },
+    "status": {
+     "type": "string"
+    },
+    "surname": {
+     "type": "string"
+    },
+    "telephone": {
+     "type": "string"
+    },
+    "userType": {
+     "type": "string"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
   "deRegister": {
    "id": "memberendpoint.deRegister",
-   "path": "DeRegister",
+   "path": "deRegister/{email}",
    "httpMethod": "POST",
-   "request": {
-    "$ref": "Member",
-    "parameterName": "resource"
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -453,6 +613,27 @@
    ],
    "response": {
     "$ref": "Member"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getMemberByEmailWeb": {
+   "id": "memberendpoint.getMemberByEmailWeb",
+   "path": "GetMemberByEmailWeb/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -522,6 +703,27 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "isEmailValid": {
+   "id": "memberendpoint.isEmailValid",
+   "path": "isEmailValid/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "listMember": {
    "id": "memberendpoint.listMember",
    "path": "member",
@@ -544,16 +746,67 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "listMemberAccountWeb": {
+   "id": "memberendpoint.listMemberAccountWeb",
+   "path": "account/{email}",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "obtainMemberByEmail": {
+   "id": "memberendpoint.obtainMemberByEmail",
+   "path": "obtainMemberByEmail/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "register": {
    "id": "memberendpoint.register",
    "path": "Register",
    "httpMethod": "POST",
    "request": {
-    "$ref": "MemberDTO",
+    "$ref": "UserDTO",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Member"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -578,16 +831,138 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "retrieveMember": {
+   "id": "memberendpoint.retrieveMember",
+   "path": "retrieveMember/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectAccountsByMemberID": {
+   "id": "memberendpoint.selectAccountsByMemberID",
+   "path": "selectAccountsByMemberID/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectDtoMembers": {
+   "id": "memberendpoint.selectDtoMembers",
+   "path": "selectDtoMembers",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_MemberDTO"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectMemberAccounts": {
+   "id": "memberendpoint.selectMemberAccounts",
+   "path": "account",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "request": {
+    "$ref": "Member",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "CollectionResponse_Account"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "txnlessGetMemberByEmail": {
+   "id": "memberendpoint.txnlessGetMemberByEmail",
+   "path": "txnlessGetMemberByEmail/{email}",
+   "httpMethod": "POST",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "response": {
+    "$ref": "Member"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "updateMember": {
    "id": "memberendpoint.updateMember",
-   "path": "member",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Member",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Member"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Y7R8rk24WOMGSuEw-B8rbKh1pLg\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/HhjSblH0aKn2_vTpQmwpC6tpLMY\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -89,23 +89,14 @@
     "accounttype": {
      "$ref": "AccountType"
     },
+    "accrueInSusp": {
+     "type": "boolean"
+    },
     "accruedInt": {
      "type": "number",
      "format": "double"
     },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
+    "accruedIntInSusp": {
      "type": "number",
      "format": "double"
     },
@@ -126,28 +117,44 @@
     "coadet": {
      "$ref": "Coadet"
     },
+    "createDate": {
+     "type": "string",
+     "format": "date-time"
+    },
     "customer": {
      "$ref": "Customer"
     },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
+    "intPayAccount": {
+     "type": "string",
+     "format": "int64"
     },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
+    "interestAccrualInterval": {
+     "type": "string"
     },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
+    "interestApplicationMethod": {
+     "type": "string"
     },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
+    "interestComputationMethod": {
+     "type": "string"
+    },
+    "interestComputationTerm": {
+     "type": "string"
     },
     "interestRate": {
      "type": "number",
      "format": "double"
+    },
+    "interestRateSusp": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "lastIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "limit": {
      "type": "number",
@@ -158,12 +165,22 @@
      "format": "int32"
     },
     "limitFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
+    },
+    "maturityDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAccrualDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextIntAppDate": {
+     "type": "string",
+     "format": "date-time"
     },
     "passFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     }
    }
   },
@@ -349,9 +366,6 @@
     "photo": {
      "type": "string"
     },
-    "pwd": {
-     "type": "string"
-    },
     "refferedBy": {
      "type": "integer",
      "format": "int32"
@@ -403,7 +417,7 @@
     "partialPay": {
      "type": "boolean"
     },
-    "publicOffer": {
+    "privateOffer": {
      "type": "boolean"
     },
     "status": {
@@ -415,22 +429,50 @@
     }
    }
   },
-  "OfferModel": {
-   "id": "OfferModel",
+  "OfferDTO": {
+   "id": "OfferDTO",
    "type": "object",
    "properties": {
-    "id": {
-     "type": "string",
-     "format": "int64"
+    "amount": {
+     "type": "number",
+     "format": "double"
     },
-    "offer": {
-     "$ref": "Offer"
+    "createdDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "description": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "expiryDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "interest": {
+     "type": "number",
+     "format": "double"
+    },
+    "offerType": {
+     "type": "string"
     },
     "offerees": {
-     "type": "array",
-     "items": {
-      "$ref": "Member"
-     }
+     "type": "string"
+    },
+    "partialPay": {
+     "type": "boolean"
+    },
+    "privateOffer": {
+     "type": "boolean"
+    },
+    "status": {
+     "type": "string"
+    },
+    "term": {
+     "type": "integer",
+     "format": "int32"
     }
    }
   },
@@ -452,9 +494,80 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "offerendpoint.acceptOffer": {
+   "id": "offerendpoint.acceptOffer",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true
+    },
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id",
+    "email"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.acceptPartialBorrowOffer": {
+   "id": "offerendpoint.acceptPartialBorrowOffer",
+   "parameters": {
+    "email": {
+     "type": "string",
+     "required": true
+    },
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id",
+    "email"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "offerendpoint.getOfferByID": {
    "id": "offerendpoint.getOfferByID",
    "allowGet": true,
@@ -467,6 +580,23 @@
    },
    "parameterOrder": [
     "id"
+   ],
+   "returns": {
+    "$ref": "Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.insertOffer": {
+   "id": "offerendpoint.insertOffer",
+   "parameters": {
+    "resource": {
+     "$ref": "Offer"
+    }
+   },
+   "parameterOrder": [
+    "resource"
    ],
    "returns": {
     "$ref": "Offer"
@@ -501,8 +631,8 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "offerendpoint.listMyLendOffers": {
-   "id": "offerendpoint.listMyLendOffers",
+  "offerendpoint.listLendOffers": {
+   "id": "offerendpoint.listLendOffers",
    "parameters": {
     "count": {
      "type": "integer",
@@ -546,23 +676,6 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "offerendpoint.offerEndpoint.insertOffer": {
-   "id": "offerendpoint.offerEndpoint.insertOffer",
-   "parameters": {
-    "resource": {
-     "$ref": "Offer"
-    }
-   },
-   "parameterOrder": [
-    "resource"
-   ],
-   "returns": {
-    "$ref": "Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "offerendpoint.removeOffer": {
    "id": "offerendpoint.removeOffer",
    "parameters": {
@@ -575,6 +688,84 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.retrieveBorrowOffers": {
+   "id": "offerendpoint.retrieveBorrowOffers",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.retrieveLendOffers": {
+   "id": "offerendpoint.retrieveLendOffers",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.retrieveMyOffers": {
+   "id": "offerendpoint.retrieveMyOffers",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "email"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -588,8 +779,20 @@
     },
     "cursor": {
      "type": "string"
+    },
+    "email": {
+     "type": "string",
+     "required": true
+    },
+    "offerType": {
+     "type": "string",
+     "required": true
     }
    },
+   "parameterOrder": [
+    "email",
+    "offerType"
+   ],
    "returns": {
     "$ref": "CollectionResponse_Offer"
    },
@@ -601,21 +804,21 @@
    "id": "offerendpoint.saveOffer",
    "parameters": {
     "resource": {
-     "$ref": "OfferModel"
+     "$ref": "OfferDTO"
     }
    },
    "parameterOrder": [
     "resource"
    ],
    "returns": {
-    "$ref": "Offer"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "offerendpoint.selectOffersByMember": {
-   "id": "offerendpoint.selectOffersByMember",
+  "offerendpoint.selectMyOffers": {
+   "id": "offerendpoint.selectMyOffers",
    "parameters": {
     "count": {
      "type": "integer",
@@ -635,6 +838,25 @@
    ],
    "returns": {
     "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.selectOffer": {
+   "id": "offerendpoint.selectOffer",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

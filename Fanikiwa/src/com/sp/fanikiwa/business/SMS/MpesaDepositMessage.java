@@ -3,7 +3,7 @@ package com.sp.fanikiwa.business.SMS;
 import java.util.Date;
 
 public class MpesaDepositMessage extends FanikiwaMessage {
-	
+
 	public String CustomerTelno;
 	public Long AccountId;
 	public double Amount;

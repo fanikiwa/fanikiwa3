@@ -6,21 +6,26 @@ import com.sp.fanikiwa.entity.Member;
 public class EmailOfferee extends Offeree {
 
 	private String Email;
+
 	public EmailOfferee(String Email) {
 		super();
-		setEmail( Email);
+		setEmail(Email);
 	}
+
 	private Member Member = null;
+
 	public Member getMember() {
 		return Member;
 	}
+
 	public String getEmail() {
 		return Email;
 	}
+
 	public void setEmail(String Email) {
 		this.Email = Email;
 		MemberEndpoint mep = new MemberEndpoint();
 		this.Member = mep.txnlessGetMemberByEmail(Email);
 	}
-	
+
 }

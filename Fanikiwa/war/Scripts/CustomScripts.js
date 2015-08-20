@@ -1,25 +1,6 @@
-﻿///reference path="_reference.js" />
-
-
-
-$(document).ajaxStart(function () {
-    $("#progress").removeClass('displaynone');
-    $("#progress").addClass('displayblock');
-    $("#progress").show();
-
-
-}).ajaxStop(function () {
-    $("#progress").removeClass('displayblock');
-    $("#progress").addClass('displaynone');
-    $("#progress").hide();
+﻿$(document).ready(function() {
+	var loggedinuser = JSON.parse(sessionStorage.getItem('loggedinuser'));
+	if (loggedinuser === null || loggedinuser === undefined) {
+		window.location.href = "/Views/Account/Login.html";
+	}
 });
- 
-
-$(document).ready(function () {
-
-      
-
-});
-
- 
-

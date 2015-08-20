@@ -1,5 +1,5 @@
 package com.sp.fanikiwa.api;
- 
+
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -17,18 +17,18 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import java.util.ArrayList;
 import java.util.List;
- 
+
 import javax.inject.Named;
 
 @Api(name = "organizationendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class OrganizationEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listOrganization")
@@ -65,10 +65,13 @@ public class OrganizationEndpoint {
 		return CollectionResponse.<Organization> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
 	}
+
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getOrganization")
@@ -77,22 +80,24 @@ public class OrganizationEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param organization the entity to be inserted.
+	 * @param organization
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
 	 */
 
 	@ApiMethod(name = "insertOrganization")
-	public Organization insertOrganization(Organization organization) throws ConflictException {
+	public Organization insertOrganization(Organization organization)
+			throws ConflictException {
 		// If if is not null, then check if it exists. If yes, throw an
 		// Exception
 		// that it is already present
 		if (organization.getOrganizationID() != null) {
 			if (findRecord(organization.getOrganizationID()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Organization already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -103,39 +108,42 @@ public class OrganizationEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param organization the entity to be updated.
+	 * @param organization
+	 *            the entity to be updated.
 	 * @return The updated entity.
 	 */
 	@ApiMethod(name = "updateOrganization")
-	public Organization updateOrganization(Organization organization) throws NotFoundException {
+	public Organization updateOrganization(Organization organization)
+			throws NotFoundException {
 		if (findRecord(organization.getOrganizationID()) == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Organization does not exist");
 		}
 		ofy().save().entity(organization).now();
 		return organization;
 	}
 
-
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
+	 * @param id
+	 *            the primary key of the entity to be deleted.
 	 */
 	@ApiMethod(name = "removeOrganization")
-	public void removeOrganization(@Named("id") Long id) throws NotFoundException {
+	public void removeOrganization(@Named("id") Long id)
+			throws NotFoundException {
 		Organization record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Organization [ " + id
+					+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
 
-	
 	// Private method to retrieve a <code>Quote</code> record
 	private Organization findRecord(Long id) {
 		return ofy().load().type(Organization.class).id(id).now();

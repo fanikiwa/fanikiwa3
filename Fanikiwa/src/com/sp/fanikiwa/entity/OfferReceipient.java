@@ -1,6 +1,5 @@
 package com.sp.fanikiwa.entity;
 
- 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -12,16 +11,19 @@ public class OfferReceipient {
 	@Id
 	Long offerReceipientId;
 
-	@Index private Ref<Member> member;
-	@Index private Ref<Offer> offer;
+	@Index
+	private Ref<Member> member;
+	@Index
+	private Ref<Offer> offer;
 
 	public OfferReceipient() {
 	}
+
 	public OfferReceipient(Member m, Offer o) {
 		setMember(m);
 		setOffer(o);
 	}
-	
+
 	public Long getOfferReceipientId() {
 		return offerReceipientId;
 	}
@@ -45,7 +47,5 @@ public class OfferReceipient {
 	public void setOffer(Offer offer) {
 		this.offer = Ref.create(offer);
 	}
-
-
 
 }

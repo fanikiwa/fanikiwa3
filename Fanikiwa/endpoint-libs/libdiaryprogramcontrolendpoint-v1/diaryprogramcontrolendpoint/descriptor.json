@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/diaryprogramcontrolendpoint/v1/20150413071627/java/1.18.0-rc/sp.com-diaryprogramcontrolendpoint-v1-20150413071627-java-1.18.0-rc-sources.jar", 
-      "path": "sp.com-diaryprogramcontrolendpoint-v1-20150413071627-java-1.18.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/diaryprogramcontrolendpoint/v1/20150704080043/java/1.18.0-rc/sp.com-diaryprogramcontrolendpoint-v1-20150704080043-java-1.18.0-rc-sources.jar", 
+      "path": "sp.com-diaryprogramcontrolendpoint-v1-20150704080043-java-1.18.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2015-04-13 07:16"
+      "timestamp": "2015-07-04 08:00"
     }, 
     {
-      "path": "sp.com-diaryprogramcontrolendpoint-v1-20150413071627-java-1.18.0-rc.jar.properties", 
+      "path": "sp.com-diaryprogramcontrolendpoint-v1-20150704080043-java-1.18.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -675,5 +675,5 @@
   "packagePath": "fanikiwa.entity", 
   "language_version": "1.18.0-rc", 
   "id": "diaryprogramcontrolendpoint:v1", 
-  "revision": 20150413071627
+  "revision": 20150704080043
 }

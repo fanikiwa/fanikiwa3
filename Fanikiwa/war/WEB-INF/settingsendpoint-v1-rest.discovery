@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/9qPvGvJkUu7eNxG4eGpdFmG4tZ0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Q6w5zfPxQsbzFxf0riLrkb7s8NY\"",
  "discoveryVersion": "v1",
  "id": "settingsendpoint:v1",
  "name": "settingsendpoint",
@@ -89,6 +89,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
   "Settings": {
    "id": "Settings",
    "type": "object",
@@ -107,6 +126,10 @@
      "type": "string"
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -133,14 +156,14 @@
   },
   "insertSettings": {
    "id": "settingsendpoint.insertSettings",
-   "path": "settings",
+   "path": "requestresult",
    "httpMethod": "POST",
    "request": {
     "$ref": "Settings",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Settings"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -182,20 +205,44 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveSettingsByKey": {
+   "id": "settingsendpoint.retrieveSettingsByKey",
+   "path": "retrieveSettingsByKey/{key}",
+   "httpMethod": "POST",
+   "parameters": {
+    "key": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "key"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateSettings": {
    "id": "settingsendpoint.updateSettings",
-   "path": "settings",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Settings",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Settings"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

@@ -18,16 +18,17 @@ import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.MemberEndpoint;
 import com.sp.fanikiwa.api.OfferEndpoint;
 import com.sp.fanikiwa.business.AcceptOfferComponent;
-import com.sp.fanikiwa.business.MakeOfferComponent;
+
 import com.sp.fanikiwa.business.RegistrationComponent;
 import com.sp.fanikiwa.business.WithdrawalComponent;
 import com.sp.fanikiwa.business.financialtransactions.TransactionFactory;
 import com.sp.fanikiwa.business.financialtransactions.TransactionPost;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Member;
-import com.sp.fanikiwa.entity.MemberDTO;
+import com.sp.fanikiwa.entity.UserDTO;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.OfferDTO;
+import com.sp.fanikiwa.entity.RequestResult;
 import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.utils.Config;
@@ -110,6 +111,10 @@ public class SMSProcessorComponent {
 				new FCommand("Borrow Offers",
 						"Get your Borrow Offers\nSyntax = BO*Pwd\nWhere Pwd = your password"));
 		Commands.put(
+				"FA",
+				new FCommand("Fanikiwa Accounts",
+						"Get your Fanikiwa Accounts \nSyntax = FA*Pwd\nWhere Pwd = your password"));
+		Commands.put(
 				"C",
 				new FCommand(
 						"Change Password",
@@ -142,7 +147,7 @@ public class SMSProcessorComponent {
 
 		Commands.put("H", new FCommand("Help",
 				"H|Help - Help command\nUsage: H*<Command>"
-						+ "\nCommands are [" + String.join(",", cmds)
+						+ "\nCommands are [" + StringExtension.join(cmds, ",")
 						+ "]\nE.g. Send H*R for help on registration "));
 	}
 
@@ -176,6 +181,8 @@ public class SMSProcessorComponent {
 				return ProcessListLendOffersMessage((LendOffersMessage) message);
 			if (message instanceof BorrowOffersMessage)
 				return ProcessListBorrowOffersMessage((BorrowOffersMessage) message);
+			if (message instanceof FanikiwaAccountsMessage)
+				return ProcessFanikiwaAccountsMessage((FanikiwaAccountsMessage) message);
 			if (message instanceof ChangePinMessage)
 				return ProcessChangePinMessage((ChangePinMessage) message);
 			if (message instanceof WithdrawMessage)
@@ -328,6 +335,9 @@ public class SMSProcessorComponent {
 		case "BO":
 			hlp = GetHelpMessage("BO");
 			break;
+		case "FA":
+			hlp = GetHelpMessage("FA");
+			break;
 		case "C":
 		case "CP":
 			hlp = GetHelpMessage("C");
@@ -369,7 +379,7 @@ public class SMSProcessorComponent {
 		return MessageFormat
 				.format("Balance for [{0}]: {1}\nBook balance = {2}\nAvailable balance = {3}",
 
-				account.getAccountID(), account.getAccountName(),
+				account.getAccountID().toString(), account.getAccountName(),
 						account.getBookBalance(), account.getClearedBalance()
 								- account.getLimit());
 	}
@@ -403,8 +413,8 @@ public class SMSProcessorComponent {
 	private String GetMiniStatement(Long AccId, int count) // for statement
 	{
 		AccountEndpoint aep = new AccountEndpoint();
-		Collection<StatementModel> txns = aep.GetMiniStatement(
-				aep.getAccount(AccId), null, count).getItems();
+		Collection<StatementModel> txns = aep.GetMiniStatement(AccId, null,
+				count).getItems();
 		return ConvertStatementToString(txns);
 	}
 
@@ -412,8 +422,8 @@ public class SMSProcessorComponent {
 																		// statement
 	{
 		AccountEndpoint aep = new AccountEndpoint();
-		Collection<StatementModel> txns = aep.GetStatement(sdate, enddate,
-				aep.getAccount(AccId), null, null).getItems();
+		Collection<StatementModel> txns = aep.GetStatement(AccId, sdate,
+				enddate, null, null).getItems();
 		return ConvertStatementToString(txns);
 	}
 
@@ -454,24 +464,27 @@ public class SMSProcessorComponent {
 		return MessageFormat.format("Your {0} balance is {1}", Accdes, bal);
 	}
 
-	private MemberDTO SMSToMember(RegisterMessage message) {
-		MemberDTO member = new MemberDTO();
-		member.setEmail(message.Email.toLowerCase());
-		member.setPwd(message.Pwd);
-		member.setNationalID(message.NationalID);
-		member.setStatus("A");
-		member.setDateActivated(new Date());
-		member.setDateJoined(new Date());
-		member.setInformBy("SMS");
-		member.setTelephone(message.SenderTelno);
-		member.setPwd(message.Pwd);
+	private UserDTO SMSToMember(RegisterMessage message) {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setEmail(message.Email.toLowerCase());
+		userDTO.setPwd(message.Pwd);
+		userDTO.setNationalID(message.NationalID);
+		userDTO.setStatus("New");// A - Active; NA- Not Active
+		userDTO.setDateActivated(new Date());
+		userDTO.setDateJoined(new Date());
+		userDTO.setInformBy("SMS");
+		userDTO.setTelephone(message.SenderTelno);
+		userDTO.setPwd(message.Pwd);
+		userDTO.setUserType("Member");
+		userDTO.setRegistrationMethod("SMS");
+
 		// member.DateOfBirth = DateTime.MinValue;
 
 		String delimiters = "\\@"; // | delimeted
-		String[] emailParams = member.getEmail().split(delimiters);
+		String[] emailParams = userDTO.getEmail().split(delimiters);
 		String surname = emailParams[0];
-		member.setSurname(surname);
-		return member;
+		userDTO.setSurname(surname);
+		return userDTO;
 	}
 
 	private String ProcessRegisterMessage(RegisterMessage message)
@@ -520,20 +533,13 @@ public class SMSProcessorComponent {
 				&& !rc.IsPhoneRegistered(message.SenderTelno)
 				&& !rc.IsNationalIDRegistered(message.NationalID)) {
 
-			Member regmember = rc.Register(SMSToMember(message));
-			if (regmember != null) {
-				return MessageFormat
-						.format("Successfully Registered. Details\nMember Id {0}, Current Account Id {1}, Loan Account Id {2}, Investment Account Id {3}",
-								regmember.getMemberId().toString(), regmember
-										.getCurrentAccount().getAccountID()
-										.toString(), regmember.getLoanAccount()
-										.getAccountID().toString(), regmember
-										.getInvestmentAccount().getAccountID()
-										.toString());
+			RequestResult re = rc.Register(SMSToMember(message));
+			if (re.isSuccess() != false) {
+				return re.getResultMessage();
 			} else
 				return "Member registration was not successful";
 		} else {
-			return "Member is already registered";
+			return "Member is already registered. Telno|Email|NationalID already registered";
 		}
 	}
 
@@ -574,7 +580,7 @@ public class SMSProcessorComponent {
 
 		OfferDTO offer = new OfferDTO();
 		offer.setAmount(message.Amount);
-		offer.setPublicOffer(true);
+		offer.setPrivateOffer(false);
 		offer.setTerm(message.Term);
 		offer.setInterest(message.InterestRate);
 		offer.setOfferType("L");
@@ -585,8 +591,8 @@ public class SMSProcessorComponent {
 				Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
 
 		try {
-			MakeOfferComponent mo = new MakeOfferComponent();
-			mo.MakeOffer(offer);
+			OfferEndpoint mo = new OfferEndpoint();
+			mo.saveOffer(offer);
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -610,7 +616,7 @@ public class SMSProcessorComponent {
 
 		OfferDTO offer = new OfferDTO();
 		offer.setAmount(message.Amount);
-		offer.setPublicOffer(true);
+		offer.setPrivateOffer(false);
 		offer.setTerm(message.Term);
 		offer.setInterest(message.InterestRate);
 		offer.setOfferType("B");
@@ -621,8 +627,9 @@ public class SMSProcessorComponent {
 				Config.GetInt("OFFEREXPIRYTIMESPANINMONTHS")));
 
 		try {
-			MakeOfferComponent mo = new MakeOfferComponent();
-			mo.MakeOffer(offer);
+			OfferEndpoint mo = new OfferEndpoint();
+			mo.saveOffer(offer);
+			;
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -704,7 +711,7 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 
-		Collection<Offer> offers = oep.ListMyLendOffers(member.getMemberId(),
+		Collection<Offer> offers = oep.ListLendOffers(member.getMemberId(),
 				null, 5).getItems();
 
 		if (offers.size() > 0) {
@@ -749,6 +756,38 @@ public class SMSProcessorComponent {
 
 	}
 
+	private String ProcessFanikiwaAccountsMessage(
+			FanikiwaAccountsMessage message) {
+		if (!this.AuthenticateAndAuthorize(message.SenderTelno, message.Pwd))
+			return "Not authenticated";
+
+		RegistrationComponent rc = new RegistrationComponent();
+		MemberEndpoint mep = new MemberEndpoint();
+
+		Member member = rc.SelectMemberByPhone(message.SenderTelno);
+		if (member == null) {
+			throw new NullPointerException(MessageFormat.format(
+					"Sender Telno [{0}] is not registered. ",
+					message.SenderTelno));
+		}
+
+		Collection<Account> accounts = mep.listMemberAccountMobile(member,
+				null, 5).getItems();
+
+		if (accounts.size() > 0) {
+			String msg = "";
+			for (Account c : accounts) {
+				msg += c.getAccountName() + " Id="
+						+ c.getAccountID().toString() + " BookBalance="
+						+ c.getBookBalance() + " ClearedBalance="
+						+ c.getClearedBalance() + " Limit=" + c.getLimit();
+			}
+			return msg;
+		} else
+			return "No Accounts found";
+
+	}
+
 	private String ProcessChangePinMessage(ChangePinMessage message) {
 		if (!this.AuthenticateAndAuthorize(message.SenderTelno,
 				message.OldPassword))
@@ -790,8 +829,11 @@ public class SMSProcessorComponent {
 					message.SenderTelno));
 		}
 		try {
-			WithdrawalComponent wc = new WithdrawalComponent();
-			msg = wc.MemberWithdraw(member, message.Amount);
+			/*
+			 * 1. convert WithdrawMessage to WithdrawalMessage 2. save
+			 * WithdrawalMessage 3. get the saved message and pass it to
+			 * WithdrawalComponent.Withdraw
+			 */
 
 		} catch (Exception we) {
 			msg = we.getMessage();

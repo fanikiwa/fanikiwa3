@@ -10,10 +10,8 @@ public class Settingsgroup {
 	@Id
 	Long id;
 
- 
 	private String groupName;
 
- 
 	private int parent;
 
 	public Settingsgroup() {

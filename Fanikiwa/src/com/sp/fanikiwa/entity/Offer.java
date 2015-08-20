@@ -20,23 +20,28 @@ public class Offer {
 	private String description;
 
 	private double amount;
- 
+
 	private int term;
- 
+
 	private double interest;
- 
-	private boolean publicOffer;
- 
+
+	@Index
+	private boolean privateOffer;
+
 	private Date createdDate;
- 
+
+	@Index
 	private Date expiryDate;
- 
+
+	@Index
 	private String offerType;
- 
+
 	private boolean partialPay;
- 
+
+	@Index
 	private String status;
- 
+
+	@Index
 	@Load
 	Ref<Member> member;
 
@@ -115,12 +120,12 @@ public class Offer {
 		this.partialPay = partialPay;
 	}
 
-	public boolean getPublicOffer() {
-		return this.publicOffer;
+	public boolean getPrivateOffer() {
+		return this.privateOffer;
 	}
 
-	public void setPublicOffer(boolean publicOffer) {
-		this.publicOffer = publicOffer;
+	public void setPrivateOffer(boolean publicOffer) {
+		this.privateOffer = publicOffer;
 	}
 
 	public String getStatus() {

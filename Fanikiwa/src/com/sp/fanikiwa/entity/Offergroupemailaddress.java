@@ -15,9 +15,9 @@ public class Offergroupemailaddress {
 
 	@Id
 	Long id;
- 
+
 	private String emailAddress;
- 
+
 	private int mailingGroupId;
 
 	public Offergroupemailaddress() {

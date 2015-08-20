@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Fqfgww78lfC1i11QmSbMJ4Obb24\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/BfttHuXpFQ9J0HIPamx-7z-IU-M\"",
  "discoveryVersion": "v1",
  "id": "lendinggroupmemberendpoint:v1",
  "name": "lendinggroupmemberendpoint",
@@ -72,157 +72,6 @@
   }
  },
  "schemas": {
-  "Account": {
-   "id": "Account",
-   "type": "object",
-   "properties": {
-    "accountID": {
-     "type": "string",
-     "format": "int64"
-    },
-    "accountName": {
-     "type": "string"
-    },
-    "accountNo": {
-     "type": "string"
-    },
-    "accounttype": {
-     "$ref": "AccountType"
-    },
-    "accruedInt": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal30": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal60": {
-     "type": "number",
-     "format": "double"
-    },
-    "bal90": {
-     "type": "number",
-     "format": "double"
-    },
-    "balOver90": {
-     "type": "number",
-     "format": "double"
-    },
-    "bookBalance": {
-     "type": "number",
-     "format": "double"
-    },
-    "branch": {
-     "type": "string"
-    },
-    "clearedBalance": {
-     "type": "number",
-     "format": "double"
-    },
-    "closed": {
-     "type": "boolean"
-    },
-    "coadet": {
-     "$ref": "Coadet"
-    },
-    "customer": {
-     "$ref": "Customer"
-    },
-    "intRate30": {
-     "type": "number",
-     "format": "double"
-    },
-    "intRate60": {
-     "type": "number",
-     "format": "double"
-    },
-    "intRate90": {
-     "type": "number",
-     "format": "double"
-    },
-    "intRateOver90": {
-     "type": "number",
-     "format": "double"
-    },
-    "interestRate": {
-     "type": "number",
-     "format": "double"
-    },
-    "limit": {
-     "type": "number",
-     "format": "double"
-    },
-    "limitCheckFlag": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "limitFlag": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "passFlag": {
-     "type": "integer",
-     "format": "int32"
-    }
-   }
-  },
-  "AccountType": {
-   "id": "AccountType",
-   "type": "object",
-   "properties": {
-    "description": {
-     "type": "string"
-    },
-    "id": {
-     "type": "string",
-     "format": "int64"
-    },
-    "shortCode": {
-     "type": "string"
-    }
-   }
-  },
-  "Coa": {
-   "id": "Coa",
-   "type": "object",
-   "properties": {
-    "description": {
-     "type": "string"
-    },
-    "id": {
-     "type": "string",
-     "format": "int64"
-    }
-   }
-  },
-  "Coadet": {
-   "id": "Coadet",
-   "type": "object",
-   "properties": {
-    "coa": {
-     "$ref": "Coa"
-    },
-    "coalevel": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "description": {
-     "type": "string"
-    },
-    "id": {
-     "type": "string",
-     "format": "int64"
-    },
-    "rorder": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "shortCode": {
-     "type": "string"
-    }
-   }
-  },
   "CollectionResponse_Lendinggroupmember": {
    "id": "CollectionResponse_Lendinggroupmember",
    "type": "object",
@@ -238,90 +87,24 @@
     }
    }
   },
-  "Customer": {
-   "id": "Customer",
-   "type": "object",
-   "properties": {
-    "address": {
-     "type": "string"
-    },
-    "billToAddress": {
-     "type": "string"
-    },
-    "billToEmail": {
-     "type": "string"
-    },
-    "billToName": {
-     "type": "string"
-    },
-    "billToTelephone": {
-     "type": "string"
-    },
-    "branch": {
-     "type": "string"
-    },
-    "createdDate": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "customerId": {
-     "type": "string",
-     "format": "int64"
-    },
-    "customerNo": {
-     "type": "string"
-    },
-    "email": {
-     "type": "string"
-    },
-    "memberId": {
-     "type": "string",
-     "format": "int64"
-    },
-    "name": {
-     "type": "string"
-    },
-    "organization": {
-     "$ref": "Organization"
-    },
-    "telephone": {
-     "type": "string"
-    }
-   }
-  },
-  "Lendinggroup": {
-   "id": "Lendinggroup",
-   "type": "object",
-   "properties": {
-    "createdOn": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "creator": {
-     "$ref": "Member"
-    },
-    "groupName": {
-     "type": "string"
-    },
-    "lastModified": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "parentGroup": {
-     "$ref": "Lendinggroup"
-    },
-    "parentGroupId": {
-     "$ref": "Lendinggroup"
-    }
-   }
+  "LendingGroupMemberTypes": {
+   "id": "LendingGroupMemberTypes",
+   "type": "string",
+   "enum": [
+    "EMAIL",
+    "MEMBER",
+    "TELNO"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
   },
   "Lendinggroupmember": {
    "id": "Lendinggroupmember",
    "type": "object",
    "properties": {
-    "group": {
-     "$ref": "Lendinggroup"
-    },
     "groupName": {
      "type": "string"
     },
@@ -330,107 +113,10 @@
      "format": "int64"
     },
     "idType": {
-     "type": "string"
-    },
-    "member": {
-     "$ref": "Member"
-    }
-   }
-  },
-  "Member": {
-   "id": "Member",
-   "type": "object",
-   "properties": {
-    "currentAccount": {
-     "$ref": "Account"
-    },
-    "customer": {
-     "$ref": "Customer"
-    },
-    "dateActivated": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "dateJoined": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "dateOfBirth": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "email": {
-     "type": "string"
-    },
-    "gender": {
-     "type": "string"
-    },
-    "informBy": {
-     "type": "string"
-    },
-    "interestExpAccount": {
-     "$ref": "Account"
-    },
-    "interestIncAccount": {
-     "$ref": "Account"
-    },
-    "investmentAccount": {
-     "$ref": "Account"
-    },
-    "loanAccount": {
-     "$ref": "Account"
-    },
-    "maxRecordsToDisplay": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "memberId": {
-     "type": "string",
-     "format": "int64"
-    },
-    "nationalID": {
-     "type": "string"
-    },
-    "otherNames": {
-     "type": "string"
-    },
-    "photo": {
-     "type": "string"
-    },
-    "pwd": {
-     "type": "string"
-    },
-    "refferedBy": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "status": {
-     "type": "string"
-    },
-    "surname": {
-     "type": "string"
-    },
-    "telephone": {
-     "type": "string"
-    }
-   }
-  },
-  "Organization": {
-   "id": "Organization",
-   "type": "object",
-   "properties": {
-    "address": {
-     "type": "string"
-    },
-    "email": {
-     "type": "string"
+     "$ref": "LendingGroupMemberTypes"
     },
     "name": {
      "type": "string"
-    },
-    "organizationID": {
-     "type": "string",
-     "format": "int64"
     }
    }
   }

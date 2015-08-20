@@ -2,7 +2,10 @@ package com.sp.fanikiwa.api;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.entity.Coa;
+import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.TieredDet;
+import com.sp.fanikiwa.entity.Tieredtable;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -71,6 +74,49 @@ public class TieredDetEndpoint {
 				.setNextPageToken(cursorString).build();
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
+	@ApiMethod(name = "selectTieredtableDets")
+	public CollectionResponse<TieredDet> selectTieredtableDets(
+			@Named("tieredtableid") Long tieredTableId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Query<TieredDet> query = ofy().load().type(TieredDet.class)
+				.filter("tieredID", tieredTableId);
+		return listTieredDetFromQuery(query, cursorString, count);
+	}
+
+	private CollectionResponse<TieredDet> listTieredDetFromQuery(
+			Query<TieredDet> query, String cursorString, Integer count) {
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
+		}
+
+		List<TieredDet> records = new ArrayList<TieredDet>();
+		QueryResultIterator<TieredDet> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			records.add(iterator.next());
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<TieredDet> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
+	}
+
 	/**
 	 * This inserts a new <code>TieredDet</code> object.
 	 * 
@@ -86,7 +132,7 @@ public class TieredDetEndpoint {
 		// that it is already present
 		if (TieredDet.getId() != null) {
 			if (findRecord(TieredDet.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("TieredDet already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -107,7 +153,7 @@ public class TieredDetEndpoint {
 	public TieredDet updateTieredDet(TieredDet TieredDet)
 			throws NotFoundException {
 		if (findRecord(TieredDet.getId()) == null) {
-			throw new NotFoundException("TieredDet Record does not exist");
+			throw new NotFoundException("TieredDet does not exist");
 		}
 		ofy().save().entity(TieredDet).now();
 		return TieredDet;
@@ -123,23 +169,25 @@ public class TieredDetEndpoint {
 	public void removeTieredDet(@Named("id") Long id) throws NotFoundException {
 		TieredDet record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("TieredDet Record does not exist");
+			throw new NotFoundException("TieredDet does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
 
-	// Private method to retrieve a <code>TieredDet</code> record
 	private TieredDet findRecord(Long id) {
 		return ofy().load().type(TieredDet.class).id(id).now();
-		// or return
-		// ofy().load().type(TieredDet.class).filter("id",id).first.now();
 	}
 
-	public Collection<TieredDet> getTieredTableId(
+	public Collection<TieredDet> getTieredtableId(
 			@Named("tableid") Long tieredTableId) {
 		Query<TieredDet> query = ofy().load().type(TieredDet.class)
 				.filter("TieredID", tieredTableId);
 		return listTieredtableFromQuery(query, null, null).getItems();
+	}
+
+	@ApiMethod(name = "getTieredDetById")
+	public TieredDet getTieredDetById(@Named("id") Long id) {
+		return findRecord(id);
 	}
 
 }

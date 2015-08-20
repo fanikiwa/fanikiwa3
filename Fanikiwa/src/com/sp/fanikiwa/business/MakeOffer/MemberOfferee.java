@@ -6,14 +6,15 @@ import com.sp.fanikiwa.entity.Member;
 public class MemberOfferee extends Offeree {
 	private Long MemberId;
 	private Member Member = null;
-	
+
 	public MemberOfferee(Long memberId) {
-		setMemberId( memberId);
+		setMemberId(memberId);
 	}
 
 	public Member getMember() {
 		return Member;
 	}
+
 	public Long getMemberId() {
 		return MemberId;
 	}

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5CIlSL8WwfwPvNtQoQzINTOMXnQ\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/8qrccniJdBWEyaphr0FqA4mqJFA\"",
  "discoveryVersion": "v1",
  "id": "organizationendpoint:v1",
  "name": "organizationendpoint",
@@ -107,6 +107,29 @@
      "format": "int64"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
@@ -134,14 +157,14 @@
   },
   "insertOrganization": {
    "id": "organizationendpoint.insertOrganization",
-   "path": "organization",
+   "path": "requestresult",
    "httpMethod": "POST",
    "request": {
     "$ref": "Organization",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Organization"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -184,20 +207,45 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveOrganization": {
+   "id": "organizationendpoint.retrieveOrganization",
+   "path": "retrieveOrganization/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateOrganization": {
    "id": "organizationendpoint.updateOrganization",
-   "path": "organization",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Organization",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Organization"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

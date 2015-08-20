@@ -80,7 +80,8 @@ public class MakeOfferComponent {
 	private Offer createOfferDTO(OfferDTO offerDto)
 	{
 		OfferEndpoint oep = new OfferEndpoint();
-		return oep.saveOffer(offerDto);
+		Offer offer  = (Offer)oep.saveOffer(offerDto).getClientToken();
+		return offer;
 	}
 
 }

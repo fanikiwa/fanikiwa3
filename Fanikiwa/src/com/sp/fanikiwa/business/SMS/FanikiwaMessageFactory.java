@@ -121,6 +121,12 @@ public class FanikiwaMessageFactory {
 							MessageDate, Body, msgParams);
 
 				}
+				// Message starts with = AL ; AL<Password>
+				else if ("FA".equals(msgParams.get(0).toUpperCase())) {
+					fmessage = ParseAccountsListMessage(OriginatingAddress,
+							MessageDate, Body, msgParams);
+
+				}
 				// Message starts with = C|CP ;
 				// CP<OldPassword><NewPassword><ConfirmPassword>
 				else if ("C".equals(msgParams.get(0).toUpperCase())
@@ -659,6 +665,32 @@ public class FanikiwaMessageFactory {
 		return bo;
 	}
 
+	private static FanikiwaAccountsMessage ParseAccountsListMessage(
+			String OriginatingAddress, Date MessageDate, String Body,
+			List<String> msgParams) {
+		FanikiwaAccountsMessage acc = new FanikiwaAccountsMessage();
+
+		// populate generic from abstract
+		acc.SenderTelno = OriginatingAddress;
+		acc.MessageDate = MessageDate;
+		acc.FanikiwaMessageType = FanikiwaMessageType.AccountsListMessage;
+		acc.Body = Body;
+		acc.Status = "NEW";
+
+		// parse pwd: Not optional
+		if (msgParams.size() < 2) {
+			throw new NullPointerException("Password required");
+		}
+		String pwd = msgParams.get(1);
+		if (StringExtension.isNullOrEmpty(pwd)) {
+			throw new NullPointerException(
+					"Password cannot be null in accounts list message. ");
+		}
+		acc.Pwd = pwd;
+
+		return acc;
+	}
+
 	private static ChangePinMessage ParseChangePinMessage(
 			String OriginatingAddress, Date MessageDate, String Body,
 			List<String> msgParams) {
@@ -754,16 +786,16 @@ public class FanikiwaMessageFactory {
 	private static MpesaDepositMessage ParseMpesaMessage(
 			String OriginatingAddress, Date MessageDate, String Body)
 			throws ParseException {
-		
+
 		MpesaDepositMessage mo = new MpesaDepositMessage();
-		
+
 		mo.SenderTelno = OriginatingAddress;
 		mo.FanikiwaMessageType = FanikiwaMessageType.MpesaDepositMessage;
 		mo.Body = Body;
 		mo.Status = "NEW";
-		
+
 		String[] fieldPairs = Body.toUpperCase().trim().split("\\,");
-   
+
 		for (String field : fieldPairs) {
 			String[] f = field.split("\\:");
 			switch (f[0]) {
@@ -789,8 +821,7 @@ public class FanikiwaMessageFactory {
 
 			}
 		}
-		
-		
+
 		/*
 		 * Body =
 		 * {"Ref":"FX12UB729","MpesaDate":"31/10/14 7:49 PM","Amount":"200",
@@ -817,16 +848,16 @@ public class FanikiwaMessageFactory {
 		// 1].split("KSH")[0];
 		//
 
-//		mo.AccountId = Long.parseLong(accno);
-//		mo.Amount = Double.parseDouble(money);
-//		mo.Bal = Double.parseDouble(bal);
-//		mo.Mpesaref = MpesaRef;
-//		String d = date + " " + time + ":00 " + ampm;
-//		mo.SentDate = DateExtension.parse(d, "dd/MM/yy h:mm:ss tt");
-//		mo.MessageDate = MessageDate;
-//		mo.FanikiwaMessageType = FanikiwaMessageType.MpesaDepositMessage;
-//		mo.Body = Body;
-//		mo.Status = "NEW";
+		// mo.AccountId = Long.parseLong(accno);
+		// mo.Amount = Double.parseDouble(money);
+		// mo.Bal = Double.parseDouble(bal);
+		// mo.Mpesaref = MpesaRef;
+		// String d = date + " " + time + ":00 " + ampm;
+		// mo.SentDate = DateExtension.parse(d, "dd/MM/yy h:mm:ss tt");
+		// mo.MessageDate = MessageDate;
+		// mo.FanikiwaMessageType = FanikiwaMessageType.MpesaDepositMessage;
+		// mo.Body = Body;
+		// mo.Status = "NEW";
 
 		return mo;
 	}

@@ -17,9 +17,9 @@ public class Diaryprogramcontrol {
 
 	@Id
 	Long id;
- 
+
 	private Date lastRun;
- 
+
 	private Date nextRun;
 
 	public Diaryprogramcontrol() {

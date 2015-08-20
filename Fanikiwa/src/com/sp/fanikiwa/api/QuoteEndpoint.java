@@ -18,10 +18,9 @@ import com.sp.fanikiwa.entity.Quote;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.inject.Named;
 
-@Api(name = "quoteEndpoint",version="v1", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
+@Api(name = "quoteEndpoint", version = "v1", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class QuoteEndpoint {
 
 	// Make sure to add this endpoint to your web.xml file if this is a web
@@ -88,7 +87,7 @@ public class QuoteEndpoint {
 		// that it is already present
 		if (quote.getId() != null) {
 			if (findRecord(quote.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException("Quote already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -108,7 +107,7 @@ public class QuoteEndpoint {
 	@ApiMethod(name = "updateQuote")
 	public Quote updateQuote(Quote quote) throws NotFoundException {
 		if (findRecord(quote.getId()) == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Quote does not exist");
 		}
 		ofy().save().entity(quote).now();
 		return quote;
@@ -124,7 +123,7 @@ public class QuoteEndpoint {
 	public void removeQuote(@Named("id") Long id) throws NotFoundException {
 		Quote record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Quote Record does not exist");
+			throw new NotFoundException("Quote does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}

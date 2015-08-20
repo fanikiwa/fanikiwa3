@@ -9,11 +9,11 @@ public class Organization {
 
 	@Id
 	Long organizationID;
- 
+
 	private String address;
- 
+
 	private String email;
- 
+
 	private String name;
 
 	public Organization() {

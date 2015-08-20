@@ -15,15 +15,15 @@ public class Mailinggroupmember {
 
 	@Id
 	Long id;
- 
+
 	private String email;
- 
+
 	private int groupId;
- 
+
 	private String idType;
- 
+
 	private int member;
- 
+
 	private String telno;
 
 	public Mailinggroupmember() {

@@ -10,11 +10,12 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class DateSerializer implements JsonSerializer {
-	 
-	  public JsonElement serialize(Date date, Type typeOfSrc, JsonSerializationContext context) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");  
-	    return new JsonPrimitive(sdf.format(date));
-	  }
+
+	public JsonElement serialize(Date date, Type typeOfSrc,
+			JsonSerializationContext context) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		return new JsonPrimitive(sdf.format(date));
+	}
 
 	@Override
 	public JsonElement serialize(Object arg0, Type arg1,
@@ -23,6 +24,4 @@ public class DateSerializer implements JsonSerializer {
 		return null;
 	}
 
-	 
- 
-}  
+}

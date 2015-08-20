@@ -15,11 +15,11 @@ public class Offergroup {
 
 	@Id
 	Long id;
- 
+
 	private String description;
- 
+
 	private String email;
- 
+
 	private int memberId;
 
 	public Offergroup() {

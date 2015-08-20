@@ -13,7 +13,7 @@ import com.sp.fanikiwa.entity.TransactionType;
 
 public class Config {
 	private final static String DATE_FORMAT = "dd-MMM-yyyy";
-	
+
 	public static String GetString(String key) {
 		SettingsEndpoint sep = new SettingsEndpoint();
 		Settings setting = sep.getSettingsByKey(key);
@@ -80,21 +80,22 @@ public class Config {
 		Date date = formatter.parse(ret);
 		return StringExtension.isNullOrEmpty(ret) ? def : date;
 	}
+
 	public static Date GetDate(String key) throws ParseException {
 		return GetDate(key, null);
 	}
-	
-	//GL helpers
-	public static TransactionType GetTransactionType(String key)
-	{
-		Long id = GetLong( key);
+
+	// GL helpers
+	public static TransactionType GetTransactionType(String key) {
+		Long id = GetLong(key);
 		TransactionTypeEndpoint tep = new TransactionTypeEndpoint();
 		return tep.getTransactionType(id);
 	}
-	public static Account GetAccount(String key)
-	{
-		Long id = GetLong( key);
+
+	public static Account GetAccount(String key) {
+		Long id = GetLong(key);
 		AccountEndpoint tep = new AccountEndpoint();
 		return tep.getAccount(id);
 	}
+
 }

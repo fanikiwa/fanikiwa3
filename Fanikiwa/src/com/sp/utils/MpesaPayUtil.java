@@ -17,6 +17,7 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -25,8 +26,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
-
-
 import com.sp.utils.CryptoUtil;
 import com.sp.fanikiwa.business.DiaryComponent;
 
@@ -34,20 +33,24 @@ import com.sp.fanikiwa.business.DiaryComponent;
 import org.apache.commons.codec.binary.Base64;
 
 public class MpesaPayUtil {
-	
-	private static final Logger log = Logger.getLogger(MpesaPayUtil.class.getName());
 
-	//from safaricom
-	final static String ORIGINATOR_CONVERSATION_ID = ""; 
+	private static final Logger log = Logger.getLogger(MpesaPayUtil.class
+			.getName());
+
+	// from safaricom
+	final static String ORIGINATOR_CONVERSATION_ID = "";
 	final static String MPESA_URL = "https://IPADDRESS/mminterface/request";
 	final static String SOAP_ACTION_URL = "https://IPADDRESS/mminterface/request";
-	final static String SPID = "1000150"; 
+	final static String SPID = "1000150";
 	final static String SERVICE_ID = "10001502";
-	
-	public static boolean PostToMpesaTest(double Amount, String MobileNo)
-	{
+
+	public static boolean PostToMpesaMock(double Amount, String MobileNo) {
+		String msg = "Posted to Mpesa Mock MobileNo[" + MobileNo
+				+ "] and Amount[" + Amount + "]";
+		log.info(msg);
 		return true;
 	}
+
 	public static void PostToMpesa(double Amount, String MobileNo)
 			throws Exception {
 
@@ -75,7 +78,7 @@ public class MpesaPayUtil {
 		a = a.toUpperCase();
 		s = javax.xml.bind.DatatypeConverter.printBase64Binary(a
 				.getBytes("UTF-8")); // ("UTF-8")
-		
+
 		double Ran = 0;
 		Random rand = new Random();
 		Ran = rand.nextDouble();
@@ -105,13 +108,13 @@ public class MpesaPayUtil {
 					.generateCertificate(inStream);
 			inStream.close();
 			PublicKey pubkey = (PublicKey) cert.getPublicKey();
-			final byte[] cipherText =CryptoUtil.encrypt(originalText, pubkey);
+			final byte[] cipherText = CryptoUtil.encrypt(originalText, pubkey);
 			tempPub = pubkey.getEncoded();
 			sPub = new String(tempPub);
 			myCertPassword = new String(Base64.encodeBase64String(cipherText));
 		} catch (Exception e) {
 			System.out.println(e);
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		String send = "<soap:Envelope xmlns:mrns0=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:req=\"http://api-v1.gen.mm.vodafone.com/mminterface/request\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">"
 				+ "<soap:Header>"
@@ -197,8 +200,7 @@ public class MpesaPayUtil {
 				+ "</request>]]>"
 				+ "</req:RequestMsg>" + "</soap:Body>" + "</soap:Envelope>";
 
-
-//TODO rethink how to do this without use of FILE
+		// TODO rethink how to do this without use of FILE
 
 		KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509",
 				"SunJSSE");

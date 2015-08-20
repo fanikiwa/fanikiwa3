@@ -13,31 +13,33 @@ public class Customer {
 
 	@Id
 	Long customerId;
- 
+
 	private String address;
- 
+
 	private String billToAddress;
- 
+
 	private String billToEmail;
- 
+
 	private String billToName;
- 
+
 	private String billToTelephone;
- 
+
 	private String branch;
- 
+
 	private Date createdDate;
- 
+
 	private String customerNo;
- 
+
 	private String email;
- 
+
 	private Long memberId;
- 
+
 	private String name;
- 
+
 	private String telephone;
- 
+
+	private String status;
+
 	@Load
 	Ref<Organization> organization;
 
@@ -154,6 +156,14 @@ public class Customer {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

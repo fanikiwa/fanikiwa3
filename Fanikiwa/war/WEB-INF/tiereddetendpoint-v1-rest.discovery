@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wrAZKTxhI_2PAc15CJlEACcxaUg\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/oafc-6azLtxb4qLB8L723LJbMo0\"",
  "discoveryVersion": "v1",
  "id": "tiereddetendpoint:v1",
  "name": "tiereddetendpoint",
@@ -89,6 +89,25 @@
     }
    }
   },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
   "TieredDet": {
    "id": "TieredDet",
    "type": "object",
@@ -129,19 +148,45 @@
      }
     }
    }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "getTieredDetById": {
+   "id": "tiereddetendpoint.getTieredDetById",
+   "path": "tiereddet/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "TieredDet"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "insertTieredDet": {
    "id": "tiereddetendpoint.insertTieredDet",
-   "path": "tiereddet",
+   "path": "requestresult",
    "httpMethod": "POST",
    "request": {
     "$ref": "TieredDet",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "TieredDet"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -184,20 +229,76 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveTieredDet": {
+   "id": "tiereddetendpoint.retrieveTieredDet",
+   "path": "retrieveTieredDet/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectTieredtableDets": {
+   "id": "tiereddetendpoint.selectTieredtableDets",
+   "path": "selectTieredtableDets/{tieredtableid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "tieredtableid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "tieredtableid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_TieredDet"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateTieredDet": {
    "id": "tiereddetendpoint.updateTieredDet",
-   "path": "tiereddet",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "TieredDet",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "TieredDet"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -207,8 +308,8 @@
  "resources": {
   "tieredDetEndpoint": {
    "methods": {
-    "getTieredTableId": {
-     "id": "tiereddetendpoint.tieredDetEndpoint.getTieredTableId",
+    "getTieredtableId": {
+     "id": "tiereddetendpoint.tieredDetEndpoint.getTieredtableId",
      "path": "tiereddetcollection/{tableid}",
      "httpMethod": "GET",
      "parameters": {

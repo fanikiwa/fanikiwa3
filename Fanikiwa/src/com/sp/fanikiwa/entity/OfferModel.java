@@ -7,16 +7,14 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-
 public class OfferModel {
-
 
 	public OfferModel() {
 		super();
 	}
 
 	private Offer offer;
- 
+
 	private List<Member> offerees;
 
 	public Offer getOffer() {
@@ -34,8 +32,5 @@ public class OfferModel {
 	public void setOfferees(List<Member> offerees) {
 		this.offerees = offerees;
 	}
-
-	
-
 
 }

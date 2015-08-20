@@ -1,5 +1,5 @@
 package com.sp.fanikiwa.entity;
- 
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -9,12 +9,12 @@ public class Settings {
 
 	@Id
 	private String property;
- 
+
 	private String groupName;
- 
+
 	private Long parent;
- 
-	private String Value;
+
+	private String value;
 
 	public Settings() {
 	}
@@ -44,11 +44,11 @@ public class Settings {
 	}
 
 	public String getValue() {
-		return Value;
+		return value;
 	}
 
-	public void setValue(String value) {
-		Value = value;
+	public void setValue(String Value) {
+		value = Value;
 	}
 
 }

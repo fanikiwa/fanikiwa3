@@ -1,5 +1,7 @@
 package com.sp.fanikiwa.entity;
 
+import java.util.Date;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -17,14 +19,11 @@ public class Account {
 	private String accountNo;
 
 	private double accruedInt;
+	private double accruedIntInSusp;
 
-	private double bal30;
+	private Date maturityDate;
 
-	private double bal60;
-
-	private double bal90;
-
-	private double balOver90;
+	private Date createDate;
 
 	private double bookBalance;
 
@@ -36,24 +35,52 @@ public class Account {
 
 	private double interestRate;
 
-	private double intRate30;
-
-	private double intRate60;
-
-	private double intRate90;
-
-	private double intRateOver90;
+	// penalty interest rates
+	private double interestRateSusp;
 
 	private double limit;
 
 	private int limitCheckFlag;
 
-	private int limitFlag;
+	private String limitFlag;
 
-	private int passFlag;
+	private String passFlag;
+	// Interest Accrual
+	@Index
+	private String interestAccrualInterval; // Permissible values are - D, M, Y
+											// or 1 time. This field will
+											// determine how interest is accrued
+											// in the account.
+	@Index
+	private Date lastIntAccrualDate;
+	@Index
+	private Date nextIntAccrualDate;
+	private boolean accrueInSusp;
+	// Interest Computation
+	@Index
+	private String interestComputationMethod; // Used in interest computation
+												// formular. Permissible values
+												// are -S simple; C compound
+	@Index
+	private String interestComputationTerm; // Used in int computation formula.
+											// Permissible values are - D1,
+											// D360, D365, M1, M30, Y
 
+	// Interest Application
+	// This means when is the interest earned/paid for investments or
+	// expensed/paid for loans?.
+	@Index
+	private String interestApplicationMethod;// Permissible values are - M
+												// monthly. Inst- when
+												// installment goes thro. All-
+												// when loan is finally paid
+	@Index
+	private Date lastIntAppDate;
+	@Index
+	private Date nextIntAppDate;
+	private Long intPayAccount;
 	// Foreign Keys
-	@Load
+	@Index
 	Ref<Customer> customer;
 
 	@Load
@@ -64,176 +91,6 @@ public class Account {
 
 	public Account() {
 	}
-
-	public Long getAccountID() {
-		return this.accountID;
-	}
-
-	public void setAccountID(Long accountID) {
-		this.accountID = accountID;
-	}
-
-	public String getAccountName() {
-		return this.accountName;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	public String getAccountNo() {
-		return this.accountNo;
-	}
-
-	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
-	}
-
-	public double getAccruedInt() {
-		return this.accruedInt;
-	}
-
-	public void setAccruedInt(double accruedInt) {
-		this.accruedInt = accruedInt;
-	}
-
-	public double getBal30() {
-		return this.bal30;
-	}
-
-	public void setBal30(double bal30) {
-		this.bal30 = bal30;
-	}
-
-	public double getBal60() {
-		return this.bal60;
-	}
-
-	public void setBal60(double bal60) {
-		this.bal60 = bal60;
-	}
-
-	public double getBal90() {
-		return this.bal90;
-	}
-
-	public void setBal90(double bal90) {
-		this.bal90 = bal90;
-	}
-
-	public double getBalOver90() {
-		return this.balOver90;
-	}
-
-	public void setBalOver90(double balOver90) {
-		this.balOver90 = balOver90;
-	}
-
-	public double getBookBalance() {
-		return this.bookBalance;
-	}
-
-	public void setBookBalance(double bookBalance) {
-		this.bookBalance = bookBalance;
-	}
-
-	public String getBranch() {
-		return this.branch;
-	}
-
-	public void setBranch(String branch) {
-		this.branch = branch;
-	}
-
-	public double getClearedBalance() {
-		return this.clearedBalance;
-	}
-
-	public void setClearedBalance(double clearedBalance) {
-		this.clearedBalance = clearedBalance;
-	}
-
-	public boolean getClosed() {
-		return this.closed;
-	}
-
-	public void setClosed(boolean closed) {
-		this.closed = closed;
-	}
-
-	public double getInterestRate() {
-		return this.interestRate;
-	}
-
-	public void setInterestRate(double interestRate) {
-		this.interestRate = interestRate;
-	}
-
-	public double getIntRate30() {
-		return this.intRate30;
-	}
-
-	public void setIntRate30(double intRate30) {
-		this.intRate30 = intRate30;
-	}
-
-	public double getIntRate60() {
-		return this.intRate60;
-	}
-
-	public void setIntRate60(double intRate60) {
-		this.intRate60 = intRate60;
-	}
-
-	public double getIntRate90() {
-		return this.intRate90;
-	}
-
-	public void setIntRate90(double intRate90) {
-		this.intRate90 = intRate90;
-	}
-
-	public double getIntRateOver90() {
-		return this.intRateOver90;
-	}
-
-	public void setIntRateOver90(double intRateOver90) {
-		this.intRateOver90 = intRateOver90;
-	}
-
-	public double getLimit() {
-		return this.limit;
-	}
-
-	public void setLimit(double limit) {
-		this.limit = limit;
-	}
-
-	public int getLimitCheckFlag() {
-		return this.limitCheckFlag;
-	}
-
-	public void setLimitCheckFlag(int limitCheckFlag) {
-		this.limitCheckFlag = limitCheckFlag;
-	}
-
-	public int getLimitFlag() {
-		return this.limitFlag;
-	}
-
-	public void setLimitFlag(int i) {
-		this.limitFlag = i;
-	}
-
-	public int getPassFlag() {
-		return this.passFlag;
-	}
-
-	public void setPassFlag(int i) {
-		this.passFlag = i;
-	}
-
-	// Foreign Keys
 
 	public Customer getCustomer() {
 		return this.customer.get();
@@ -258,4 +115,221 @@ public class Account {
 	public void setCoadet(Coadet coadet) {
 		this.coadet = Ref.create(coadet);
 	}
+
+	public Long getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Long accountID) {
+		this.accountID = accountID;
+	}
+
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+
+	public double getAccruedInt() {
+		return accruedInt;
+	}
+
+	public void setAccruedInt(double accruedInt) {
+		this.accruedInt = accruedInt;
+	}
+
+	public double getAccruedIntInSusp() {
+		return accruedIntInSusp;
+	}
+
+	public void setAccruedIntInSusp(double accruedIntInSusp) {
+		this.accruedIntInSusp = accruedIntInSusp;
+	}
+
+	public Date getMaturityDate() {
+		return maturityDate;
+	}
+
+	public void setMaturityDate(Date maturityDate) {
+		this.maturityDate = maturityDate;
+	}
+
+	public boolean getAccrueInSusp() {
+		return accrueInSusp;
+	}
+
+	public void setAccrueInSusp(boolean accrueInSusp) {
+		this.accrueInSusp = accrueInSusp;
+	}
+
+	public double getInterestRateSusp() {
+		return interestRateSusp;
+	}
+
+	public void setInterestRateSusp(double interestRateSusp) {
+		this.interestRateSusp = interestRateSusp;
+	}
+
+	public double getBookBalance() {
+		return bookBalance;
+	}
+
+	public void setBookBalance(double bookBalance) {
+		this.bookBalance = bookBalance;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public double getClearedBalance() {
+		return clearedBalance;
+	}
+
+	public void setClearedBalance(double clearedBalance) {
+		this.clearedBalance = clearedBalance;
+	}
+
+	public boolean getClosed() {
+		return closed;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
+	}
+
+	public double getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(double interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	public double getLimit() {
+		return limit;
+	}
+
+	public void setLimit(double limit) {
+		this.limit = limit;
+	}
+
+	public int getLimitCheckFlag() {
+		return limitCheckFlag;
+	}
+
+	public void setLimitCheckFlag(int limitCheckFlag) {
+		this.limitCheckFlag = limitCheckFlag;
+	}
+
+	public String getLimitFlag() {
+		return limitFlag;
+	}
+
+	public void setLimitFlag(String limitFlag) {
+		this.limitFlag = limitFlag;
+	}
+
+	public String getPassFlag() {
+		return passFlag;
+	}
+
+	public void setPassFlag(String passFlag) {
+		this.passFlag = passFlag;
+	}
+
+	public String getInterestAccrualInterval() {
+		return interestAccrualInterval;
+	}
+
+	public void setInterestAccrualInterval(String interestAccrualInterval) {
+		this.interestAccrualInterval = interestAccrualInterval;
+	}
+
+	public Date getLastIntAccrualDate() {
+		return lastIntAccrualDate;
+	}
+
+	public void setLastIntAccrualDate(Date lastIntAccrualDate) {
+		this.lastIntAccrualDate = lastIntAccrualDate;
+	}
+
+	public Date getNextIntAccrualDate() {
+		return nextIntAccrualDate;
+	}
+
+	public void setNextIntAccrualDate(Date nextIntAccrualDate) {
+		this.nextIntAccrualDate = nextIntAccrualDate;
+	}
+
+	public String getInterestComputationMethod() {
+		return interestComputationMethod;
+	}
+
+	public void setInterestComputationMethod(String interestComputationMethod) {
+		this.interestComputationMethod = interestComputationMethod;
+	}
+
+	public String getInterestComputationTerm() {
+		return interestComputationTerm;
+	}
+
+	public void setInterestComputationTerm(String interestComputationTerm) {
+		this.interestComputationTerm = interestComputationTerm;
+	}
+
+	public String getInterestApplicationMethod() {
+		return interestApplicationMethod;
+	}
+
+	public void setInterestApplicationMethod(String interestApplicationMethod) {
+		this.interestApplicationMethod = interestApplicationMethod;
+	}
+
+	public Date getLastIntAppDate() {
+		return lastIntAppDate;
+	}
+
+	public void setLastIntAppDate(Date lastIntAppDate) {
+		this.lastIntAppDate = lastIntAppDate;
+	}
+
+	public Date getNextIntAppDate() {
+		return nextIntAppDate;
+	}
+
+	public void setNextIntAppDate(Date nextIntAppDate) {
+		this.nextIntAppDate = nextIntAppDate;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Long getIntPayAccount() {
+		return intPayAccount;
+	}
+
+	public void setIntPayAccount(Long intPayAccount) {
+		this.intPayAccount = intPayAccount;
+	}
+
 }

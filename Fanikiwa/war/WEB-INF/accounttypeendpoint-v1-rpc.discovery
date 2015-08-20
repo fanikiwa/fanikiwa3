@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5j38R39rX68_kT7b5DGU348iP1M\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/vnr3Pxxep1bZoZEfM1sjWOR8BCc\"",
  "discoveryVersion": "v1",
  "id": "accounttypeendpoint:v1",
  "name": "accounttypeendpoint",
@@ -102,9 +102,52 @@
      "type": "string"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "accounttypeendpoint.getAccountType": {
+   "id": "accounttypeendpoint.getAccountType",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "AccountType"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "accounttypeendpoint.insertAccountType": {
    "id": "accounttypeendpoint.insertAccountType",
    "parameters": {
@@ -116,7 +159,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "AccountType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -153,6 +196,28 @@
    "parameterOrder": [
     "id"
    ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "accounttypeendpoint.retrieveAccountType": {
+   "id": "accounttypeendpoint.retrieveAccountType",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
@@ -168,7 +233,7 @@
     "resource"
    ],
    "returns": {
-    "$ref": "AccountType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

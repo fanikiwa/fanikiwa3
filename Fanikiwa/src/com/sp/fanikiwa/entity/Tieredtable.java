@@ -10,7 +10,6 @@ public class Tieredtable {
 	@Id
 	Long id;
 
- 
 	private String description;
 
 	public Tieredtable() {

@@ -9,7 +9,7 @@ public class Coa {
 
 	@Id
 	Long id;
- 
+
 	private String description;
 
 	public Coa() {

@@ -65,27 +65,26 @@ public class MpesaDepositServlet extends HttpServlet {
 		MpesaDepositMessage message;
 		try {
 			String narr = "Deposit started...";
-			
+
 			// 1. Get sms from request and convert to MpesaDepositMessage
 			message = MakeMpesaDepositMessageFromRequest(request);
 
 			try {
-			// 3.process the fanikiwa message
+				// 3.process the fanikiwa message
 
-			
 				List<Transaction> txns = TransactionFactory.MpesaDeposit(
 						message.AccountId, message.Amount, narr,
 						message.Mpesaref);
 				TransactionPost.Post(txns);
 				narr = message.CustomerTelno + " deposited on "
-						+ message.MessageDate.toString();		
+						+ message.MessageDate.toString();
 			} catch (Exception e) {
 				narr = e.getMessage();
 			}
 
 			// 4. send the response back
-				SendResponse(response, narr, message);
-				
+			SendResponse(response, narr, message);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,19 +103,18 @@ public class MpesaDepositServlet extends HttpServlet {
 		}
 
 		// 2. initiate jackson mapper
-		//ObjectMapper mapper = new ObjectMapper();
+		// ObjectMapper mapper = new ObjectMapper();
 		Gson gson = new GsonBuilder()
-		.registerTypeAdapter(Date.class, new DateSerializer())
-		.registerTypeAdapter(Date.class, new DateDeserializer()) 
-		.enableComplexMapKeySerialization()
-		.serializeNulls()
-		.setPrettyPrinting()
-		.create();
-		 
-		// 3. Convert received JSON to MpesaDepositMessage
-		MpesaDepositMessage msg = gson.fromJson(json, MpesaDepositMessage.class);
+				.registerTypeAdapter(Date.class, new DateSerializer())
+				.registerTypeAdapter(Date.class, new DateDeserializer())
+				.enableComplexMapKeySerialization().serializeNulls()
+				.setPrettyPrinting().create();
 
-//		msg.setBody(json);
+		// 3. Convert received JSON to MpesaDepositMessage
+		MpesaDepositMessage msg = gson
+				.fromJson(json, MpesaDepositMessage.class);
+
+		// msg.setBody(json);
 		msg.setMessageDate(new Date());
 		msg.setFanikiwaMessageType(FanikiwaMessageType.MpesaDepositMessage);
 		msg.setStatus("NEW");
@@ -144,53 +142,55 @@ public class MpesaDepositServlet extends HttpServlet {
 		 */
 
 	}
-//
-//	private static MpesaDepositMessage ParseMpesaMessage(
-//			String OriginatingAddress, Date MessageDate, String Body)
-//			throws ParseException {
-//
-//		MpesaDepositMessage mo = new MpesaDepositMessage();
-//
-//		mo.SenderTelno = OriginatingAddress;
-//		mo.FanikiwaMessageType = FanikiwaMessageType.MpesaDepositMessage;
-//		mo.Body = Body;
-//		mo.Status = "NEW";
-//
-//		String[] fieldPairs = Body.toUpperCase().trim().split("\\,");
-//
-//		for (String field : fieldPairs) {
-//			String[] f = field.split("\\:");
-//			switch (f[0]) {
-//			case "REF":
-//				mo.Mpesaref = f[1];
-//				break;
-//			case "MPESADATE":
-//				String dstr = f[1];
-//				mo.SentDate = DateExtension.parse(dstr);
-//				break;
-//			case "AMOUNT":
-//				mo.Amount = Double.parseDouble(f[1]);
-//				break;
-//			case "FROMTEL":
-//				mo.CustomerTelno = f[1];
-//				break;
-//			case "ACCOUNTNO":
-//				mo.AccountId = Long.parseLong(f[1]);
-//				break;
-//			case "BALANCE":
-//				mo.Bal = Double.parseDouble(f[1]);
-//				break;
-//
-//			}
-//		}
-//		return mo;
-//	}
-//
+
+	//
+	// private static MpesaDepositMessage ParseMpesaMessage(
+	// String OriginatingAddress, Date MessageDate, String Body)
+	// throws ParseException {
+	//
+	// MpesaDepositMessage mo = new MpesaDepositMessage();
+	//
+	// mo.SenderTelno = OriginatingAddress;
+	// mo.FanikiwaMessageType = FanikiwaMessageType.MpesaDepositMessage;
+	// mo.Body = Body;
+	// mo.Status = "NEW";
+	//
+	// String[] fieldPairs = Body.toUpperCase().trim().split("\\,");
+	//
+	// for (String field : fieldPairs) {
+	// String[] f = field.split("\\:");
+	// switch (f[0]) {
+	// case "REF":
+	// mo.Mpesaref = f[1];
+	// break;
+	// case "MPESADATE":
+	// String dstr = f[1];
+	// mo.SentDate = DateExtension.parse(dstr);
+	// break;
+	// case "AMOUNT":
+	// mo.Amount = Double.parseDouble(f[1]);
+	// break;
+	// case "FROMTEL":
+	// mo.CustomerTelno = f[1];
+	// break;
+	// case "ACCOUNTNO":
+	// mo.AccountId = Long.parseLong(f[1]);
+	// break;
+	// case "BALANCE":
+	// mo.Bal = Double.parseDouble(f[1]);
+	// break;
+	//
+	// }
+	// }
+	// return mo;
+	// }
+	//
 	private void SendResponse(HttpServletResponse response, String result,
 			MpesaDepositMessage sms) {
 		// write to response -- FOR TESTING
 		try {
-			String msg = "To: " + sms.CustomerTelno +"<br/>"+ "Message: " + result;
+			String msg = "To: " + sms.CustomerTelno + "<br/>" + "Message: "
+					+ result;
 			response.getWriter().println(msg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

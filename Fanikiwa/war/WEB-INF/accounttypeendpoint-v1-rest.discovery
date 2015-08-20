@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5j38R39rX68_kT7b5DGU348iP1M\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/vnr3Pxxep1bZoZEfM1sjWOR8BCc\"",
  "discoveryVersion": "v1",
  "id": "accounttypeendpoint:v1",
  "name": "accounttypeendpoint",
@@ -104,19 +104,64 @@
      "type": "string"
     }
    }
+  },
+  "RequestResult": {
+   "id": "RequestResult",
+   "type": "object",
+   "properties": {
+    "clientToken": {
+     "$ref": "_any"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "resultMessage": {
+     "type": "string"
+    },
+    "success": {
+     "type": "boolean"
+    }
+   }
+  },
+  "_any": {
+   "id": "_any",
+   "type": "any"
   }
  },
  "methods": {
+  "getAccountType": {
+   "id": "accounttypeendpoint.getAccountType",
+   "path": "accounttype/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "AccountType"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "insertAccountType": {
    "id": "accounttypeendpoint.insertAccountType",
-   "path": "accounttype",
+   "path": "requestresult",
    "httpMethod": "POST",
    "request": {
     "$ref": "AccountType",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "AccountType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -159,20 +204,45 @@
    "parameterOrder": [
     "id"
    ],
+   "response": {
+    "$ref": "RequestResult"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "retrieveAccountType": {
+   "id": "accounttypeendpoint.retrieveAccountType",
+   "path": "retrieveAccountType/{id}",
+   "httpMethod": "POST",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "RequestResult"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
   "updateAccountType": {
    "id": "accounttypeendpoint.updateAccountType",
-   "path": "accounttype",
+   "path": "requestresult",
    "httpMethod": "PUT",
    "request": {
     "$ref": "AccountType",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "AccountType"
+    "$ref": "RequestResult"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

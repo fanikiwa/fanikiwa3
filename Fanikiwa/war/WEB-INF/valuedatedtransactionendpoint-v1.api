@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://1-dot-fanikiwaweb.appspot.com/_ah/api",
+  "root" : "https://fanikiwaweb.appspot.com/_ah/api",
   "name" : "valuedatedtransactionendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://1-dot-fanikiwaweb.appspot.com/_ah/spi",
+    "bns" : "https://fanikiwaweb.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -27,43 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "valuedatedtransactionendpoint.valueDatedTransactionEndpoint.selectByValueDate" : {
-      "path" : "SelectByValueDate/{date}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.SelectByValueDate",
-      "request" : {
-        "parameters" : {
-          "date" : {
-            "type" : "datetime",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
-      "path" : "valuedatedtransaction",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "valuedatedtransactionendpoint.listValueDatedTransaction" : {
       "path" : "valuedatedtransaction",
       "httpMethod" : "GET",
@@ -81,27 +44,6 @@
           "count" : {
             "type" : "int32",
             "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "valuedatedtransactionendpoint.getValueDatedTransaction" : {
-      "path" : "valuedatedtransaction/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
           }
         },
         "body" : "empty"
@@ -146,10 +88,129 @@
       "response" : {
         "body" : "empty"
       }
+    },
+    "valuedatedtransactionendpoint.getValueDatedTransaction" : {
+      "path" : "valuedatedtransaction/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "valuedatedtransactionendpoint.retrieveTransaction" : {
+      "path" : "retrieveTransaction/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.retrieveTransaction",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "valuedatedtransactionendpoint.selectDtoTransactions" : {
+      "path" : "selectDtoTransactions",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.selectDtoTransactions",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "valuedatedtransactionendpoint.valueDatedTransactionEndpoint.selectByValueDate" : {
+      "path" : "SelectByValueDate/{date}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.SelectByValueDate",
+      "request" : {
+        "parameters" : {
+          "date" : {
+            "type" : "datetime",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
+      "path" : "valuedatedtransaction",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_ValueDatedTransaction" : {
+        "id" : "CollectionResponse_ValueDatedTransaction",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "ValueDatedTransaction"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "ValueDatedTransaction" : {
         "id" : "ValueDatedTransaction",
         "type" : "object",
@@ -185,7 +246,7 @@
             "type" : "string"
           },
           "statementFlag" : {
-            "type" : "string"
+            "type" : "boolean"
           },
           "userID" : {
             "type" : "string"
@@ -219,17 +280,16 @@
           "accruedInt" : {
             "type" : "number"
           },
-          "bal30" : {
+          "accruedIntInSusp" : {
             "type" : "number"
           },
-          "bal60" : {
-            "type" : "number"
+          "maturityDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "bal90" : {
-            "type" : "number"
-          },
-          "balOver90" : {
-            "type" : "number"
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
           },
           "bookBalance" : {
             "type" : "number"
@@ -246,16 +306,7 @@
           "interestRate" : {
             "type" : "number"
           },
-          "intRate30" : {
-            "type" : "number"
-          },
-          "intRate60" : {
-            "type" : "number"
-          },
-          "intRate90" : {
-            "type" : "number"
-          },
-          "intRateOver90" : {
+          "interestRateSusp" : {
             "type" : "number"
           },
           "limit" : {
@@ -265,10 +316,45 @@
             "type" : "integer"
           },
           "limitFlag" : {
-            "type" : "integer"
+            "type" : "string"
           },
           "passFlag" : {
-            "type" : "integer"
+            "type" : "string"
+          },
+          "interestAccrualInterval" : {
+            "type" : "string"
+          },
+          "lastIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAccrualDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "accrueInSusp" : {
+            "type" : "boolean"
+          },
+          "interestComputationMethod" : {
+            "type" : "string"
+          },
+          "interestComputationTerm" : {
+            "type" : "string"
+          },
+          "interestApplicationMethod" : {
+            "type" : "string"
+          },
+          "lastIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "nextIntAppDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "intPayAccount" : {
+            "type" : "string",
+            "format" : "int64"
           },
           "customer" : {
             "$ref" : "Customer"
@@ -325,6 +411,9 @@
             "type" : "string"
           },
           "telephone" : {
+            "type" : "string"
+          },
+          "status" : {
             "type" : "string"
           },
           "organization" : {
@@ -506,7 +595,7 @@
             "type" : "string"
           },
           "statFlag" : {
-            "type" : "string"
+            "type" : "boolean"
           },
           "suspenseCrAccount" : {
             "type" : "string",
@@ -531,6 +620,98 @@
           }
         }
       },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
+      },
+      "CollectionResponse_ValueDatedTransactionDTO" : {
+        "id" : "CollectionResponse_ValueDatedTransactionDTO",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "ValueDatedTransactionDTO"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ValueDatedTransactionDTO" : {
+        "id" : "ValueDatedTransactionDTO",
+        "type" : "object",
+        "properties" : {
+          "transactionID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "amount" : {
+            "type" : "number"
+          },
+          "authorizer" : {
+            "type" : "string"
+          },
+          "contraReference" : {
+            "type" : "string"
+          },
+          "forcePostFlag" : {
+            "type" : "boolean"
+          },
+          "narrative" : {
+            "type" : "string"
+          },
+          "postDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "recordDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "statementFlag" : {
+            "type" : "boolean"
+          },
+          "userID" : {
+            "type" : "string"
+          },
+          "valueDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "account" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "transactionType" : {
+            "type" : "string",
+            "format" : "int64"
+          }
+        }
+      },
       "ValueDatedTransactionCollection" : {
         "id" : "ValueDatedTransactionCollection",
         "type" : "object",
@@ -542,24 +723,39 @@
             }
           }
         }
-      },
-      "CollectionResponse_ValueDatedTransaction" : {
-        "id" : "CollectionResponse_ValueDatedTransaction",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "ValueDatedTransaction"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.listValueDatedTransaction" : {
+        "response" : {
+          "$ref" : "CollectionResponse_ValueDatedTransaction"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction" : {
+        "request" : {
+          "$ref" : "ValueDatedTransaction"
+        },
+        "response" : {
+          "$ref" : "ValueDatedTransaction"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.removeValueDatedTransaction" : {
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction" : {
+        "response" : {
+          "$ref" : "ValueDatedTransaction"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.retrieveTransaction" : {
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.selectDtoTransactions" : {
+        "response" : {
+          "$ref" : "CollectionResponse_ValueDatedTransactionDTO"
+        }
+      },
       "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.SelectByValueDate" : {
         "response" : {
           "$ref" : "ValueDatedTransactionCollection"
@@ -572,26 +768,6 @@
         "response" : {
           "$ref" : "ValueDatedTransaction"
         }
-      },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.listValueDatedTransaction" : {
-        "response" : {
-          "$ref" : "CollectionResponse_ValueDatedTransaction"
-        }
-      },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction" : {
-        "response" : {
-          "$ref" : "ValueDatedTransaction"
-        }
-      },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction" : {
-        "request" : {
-          "$ref" : "ValueDatedTransaction"
-        },
-        "response" : {
-          "$ref" : "ValueDatedTransaction"
-        }
-      },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.removeValueDatedTransaction" : {
       }
     }
   }

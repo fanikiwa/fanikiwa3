@@ -17,19 +17,19 @@ public class Informdb {
 
 	@Id
 	Long id;
- 
+
 	private String addressFrom;
- 
+
 	private String addressTo;
- 
+
 	private String body;
- 
+
 	private Date messageDate;
- 
+
 	private String messageType;
- 
+
 	private String status;
- 
+
 	private String subject;
 
 	public Informdb() {

@@ -27,16 +27,15 @@ import java.util.List;
 
 import javax.inject.Named;
 
-
 @Api(name = "diaryprogramcontrolendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class DiaryprogramcontrolEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listDiaryprogramcontrol")
@@ -44,7 +43,8 @@ public class DiaryprogramcontrolEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Query<Diaryprogramcontrol> query = ofy().load().type(Diaryprogramcontrol.class);
+		Query<Diaryprogramcontrol> query = ofy().load().type(
+				Diaryprogramcontrol.class);
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -70,8 +70,8 @@ public class DiaryprogramcontrolEndpoint {
 				cursorString = cursor.toWebSafeString();
 			}
 		}
-		return CollectionResponse.<Diaryprogramcontrol> builder().setItems(records)
-				.setNextPageToken(cursorString).build();
+		return CollectionResponse.<Diaryprogramcontrol> builder()
+				.setItems(records).setNextPageToken(cursorString).build();
 	}
 
 	/**
@@ -82,13 +82,15 @@ public class DiaryprogramcontrolEndpoint {
 	 * @return The object to be added.
 	 */
 	@ApiMethod(name = "insertDiaryprogramcontrol")
-	public Diaryprogramcontrol insertDiaryprogramcontrol(Diaryprogramcontrol Diaryprogramcontrol) throws ConflictException {
+	public Diaryprogramcontrol insertDiaryprogramcontrol(
+			Diaryprogramcontrol Diaryprogramcontrol) throws ConflictException {
 		// If if is not null, then check if it exists. If yes, throw an
 		// Exception
 		// that it is already present
 		if (Diaryprogramcontrol.getId() != null) {
 			if (findRecord(Diaryprogramcontrol.getId()) != null) {
-				throw new ConflictException("Object already exists");
+				throw new ConflictException(
+						"DiaryProgramControl already exists");
 			}
 		}
 		// Since our @Id field is a Long, Objectify will generate a unique value
@@ -106,9 +108,10 @@ public class DiaryprogramcontrolEndpoint {
 	 * @return The object to be updated.
 	 */
 	@ApiMethod(name = "updateDiaryprogramcontrol")
-	public Diaryprogramcontrol updateDiaryprogramcontrol(Diaryprogramcontrol Diaryprogramcontrol) throws NotFoundException {
+	public Diaryprogramcontrol updateDiaryprogramcontrol(
+			Diaryprogramcontrol Diaryprogramcontrol) throws NotFoundException {
 		if (findRecord(Diaryprogramcontrol.getId()) == null) {
-			throw new NotFoundException("Diaryprogramcontrol Record does not exist");
+			throw new NotFoundException("Diaryprogramcontrol does not exist");
 		}
 		ofy().save().entity(Diaryprogramcontrol).now();
 		return Diaryprogramcontrol;
@@ -121,10 +124,12 @@ public class DiaryprogramcontrolEndpoint {
 	 *            The id of the object to be deleted.
 	 */
 	@ApiMethod(name = "removeDiaryprogramcontrol")
-	public void removeDiaryprogramcontrol(@Named("id") Long id) throws NotFoundException {
+	public void removeDiaryprogramcontrol(@Named("id") Long id)
+			throws NotFoundException {
 		Diaryprogramcontrol record = findRecord(id);
 		if (record == null) {
-			throw new NotFoundException("Diaryprogramcontrol Record does not exist");
+			throw new NotFoundException("Diaryprogramcontrol [ " + id
+					+ " ]  does not exist");
 		}
 		ofy().delete().entity(record).now();
 	}
@@ -132,7 +137,8 @@ public class DiaryprogramcontrolEndpoint {
 	// Private method to retrieve a <code>Diaryprogramcontrol</code> record
 	private Diaryprogramcontrol findRecord(Long id) {
 		return ofy().load().type(Diaryprogramcontrol.class).id(id).now();
-		// or return ofy().load().type(Diaryprogramcontrol.class).filter("id",id).first.now();
+		// or return
+		// ofy().load().type(Diaryprogramcontrol.class).filter("id",id).first.now();
 	}
 
 }
