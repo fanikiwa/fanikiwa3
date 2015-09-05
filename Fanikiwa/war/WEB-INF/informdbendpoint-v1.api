@@ -52,18 +52,26 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "informdbendpoint.getInformdb" : {
-      "path" : "informdb/{id}",
-      "httpMethod" : "GET",
+    "informdbendpoint.sendMail" : {
+      "path" : "sendMail/{to}/{subject}/{body}",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb",
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.sendMail",
       "request" : {
         "parameters" : {
-          "id" : {
-            "type" : "int64",
+          "to" : {
+            "type" : "string",
+            "required" : true
+          },
+          "subject" : {
+            "type" : "string",
+            "required" : true
+          },
+          "body" : {
+            "type" : "string",
             "required" : true
           }
         },
@@ -84,6 +92,27 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "informdbendpoint.getInformdb" : {
+      "path" : "informdb/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -124,35 +153,6 @@
       },
       "response" : {
         "body" : "empty"
-      }
-    },
-    "informdbendpoint.sendMail" : {
-      "path" : "sendMail/{to}/{subject}/{body}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.InformdbEndpoint.sendMail",
-      "request" : {
-        "parameters" : {
-          "to" : {
-            "type" : "string",
-            "required" : true
-          },
-          "subject" : {
-            "type" : "string",
-            "required" : true
-          },
-          "body" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -235,15 +235,20 @@
           "$ref" : "CollectionResponse_Informdb"
         }
       },
-      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
+      "com.sp.fanikiwa.api.InformdbEndpoint.sendMail" : {
         "response" : {
-          "$ref" : "Informdb"
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.InformdbEndpoint.insertInformdb" : {
         "request" : {
           "$ref" : "Informdb"
         },
+        "response" : {
+          "$ref" : "Informdb"
+        }
+      },
+      "com.sp.fanikiwa.api.InformdbEndpoint.getInformdb" : {
         "response" : {
           "$ref" : "Informdb"
         }
@@ -257,11 +262,6 @@
         }
       },
       "com.sp.fanikiwa.api.InformdbEndpoint.removeInformdb" : {
-      },
-      "com.sp.fanikiwa.api.InformdbEndpoint.sendMail" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
       }
     }
   }

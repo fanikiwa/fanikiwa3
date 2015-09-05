@@ -27,27 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "withdrawalmessageendpoint.retrieveWithdrawalMessage" : {
-      "path" : "retrieveWithdrawalMessage/{id}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.retrieveWithdrawalMessage",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "withdrawalmessageendpoint.insertWithdrawalMessage" : {
       "path" : "withdrawalmessage",
       "httpMethod" : "POST",
@@ -110,6 +89,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "withdrawalmessageendpoint.retrieveWithdrawalMessage" : {
+      "path" : "retrieveWithdrawalMessage/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.retrieveWithdrawalMessage",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "withdrawalmessageendpoint.updateWithdrawalMessage" : {
       "path" : "requestresult",
       "httpMethod" : "PUT",
@@ -150,29 +150,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "RequestResult" : {
-        "id" : "RequestResult",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "success" : {
-            "type" : "boolean"
-          },
-          "clientToken" : {
-            "$ref" : "_any"
-          },
-          "resultMessage" : {
-            "type" : "string"
-          }
-        }
-      },
-      "_any" : {
-        "id" : "_any",
-        "type" : "any"
-      },
       "WithdrawalMessage" : {
         "id" : "WithdrawalMessage",
         "type" : "object",
@@ -184,16 +161,16 @@
           "status" : {
             "type" : "string"
           },
+          "memberId" : {
+            "type" : "string",
+            "format" : "int64"
+          },
           "accountId" : {
             "type" : "string",
             "format" : "int64"
           },
           "remarks" : {
             "type" : "string"
-          },
-          "memberId" : {
-            "type" : "string",
-            "format" : "int64"
           },
           "amount" : {
             "type" : "number"
@@ -217,14 +194,32 @@
             "type" : "string"
           }
         }
+      },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.retrieveWithdrawalMessage" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
       "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.insertWithdrawalMessage" : {
         "request" : {
           "$ref" : "WithdrawalMessage"
@@ -241,6 +236,11 @@
       "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.getWithdrawalMessage" : {
         "response" : {
           "$ref" : "WithdrawalMessage"
+        }
+      },
+      "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.retrieveWithdrawalMessage" : {
+        "response" : {
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.WithdrawalMessageEndpoint.updateWithdrawalMessage" : {

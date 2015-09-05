@@ -143,43 +143,18 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerendpoint.listOffer" : {
-      "path" : "offer",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.listOffer",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "offerendpoint.retrieveMyOffers" : {
-      "path" : "retrieveMyOffers/{email}",
+    "offerendpoint.listLendOffers" : {
+      "path" : "ListLendOffers/{memberid}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.retrieveMyOffers",
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.ListLendOffers",
       "request" : {
         "parameters" : {
-          "email" : {
-            "type" : "string",
+          "memberid" : {
+            "type" : "int64",
             "required" : true
           },
           "cursor" : {
@@ -226,20 +201,45 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerendpoint.listLendOffers" : {
-      "path" : "ListLendOffers/{memberid}",
+    "offerendpoint.retrieveMyOffers" : {
+      "path" : "retrieveMyOffers/{email}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.ListLendOffers",
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.retrieveMyOffers",
       "request" : {
         "parameters" : {
-          "memberid" : {
-            "type" : "int64",
+          "email" : {
+            "type" : "string",
             "required" : true
           },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerendpoint.listOffer" : {
+      "path" : "offer",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.listOffer",
+      "request" : {
+        "parameters" : {
           "cursor" : {
             "type" : "string",
             "required" : false
@@ -873,12 +873,7 @@
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.OfferEndpoint.listOffer" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Offer"
-        }
-      },
-      "com.sp.fanikiwa.api.OfferEndpoint.retrieveMyOffers" : {
+      "com.sp.fanikiwa.api.OfferEndpoint.ListLendOffers" : {
         "response" : {
           "$ref" : "CollectionResponse_Offer"
         }
@@ -888,7 +883,12 @@
           "$ref" : "CollectionResponse_Offer"
         }
       },
-      "com.sp.fanikiwa.api.OfferEndpoint.ListLendOffers" : {
+      "com.sp.fanikiwa.api.OfferEndpoint.retrieveMyOffers" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Offer"
+        }
+      },
+      "com.sp.fanikiwa.api.OfferEndpoint.listOffer" : {
         "response" : {
           "$ref" : "CollectionResponse_Offer"
         }

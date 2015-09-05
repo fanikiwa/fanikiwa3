@@ -27,6 +27,22 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "settingsendpoint.updateSettings" : {
+      "path" : "requestresult",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.updateSettings",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "settingsendpoint.retrieveSettingsByKey" : {
       "path" : "retrieveSettingsByKey/{key}",
       "httpMethod" : "POST",
@@ -110,22 +126,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "settingsendpoint.updateSettings" : {
-      "path" : "requestresult",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.updateSettings",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "settingsendpoint.removeSettings" : {
       "path" : "settings/{id}",
       "httpMethod" : "DELETE",
@@ -150,6 +150,25 @@
   },
   "descriptor" : {
     "schemas" : {
+      "Settings" : {
+        "id" : "Settings",
+        "type" : "object",
+        "properties" : {
+          "property" : {
+            "type" : "string"
+          },
+          "groupName" : {
+            "type" : "string"
+          },
+          "parent" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
       "RequestResult" : {
         "id" : "RequestResult",
         "type" : "object",
@@ -187,28 +206,17 @@
             "type" : "string"
           }
         }
-      },
-      "Settings" : {
-        "id" : "Settings",
-        "type" : "object",
-        "properties" : {
-          "property" : {
-            "type" : "string"
-          },
-          "groupName" : {
-            "type" : "string"
-          },
-          "parent" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.SettingsEndpoint.updateSettings" : {
+        "request" : {
+          "$ref" : "Settings"
+        },
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.SettingsEndpoint.retrieveSettingsByKey" : {
         "response" : {
           "$ref" : "RequestResult"
@@ -230,14 +238,6 @@
       "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey" : {
         "response" : {
           "$ref" : "Settings"
-        }
-      },
-      "com.sp.fanikiwa.api.SettingsEndpoint.updateSettings" : {
-        "request" : {
-          "$ref" : "Settings"
-        },
-        "response" : {
-          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings" : {

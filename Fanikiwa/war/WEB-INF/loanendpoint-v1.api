@@ -27,19 +27,143 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "loanendpoint.reverseMemberLoans" : {
-      "path" : "ReverseMemberLoans/{id}",
+    "loanendpoint.selectMyInvestments" : {
+      "path" : "selectMyInvestments/{email}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.ReverseMemberLoans",
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.zerolizeAccruedIntLoan" : {
+      "path" : "zerolizeAccruedIntLoan",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.zerolizeAccruedIntLoan",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.nextIntAccrualLoanByDate" : {
+      "path" : "NextIntAccrualLoanByDate/{date}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.NextIntAccrualLoanByDate",
+      "request" : {
+        "parameters" : {
+          "date" : {
+            "type" : "datetime",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.nextIntAppLoanByDate" : {
+      "path" : "NextIntAppLoanByDate/{date}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.NextIntAppLoanByDate",
+      "request" : {
+        "parameters" : {
+          "date" : {
+            "type" : "datetime",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.selectDtoMyInvestments" : {
+      "path" : "selectDtoMyInvestments/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectDtoMyInvestments",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "loanendpoint.loanRepaymentSchedule" : {
+      "path" : "LoanRepaymentSchedule/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.LoanRepaymentSchedule",
       "request" : {
         "parameters" : {
           "id" : {
             "type" : "int64",
             "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -230,6 +354,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "loanendpoint.editLoan" : {
+      "path" : "editLoan",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.editLoan",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "loanendpoint.retrieveLoan" : {
       "path" : "retrieveLoan/{id}",
       "httpMethod" : "POST",
@@ -276,159 +416,19 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loanendpoint.editLoan" : {
-      "path" : "editLoan",
+    "loanendpoint.reverseMemberLoans" : {
+      "path" : "ReverseMemberLoans/{id}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.editLoan",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.selectMyInvestments" : {
-      "path" : "selectMyInvestments/{email}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments",
-      "request" : {
-        "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          },
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.zerolizeAccruedIntLoan" : {
-      "path" : "zerolizeAccruedIntLoan",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.zerolizeAccruedIntLoan",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.nextIntAccrualLoanByDate" : {
-      "path" : "NextIntAccrualLoanByDate/{date}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.NextIntAccrualLoanByDate",
-      "request" : {
-        "parameters" : {
-          "date" : {
-            "type" : "datetime",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.nextIntAppLoanByDate" : {
-      "path" : "NextIntAppLoanByDate/{date}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.NextIntAppLoanByDate",
-      "request" : {
-        "parameters" : {
-          "date" : {
-            "type" : "datetime",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.selectDtoMyInvestments" : {
-      "path" : "selectDtoMyInvestments/{email}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.selectDtoMyInvestments",
-      "request" : {
-        "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          },
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.loanRepaymentSchedule" : {
-      "path" : "LoanRepaymentSchedule/{id}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.LoanRepaymentSchedule",
+      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.ReverseMemberLoans",
       "request" : {
         "parameters" : {
           "id" : {
             "type" : "int64",
             "required" : true
-          },
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
           }
         },
         "body" : "empty"
@@ -440,29 +440,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "RequestResult" : {
-        "id" : "RequestResult",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "success" : {
-            "type" : "boolean"
-          },
-          "clientToken" : {
-            "$ref" : "_any"
-          },
-          "resultMessage" : {
-            "type" : "string"
-          }
-        }
-      },
-      "_any" : {
-        "id" : "_any",
-        "type" : "any"
-      },
       "CollectionResponse_Loan" : {
         "id" : "CollectionResponse_Loan",
         "type" : "object",
@@ -719,10 +696,61 @@
             "format" : "int64"
           }
         }
+      },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.LoanEndpoint.ReverseMemberLoans" : {
+      "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Loan"
+        }
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.zerolizeAccruedIntLoan" : {
+        "request" : {
+          "$ref" : "Loan"
+        },
+        "response" : {
+          "$ref" : "Loan"
+        }
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.NextIntAccrualLoanByDate" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Loan"
+        }
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.NextIntAppLoanByDate" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Loan"
+        }
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.selectDtoMyInvestments" : {
+        "response" : {
+          "$ref" : "CollectionResponse_LoanDTO"
+        }
+      },
+      "com.sp.fanikiwa.api.LoanEndpoint.LoanRepaymentSchedule" : {
         "response" : {
           "$ref" : "RequestResult"
         }
@@ -770,6 +798,14 @@
           "$ref" : "CollectionResponse_LoanDTO"
         }
       },
+      "com.sp.fanikiwa.api.LoanEndpoint.editLoan" : {
+        "request" : {
+          "$ref" : "LoanDTO"
+        },
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.LoanEndpoint.retrieveLoan" : {
         "response" : {
           "$ref" : "RequestResult"
@@ -780,43 +816,7 @@
           "$ref" : "CollectionResponse_Loan"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.editLoan" : {
-        "request" : {
-          "$ref" : "LoanDTO"
-        },
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.selectMyInvestments" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Loan"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.zerolizeAccruedIntLoan" : {
-        "request" : {
-          "$ref" : "Loan"
-        },
-        "response" : {
-          "$ref" : "Loan"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.NextIntAccrualLoanByDate" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Loan"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.NextIntAppLoanByDate" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Loan"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.selectDtoMyInvestments" : {
-        "response" : {
-          "$ref" : "CollectionResponse_LoanDTO"
-        }
-      },
-      "com.sp.fanikiwa.api.LoanEndpoint.LoanRepaymentSchedule" : {
+      "com.sp.fanikiwa.api.LoanEndpoint.ReverseMemberLoans" : {
         "response" : {
           "$ref" : "RequestResult"
         }

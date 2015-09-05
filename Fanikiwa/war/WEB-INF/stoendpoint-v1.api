@@ -48,27 +48,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "stoendpoint.nextSTOByDate" : {
-      "path" : "nextSTOByDate/{date}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.nextSTOByDate",
-      "request" : {
-        "parameters" : {
-          "date" : {
-            "type" : "datetime",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "stoendpoint.sTOEndpoint.getSTOByLoanId" : {
       "path" : "collectionresponse_sto/{loanid}",
       "httpMethod" : "GET",
@@ -81,6 +60,52 @@
         "parameters" : {
           "loanid" : {
             "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "stoendpoint.listSTO" : {
+      "path" : "sto",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.listSTO",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "stoendpoint.nextSTOByDate" : {
+      "path" : "nextSTOByDate/{date}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.nextSTOByDate",
+      "request" : {
+        "parameters" : {
+          "date" : {
+            "type" : "datetime",
             "required" : true
           }
         },
@@ -180,31 +205,6 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "stoendpoint.listSTO" : {
-      "path" : "sto",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.listSTO",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -368,12 +368,17 @@
           "$ref" : "RequestResult"
         }
       },
-      "com.sp.fanikiwa.api.STOEndpoint.nextSTOByDate" : {
+      "com.sp.fanikiwa.api.STOEndpoint.getSTOByLoanId" : {
         "response" : {
           "$ref" : "CollectionResponse_STO"
         }
       },
-      "com.sp.fanikiwa.api.STOEndpoint.getSTOByLoanId" : {
+      "com.sp.fanikiwa.api.STOEndpoint.listSTO" : {
+        "response" : {
+          "$ref" : "CollectionResponse_STO"
+        }
+      },
+      "com.sp.fanikiwa.api.STOEndpoint.nextSTOByDate" : {
         "response" : {
           "$ref" : "CollectionResponse_STO"
         }
@@ -404,11 +409,6 @@
         },
         "response" : {
           "$ref" : "STO"
-        }
-      },
-      "com.sp.fanikiwa.api.STOEndpoint.listSTO" : {
-        "response" : {
-          "$ref" : "CollectionResponse_STO"
         }
       }
     }

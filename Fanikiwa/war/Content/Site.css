@@ -43,14 +43,25 @@ background-color: #125182;
 text-align: center;  
 line-height: 1em; 
 border-right: solid 2px #c8c8c8;
+
+background-color: #2c99ce;
+background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #2c99ce), color-stop(76%, #459dcf), color-stop(95%, #74b9e0), color-stop(100%, #abe1fa));
+background: -webkit-linear-gradient(bottom, #2c99ce, #459dcf 76%, #74b9e0 95%, #abe1fa);
+background: -moz-linear-gradient(bottom, #2c99ce, #459dcf 76%, #74b9e0 95%, #abe1fa);
+background: -o-linear-gradient(bottom, #2c99ce, #459dcf 76%, #74b9e0 95%, #abe1fa);
+background: -ms-linear-gradient(bottom, #2c99ce, #459dcf 76%, #74b9e0 95%, #abe1fa);
+background: linear-gradient(bottom, #2c99ce, #459dcf 76%, #74b9e0 95%, #abe1fa);
+
+
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #125182), color-stop(.5, #1269ab), color-stop(.51, #004375), to(#00345b)); 
 background: -moz-linear-gradient(top, #125182, #1269ab 50%, #004375 51%, #00345b); 
+
 -moz-border-radius: 30px; 
 -webkit-border-radius: 30px; 
 border-radius: 30px; 
--moz-box-shadow:inset 0 0 10px #000000; 
--webkit-box-shadow:inset 0 0 10px #000000; 
-box-shadow:inset 0 0 10px #000000; 
+-moz-box-shadow: inset 0 0 10px #000000; 
+-webkit-box-shadow: inset 0 0 10px #000000; 
+box-shadow: inset 0 0 10px #000000; 
 font-size: 1em;  
 color: white;
 }

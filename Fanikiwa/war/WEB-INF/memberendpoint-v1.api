@@ -147,6 +147,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "memberendpoint.register" : {
+      "path" : "Register",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.Register",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "memberendpoint.deRegister" : {
       "path" : "deRegister/{email}",
       "httpMethod" : "POST",
@@ -251,22 +267,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "memberendpoint.register" : {
-      "path" : "Register",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.Register",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -825,6 +825,47 @@
           }
         }
       },
+      "UserDTO" : {
+        "id" : "UserDTO",
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "pwd" : {
+            "type" : "string"
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "telephone" : {
+            "type" : "string"
+          },
+          "nationalID" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "dateActivated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "dateJoined" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "informBy" : {
+            "type" : "string"
+          },
+          "userType" : {
+            "type" : "string"
+          },
+          "registrationMethod" : {
+            "type" : "string"
+          }
+        }
+      },
       "CollectionResponse_MemberDTO" : {
         "id" : "CollectionResponse_MemberDTO",
         "type" : "object",
@@ -914,47 +955,6 @@
           }
         }
       },
-      "UserDTO" : {
-        "id" : "UserDTO",
-        "type" : "object",
-        "properties" : {
-          "email" : {
-            "type" : "string"
-          },
-          "pwd" : {
-            "type" : "string"
-          },
-          "surname" : {
-            "type" : "string"
-          },
-          "telephone" : {
-            "type" : "string"
-          },
-          "nationalID" : {
-            "type" : "string"
-          },
-          "status" : {
-            "type" : "string"
-          },
-          "dateActivated" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "dateJoined" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "informBy" : {
-            "type" : "string"
-          },
-          "userType" : {
-            "type" : "string"
-          },
-          "registrationMethod" : {
-            "type" : "string"
-          }
-        }
-      },
       "CollectionResponse_Account" : {
         "id" : "CollectionResponse_Account",
         "type" : "object",
@@ -1008,6 +1008,14 @@
           "$ref" : "Member"
         }
       },
+      "com.sp.fanikiwa.api.MemberEndpoint.Register" : {
+        "request" : {
+          "$ref" : "UserDTO"
+        },
+        "response" : {
+          "$ref" : "RequestResult"
+        }
+      },
       "com.sp.fanikiwa.api.MemberEndpoint.deRegister" : {
         "response" : {
           "$ref" : "RequestResult"
@@ -1029,14 +1037,6 @@
         }
       },
       "com.sp.fanikiwa.api.MemberEndpoint.removeMember" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
-      "com.sp.fanikiwa.api.MemberEndpoint.Register" : {
-        "request" : {
-          "$ref" : "UserDTO"
-        },
         "response" : {
           "$ref" : "RequestResult"
         }
