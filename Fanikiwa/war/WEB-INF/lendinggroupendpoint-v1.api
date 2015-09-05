@@ -43,22 +43,17 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "lendinggroupendpoint.pulgeMemberLendinggroup" : {
-      "path" : "PulgeMemberLendinggroup/{id}",
+    "lendinggroupendpoint.saveLendinggroup" : {
+      "path" : "saveLendinggroup",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.PulgeMemberLendinggroup",
+      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.saveLendinggroup",
       "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -89,17 +84,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "lendinggroupendpoint.saveLendinggroup" : {
-      "path" : "saveLendinggroup",
+    "lendinggroupendpoint.pulgeMemberLendinggroup" : {
+      "path" : "PulgeMemberLendinggroup/{id}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.saveLendinggroup",
+      "rosyMethod" : "com.sp.fanikiwa.api.LendingGroupEndpoint.PulgeMemberLendinggroup",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -564,6 +564,29 @@
           }
         }
       },
+      "LendingGroupDTO" : {
+        "id" : "LendingGroupDTO",
+        "type" : "object",
+        "properties" : {
+          "groupName" : {
+            "type" : "string"
+          },
+          "createdOn" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "creatorEmail" : {
+            "type" : "string"
+          },
+          "lastModified" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "parentGroup" : {
+            "type" : "string"
+          }
+        }
+      },
       "RequestResult" : {
         "id" : "RequestResult",
         "type" : "object",
@@ -601,29 +624,6 @@
             "type" : "string"
           }
         }
-      },
-      "LendingGroupDTO" : {
-        "id" : "LendingGroupDTO",
-        "type" : "object",
-        "properties" : {
-          "groupName" : {
-            "type" : "string"
-          },
-          "createdOn" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "creatorEmail" : {
-            "type" : "string"
-          },
-          "lastModified" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "parentGroup" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
@@ -635,7 +635,10 @@
           "$ref" : "Lendinggroup"
         }
       },
-      "com.sp.fanikiwa.api.LendingGroupEndpoint.PulgeMemberLendinggroup" : {
+      "com.sp.fanikiwa.api.LendingGroupEndpoint.saveLendinggroup" : {
+        "request" : {
+          "$ref" : "LendingGroupDTO"
+        },
         "response" : {
           "$ref" : "RequestResult"
         }
@@ -645,10 +648,7 @@
           "$ref" : "CollectionResponse_Lendinggroup"
         }
       },
-      "com.sp.fanikiwa.api.LendingGroupEndpoint.saveLendinggroup" : {
-        "request" : {
-          "$ref" : "LendingGroupDTO"
-        },
+      "com.sp.fanikiwa.api.LendingGroupEndpoint.PulgeMemberLendinggroup" : {
         "response" : {
           "$ref" : "RequestResult"
         }

@@ -148,15 +148,8 @@
         "id" : "StatementModel",
         "type" : "object",
         "properties" : {
-          "credit" : {
-            "type" : "number"
-          },
           "balance" : {
             "type" : "number"
-          },
-          "transactionID" : {
-            "type" : "string",
-            "format" : "int64"
           },
           "amount" : {
             "type" : "number"
@@ -165,8 +158,15 @@
             "type" : "string",
             "format" : "date-time"
           },
+          "transactionID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
           "narrative" : {
             "type" : "string"
+          },
+          "credit" : {
+            "type" : "number"
           },
           "debit" : {
             "type" : "number"
