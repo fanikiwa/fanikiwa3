@@ -184,21 +184,21 @@
           "status" : {
             "type" : "string"
           },
+          "amount" : {
+            "type" : "number"
+          },
           "accountId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "remarks" : {
+          "remissionMethod" : {
             "type" : "string"
           },
           "memberId" : {
             "type" : "string",
             "format" : "int64"
           },
-          "amount" : {
-            "type" : "number"
-          },
-          "remissionMethod" : {
+          "remarks" : {
             "type" : "string"
           }
         }

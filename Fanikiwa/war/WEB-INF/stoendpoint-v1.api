@@ -27,27 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "stoendpoint.sTOEndpoint.deleteSTOByLoanId" : {
-      "path" : "stobyloanid/{loanid}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.deleteSTOByLoanId",
-      "request" : {
-        "parameters" : {
-          "loanid" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "stoendpoint.nextSTOByDate" : {
       "path" : "nextSTOByDate/{date}",
       "httpMethod" : "POST",
@@ -185,6 +164,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "stoendpoint.sTOEndpoint.deleteSTOByLoanId" : {
+      "path" : "stobyloanid/{loanid}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.deleteSTOByLoanId",
+      "request" : {
+        "parameters" : {
+          "loanid" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "stoendpoint.listSTO" : {
       "path" : "sto",
       "httpMethod" : "GET",
@@ -213,29 +213,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "RequestResult" : {
-        "id" : "RequestResult",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "success" : {
-            "type" : "boolean"
-          },
-          "clientToken" : {
-            "$ref" : "_any"
-          },
-          "resultMessage" : {
-            "type" : "string"
-          }
-        }
-      },
-      "_any" : {
-        "id" : "_any",
-        "type" : "any"
-      },
       "CollectionResponse_STO" : {
         "id" : "CollectionResponse_STO",
         "type" : "object",
@@ -360,14 +337,32 @@
             "type" : "string"
           }
         }
+      },
+      "RequestResult" : {
+        "id" : "RequestResult",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "success" : {
+            "type" : "boolean"
+          },
+          "clientToken" : {
+            "$ref" : "_any"
+          },
+          "resultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_any" : {
+        "id" : "_any",
+        "type" : "any"
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.STOEndpoint.deleteSTOByLoanId" : {
-        "response" : {
-          "$ref" : "RequestResult"
-        }
-      },
       "com.sp.fanikiwa.api.STOEndpoint.nextSTOByDate" : {
         "response" : {
           "$ref" : "CollectionResponse_STO"
@@ -404,6 +399,11 @@
         },
         "response" : {
           "$ref" : "STO"
+        }
+      },
+      "com.sp.fanikiwa.api.STOEndpoint.deleteSTOByLoanId" : {
+        "response" : {
+          "$ref" : "RequestResult"
         }
       },
       "com.sp.fanikiwa.api.STOEndpoint.listSTO" : {
